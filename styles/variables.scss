@@ -1,0 +1,103 @@
+
+$fs-huge:   18pt;
+$fs-bigger: 14pt;
+$fs-big:    12pt;
+$fs-body:   10pt;
+$fs-small:  9pt;
+$fs-tiny:   8pt;
+
+$fs-h2: 20pt;
+$fs-h3: 16pt;
+$fs-h4: 12pt;
+$fs-h5: 10pt;
+
+// $shadow-button:        1px 2px 3px rgba(0,0,0,0.5);
+// $shadow-frame:         2px 5px 10px rgba(0,0,0,0.5);
+// $shadow-deep:          2px 5px 10px rgba(0,0,0,0.8);
+// $shadow-inset:         1px 3px 6px rgba(0,0,0,0.4) inset;
+// $shadow-inset-button:  1px 3px 5px rgba(0,0,0,0.8) inset;
+// $shadow-shallow:       1px 2px 3px rgba(0,0,0,0.9);
+// $shadow-glow-frame:    0 0 20px rgba(250,50,10,0.5), 0 0 5px rgba(250,50,10,0.7), 0 0 2px rgb(250,50,10);
+// $shadow-portrait:      2px 4px 5px rgba(0,0,0,0.8);
+// $shadow-overlay:       5px 10px 20px rgba(0,0,0,0.8);
+// $shadow-dark:          2px 5px 10px rgba(0,0,0,0.8), 5px 10px 20px rgba(0,0,0,0.8);
+
+// $shadow-large-highlight:     9px 10px 10px -10px rgba(250,250,250,0.5) inset;
+// $shadow-large-antihighlight: -15px 10px 10px -15px rgba(0,0,0,1) inset;
+
+// $border-transparent: 1px solid transparent;
+// $border-very-light:  1px solid rgba(250,250,250,0.05);
+// $border-light:       1px solid rgba(250,250,250,0.1);
+// $border-normal:      1px solid rgba(250,250,250,0.2);
+// $border-heavy:       2px solid rgba(250,250,250,0.3);
+
+$bg-root:            rgb(30,30,30);
+// $bg-frame:           rgba(0,0,0,0.666);
+// $bg-dark:            rgba(0,0,0,0.8);
+// $bg-very-dark:       rgba(0,0,0,0.9);
+
+$fg-body:            rgb(180,170,160);
+$fg-strong:          rgb(240,230,220);
+$fg-very-strong:     rgb(250, 250, 250);
+$fg-weak:            rgb(180, 150, 120);
+$fg-very-weak:       rgba(180, 150, 120, 0.5);
+$fg-link:            rgb(220,80,50);
+$fg-link-hover:      rgb(250,100,60);
+$fg-link-active:     rgb(255,110,70);
+
+// // === Buttons ===
+// $bg-button:           rgba(0,0,0,0.666);
+// $fg-button-default:   rgb(200, 200, 200);
+// $fg-button-primary:   rgb(150, 150, 250);
+// $fg-button-secondary: rgb(128, 175, 213);
+// $fg-button-danger:    rgb(250, 100, 100);
+// $fg-button-warning:   rgb(153, 112, 77);
+// $fg-button-success:   rgb(127, 201, 127);
+
+// // === Forms ===
+// $bg-input: rgba(0,0,0,0.8);
+// $border-input: 1px solid rgba(180,170,160,0.5);
+// $border-input-hover: 1px solid rgba(180,170,160,0.75);
+// $border-input-focus: 1px solid rgba(180,170,160,0.75);
+
+// $bg-input-active: rgba(30,30,50);
+
+// // === Radio Buttons ===
+// $fg-radio-button-on: rgb(250,250,250);
+// $bg-radio-button-on: rgba(100,50,0,0.05);
+// $glow-radio-button-on:  0 0 3px rgb(200,100,50);
+
+// // === Scrolling Panel ===
+// $bg-scrolling-panel-track: rgba(0,0,0,0.2);
+// $bg-scrolling-panel-thumb: rgb(20,10,0);
+// $bg-scrolling-panel-thumb-hover: rgb(40,20,0);
+
+// $border-scrolling-panel-thumb-top: 1px solid rgba(250,100,100,0.1);
+// $border-scrolling-panel-thumb-bottom: 1px solid rgba(0,0,0,0.5);
+
+// $shadow-scrolling-panel-track: 2px 2px 4px rgb(0,0,0) inset;
+// $shadow-scrolling-panel-thumb: -2px -2px 5px rgba(0,0,0,0.4) inset,
+//                                2px 2px 5px rgba(250,100,100,0.2) inset;
+
+// // === Z-Indices ===
+// $z-background: 0;
+$z-root: 100;
+// $z-viewport: 200;
+// $z-status-bar: 300;
+// $z-tile-shelf: 400;
+// $z-tile-bag: 500;
+// $z-shelved-tile: 600;
+// $z-event-view: 6000;
+// $z-click-advance: 6100;
+// $z-overlay: 9000;
+// $z-overlay-footer: 9001;
+// $z-escape-cover: 9005;
+// $z-escape-menu: 9010;
+// $z-main-cover: 10000;
+// $z-confirmation-cover: 12000;
+// $z-confirmation-window: 12010;
+// $z-confirmation-footer: 12011;
+// $z-tooltip: 50000;
+// $z-alerts: 50020;
+// $z-drag-element: 50030;
+// $z-console: 60000;

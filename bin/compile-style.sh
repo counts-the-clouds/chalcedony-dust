@@ -1,3 +1,3 @@
 #!/usr/bin/bash
 
-echo Compile Style
+sass styles/chalcedony.scss:styles/chalcedony.css
