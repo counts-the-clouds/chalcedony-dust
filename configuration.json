@@ -1,0 +1,9 @@
+{
+  "name": "Distant Thunder",
+  "browserWindow": {
+    "width": 1920,
+    "height": 1080,
+    "minWidth": 1280,
+    "minHeight": 720
+  }
+}
