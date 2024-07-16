@@ -11,6 +11,7 @@ global.Main = function() {
   window.APP = `${ROOT}/application`;
 
   try {
+
     const mainContent = readFile('views/main-content.html');
     const mainElement = document.createElement("div");
           mainElement.innerHTML = mainContent;
