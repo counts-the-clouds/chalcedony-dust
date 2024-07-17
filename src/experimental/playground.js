@@ -18,7 +18,9 @@ global.Playground = (function() {
   //
   function init() {
     PlaygroundRegistry.forEach((code,playground) => {
-      playground.init();
+      if (playground.init && typeof playground.init === 'function') {
+        playground.init();
+      }
     });
 
     X.onClick('a.open-playground', event => {
