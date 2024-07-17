@@ -23,19 +23,18 @@ global.OptionsOverlay = (function() {
   let $dirty = false;
 
   function init() {
-    // X.onCodeDown(_keyCodeEscape, () => { return isOpen() && !isRecording() }, close);
-    // X.onClick('#optionsOverlay a.close-button', close);
-    // X.onClick('#optionsOverlay a.save-button', save);
-    // X.onClick('#keyBindingList .binding-input', startRecording);
+    X.onCodeDown(_keyCodeEscape, () => { return isOpen() && !isRecording() }, close);
+    X.onClick('#optionsOverlay a.close-button', close);
+    X.onClick('#optionsOverlay a.save-button', save);
+    X.onClick('#keyBindingList .binding-input', startRecording);
 
-    // window.addEventListener('keydown', onKeyDown);
+    window.addEventListener('keydown', onKeyDown);
   }
 
   function build() {
-  //   Template.load('#optionsOverlay','client/views/optionsOverlay/options-overlay.html').then(() => {
-  //     ScrollingPanel.build('#optionsOverlay .scrolling-panel');
-  //     buildKeyBindings();
-  //   });
+    X.loadDocument('#optionsOverlay','views/options-overlay.html');
+    ScrollingPanel.build('#optionsOverlay .scrolling-panel');
+    buildKeyBindings();
   }
 
   function show() {
@@ -58,7 +57,7 @@ global.OptionsOverlay = (function() {
   //   return !X.hasClass('#optionsOverlay','hide');
   }
 
-  // function save() {
+  function save() {
   //   if ($dirty) {
   //     ClientCommands.send('options.save', pack()).then(response => {
   //       if (response.status === _success) { saveSuccessful(response.worldState.options); }
@@ -66,7 +65,7 @@ global.OptionsOverlay = (function() {
   //   }
 
   //   close();
-  // }
+  }
 
   // function saveSuccessful(options) {
   //   WorldState.options = options;
@@ -79,10 +78,10 @@ global.OptionsOverlay = (function() {
   //   }).display();
   // }
 
-  // // === Key Bindings =========================================================
+  // === Key Bindings =========================================================
 
-  // function buildKeyBindings() {
-  //   let listElement = X.first("#keyBindingList");
+  function buildKeyBindings() {
+    let listElement = X.first("#keyBindingList");
 
   //   WorldState.options.keyBindings.forEach(function(binding) {
   //     let item = X.createElement(`
@@ -94,7 +93,7 @@ global.OptionsOverlay = (function() {
 
   //     listElement.appendChild(item);
   //   });
-  // }
+  }
 
   // function labelFor(code) {
   //   if (code == null) { return "&nbsp;"; }
@@ -128,39 +127,39 @@ global.OptionsOverlay = (function() {
   //   return options;
   // }
 
-  // function isRecording() {
-  //   return $recordingState.action != null
-  // }
+  function isRecording() {
+    return $recordingState.action != null
+  }
 
-  // function startRecording(event) {
-  //   if ($recordingState.action) { stopRecording(); }
+  function startRecording(event) {
+    if ($recordingState.action) { stopRecording(); }
 
-  //   let inputElement = event.target;
-  //   let listElement = event.target.closest('li');
+    let inputElement = event.target;
+    let listElement = event.target.closest('li');
 
-  //   $recordingState = {
-  //     action: listElement.dataset.action,
-  //     inputElement: inputElement,
-  //     listElement: listElement,
-  //   }
+    $recordingState = {
+      action: listElement.dataset.action,
+      inputElement: inputElement,
+      listElement: listElement,
+    }
 
-  //   X.addClass(inputElement,'recording')
-  // }
+    X.addClass(inputElement,'recording')
+  }
 
-  // function stopRecording() {
-  //   X.removeClass($recordingState.inputElement, 'recording');
-  //   $recordingState = {};
-  // }
+  function stopRecording() {
+    X.removeClass($recordingState.inputElement, 'recording');
+    $recordingState = {};
+  }
 
-  // // The keyboard listener is always present, but only acts if there's
-  // // something in the recording state.
-  // function onKeyDown(event) {
-  //   if (isRecording()) {
-  //     event.preventDefault();
-  //     setKeybinding(event.code);
-  //     stopRecording();
-  //   }
-  // }
+  // The keyboard listener is always present, but only acts if there's
+  // something in the recording state.
+  function onKeyDown(event) {
+    if (isRecording()) {
+      event.preventDefault();
+      setKeybinding(event.code);
+      stopRecording();
+    }
+  }
 
   // // Pressing the escape key will remove whatever keybinding is set.
   // function setKeybinding(code) {

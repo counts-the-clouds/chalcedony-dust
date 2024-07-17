@@ -10,30 +10,25 @@ global.MainMenu = (function() {
     MainContent.setMainContent('views/main-menu.html');
     MainContent.setBackground('backgrounds/main-menu.jpg');
 
-    adjustStartButton();
+    OptionsOverlay.build();
+
+    adjustMenu();
     MainContent.hideCover({ fadeTime:1000 });
   }
 
-  function setContext(context) {
-    // log("Set Context",{ system:'MainMenu', data:context })
-    // We used this to check if we should show continue or not.
-  }
-
-  function adjustStartButton() {
-    // Change start to continue if there's an active game.
+  function adjustMenu() {
+    // We need to show a continue button if there's currently an active game.
+    // Clicking the new game should make give us a warning about overwriting a
+    // current game or some such.
   }
 
   function startGame() {
-    // MainContent.reset();
-    // ClientCommands.send('game.new');
-    // When there is a current came we continue.
-    // ClientCommands.send('game.continue');
+    console.log("TODO: StartGame");
   }
 
   return {
     init: init,
     show: show,
-    setContext: setContext,
   };
 
 })();

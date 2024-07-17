@@ -44,6 +44,10 @@ X.copyElement = function(selector) {
   return X.first(selector).cloneNode(true);
 }
 
+X.loadDocument = function(selector, path) {
+  X.fill(X.first(selector), X.createElement(FileHelper.readFile(path)));
+}
+
 // === Events ==================================================================
 
 X.onClick = function(selector, callback) {

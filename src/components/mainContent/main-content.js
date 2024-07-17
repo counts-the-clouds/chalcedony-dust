@@ -18,7 +18,7 @@ global.MainContent = (function() {
   }
 
   function setMainContent(path) {
-    X.fill(X.first('#mainContent'),X.createElement(FileHelper.readFile(path)));
+    X.loadDocument('#mainContent',path);
     if (Environment.isProduction) {
       X.remove('.show-in-development');
     }
