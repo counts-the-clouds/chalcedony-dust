@@ -9,6 +9,9 @@ global.Main = function() {
     Elements.initAll();
     Components.initAll();
 
+    WorldState.loadState();
+    GameState.loadState();
+
     MainMenu.show();
 
     log("Chalcedony Started",{ system:'Main', data:{

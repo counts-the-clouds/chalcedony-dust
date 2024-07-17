@@ -10,6 +10,7 @@ console.log("=== Compiling manifest.json ===");
 
 let fileList = [
   'src/constants.js',
+  'src/models/state-recorder.js',
 ];
 
 addFiles('src');
