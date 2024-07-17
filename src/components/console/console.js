@@ -1,4 +1,4 @@
-window.Console = (function() {
+global.Console = (function() {
 
   const $entryLimit = 1000;
 

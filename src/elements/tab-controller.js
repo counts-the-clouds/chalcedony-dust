@@ -14,7 +14,7 @@
 //        <div className="tab-content" data-tab="thing">...</div>
 //      </div>
 //
-window.TabController = (function () {
+global.TabController = (function () {
 
   function init() {
     X.onClick('.tab-control .tab', event => {

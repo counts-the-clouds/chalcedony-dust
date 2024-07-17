@@ -1,0 +1,10 @@
+
+#backgroundImage {
+  z-index: $z-background;
+}
+
+#mainCover {
+  @include full-screen;
+  background-color: rgb(0,0,0);
+  z-index: $z-main-cover;
+}

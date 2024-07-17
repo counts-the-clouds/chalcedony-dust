@@ -1,4 +1,4 @@
-window.ConsoleCommands = (function() {
+global.ConsoleCommands = (function() {
 
   const $commands = {
     help: () => { log("You cry out in vain, but no help will come."); }

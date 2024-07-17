@@ -6,7 +6,7 @@
 //   <div class='scrolling-panel track-parent'>
 //     <div class='scrolling-panel-content'>
 //
-window.ScrollingPanel = (function() {
+global.ScrollingPanel = (function() {
   const stepDistance = 50;
   let activeGrab = null;
 

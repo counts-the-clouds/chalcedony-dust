@@ -2,7 +2,7 @@
 // X (or Exacto) is a super tiny replacement for jQuery, just a quick
 // reimplementation of everything I would actually use from that library.
 
-window.X = function(query) {
+global.X = function(query) {
   return document.querySelectorAll(query)
 }
 
@@ -30,9 +30,9 @@ X.empty = function(arg) {
   (typeof arg == "string" ? X.first(arg) : arg).replaceChildren();
 }
 
-// X.fill = function(arg, element) {
-//   (typeof arg == "string" ? X.first(arg) : arg).replaceChildren(element);
-// }
+X.fill = function(arg, element) {
+  (typeof arg == "string" ? X.first(arg) : arg).replaceChildren(element);
+}
 
 X.createElement = function(string) {
   let element = document.createElement("div");
@@ -165,9 +165,9 @@ X.removeClassWithin = function(element, classname) {
 //   return element.getBoundingClientRect();
 // }
 
-// X.assetURL = function(path) {
-//   return `url('../assets/${path}')`
-// }
+X.assetURL = function(path) {
+  return `url('${APP}/assets/${path}')`
+}
 
 // === Helper Functions ========================================================
 

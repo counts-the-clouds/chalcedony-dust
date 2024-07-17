@@ -1,5 +1,9 @@
 global.FileHelper = (function() {
 
+  function readFile(path) {
+    return fs.readFileSync(`${APP}/${path}`, 'utf8');
+  }
+
   function readJSON(path) {
     return new Promise(resolve => {
       fs.readFile(path, (error, contents) => {
@@ -36,6 +40,7 @@ global.FileHelper = (function() {
   }
 
   return {
+    readFile,
     readJSON,
     writeJSON,
     recursiveFileList,

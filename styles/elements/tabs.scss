@@ -1,0 +1,33 @@
+
+.tab-control {
+  display: flex;
+
+  .tab {
+    cursor: pointer;
+    height: 30px;
+    line-height: 30px;
+    padding: 0 10px;
+
+    color: $fg-weak;
+    border: $border-transparent;
+    border-bottom: none;
+
+    &:not(.active):hover { color: $fg-body; }
+    &:not(.active):active { color: $fg-strong; }
+  }
+
+  .tab.active {
+    cursor: default;
+
+    color: $fg-strong;
+    background-color: rgba(0,0,0,0.70);
+    border: $border-normal;
+    border-bottom: none;
+    box-shadow: $shadow-overlay;
+  }
+}
+
+.tab-container {
+  .tab-content { display: none; }
+  .tab-content.active { display: block; }
+}
