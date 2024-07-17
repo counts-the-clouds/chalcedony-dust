@@ -25,10 +25,7 @@ global.MainContent = (function() {
       require(`${APP}/${path}`);
     });
 
-    setTimeout(() => {
-      mocha.run();
-    },1000)
-
+    setTimeout(mocha.run,1000);
   }
 
   function addStylesheet(href) {
