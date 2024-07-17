@@ -2,6 +2,7 @@ global.APP = `${ROOT}/application`;
 
 global.Main = function() {
   try {
+    MainContent.loadDependencies();
     MainContent.loadStyles();
     MainContent.loadMainContent();
 

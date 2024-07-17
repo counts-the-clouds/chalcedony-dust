@@ -1,5 +1,13 @@
 global.MainContent = (function() {
 
+  function loadDependencies() {
+    global.Tween = require(`${APP}/lib/tween.umd.js`);
+
+    // Just requiring PixiJS doesn't do anything, so I'll just add a script tag
+    // to the head like some kind of boomer.
+    addScriptTag(`${APP}/lib/pixi.min.js`);
+  }
+
   function loadMainContent() {
     const mainContent = FileHelper.readFile('views/main-content.html');
     const mainElement = document.createElement("div");
@@ -26,6 +34,13 @@ global.MainContent = (function() {
     });
 
     setTimeout(mocha.run,1000);
+  }
+
+  function addScriptTag(src) {
+    const script = document.createElement('script');
+          script.setAttribute('src',src);
+
+    document.getElementsByTagName('head')[0].appendChild(script);
   }
 
   function addStylesheet(href) {
@@ -79,6 +94,7 @@ global.MainContent = (function() {
   }
 
   return {
+    loadDependencies,
     loadMainContent,
     loadStyles,
     loadTestFramework,
