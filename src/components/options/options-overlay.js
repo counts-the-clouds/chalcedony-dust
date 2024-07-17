@@ -41,18 +41,14 @@ global.OptionsOverlay = (function() {
   function show() {
     if ($isBuilt === false) { OptionsOverlay.build(); }
 
-    let mainMenu = X.first('#mainMenu');
-    if (mainMenu) {
-      X.addClass(mainMenu,'hide');
-    }
-
+    X.addClass('#mainContent','hide');
     X.removeClass('#optionsOverlay','hide');
     ScrollingPanel.resize('#optionsOverlay .scrolling-panel');
   }
 
   function close() {
     X.addClass('#optionsOverlay','hide');
-    X.removeClass('#mainMenu','hide');
+    X.removeClass('#mainContent','hide');
     TabController.setActiveByName(X.first('#optionsOverlay .tab-control'),'stuff');
   }
 
