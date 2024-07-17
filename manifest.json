@@ -1,1 +1,1 @@
-{"fileList":["src/helpers/file-helper.js","src/main.js"]}
+{"fileList":["src/constants.js","src/elements/elements.js","src/elements/scrolling-panel.js","src/elements/tab-controller.js","src/helpers/exacto.js","src/helpers/file-helper.js","src/helpers/time-helper.js","src/main.js","src/modules/console/console-commands.js","src/modules/console/console.js"]}
