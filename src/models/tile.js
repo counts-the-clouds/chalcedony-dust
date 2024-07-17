@@ -82,6 +82,33 @@ global.Tile = function(code, options={}) {
     }
   }
 
+  // === Serialization ===
+
+  function pack() {
+    let tileData = {
+      code: $code,
+      id: $id,
+      coordinates: $coordinates,
+      rotation: $rotation,
+      placementEvent: $placementEvent,
+      placementTrigger: $placementTrigger,
+      placementRules: $placementRules,
+      enableNote: $enableNote,
+    }
+
+    if ($segments) {
+      tileData.segments = $segments.map(segment => {
+        return segment.pack();
+      });
+    }
+
+    return tileData;
+  }
+
+  function toString() {
+    return `Tile[${$id}|${$code}]`
+  }
+
   return Object.freeze({
     getCode,
     getTileData,
@@ -105,5 +132,28 @@ global.Tile = function(code, options={}) {
 
     getClientLayers,
     getNote,
+    pack,
+    toString,
   });
+}
+
+Tile.unpack = function(data) {
+  let tile = Tile(data.code, {
+    id: data.id,
+    placementEvent: data.placementEvent,
+    placementTrigger: data.placementTrigger,
+    placementRules: data.placementRules,
+    enableNote: data.enableNote,
+  });
+
+  tile.setCoordinates(data.coordinates);
+  tile.setRotation(data.rotation);
+
+  if (data.segments) {
+    tile.setSegments(data.segments.map(segmentData => {
+      return TileSegment.unpack(tile,segmentData);
+    }));
+  }
+
+  return tile;
 }

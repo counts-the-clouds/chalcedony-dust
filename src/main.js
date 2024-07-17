@@ -13,10 +13,7 @@ global.Main = function() {
     GameState.loadState();
 
     MainMenu.show();
-
-    if (Environment.isDevelopment) {
-      MainContent.loadTestFramework();
-    }
+    TestFramework.load();
 
     log("Chalcedony Started",{ system:'Main', data:{
       environment: Environment.name,
@@ -26,3 +23,4 @@ global.Main = function() {
     console.error(error);
   }
 }
+

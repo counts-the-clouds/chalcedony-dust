@@ -20,22 +20,6 @@ global.MainContent = (function() {
     addStylesheet(`${APP}/styles/chalcedony.css`);
   }
 
-  function loadTestFramework() {
-    addStylesheet(`${APP}/lib/mocha.css`);
-    require(`${APP}/lib/mocha.js`);
-
-    global.expect = require(`${APP}/lib/chai.js`).expect;
-
-    mocha.setup('bdd');
-    mocha.checkLeaks();
-
-    require(`${APP}/manifest.json`).testFileList.forEach(path => {
-      require(`${APP}/${path}`);
-    });
-
-    setTimeout(mocha.run,1000);
-  }
-
   function addScriptTag(src) {
     const script = document.createElement('script');
           script.setAttribute('src',src);
@@ -97,8 +81,8 @@ global.MainContent = (function() {
     loadDependencies,
     loadMainContent,
     loadStyles,
-    loadTestFramework,
     setMainContent,
+    addStylesheet,
     showCover,
     hideCover,
     setBackground,

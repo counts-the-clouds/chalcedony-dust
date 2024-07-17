@@ -29,11 +29,22 @@ global.TileSegment = function(tile, index, options={}) {
   function getIndex() { return $index; }
   function getForm() { return $form; }
 
+  function pack() {
+    return {
+      index: $index,
+      form: $form,
+    };
+  }
+
   return Object.freeze({
     getSegmentData,
     getTile,
     getIndex,
     getForm,
+    pack,
   });
 }
 
+TileSegment.unpack = function(tile, data) {
+  return TileSegment(tile, data.index, { form:data.form });
+}

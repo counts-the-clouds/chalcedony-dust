@@ -165,9 +165,9 @@ X.removeClassWithin = function(element, classname) {
 
 // === Style ===================================================================
 
-// X.getPosition = function(element) {
-//   return element.getBoundingClientRect();
-// }
+X.getPosition = function(element) {
+  return element.getBoundingClientRect();
+}
 
 X.assetURL = function(path) {
   return `url('${APP}/assets/${path}')`;
