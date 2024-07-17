@@ -10,6 +10,7 @@ console.log("=== Compiling manifest.json ===");
 
 const fileList = [
   'src/constants.js',
+  'src/models/registry.js',
   'src/models/state-recorder.js',
 ];
 

@@ -13,19 +13,27 @@ global.Registry = function(typeName) {
     if ($registry[code] == null) {
       throw `Unknown ${$typeName}[${code}]`
     }
-    return $registry[code];
+    return { ...$registry[code] };
   }
 
   function getSize() { return Object.keys($registry).length }
+
+  function forEach(callback) {
+    Object.keys($registry).forEach(code => {
+      callback(code,lookup(code));
+    });
+  }
 
   return Object.freeze({
     register,
     lookup,
     getSize,
+    forEach,
   });
 }
 
 global.EventRegistry = Registry('TileEvent');
 global.NoteRegistry = Registry('Note');
+global.PlaygroundRegistry = Registry('Playground');
 global.TileRegistry = Registry('Tile');
 global.TriggerRegistry = Registry('Trigger');

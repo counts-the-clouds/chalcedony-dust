@@ -10,7 +10,6 @@ global.MainMenu = (function() {
     MainContent.setMainContent('views/main-menu.html');
     MainContent.setBackground('backgrounds/main-menu.jpg');
 
-
     adjustMenu();
     MainContent.hideCover({ fadeTime:1000 });
   }

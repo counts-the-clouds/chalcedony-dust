@@ -6,14 +6,19 @@ global.TestFramework = (function() {
   // it's going take for mocha to load and then run all the tests is quick and
   // dirty and probably work 99% of the time. Good enough for non-production
   // code.
-  const $mochaLoadTime = 100;
-  const $mochaTestTime = 200;
+  const $mochaLoadTime = 500;
+  const $mochaTestTime = 100;
 
   function load() {
     if (Environment.isDevelopment) {
       addTestFrame();
       loadMocha();
       runTests();
+
+      X.onClick('#mocha li.test',item => {
+        console.log(item);
+        ScrollingPanel.resize('#testFrame');
+      });
     }
   }
 
@@ -47,7 +52,7 @@ global.TestFramework = (function() {
 
   function runTests() {
     setTimeout(mocha.run,$mochaLoadTime);
-    setTimeout(resizeReport,$mochaTestTime);
+    setTimeout(resizeReport,$mochaLoadTime + $mochaTestTime);
   }
 
   function resizeReport() {

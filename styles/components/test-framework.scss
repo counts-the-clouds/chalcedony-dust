@@ -23,12 +23,8 @@
     box-shadow: $shadow-frame;
   }
 
-  &.with-failures {
-    width: 800px;
-    background-color: rgba(7,0,0,0.7);
-
-    .header { width: 800px; }
-    #mocha-stats { width: 760px; }
+  .scrolling-panel-content {
+    max-width: 430px;
   }
 
   #mocha-stats {
@@ -43,6 +39,30 @@
 
   #mocha {
     margin: 0;
+    padding-bottom: 20px;
+
+    h1 { line-height:1.5; }
+
+    pre {
+      max-width: 330px;
+      overflow: hidden;
+      border: $border-light;
+      box-shadow: $shadow-dark;
+      background-color: rgba(50,50,60,0.3);
+    }
+
     .replay { display:none; }
+  }
+
+  &.with-failures {
+    width: 990px;
+    background-color: rgba(7,0,0,0.7);
+
+    .header { width: 990px; }
+    .scrolling-panel-content { max-width: 980px; }
+
+    #mocha-stats { width: 950px; }
+    #mocha pre { max-width: 920px; }
+    #mocha pre.error { background-color: rgba(60,20,20,0.3); }
   }
 }

@@ -37,6 +37,9 @@ global.MainContent = (function() {
   }
 
   function setMainContent(path) {
+    log(`Set Main Content`,{ system:'MainContent', data:path });
+
+    clearBackground();
     X.loadDocument('#mainContent',path);
     if (Environment.isProduction) {
       X.remove('.show-in-development');
@@ -74,7 +77,7 @@ global.MainContent = (function() {
   }
 
   function clearBackground() {
-    delete X.first('#backgroundImage').style['background-image'];
+    X.first('#backgroundImage').style['background-image'] = null;
   }
 
   return {

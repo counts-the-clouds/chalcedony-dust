@@ -8,6 +8,7 @@ global.Main = function() {
 
     Elements.initAll();
     Components.initAll();
+    Playground.init();
 
     WorldState.loadState();
     GameState.loadState();
