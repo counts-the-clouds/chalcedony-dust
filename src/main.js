@@ -13,6 +13,10 @@ global.Main = function() {
 
     MainMenu.show();
 
+    if (Environment.isDevelopment) {
+      MainContent.loadTestFramework();
+    }
+
     log("Chalcedony Started",{ system:'Main', data:{
       environment: Environment.name,
     }});

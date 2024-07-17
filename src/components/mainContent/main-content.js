@@ -9,10 +9,33 @@ global.MainContent = (function() {
   }
 
   function loadStyles() {
+    addStylesheet(`${APP}/styles/chalcedony.css`);
+  }
+
+  function loadTestFramework() {
+    addStylesheet(`${APP}/lib/mocha.css`);
+    require(`${APP}/lib/mocha.js`);
+
+    global.expect = require(`${APP}/lib/chai.js`).expect;
+
+    mocha.setup('bdd');
+    mocha.checkLeaks();
+
+    require(`${APP}/manifest.json`).testFileList.forEach(path => {
+      require(`${APP}/${path}`);
+    });
+
+    setTimeout(() => {
+      mocha.run();
+    },1000)
+
+  }
+
+  function addStylesheet(href) {
     const link = document.createElement('link');
           link.setAttribute('rel','stylesheet');
           link.setAttribute('type','text/css');
-          link.setAttribute('href',`${APP}/styles/chalcedony.css`);
+          link.setAttribute('href',href);
 
     document.getElementsByTagName('head')[0].appendChild(link);
   }
@@ -61,6 +84,7 @@ global.MainContent = (function() {
   return {
     loadMainContent,
     loadStyles,
+    loadTestFramework,
     setMainContent,
     showCover,
     hideCover,
