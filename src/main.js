@@ -1,7 +1,6 @@
+global.APP = `${ROOT}/application`;
 
 global.Main = function() {
-  window.APP = `${ROOT}/application`;
-
   try {
     MainContent.loadStyles();
     MainContent.loadMainContent();

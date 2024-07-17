@@ -58,13 +58,13 @@ X.onClick = function(selector, callback) {
   });
 }
 
-// X.registerKeyAction = function(action, when, callback) {
-//   window.addEventListener('keydown', event => {
-//     if (when(event) && lookupActionCodes(action).includes(event.code)) {
-//       callback(event);
-//     }
-//   });
-// }
+X.registerKeyAction = function(action, when, callback) {
+  window.addEventListener('keydown', event => {
+    if (when(event) && lookupActionCodes(action).includes(event.code)) {
+      callback(event);
+    }
+  });
+}
 
 // X.onInput = function(selector, callback) {
 //   window.addEventListener('keydown', event => {
@@ -170,11 +170,11 @@ X.removeClassWithin = function(element, classname) {
 // }
 
 X.assetURL = function(path) {
-  return `url('${APP}/assets/${path}')`
+  return `url('${APP}/assets/${path}')`;
 }
 
 // === Helper Functions ========================================================
 
-// function lookupActionCodes(action) {
-//   return WorldState.options.keyBindings.filter(bind => bind.action == action)[0].codes
-// }
+function lookupActionCodes(action) {
+  return WorldState.getKeyBindings().filter(bind => bind.action == action)[0].codes;
+}
