@@ -16,7 +16,6 @@ global.TestFramework = (function() {
       runTests();
 
       X.onClick('#mocha li.test',item => {
-        console.log(item);
         ScrollingPanel.resize('#testFrame');
       });
     }

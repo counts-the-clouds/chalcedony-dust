@@ -10,4 +10,6 @@ async function run() {
   await app.init({ background:'#131320', resizeTo:window });
 
   X.first('#pixiCanvas').appendChild(app.canvas);
+
+
 }

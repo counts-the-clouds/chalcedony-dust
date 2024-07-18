@@ -15,6 +15,7 @@ global.Main = function() {
 
     MainMenu.show();
     TestFramework.load();
+    KeyboardMonitor.start();
 
     log("Chalcedony Started",{ system:'Main', data:{
       environment: Environment.name,
