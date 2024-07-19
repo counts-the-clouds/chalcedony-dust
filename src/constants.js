@@ -47,6 +47,10 @@ global._keyCodeW = 'KeyW';
 
 global._keyCodeF11 = 'F11';
 
+// === Game Stages ===
+global._tutorial = 'tutorial';
+global._baseline = 'baseline';
+
 // === Directions ===
 global._n = 'n';
 global._s = 's';

@@ -2,62 +2,113 @@ global.GameState = (function() {
 
   const $stateRecorder = new StateRecorder(`${DATA}/gameState.json`);
 
-  let $currentState;
+  const DefaultState = {
+    tileID: 100,
+    flags: {},
+  }
 
-  function clear() {
-    $currentState = {
-      tileID: 100,
-      flags: {},
-    };
+  let $testMode = false;
+  let $testState = DefaultState;
+  let $realState;
 
-    // DungeonGrid.clear();
-    // TileBag.empty();
-    // TileShelf.clear();
+  function getValue(key) {
+    return $testMode ? $testState[key] : $realState[key];
+  }
+
+  async function setValue(key,value) {
+    ($testMode ? $testState : $realState)[key] = value;
+    await saveState();
+  }
+
+  async function reset() {
+
+    if ($testMode) {
+      $testState = { ...DefaultState };
+    }
+    else {
+      $realState = { ...DefaultState };
+    }
+
+    DungeonGrid.clear();
+    TileBag.empty();
+    TileShelf.clear();
+    await saveState();
   }
 
   function nextTileID() {
-    $currentState.tileID += 1;
-    return $currentState.tileID;
+    const id = getValue('tileID') + 1;
+    setValue('tileID',id);
+    return id;
   }
 
   // Flags are a dead simple key/value store. Because it's serialized to JSON
   // it can't store any classes.
-  function setFlag(flag, value) { $currentState.flags[flag] = value; }
-  function clearFlag(flag) { delete $currentState.flags[flag]; }
-  function getFlag(flag) { return $currentState.flags[flag]; }
-  function getFlags() { return { ...$currentState.flags }; }
-
-  function saveState() {
-    return $stateRecorder.saveState({
-      gameState: $currentState,
-      // dungeonGrid: DungeonGrid.pack(),
-      // tileBag: TileBag.pack(),
-      // tileShelf: TileShelf.pack(),
-    });
+  function setFlag(flag, value) {
+    const state = $testMode ? $testState : $realState
+    state.flags[flag] = value;
   }
 
-  function loadState() {
-    $stateRecorder.loadState().then(state => {
-      try {
-        if (state == null) { return clear(); }
+  function clearFlag(flag) {
+    const state = $testMode ? $testState : $realState
+    delete state.flags[flag];
+  }
 
-        $currentState = state.gameState;
-        // DungeonGrid.unpack(state.dungeonGrid);
-        // TileBag.unpack(state.tileBag);
-        // TileShelf.unpack(state.tileShelf);
+  function getFlag(flag) { return getValue('flags')[flag]; }
+  function getFlags() { return { ...getValue('flags') }; }
+
+  async function saveState() {
+    if (!$testMode) {
+      localLog("Saving Game State",$realState);
+      await $stateRecorder.saveState({
+        gameState: $realState,
+        dungeonGrid: DungeonGrid.pack(),
+        tileBag: TileBag.pack(),
+        tileShelf: TileShelf.pack(),
+      });
+    }
+  }
+
+  async function loadState() {
+    if ($testMode) { return await reset(); }
+
+    try {
+      const loadedState = await $stateRecorder.loadState();
+      if (loadedState) {
+        $realState = loadedState;
+        DungeonGrid.unpack(loadedState.dungeonGrid);
+        TileBag.unpack(loadedState.tileBag);
+        TileShelf.unpack(loadedState.tileShelf);
       }
-      catch(error) {
-        // TODO: Log to console...
-        console.error("=== Error loading game state ===");
-        console.error("Most likely the saved game state is out of date.");
-        console.error("If this is development mode, just clear out the DATA directory.");
-        console.error(error);
-      }
-    });
+    }
+    catch(error) {
+      logError("Error Loading Game State",{ system:'GameState', data:JSON.stringify(error) });
+
+      $realState = null;
+      DungeonGrid.clear();
+      TileBag.empty();
+      TileShelf.clear();
+    }
+
+    localLog("Loaded Game State",$realState);
+  }
+
+
+
+
+
+
+
+
+
+  function enableTestMode() { $testMode = true; }
+  function disableTestMode() { $testMode = false; }
+
+  function localLog(message, data) {
+    log(message, { system:"GameState", data:data });
   }
 
   return Object.freeze({
-    clear,
+    reset,
     nextTileID,
     setFlag,
     clearFlag,
@@ -65,6 +116,8 @@ global.GameState = (function() {
     getFlags,
     saveState,
     loadState,
+    enableTestMode,
+    disableTestMode,
   });
 
 })();

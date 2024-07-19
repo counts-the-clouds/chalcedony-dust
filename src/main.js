@@ -1,6 +1,6 @@
 global.APP = `${ROOT}/application`;
 
-global.Main = function() {
+global.Main = async function() {
   try {
     MainContent.loadDependencies();
     MainContent.loadStyles();
@@ -10,8 +10,8 @@ global.Main = function() {
     Components.initAll();
     Playground.init();
 
-    WorldState.loadState();
-    GameState.loadState();
+    await WorldState.loadState();
+    await GameState.loadState();
 
     MainMenu.show();
     TestFramework.load();

@@ -8,53 +8,100 @@ global.WorldState = (function() {
     { name:'Rotate Clockwise',   action:'action.rotate-clockwise',   codes:[ _keyCodeE ]},
     { name:'Rotate Widdershins', action:'action.rotate-widdershins', codes:[ _keyCodeQ ]},
     { name:'Pause',              action:'action.pause',              codes:[ _keyCodeSpace ]},
-  ]
+  ];
+
+  const DefaultState = {
+    chapter: _tutorial,
+    options: {
+      keyBindings: DefaultBindings,
+    },
+  }
 
   const $stateRecorder = new StateRecorder(`${DATA}/worldState.json`);
 
-  let $currentState;
+  let $testMode = false;
+  let $testState = DefaultState;
+  let $realState;
 
-  // Resetting the world state removes all of the game progression. This is
-  // called when the specs are started in order to baseline the world state,
-  // but would very rarely if ever be called in production.
-  async function reset() {
-    $currentState = { options: {
-      keyBindings: DefaultBindings,
-    }};
-
-    await WorldState.saveState();
-
-    GameState.clear();
-    await GameState.saveState();
+  function getValue(key) {
+    return $testMode ? $testState[key] : $realState[key];
   }
 
-  function getKeyBindings() { return $currentState.options.keyBindings; }
-  function getOptions() { return $currentState.options; }
-
-  async function setOptions(options) {
-    $currentState.options = options;
+  async function setValue(key,value) {
+    ($testMode ? $testState : $realState)[key] = value;
     await saveState();
   }
 
-  function saveState() {
-    $stateRecorder.saveState($currentState);
+  // Resetting the world state removes all of the game progression. This is
+  // called when the specs are started in order to baseline the world state,
+  // but would very rarely if ever be called in production. Maybe if the game
+  // version changes, but even then we'd probably want to migrate the state
+  // rather than resetting, so perhaps only if a migration fails, or an error
+  // is thrown by loadState().
+  async function reset() {
+    if ($testMode) {
+      $testState = { ...DefaultState };
+    }
+    else {
+      log("Resetting World State",{ system:'WorldState', level:1, type:_warning });
+      $realState = { ...DefaultState };
+    }
+
+    await saveState();
   }
 
-  function loadState() {
-    $stateRecorder.loadState().then(state => {
-      if (state == null) { return reset(); }
-      $currentState = state;
+  function getKeyBindings() { return getValue('options').keyBindings; }
+  function getOptions() { return getValue('options'); }
+  function getChapter() { return getValue('chapter'); }
+
+  async function setOptions(options) { await setValue('options',options); }
+
+  async function saveState() {
+    if (!$testMode) {
+      localLog("Saving World State",$realState);
+      await $stateRecorder.saveState($realState);
+    }
+  }
+
+  async function loadState() {
+    if ($testMode) { return await reset(); }
+
+    try {
+      const loadedState = await $stateRecorder.loadState();
+      if (loadedState) {
+        $realState = loadedState;
+      }
+    } catch(error) {
+      logError("Error Loading World State", { system:"WorldState", data:JSON.stringify(error) });
+    }
+
+    if ($realState == null) {
+      await reset();
+    }
+
+    localLog("Loaded World State",{
+      chapter: $realState.chapter,
     });
+  }
+
+  function enableTestMode() { $testMode = true; }
+  function disableTestMode() { $testMode = false; }
+
+  function localLog(message, data) {
+    log(message, { system:"WorldState", data:data });
   }
 
   return Object.freeze({
     DefaultBindings,
     reset,
     getKeyBindings,
-    setOptions,
     getOptions,
+    getChapter,
+    setOptions,
     saveState,
     loadState,
+    enableTestMode,
+    disableTestMode,
   });
 
 })();

@@ -41,12 +41,30 @@ global.TestFramework = (function() {
 
     global.expect = require(`${APP}/lib/chai.js`).expect;
 
-    mocha.setup('bdd');
+    mocha.setup({
+      ui:'bdd',
+      rootHooks: {
+        beforeAll: rootBefore,
+        afterAll: rootAfter,
+      }
+    });
     mocha.checkLeaks();
 
     require(`${APP}/manifest.json`).testFileList.forEach(path => {
       require(`${APP}/${path}`);
     });
+  }
+
+  async function rootBefore() {
+    WorldState.enableTestMode();
+    GameState.enableTestMode();
+    await WorldState.reset();
+    await GameState.reset();
+  }
+
+  function rootAfter() {
+    WorldState.disableTestMode();
+    GameState.disableTestMode();
   }
 
   function runTests() {
