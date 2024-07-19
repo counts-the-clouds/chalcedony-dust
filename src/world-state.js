@@ -1,5 +1,15 @@
 global.WorldState = (function() {
 
+  const DefaultBindings = [
+    { name:'Move Down',          action:'action.move-down',          codes:[ _keyCodeS, _keyCodeArrowDown ]},
+    { name:'Move Up',            action:'action.move-up',            codes:[ _keyCodeW, _keyCodeArrowUp ]},
+    { name:'Move Left',          action:'action.move-left',          codes:[ _keyCodeA, _keyCodeArrowLeft ]},
+    { name:'Move Right',         action:'action.move-right',         codes:[ _keyCodeD, _keyCodeArrowRight ]},
+    { name:'Rotate Clockwise',   action:'action.rotate-clockwise',   codes:[ _keyCodeE ]},
+    { name:'Rotate Widdershins', action:'action.rotate-widdershins', codes:[ _keyCodeQ ]},
+    { name:'Pause',              action:'action.pause',              codes:[ _keyCodeSpace ]},
+  ]
+
   const $stateRecorder = new StateRecorder(`${DATA}/worldState.json`);
 
   let $currentState;
@@ -9,7 +19,7 @@ global.WorldState = (function() {
   // but would very rarely if ever be called in production.
   async function reset() {
     $currentState = { options: {
-      keyBindings: WorldState.DefaultBindings,
+      keyBindings: DefaultBindings,
     }};
 
     await WorldState.saveState();
@@ -37,23 +47,14 @@ global.WorldState = (function() {
     });
   }
 
-  return {
+  return Object.freeze({
+    DefaultBindings,
     reset,
     getKeyBindings,
     setOptions,
     getOptions,
     saveState,
     loadState,
-  }
+  });
 
 })();
-
-WorldState.DefaultBindings = [
-  { name:'Move Down',          action:'action.move-down',          codes:[ _keyCodeS, _keyCodeArrowDown ]},
-  { name:'Move Up',            action:'action.move-up',            codes:[ _keyCodeW, _keyCodeArrowUp ]},
-  { name:'Move Left',          action:'action.move-left',          codes:[ _keyCodeA, _keyCodeArrowLeft ]},
-  { name:'Move Right',         action:'action.move-right',         codes:[ _keyCodeD, _keyCodeArrowRight ]},
-  { name:'Rotate Clockwise',   action:'action.rotate-clockwise',   codes:[ _keyCodeE ]},
-  { name:'Rotate Widdershins', action:'action.rotate-widdershins', codes:[ _keyCodeQ ]},
-  { name:'Pause',              action:'action.pause',              codes:[ _keyCodeSpace ]},
-]

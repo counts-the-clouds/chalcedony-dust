@@ -46,9 +46,9 @@ global.Coordinates = (function() {
     }
   }
 
-  return {
+  return Object.freeze({
     fromGlobal,
     fromChunk,
-  }
+  });
 
 })();

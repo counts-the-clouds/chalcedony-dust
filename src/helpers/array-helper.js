@@ -1,5 +1,11 @@
 global.ArrayHelper = {
 
+  find(array, finder) {
+    for (let i=0; i<array.length; i++) {
+      if (finder(array[i])) { return i; }
+    }
+  },
+
   remove(array, element) {
     let index = array.indexOf(element);
     (index >= 0) ? array.splice(index, 1) : array;

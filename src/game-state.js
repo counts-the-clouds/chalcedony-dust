@@ -56,7 +56,7 @@ global.GameState = (function() {
     });
   }
 
-  return {
+  return Object.freeze({
     clear,
     nextTileID,
     setFlag,
@@ -65,6 +65,6 @@ global.GameState = (function() {
     getFlags,
     saveState,
     loadState,
-  };
+  });
 
 })();
