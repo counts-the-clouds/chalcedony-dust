@@ -1,4 +1,4 @@
-global.TileEvent = function(code) {
+global.PagedEvent = function(code) {
 
   const $code = code;
 

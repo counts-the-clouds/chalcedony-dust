@@ -32,7 +32,7 @@ global.Registry = function(typeName) {
   });
 }
 
-global.EventRegistry = Registry('TileEvent');
+global.EventRegistry = Registry('PagedEvent');
 global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');
 global.PlaygroundRegistry = Registry('Playground');

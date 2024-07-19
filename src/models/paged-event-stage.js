@@ -1,4 +1,4 @@
-global.Stage = function(data) {
+global.PagedEventStage = function(data) {
 
   const $pages = data.pages;
 
