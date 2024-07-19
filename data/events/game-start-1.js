@@ -10,12 +10,12 @@ EventRegistry.register('game-start-1', {
   }],
 
   onServerFinish: state => {
-    rotateNote = { code:'baseline-game.rotate-tile', when:_drawn }
-    panNote = { code:'baseline-game.pan-map', when:_drawn }
+    rotateNote = { code:'tutorial.rotate-tile', when:_drawn }
+    panNote = { code:'tutorial.pan-map', when:_drawn }
 
     let tiles = [
       { code:'forest-2', options:{ }},
-      { code:'forest-3', options:{ enableNote:rotateNote, placementTrigger:'baseline-game.enable-movement' }},
+      { code:'forest-3', options:{ enableNote:rotateNote, placementTrigger:'tutorial.enable-movement' }},
       { code:'forest-2', options:{ enableNote:panNote }},
       { code:'forest-3', options:{ placementEvent:'game-start-2' }},
       { code:'forest-1', options:{ placementEvent:'enter-the-dungeon' }},
@@ -26,7 +26,7 @@ EventRegistry.register('game-start-1', {
       return Tile(data.code, data.options);
     }));
 
-    Browser.send('trigger',{ code:'baseline-game.enable-tile-bag' });
+    Browser.send('trigger',{ code:'tutorial.enable-tile-bag' });
   },
 
 });

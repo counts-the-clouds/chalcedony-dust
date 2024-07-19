@@ -10,7 +10,7 @@
 //       have, and a temporary one at that, so I think it's fine to hard code a
 //       duplicate value here for now.
 //
-// TriggerRegistry.register('baseline-game.enable-tile-bag', data => {
+// TriggerRegistry.register('tutorial.enable-tile-bag', data => {
 //   setTimeout(() => {
 //     X.addClass('#tileBag .wing','wing-below');
 //     X.addClass('#tileBag .standard-body','body-below');
@@ -36,6 +36,6 @@
 //   },100);
 // });
 
-// TriggerRegistry.register('baseline-game.enable-movement', tile => {
+// TriggerRegistry.register('tutorial.enable-movement', tile => {
 //   DungeonView.setMovementEnabled(true);
 // });

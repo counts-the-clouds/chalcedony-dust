@@ -28,7 +28,7 @@ global.TileBag = (function() {
   //
   //       Calling startSequence() should be what starts the animation that
   //       shows the tile bag state changing to sequence mode. Because the only
-  //       example of this is the baseline game's "enable tile bag" animation,
+  //       example of this is the tutorial game's "enable tile bag" animation,
   //       which should only be seen once, we don't have a need to implement an
   //       actual version of this yet.
   //

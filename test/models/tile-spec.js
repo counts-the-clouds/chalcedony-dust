@@ -87,10 +87,10 @@ describe("Tile", function() {
     })
 
     it('with note', function() {
-      let tile = Tile('forest-2', { enableNote:{ code:'baseline-game.rotate-tile', when:_drawn }});
+      let tile = Tile('forest-2', { enableNote:{ code:'tutorial.rotate-tile', when:_drawn }});
       let pack = tile.pack();
 
-      expect(pack.enableNote.code).to.equal('baseline-game.rotate-tile');
+      expect(pack.enableNote.code).to.equal('tutorial.rotate-tile');
       expect(pack.enableNote.when).to.equal('drawn');
     });
   });

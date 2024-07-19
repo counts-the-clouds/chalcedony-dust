@@ -1,5 +1,5 @@
 GameStageRegistry.register(_tutorial,{
-  note:'baseline-game.place-tile',
+  note:'tutorial.place-tile',
 
   flags: [
     ['tile-bag.show',false]

@@ -27,7 +27,7 @@ global.GameController = (function() {
   //   startingTile.buildSegments();
 
   //   TileShelf.addTile(startingTile);
-  //   NoteController.show('baseline-game.place-tile');
+  //   NoteController.show('tutorial.place-tile');
   // }
 
   // function beginDefaultGame() {

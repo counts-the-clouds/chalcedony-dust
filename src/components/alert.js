@@ -1,4 +1,4 @@
-window.Alert = (function() {
+global.Alert = (function() {
 
   function show(options) {
     let parent;
