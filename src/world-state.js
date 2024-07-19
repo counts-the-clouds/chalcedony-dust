@@ -72,7 +72,7 @@ global.WorldState = (function() {
         $realState = loadedState;
       }
     } catch(error) {
-      logError("Error Loading World State", { system:"WorldState", data:JSON.stringify(error) });
+      logError("Error Loading World State", error, { system:"WorldState" });
     }
 
     if ($realState == null) {

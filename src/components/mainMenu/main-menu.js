@@ -20,8 +20,9 @@ global.MainMenu = (function() {
     // current game or some such.
   }
 
-  function startGame() {
-    console.log("TODO: StartGame");
+  async function startGame() {
+    await GameController.beginGame();
+    DungeonView.open();
   }
 
   return {

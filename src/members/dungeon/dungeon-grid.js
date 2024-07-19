@@ -39,11 +39,16 @@ global.DungeonGrid = (function() {
     return data;
   }
 
+  function unpack(data) {
+    console.log("TODO: DungeonGrid.unpack()",data);
+  }
+
   return Object.freeze({
     clear,
     getCell,
     setCell,
     pack,
+    unpack,
   });
 
 })();

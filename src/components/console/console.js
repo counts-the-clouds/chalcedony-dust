@@ -33,12 +33,16 @@ global.Console = (function() {
     append(options);
   }
 
-  function logError(message, options={}) {
+  function logError(message, error, options={}) {
+    if (options.data == null) { options.data = {};}
+
     options.level = 1;
     options.type = _error;
+    options.data.error = ErrorHelper.errorToString(error)
+
     log(message, options);
 
-    console.error(message,options)
+    console.error(message, options)
   }
 
   function append(logData) {

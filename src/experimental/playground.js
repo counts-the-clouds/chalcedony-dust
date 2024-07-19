@@ -42,9 +42,8 @@ global.Playground = (function() {
       }
     }
     catch(error) {
-      logError(JSON.stringify(error), { system:'Playground' });
+      logError("Error in Playground", error, { system:'Playground' });
     }
-
   }
 
   return {
