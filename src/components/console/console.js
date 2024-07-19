@@ -55,6 +55,12 @@ global.Console = (function() {
     X.addClass(entryElement, `level-${logData.level || 2}`)
     X.first('#console #log').appendChild(entryElement);
     ScrollingPanel.resize('#console .scrolling-panel');
+
+    if (Environment.isDevelopment) {
+      if (logData.type == _error || logData.type == _warning) {
+        Alert.showFromLog(logData)
+      }
+    }
   }
 
   function trimEntries() {

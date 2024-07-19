@@ -53,29 +53,29 @@
 
   .entry.type-info {
     .time    { color: rgb(140,160,180); }
-    .system  { color: rgb(180,200,220); }
-    .message { color: rgb(250,250,250); }
+    .system  { color: $fg-info; }
+    .message { color: $fg-info-bright; }
     .data    { color: rgb(180,190,200); }
   }
 
   .entry.type-success {
     .time    { color: rgb(75,200,75); }
-    .system  { color: rgb(100,250,100); }
-    .message { color: rgb(150,250,150); }
+    .system  { color: $fg-success; }
+    .message { color: $fg-success-bright; }
     .data    { color: rgb(150,200,150); }
   }
 
   .entry.type-warning {
     .time    { color: rgb(200,200,75); }
-    .system  { color: rgb(250,250,100); }
-    .message { color: rgb(250,250,150); }
+    .system  { color: $fg-warning; }
+    .message { color: $fg-warning-bright; }
     .data    { color: rgb(200,200,150); }
   }
 
   .entry.type-error {
     .time    { color: rgb(200,75,75); }
-    .system  { color: rgb(250,100,100); }
-    .message { color: rgb(250,150,150); }
+    .system  { color: $fg-error; }
+    .message { color: $fg-error-bright; }
     .data    { color: rgb(150,100,100); }
   }
 }

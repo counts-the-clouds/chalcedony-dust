@@ -9,8 +9,6 @@ global.GameController = (function() {
 
     const stage = GameStageRegistry.lookup(WorldState.getChapter());
 
-    console.log("Stage:",stage)
-
     // await GameState.saveState();
     // DungeonController.renderDungeon();
   }

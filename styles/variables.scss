@@ -46,6 +46,17 @@ $fg-link:            rgb(220,80,50);
 $fg-link-hover:      rgb(250,100,60);
 $fg-link-active:     rgb(255,110,70);
 
+// === Logs and Alerts ===
+$fg-info: rgb(180,200,220);
+$fg-success: rgb(100,250,100);
+$fg-warning: rgb(250,250,100);
+$fg-error: rgb(250,100,100);
+
+$fg-info-bright: rgb(250,250,250);
+$fg-success-bright: rgb(150,250,150);
+$fg-warning-bright: rgb(250,250,150);
+$fg-error-bright: rgb(250,150,150);
+
 // === Buttons ===
 $bg-button:           rgba(0,0,0,0.666);
 $fg-button-default:   rgb(200, 200, 200);
@@ -98,6 +109,6 @@ $z-main-cover: 10000;
 // $z-confirmation-window: 12010;
 // $z-confirmation-footer: 12011;
 // $z-tooltip: 50000;
-// $z-alerts: 50020;
+$z-alerts: 50020;
 // $z-drag-element: 50030;
 $z-console: 60000;

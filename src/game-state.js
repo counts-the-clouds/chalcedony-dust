@@ -83,6 +83,13 @@ global.GameState = (function() {
     catch(error) {
       logError("Error Loading Game State",{ system:'GameState', data:JSON.stringify(error) });
 
+      // TODO: If an exception is thrown reading the game state, for now we can
+      //       assume we've just changed the save game format and should just
+      //       delete the old game. In the future I might look into migrating
+      //       old game formats or at least warning to user this is about to
+      //       happen.
+      fs.unlink(`${DATA}/gameState.json`, error => {});
+
       $realState = null;
       DungeonGrid.clear();
       TileBag.empty();

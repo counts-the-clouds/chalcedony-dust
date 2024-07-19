@@ -11,6 +11,11 @@ global._success = "success";
 global._warning = "warning";
 global._error = "error";
 
+// === Alert Positions ===
+global._sideAlert = 'side';
+global._centerAlert = 'center';
+global._eventAlert = 'event';
+
 // === Key Codes ===
 
 global._keyCodeBackquote = 'Backquote';
