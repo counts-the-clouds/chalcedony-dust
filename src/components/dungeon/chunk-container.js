@@ -14,7 +14,6 @@ global.ChunkContainer = function(chunkID, chunk) {
   addGuides();
   addCells()
 
-
   function addGuides() {
     if (Environment.isDevelopment) {
       const graphics = new PIXI.Graphics();
@@ -33,7 +32,6 @@ global.ChunkContainer = function(chunkID, chunk) {
       $container.addChild(text);
     }
   }
-
 
   async function addCells() {
     const backgrounds = await Promise.all(Array.from({ length:16*16 }, async () => {

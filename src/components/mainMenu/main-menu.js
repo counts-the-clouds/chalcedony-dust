@@ -21,6 +21,7 @@ global.MainMenu = (function() {
   }
 
   async function startGame() {
+    await DungeonAssets.addAssets();
     await GameController.beginGame();
     DungeonView.open();
   }

@@ -12,7 +12,6 @@ global.Main = async function() {
 
     await WorldState.loadState();
     await GameState.loadState();
-    await DungeonAssets.addAssets();
 
     MainMenu.show();
     TestFramework.load();
@@ -23,7 +22,7 @@ global.Main = async function() {
     }});
   }
   catch(error) {
-    console.error(error);
+    logError("Error booting main", error, { system:'Main' });
   }
 }
 
