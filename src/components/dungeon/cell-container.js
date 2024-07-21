@@ -1,37 +1,37 @@
-global.CellContainer = async function(chunk,x,y) {
-
+global.CellContainer = function(x,y,tile,options) {
   const TS = _tileSize;
   const HS = Math.floor(_tileSize/2);
 
-  const background = new PIXI.Sprite(await DungeonAssets.randomTileBackground());
+  const graphics = new PIXI.Graphics();
+  graphics.rect(0,0,TS,TS);
+  graphics.stroke({ color:'rgb(60,80,100,0.5)' });
+
+  const background = options.background;
   background.x = HS;
   background.y = HS;
   background.pivot.x = HS;
   background.pivot.y = HS;
   background.angle = Random.upTo(4) * 90;
 
-  const darkBox = new PIXI.Sprite(await PIXI.Assets.load('dark-box'));
-
-  const text = new PIXI.Text({ text:`(${x},${y})`, style:{
-    fontFamily:'roboto',
-    align:'center',
-    fontSize:20,
-    fill:0xaa9988
+  const text = new PIXI.Text({ text:`(${options.coordinates.gx},${options.coordinates.gy})`, style:{
+    fontFamily: 'roboto',
+    align: 'center',
+    fontSize: 20,
+    fill: 'rgb(110,130,150)'
   }});
 
   text.x = HS - (text.width/2);
   text.y = HS - (text.height/2);
 
-  const tile = new PIXI.Container();
-  tile.addChild(background);
-  tile.addChild(darkBox);
-  tile.addChild(text);
-  tile.x = HS+(TS*x);
-  tile.y = HS+(TS*y) * -1;
-  tile.pivot.x = tile.width/2;
-  tile.pivot.y = tile.height/2;
+  const cell = new PIXI.Container();
+  cell.addChild(background);
+  cell.addChild(options.darkBox);
+  cell.addChild(graphics);
+  cell.addChild(text);
+  cell.x = (TS*x);
+  cell.y = (TS*y);
+  cell.pivot.x = cell.width/2 - HS;
+  cell.pivot.y = cell.height/2 - HS;
 
-  chunk.addChild(tile);
-
-  return tile;
+  return cell;
 }

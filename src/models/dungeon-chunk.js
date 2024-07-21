@@ -8,6 +8,10 @@ global.DungeonChunk = function(cx,cy) {
     return { x:cx, y:cy };
   }
 
+  function getCells() {
+    return [...$cells];
+  }
+
   function getTileAt(coords) {
     let cell = $cells[coords.ci];
     return cell === 0 ? null : cell;
@@ -44,6 +48,7 @@ global.DungeonChunk = function(cx,cy) {
 
   return Object.freeze({
     getChunkLocation,
+    getCells,
     getTileAt,
     setTileAt,
     setCell,
