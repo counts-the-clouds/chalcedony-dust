@@ -7,14 +7,12 @@ global.DungeonViewport = (function() {
 
   const SCALE_FACTORS = [2, 1, 0.66, 0.43, 0.28, 0.19];
 
-
   let $viewport;
   let $guides;
 
   let $movementBindings;
   let $movementLimits;
   let $currentLocation = {x:0,y:0};
-  let $targetLocation = {x:0,y:0};
 
   let $scale = 2;
   let $speed = SLOW;
@@ -104,10 +102,6 @@ global.DungeonViewport = (function() {
 
       if (isMoving) {
         prepareMove(time, keyState);
-
-        $currentLocation.x = $targetLocation.x;
-        $currentLocation.y = $targetLocation.y;
-
         positionViewport();
       }
     }
@@ -135,12 +129,6 @@ global.DungeonViewport = (function() {
     }
   }
 
-  function clampCurrentLocation() {
-    if ($currentLocation.y > $movementLimits.top)    { $currentLocation.y = $movementLimits.top; }
-    if ($currentLocation.y < $movementLimits.bottom) { $currentLocation.y = $movementLimits.bottom; }
-    if ($currentLocation.x < $movementLimits.left)   { $currentLocation.x = $movementLimits.left; }
-    if ($currentLocation.x > $movementLimits.right)  { $currentLocation.x = $movementLimits.right; }
-  }
 
   // === Movement ==============================================================
 
@@ -174,15 +162,18 @@ global.DungeonViewport = (function() {
 
   function executeMove(time,directions) {
     const distance = time.deltaTime * $speed;
-    if (directions.includes('action.move-up'))    { $targetLocation.y += distance }
-    if (directions.includes('action.move-down'))  { $targetLocation.y -= distance }
-    if (directions.includes('action.move-left'))  { $targetLocation.x += distance }
-    if (directions.includes('action.move-right')) { $targetLocation.x -= distance }
+    if (directions.includes('action.move-up'))    { $currentLocation.y += distance }
+    if (directions.includes('action.move-down'))  { $currentLocation.y -= distance }
+    if (directions.includes('action.move-left'))  { $currentLocation.x += distance }
+    if (directions.includes('action.move-right')) { $currentLocation.x -= distance }
+    clampCurrentLocation();
+  }
 
-    if ($targetLocation.y > $movementLimits.top)    { $targetLocation.y = $movementLimits.top; }
-    if ($targetLocation.y < $movementLimits.bottom) { $targetLocation.y = $movementLimits.bottom; }
-    if ($targetLocation.x < $movementLimits.left)   { $targetLocation.x = $movementLimits.left; }
-    if ($targetLocation.x > $movementLimits.right)  { $targetLocation.x = $movementLimits.right; }
+  function clampCurrentLocation() {
+    if ($currentLocation.y > $movementLimits.top)    { $currentLocation.y = $movementLimits.top; }
+    if ($currentLocation.y < $movementLimits.bottom) { $currentLocation.y = $movementLimits.bottom; }
+    if ($currentLocation.x < $movementLimits.left)   { $currentLocation.x = $movementLimits.left; }
+    if ($currentLocation.x > $movementLimits.right)  { $currentLocation.x = $movementLimits.right; }
   }
 
   // === Guides ================================================================
