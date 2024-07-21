@@ -12,6 +12,10 @@ global.DungeonGrid = (function() {
     createChunk(Coordinates.fromChunk(-1,-1,0));
   }
 
+  function getChunks() {
+    return { ...$chunks };
+  }
+
   function getCell(coords) {
     return $chunks[coords.chunkID] ? $chunks[coords.chunkID].getTileAt(coords) : null
   }
@@ -45,6 +49,7 @@ global.DungeonGrid = (function() {
 
   return Object.freeze({
     clear,
+    getChunks,
     getCell,
     setCell,
     pack,

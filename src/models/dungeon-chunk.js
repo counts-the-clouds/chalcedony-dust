@@ -4,6 +4,10 @@ global.DungeonChunk = function(cx,cy) {
   const $cy = cy;
   const $cells = Array(_dungeonChunkSize * _dungeonChunkSize).fill(0);
 
+  function getChunkLocation() {
+    return { x:cx, y:cy };
+  }
+
   function getTileAt(coords) {
     let cell = $cells[coords.ci];
     return cell === 0 ? null : cell;
@@ -26,22 +30,25 @@ global.DungeonChunk = function(cx,cy) {
     }
   }
 
+  function unpack(data) {
+    const chunk = DungeonChunk(data.cx, data.cy);
+
+    for (let i=0; i<data.cells.length; i++) {
+      if (data.cells[i] !== 0) {
+        chunk.setCell(i,Tile.unpack(data.cells[i]));
+      }
+    }
+
+    return chunk;
+  }
+
   return Object.freeze({
+    getChunkLocation,
     getTileAt,
     setTileAt,
     setCell,
     pack,
+    unpack,
   });
 }
 
-DungeonChunk.unpack = function(data) {
-  const chunk = DungeonChunk(data.cx, data.cy);
-
-  for (let i=0; i<data.cells.length; i++) {
-    if (data.cells[i] !== 0) {
-      chunk.setCell(i,Tile.unpack(data.cells[i]));
-    }
-  }
-
-  return chunk;
-}

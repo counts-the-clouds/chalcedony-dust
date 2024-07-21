@@ -66,11 +66,13 @@ global.DungeonViewport = (function() {
   function updateLimits() {
     const screen = DungeonView.getDimensions();
 
-    const chunkSize = _TS*6 // (Cells/2)+1
+    // No idea actually... This value doesn't make any sense to me, but it
+    // works for a single chunk.
+    const chunkSize = _TS*9.9
 
     $movementLimits = {
-      top:     screen.height/2,
-      bottom:  (-1 * screen.height/2) - chunkSize,
+      top:     (screen.height/2) + chunkSize,
+      bottom:  (-1 * screen.height/2),
       left:    (-1 * screen.width/2) - chunkSize,
       right:   (screen.width/2),
     }
