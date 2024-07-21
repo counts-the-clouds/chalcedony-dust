@@ -3,8 +3,6 @@
 // global object they're not actually immutable. Prefix them with an underscore
 // to indicate that they shouldn't be set.
 
-global._dungeonChunkSize = 16;
-
 // === Return (and logging) Codes ===
 global._info = "info";
 global._success = "success";
@@ -86,11 +84,6 @@ global._incomplete = 'incomplete';
 // === Note Triggers ===
 global._drawn = 'drawn';
 
-
-
-// === Dungeon View ===
-global._fastSpeed = 50;
-global._slowSpeed = 20;
-
-global._TS = 128; // Tile Size
-global._HS = 64;  // Half Tile Size
+// === Dungeon ===
+global._chunkSize = 16;
+global._tileSize = 128;

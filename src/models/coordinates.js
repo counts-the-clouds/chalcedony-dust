@@ -1,5 +1,5 @@
 global.Coordinates = (function() {
-  let size = _dungeonChunkSize;
+  let size = _chunkSize;
 
   function chunkID(cx,cy) { return `[${cx}|${cy}]`; }
 

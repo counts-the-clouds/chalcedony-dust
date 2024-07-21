@@ -2,7 +2,7 @@ global.DungeonChunk = function(cx,cy) {
 
   const $cx = cx;
   const $cy = cy;
-  const $cells = Array(_dungeonChunkSize * _dungeonChunkSize).fill(0);
+  const $cells = Array(_chunkSize * _chunkSize).fill(0);
 
   function getChunkLocation() {
     return { x:cx, y:cy };

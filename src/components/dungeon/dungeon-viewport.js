@@ -1,6 +1,12 @@
 global.DungeonViewport = (function() {
 
-  const ScaleFactors = [2, 1, 0.66, 0.43, 0.28, 0.19];
+  const TS = _tileSize;
+  const HS = Math.floor(_tileSize/2);
+  const FAST = 50;
+  const SLOW = 20;
+
+  const SCALE_FACTORS = [2, 1, 0.66, 0.43, 0.28, 0.19];
+
 
   let $viewport;
   let $guides;
@@ -11,7 +17,7 @@ global.DungeonViewport = (function() {
   let $targetLocation = {x:0,y:0};
 
   let $scale = 2;
-  let $speed = _slowSpeed;
+  let $speed = SLOW;
 
   function init() {
     window.addEventListener("resize", handleResize);
@@ -30,7 +36,6 @@ global.DungeonViewport = (function() {
     application.ticker.add(onTick);
 
     updateKeybindings();
-    updateLimits();
     positionViewport();
     drawGuides();
   }
@@ -61,21 +66,20 @@ global.DungeonViewport = (function() {
     console.log("Updated Keybindings",$movementBindings);
   }
 
-  // TODO: The movement limits will need to be based on the dungeon size as
-  //       well as the screen size;
+  // TODO: This is all fucked up right now.
   function updateLimits() {
     const screen = DungeonView.getDimensions();
+    const extent = DungeonView.getChunkExtent();
+    const scale = getScale();
+    const chunkSize = TS*16;
 
-    // No idea actually... This value doesn't make any sense to me, but it
-    // works for a single chunk.
-    const chunkSize = _TS*9.9
+    let top = 64;
+    let bottom = -64;
+    let left = -64;
+    let right = 64
 
-    $movementLimits = {
-      top:     (screen.height/2) + chunkSize,
-      bottom:  (-1 * screen.height/2),
-      left:    (-1 * screen.width/2) - chunkSize,
-      right:   (screen.width/2),
-    }
+    $movementLimits = { top,bottom,left,right };
+    console.log("Limits:",$movementLimits);
   }
 
   function addChild(child) {
@@ -99,11 +103,12 @@ global.DungeonViewport = (function() {
 
       if (isMoving) {
         prepareMove(time, keyState);
-      }
 
-      $currentLocation.x = $targetLocation.x;
-      $currentLocation.y = $targetLocation.y;
-      positionViewport();
+        $currentLocation.x = $targetLocation.x;
+        $currentLocation.y = $targetLocation.y;
+
+        positionViewport();
+      }
     }
   }
 
@@ -115,7 +120,7 @@ global.DungeonViewport = (function() {
   }
 
   function zoomOut() {
-    if ($viewport && $scale < ScaleFactors.length-1) {
+    if ($viewport && $scale < SCALE_FACTORS.length-1) {
       $scale += 1;
       positionViewport();
     }
@@ -124,7 +129,7 @@ global.DungeonViewport = (function() {
   // === Movement ==============================================================
 
   function prepareMove(time, keyState) {
-    $speed = keyState.modifiers.shift ? _fastSpeed : _slowSpeed;
+    $speed = keyState.modifiers.shift ? FAST : SLOW;
 
     const directions = new Set();
     keyState.keys.forEach(code => {
@@ -182,21 +187,26 @@ global.DungeonViewport = (function() {
   // The map scale, position, and tile visibility needs to be updated every
   // time the location is updated.
 
+  function getScale() {
+    return SCALE_FACTORS[$scale];
+  }
+
   function getCenterPoint() {
     const screen = DungeonView.getDimensions();
-    const scale = ScaleFactors[$scale];
+    const scale = getScale();
 
     return {
-      x: (screen.width / 2) - (_HS*scale),
-      y: (screen.height / 2) - (_HS*scale),
+      x: (screen.width / 2) - (HS*scale),
+      y: (screen.height / 2) - (HS*scale),
     };
-
   }
 
   function positionViewport() {
+    console.log("Position:",$currentLocation);
+
     const center = getCenterPoint();
 
-    $viewport.scale = ScaleFactors[$scale];
+    $viewport.scale = getScale();
     $viewport.x = center.x + $currentLocation.x;
     $viewport.y = center.y + $currentLocation.y;
 
@@ -232,6 +242,7 @@ global.DungeonViewport = (function() {
     init,
     create,
     addChild,
+    updateLimits,
   });
 
 })();
