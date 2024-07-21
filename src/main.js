@@ -12,6 +12,7 @@ global.Main = async function() {
 
     await WorldState.loadState();
     await GameState.loadState();
+    await DungeonAssets.addAssets();
 
     MainMenu.show();
     TestFramework.load();
