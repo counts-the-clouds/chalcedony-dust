@@ -62,24 +62,25 @@ global.DungeonViewport = (function() {
         if (binding.action == action) { addBindings(action,binding.codes); }
       });
     });
-
-    console.log("Updated Keybindings",$movementBindings);
   }
 
-  // TODO: This is all fucked up right now.
   function updateLimits() {
-    const screen = DungeonView.getDimensions();
     const extent = DungeonView.getChunkExtent();
     const scale = getScale();
-    const chunkSize = TS*16;
+    const tileSize = TS*scale
+    const chunkSize = tileSize * _chunkSize;
 
-    let top = 64;
-    let bottom = -64;
-    let left = -64;
-    let right = 64
+    let right =  chunkSize;
+    let left =   -chunkSize + tileSize;
+    let top =    chunkSize;
+    let bottom = -chunkSize + tileSize;
+
+    right -=  (extent.minx+1) * chunkSize;
+    left -=   (extent.maxx)   * chunkSize;
+    top -=    (extent.miny+1) * chunkSize;
+    bottom -= (extent.maxy)   * chunkSize;
 
     $movementLimits = { top,bottom,left,right };
-    console.log("Limits:",$movementLimits);
   }
 
   function addChild(child) {
@@ -112,9 +113,15 @@ global.DungeonViewport = (function() {
     }
   }
 
+  // TODO: Zooming in and out simply adjusts the scale of the grid, but it
+  //       should take the center point into account, and move the current
+  //       location so that it remains in the center of the map.
+
   function zoomIn() {
     if ($viewport && $scale > 0) {
       $scale -= 1;
+      updateLimits();
+      clampCurrentLocation();
       positionViewport();
     }
   }
@@ -122,8 +129,17 @@ global.DungeonViewport = (function() {
   function zoomOut() {
     if ($viewport && $scale < SCALE_FACTORS.length-1) {
       $scale += 1;
+      updateLimits();
+      clampCurrentLocation();
       positionViewport();
     }
+  }
+
+  function clampCurrentLocation() {
+    if ($currentLocation.y > $movementLimits.top)    { $currentLocation.y = $movementLimits.top; }
+    if ($currentLocation.y < $movementLimits.bottom) { $currentLocation.y = $movementLimits.bottom; }
+    if ($currentLocation.x < $movementLimits.left)   { $currentLocation.x = $movementLimits.left; }
+    if ($currentLocation.x > $movementLimits.right)  { $currentLocation.x = $movementLimits.right; }
   }
 
   // === Movement ==============================================================
@@ -202,8 +218,6 @@ global.DungeonViewport = (function() {
   }
 
   function positionViewport() {
-    console.log("Position:",$currentLocation);
-
     const center = getCenterPoint();
 
     $viewport.scale = getScale();
