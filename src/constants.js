@@ -85,3 +85,12 @@ global._incomplete = 'incomplete';
 
 // === Note Triggers ===
 global._drawn = 'drawn';
+
+
+
+// === Dungeon View ===
+global._fastSpeed = 50;
+global._slowSpeed = 20;
+
+global._TS = 128; // Tile Size
+global._HS = 64;  // Half Tile Size

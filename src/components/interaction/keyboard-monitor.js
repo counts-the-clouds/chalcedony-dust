@@ -24,6 +24,7 @@ global.KeyboardMonitor = (function() {
     clear();
     window.addEventListener('keydown',onDown);
     window.addEventListener('keyup',onUp);
+    window.addEventListener('blur',clear);
   }
 
   function stop() {
@@ -72,11 +73,11 @@ global.KeyboardMonitor = (function() {
     return false;
   }
 
-  return {
+  return Object.freeze({
     clear,
     start,
     stop,
     getState,
-  }
+  });
 
 })();
