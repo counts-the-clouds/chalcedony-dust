@@ -17,7 +17,6 @@ global.DungeonViewport = (function() {
   let $speed = SLOW;
 
   function init() {
-
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
       const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;

@@ -27,6 +27,7 @@ global.DungeonView = (function() {
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
     DungeonViewport.create($application);
+    TileShelfContainer.create($application);
     createTileGrid();
   }
 
