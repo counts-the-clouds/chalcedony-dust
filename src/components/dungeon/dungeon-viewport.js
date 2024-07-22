@@ -5,7 +5,6 @@ global.DungeonViewport = (function() {
   const FAST = 50;
   const SLOW = 20;
 
-  const $scaleFactors = (SCALE_FACTORS[Environment.isMac ? 'MAC' : 'WIN']);
 
   let $viewport;
   let $guides;
@@ -14,13 +13,16 @@ global.DungeonViewport = (function() {
   let $movementLimits;
   let $currentLocation = {x:0,y:0};
 
-  let $scale = DEFAULT_SCALE[Environment.isMac ? 'MAC' : 'WIN'];
+  let $scale = _defaultScale;
   let $speed = SLOW;
 
   function init() {
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
+
+      console.log(` - `,event.deltaY)
+
       (event.deltaY < 0) ? zoomIn() : zoomOut();
     });
   }
@@ -122,7 +124,7 @@ global.DungeonViewport = (function() {
   }
 
   function zoomOut() {
-    if ($viewport && $scale < $scaleFactors.length-1) {
+    if ($viewport && $scale < _scaleFactors.length-1) {
       $scale += 1;
       updateLimits();
       clampCurrentLocation();
@@ -196,7 +198,7 @@ global.DungeonViewport = (function() {
   // time the location is updated.
 
   function getScale() {
-    return $scaleFactors[$scale];
+    return _scaleFactors[$scale];
   }
 
   function getCenterPoint() {
