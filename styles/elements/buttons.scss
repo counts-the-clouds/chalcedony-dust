@@ -78,12 +78,12 @@
 }
 
 .button-icon {
-  @include button($fg-button-default);
 
   padding: 0;
   height: 44px;
   width: 44px;
   border-radius: 8px;
+  @include button($fg-button-default);
 
   .item-icon.large-icon {
     margin: 0;
@@ -97,13 +97,13 @@
 
 // Large button icon, used in crafting dialog.
 .button-icon-with-label {
-  @include button($fg-button-default);
 
   display: inline-block;
   height: 80px;
   width: 80px;
   text-align: center;
   font-size: $fs-small;
+  @include button($fg-button-default);
 
   .item-icon {
     position: relative;
@@ -124,11 +124,11 @@
 }
 
 .radio-button {
-  @include button($fg-button-default);
 
   line-height: 29px;
   border-right-width: 0;
   border-radius: 0;
+  @include button($fg-button-default);
 
   &:last-child {
     border-right-width: 1px;

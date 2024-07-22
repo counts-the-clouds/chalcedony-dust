@@ -51,21 +51,21 @@
 }
 
 .alert.center {
-  @include alert-frame;
   margin-right: 10px;
   padding: 10px 20px;
+  @include alert-frame;
 }
 
 .alert.event {
-  @include alert-frame;
   margin-right: 5px;
   padding: 5px 10px;
+  @include alert-frame;
 }
 
 .alert.side {
-  @include alert-frame;
   margin-bottom: 5px;
   padding: 5px 10px;
+  @include alert-frame;
 }
 
 .alert {
