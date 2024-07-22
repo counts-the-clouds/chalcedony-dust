@@ -20,10 +20,8 @@ global.DungeonViewport = (function() {
 
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
-
-      console.log(` - `,event.deltaY)
-
-      (event.deltaY < 0) ? zoomIn() : zoomOut();
+      const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
+      (event.deltaY < 0) ? zoomIn(velocity) : zoomOut(velocity);
     });
   }
 
@@ -114,18 +112,24 @@ global.DungeonViewport = (function() {
   //       should take the center point into account, and move the current
   //       location so that it remains in the center of the map.
 
-  function zoomIn() {
+  function zoomIn(velocity) {
     if ($viewport && $scale > 0) {
-      $scale -= 1;
+      $scale -= velocity;
+      if ($scale < 0) { $scale = 0; }
+
       updateLimits();
       clampCurrentLocation();
       positionViewport();
     }
   }
 
-  function zoomOut() {
-    if ($viewport && $scale < _scaleFactors.length-1) {
-      $scale += 1;
+  function zoomOut(velocity) {
+    const max = _scaleFactors.length - 1;
+
+    if ($viewport && $scale < max) {
+      $scale += velocity;
+      if ($scale > max) { $scale = max; }
+
       updateLimits();
       clampCurrentLocation();
       positionViewport();
