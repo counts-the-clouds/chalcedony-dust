@@ -2,7 +2,7 @@ global.APP = `${ROOT}/application`;
 
 global.Main = async function() {
   try {
-    MainContent.loadDependencies();
+    await MainContent.loadDependencies();
     MainContent.loadStyles();
     MainContent.loadMainContent();
 
@@ -25,4 +25,3 @@ global.Main = async function() {
     logError("Error booting main", error, { system:'Main' });
   }
 }
-

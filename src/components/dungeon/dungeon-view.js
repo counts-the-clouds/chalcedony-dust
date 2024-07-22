@@ -4,7 +4,8 @@ global.DungeonView = (function() {
   let $chunkContainers = {}
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
 
-  function init() {}
+  function init() {
+  }
 
   async function open() {
     await DungeonAssets.loadAssets();

@@ -16,19 +16,19 @@ global.ChunkContainer = function(chunkID, chunk) {
 
   function addGuides() {
     if (Environment.isDevelopment) {
-      const graphics = new PIXI.Graphics();
-      graphics.rect(0,0,chunkSize,chunkSize);
-      graphics.stroke({ width:3, color:'rgb(100,80,60,0.5)' });
+      const border = new PIXI.Graphics();
+      border.rect(0,0,chunkSize,chunkSize);
+      border.stroke({ width:3, color:'rgb(100,80,60,0.5)' });
 
       const text = new PIXI.Text({ text:`Chunk${$chunkID}`, style: {
         fontFamily:'roboto',
         fontSize:200,
-        fill:'rgba(150,140,130,0.15)',
+        fill:'rgba(150,140,130,0.05)',
       }});
       text.x = (chunkSize/2) - (text.width/2);
       text.y = (chunkSize/2) - (text.height/2);
 
-      $container.addChild(graphics);
+      $container.addChild(border);
       $container.addChild(text);
     }
   }
