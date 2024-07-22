@@ -28,7 +28,6 @@ global.DungeonViewport = (function() {
   function create(application) {
     $viewport = new PIXI.Container();
     $guides = new PIXI.Graphics();
-    $guides.alpha = 0.2;
 
     application.stage.addChild($viewport);
     application.stage.addChild($guides);
@@ -191,9 +190,9 @@ global.DungeonViewport = (function() {
     if ($guides) {
       $guides.clear()
       $guides.rect((screen.width/2)-1,0,2,screen.height)
-      $guides.fill(0xFF4030);
+      $guides.fill('rgba(200,50,50,0.1)');
       $guides.rect(0,(screen.height/2)-1,screen.width,2);
-      $guides.fill(0xFF4030);
+      $guides.fill('rgba(200,50,50,0.1)');
     }
   }
 

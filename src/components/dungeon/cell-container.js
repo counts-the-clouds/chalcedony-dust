@@ -2,9 +2,12 @@ global.CellContainer = function(x,y,tile,options) {
   const TS = _tileSize;
   const HS = Math.floor(_tileSize/2);
 
+  const gx = options.coordinates.gx
+  const gy = options.coordinates.gy
+
   const border = new PIXI.Graphics();
   border.rect(0,0,TS,TS);
-  border.stroke({ color:'rgb(60,80,100,0.5)' });
+  border.stroke({ color:'rgb(60,80,100,0.2)' });
 
   const background = options.background;
   background.x = HS;
@@ -13,7 +16,7 @@ global.CellContainer = function(x,y,tile,options) {
   background.pivot.y = HS;
   background.angle = Random.upTo(4) * 90;
 
-  const text = new PIXI.Text({ text:`(${options.coordinates.gx},${options.coordinates.gy})`, style:{
+  const text = new PIXI.Text({ text:`(${gx},${gy})`, style:{
     fontFamily: 'roboto',
     align: 'center',
     fontSize: 20,
@@ -24,14 +27,18 @@ global.CellContainer = function(x,y,tile,options) {
   text.y = HS - (text.height/2);
 
   const cell = new PIXI.Container();
-  cell.addChild(background);
-  cell.addChild(options.darkBox);
+  cell.eventMode = 'dynamic';
+  // cell.addChild(background);
+  // cell.addChild(options.darkBox);
   cell.addChild(border);
-  cell.addChild(text);
+  // cell.addChild(text);
   cell.x = (TS*x);
   cell.y = (TS*y);
   cell.pivot.x = cell.width/2 - HS;
   cell.pivot.y = cell.height/2 - HS;
+
+  cell.on('mouseover', event => { console.log(` --> (${gx},${gy})`); });
+  cell.on('mouseleave', event => { console.log(` <-- (${gx},${gy})`); });
 
   return cell;
 }
