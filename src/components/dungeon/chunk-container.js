@@ -18,18 +18,18 @@ global.ChunkContainer = function(chunkID, chunk) {
     if (Environment.isDevelopment) {
       const border = new PIXI.Graphics();
       border.rect(0,0,chunkSize,chunkSize);
-      border.stroke({ width:3, color:'rgb(100,80,60,0.1)' });
+      border.stroke({ width:3, color:'rgb(100,80,60,0.4)' });
 
       const text = new PIXI.Text({ text:`Chunk${$chunkID}`, style: {
         fontFamily:'roboto',
         fontSize:200,
-        fill:'rgba(150,140,130,0.05)',
+        fill:'rgba(150,140,130,0.4)',
       }});
       text.x = (chunkSize/2) - (text.width/2);
       text.y = (chunkSize/2) - (text.height/2);
 
       $container.addChild(border);
-      // $container.addChild(text);
+      $container.addChild(text);
     }
   }
 

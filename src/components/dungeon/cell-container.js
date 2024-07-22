@@ -7,7 +7,8 @@ global.CellContainer = function(x,y,tile,options) {
 
   const border = new PIXI.Graphics();
   border.rect(0,0,TS,TS);
-  border.stroke({ color:'rgb(60,80,100,0.2)' });
+  border.stroke({ color:'rgb(60,80,100,0.3)' });
+  border.fill({ color:'rgb(60,80,100,0.01)' });
 
   const background = options.background;
   background.x = HS;
@@ -20,7 +21,7 @@ global.CellContainer = function(x,y,tile,options) {
     fontFamily: 'roboto',
     align: 'center',
     fontSize: 20,
-    fill: 'rgba(110,130,150,0.2)'
+    fill: 'rgba(110,130,150,0.3)'
   }});
 
   text.x = HS - (text.width/2);
@@ -31,7 +32,7 @@ global.CellContainer = function(x,y,tile,options) {
   // cell.addChild(background);
   // cell.addChild(options.darkBox);
   cell.addChild(border);
-  // cell.addChild(text);
+  cell.addChild(text);
   cell.x = (TS*x);
   cell.y = (TS*y);
   cell.pivot.x = cell.width/2 - HS;
@@ -42,3 +43,5 @@ global.CellContainer = function(x,y,tile,options) {
 
   return cell;
 }
+
+

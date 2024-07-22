@@ -5,6 +5,8 @@ global.DungeonView = (function() {
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
 
   function init() {
+    DungeonViewport.init();
+    TileShelfContainer.init();
   }
 
   async function open() {

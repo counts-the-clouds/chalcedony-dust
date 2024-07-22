@@ -16,9 +16,9 @@ global.DungeonAssets = (function() {
   }
 
   async function loadAssets() {
-    await PIXI.Assets.loadBundle('tiles');
+    await PIXI.Assets.loadBundle('tile-backgrounds');
+    await PIXI.Assets.loadBundle('tile-elements');
     await PIXI.Assets.loadBundle('fonts');
-    await PIXI.Assets.load('dark-box');
   }
 
   async function randomTileBackground() {
