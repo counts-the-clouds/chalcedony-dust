@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 bin/compile-style.sh
 bin/compile-manifest.js

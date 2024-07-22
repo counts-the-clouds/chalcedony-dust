@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 
 # Prebuild Clean
 cd $THUNDER_HOME

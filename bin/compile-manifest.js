@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 
 global.fs = require('fs');
 

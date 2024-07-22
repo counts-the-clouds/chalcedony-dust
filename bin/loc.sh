@@ -1,4 +1,4 @@
-#!/usr/bin/bash
+#!/bin/bash
 # npm install -g ddate
 # npm install -g sloc
 
