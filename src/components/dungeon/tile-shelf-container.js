@@ -36,6 +36,13 @@ window.TileShelfContainer = (function() {
     positionShelf();
   }
 
+  // We should call this to rebuild the shelf if the tile shelf state changes.
+  async function refresh() {
+    TileShelf.getShelf().forEach(tile => {
+      const tileContainer = TileContainer(tile);
+    });
+  }
+
   function handleResize() {
     positionShelf();
   }
@@ -52,6 +59,7 @@ window.TileShelfContainer = (function() {
   return Object.freeze({
     init,
     create,
+    refresh,
   })
 
 })();

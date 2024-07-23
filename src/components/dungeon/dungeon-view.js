@@ -50,6 +50,7 @@ global.DungeonView = (function() {
     });
 
     DungeonViewport.updateLimits();
+    TileShelfContainer.refresh();
   }
 
   function resize() { $application.resize(); }

@@ -7,13 +7,11 @@ window.DragContainer = (function() {
   }
 
   function create(application) {
-    $field = PIXI.Container();
+    $field = new PIXI.Container();
     $field.x = 0;
     $field.y = 0;
 
     application.stage.addChild($field);
-
-    positionField();
   }
 
   function handleResize() {

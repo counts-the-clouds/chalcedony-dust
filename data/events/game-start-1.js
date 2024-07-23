@@ -16,9 +16,9 @@ EventRegistry.register('game-start-1', {
     let tiles = [
       { code:'forest-2', options:{ }},
       { code:'forest-3', options:{ enableNote:rotateNote, placementTrigger:'tutorial.enable-movement' }},
-      { code:'forest-2', options:{ enableNote:panNote }},
-      { code:'forest-3', options:{ placementEvent:'game-start-2' }},
-      { code:'forest-1', options:{ placementEvent:'enter-the-dungeon' }},
+      { code:'forest-4', options:{ enableNote:panNote }},
+      { code:'forest-5', options:{ placementEvent:'game-start-2' }},
+      { code:'forest-6', options:{ placementEvent:'enter-the-dungeon' }},
     ];
 
     TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });

@@ -9,7 +9,7 @@ TileRegistry.register('forest-3', {
 
   segments:[
     { type:_forestPath, exits:[_s,_e], forms:{
-      incomplete:{ background:'tiles/forest-3.png' }
+      incomplete:{ background:'tiles/f-3.png' }
     }}
   ],
 

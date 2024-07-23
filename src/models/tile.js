@@ -63,9 +63,10 @@ global.Tile = function(code, options={}) {
 
   // === Layers ===
 
-  // Right now the layers only contain backgrounds. At some point we'll
-  // probably need to add icons and such as well.
-  function getClientLayers() {
+  // The getLayers() function should return the current forms of all the segments so that they can
+  // be drawn in the user interface. Right now the layers only contain backgrounds. At some point
+  // we'll probably need to add icons and shit.
+  function getLayers() {
     return $segments.map(segment => {
       return { background: segment.getSegmentData().forms[segment.getForm()].background };
     });
@@ -130,7 +131,7 @@ global.Tile = function(code, options={}) {
     setSegments,
     getSegments,
 
-    getClientLayers,
+    getLayers,
     getNote,
     pack,
     toString,
