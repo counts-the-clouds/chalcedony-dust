@@ -5,6 +5,7 @@ global.DungeonView = (function() {
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
 
   function init() {
+    DragonDrop.init();
     DungeonViewport.init();
     TileShelfContainer.init();
   }
@@ -28,7 +29,7 @@ global.DungeonView = (function() {
     });
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
-  
+
     DungeonViewport.create($application);
     TileShelfContainer.create($application);
     createTileGrid();

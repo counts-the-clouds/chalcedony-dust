@@ -50,31 +50,36 @@ window.TileShelfContainer = (function() {
     positionShelf();
   }
 
+  function handleResize() {
+    positionShelf();
+    positionTiles();
+  }
+
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
     await Promise.all(TileShelf.getShelf().map(async (tile, i) => {
       const tileContainer = await TileContainer(tile);
-      tileContainer.x = $shelf.x + ($shelf.width/2) - 32
-      tileContainer.y = $shelf.y - 20;
-
       tileContainer.cursor = 'grab'
+
+      tileContainer.on('mousemove',DragonDrop.onMove);
+      tileContainer.on('mouseup',DragonDrop.stopDrag);
       tileContainer.on('mousedown',event => {
         DragonDrop.startDrag({ event, tile, tileContainer });
       });
-      tileContainer.on('mousemove',DragonDrop.onMove);
-      tileContainer.on('mouseup',DragonDrop.stopDrag);
 
       $tileState[tile.getID()] = { tile, tileContainer };
 
       $dragArea.addChild(tileContainer);
     }));
+
+    positionTiles();
   }
 
-  // TODO: Also reposition all the tiles on the shelf. I kind of need to wait
-  //       until I can have multiple tiles on the shelf at once to really
-  //       figure out how we're handling tile position.
-  function handleResize() {
-    positionShelf();
+  function positionTiles() {
+    Object.values($tileState).forEach(shelvedTile => {
+      shelvedTile.tileContainer.x = $shelf.x + ($shelf.width/2) - 32
+      shelvedTile.tileContainer.y = $shelf.y - 20;
+    });
   }
 
   function positionShelf() {
@@ -90,6 +95,7 @@ window.TileShelfContainer = (function() {
     init,
     create,
     refresh,
+    positionTiles,
   })
 
 })();
