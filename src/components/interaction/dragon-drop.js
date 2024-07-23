@@ -7,25 +7,19 @@ window.DragonDrop = (function() {
     window.addEventListener('mouseout',stopDrag);
   }
 
-  function isDragging() {
-    return $dragContext != null;
-  }
+  function isDragging() { return $dragContext != null; }
+  function getContext() { return { ...$dragContext }; }
 
   function startDrag(context) {
-    const {event, tile, tileContainer} = context;
-
-
-    tileContainer.cursor = 'grabbing';
-
-    const offset = {
-      x: event.global.x - tileContainer.x,
-      y: event.global.y - tileContainer.y,
-    }
+    context.tileContainer.cursor = 'grabbing';
 
     $dragContext = {
-      offset,
-      tile,
-      tileContainer,
+      tile: context.tile,
+      tileContainer: context.tileContainer,
+      offset: {
+        x: context.event.global.x - context.tileContainer.x,
+        y: context.event.global.y - context.tileContainer.y,
+      },
     }
   }
 
@@ -47,6 +41,7 @@ window.DragonDrop = (function() {
   return Object.freeze({
     init,
     isDragging,
+    getContext,
     startDrag,
     stopDrag,
     onMove,

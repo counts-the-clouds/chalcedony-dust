@@ -44,6 +44,10 @@ global.ChunkContainer = function(chunkID, chunk) {
     });
   }
 
+  function getCellContainer(index) {
+    return $cellContainers[index];
+  }
+
   function buildCellContainers(assets) {
     let x = 0;
     let y = 0;
@@ -71,5 +75,6 @@ global.ChunkContainer = function(chunkID, chunk) {
     chunkID: $chunkID,
     chunk: $chunk,
     container: $container,
+    getCellContainer: getCellContainer,
   });
 }

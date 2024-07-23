@@ -284,6 +284,7 @@ global.DungeonViewport = (function() {
     create,
     addChild,
     updateLimits,
+    getScale,
   });
 
 })();

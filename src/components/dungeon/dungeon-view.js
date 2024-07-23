@@ -64,6 +64,12 @@ global.DungeonView = (function() {
     }
   }
 
+  function getTileContainerAt(x,y) {
+    const coordinates = Coordinates.fromGlobal(x,y);
+    const chunk = $chunkContainers[coordinates.chunkID];
+    return chunk ? chunk.getCellContainer(coordinates.ci) : null;
+  }
+
   return Object.freeze({
     init,
     open,
@@ -71,6 +77,7 @@ global.DungeonView = (function() {
     resize,
     getChunkExtent,
     getDimensions,
+    getTileContainerAt,
   });
 
 })();

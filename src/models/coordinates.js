@@ -42,7 +42,7 @@ global.Coordinates = (function() {
       gy: (cy * size) + Math.floor(ci / size),
       cx: cx,
       cy: cy,
-      ci: cy,
+      ci: ci,
     }
   }
 
