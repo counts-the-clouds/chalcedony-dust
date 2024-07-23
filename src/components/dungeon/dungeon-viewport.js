@@ -240,6 +240,7 @@ global.DungeonViewport = (function() {
 
     updateLimits();
     clampCurrentLocation();
+    TileShelfContainer.updateScale();
   }
 
   function positionViewport() {
@@ -251,6 +252,7 @@ global.DungeonViewport = (function() {
 
     drawGuides();
     updateTileVisibility();
+    TileShelfContainer.updatePosition();
   }
 
   // === Culling ==============================================================

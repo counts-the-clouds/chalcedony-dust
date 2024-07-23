@@ -47,8 +47,15 @@ window.TileShelfContainer = (function() {
     $dragArea.y = 0;
     $dragArea.width = application.screen.width
     $dragArea.height = application.screen.height
-    $dragArea.addChild($tileHighlight.getElement());
 
+    const highlightArea = new PIXI.Container();
+    highlightArea.x = 0;
+    highlightArea.y = 0;
+    highlightArea.width = application.screen.width
+    highlightArea.height = application.screen.height
+    highlightArea.addChild($tileHighlight.getElement());
+
+    application.stage.addChild(highlightArea);
     application.stage.addChild($shelf);
     application.stage.addChild($dragArea);
 
@@ -56,11 +63,16 @@ window.TileShelfContainer = (function() {
 
     setTimeout(()=> {
       showHighlight(1,-1);
-    },100);
+    },1000);
   }
 
-  function showHighlight(x,y) {
-    $tileHighlight.showHighlight(x,y);
+  function showHighlight(x,y) { $tileHighlight.showHighlight(x,y); }
+
+  function updateScale() {
+    if ($tileHighlight) { $tileHighlight.updateScale(); }
+  }
+  function updatePosition() {
+    if($tileHighlight) { $tileHighlight.positionHighlight(); }
   }
 
   function handleResize() {
@@ -111,6 +123,8 @@ window.TileShelfContainer = (function() {
     refresh,
     positionTiles,
     showHighlight,
+    updatePosition,
+    updateScale,
   })
 
 })();
