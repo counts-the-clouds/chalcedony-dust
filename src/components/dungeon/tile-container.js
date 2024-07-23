@@ -1,16 +1,19 @@
 global.TileContainer = async function(tile) {
 
-  const $tile = tile;
+  const tileContainer = new PIXI.Container();
+  tileContainer.eventMode = 'dynamic';
+  tileContainer.height = 64;
+  tileContainer.width = 64;
 
-  const data = $tile.getTileData();
-  const layers = $tile.getLayers();
+  const layers = tile.getLayers();
+  const textures = await Promise.all(layers.map(async layer => {
+    return await PIXI.Assets.load(layer.background);
+  }));
 
-  console.log($tile.pack())
-  console.log('    Data',data)
-  console.log('    Layers',layers)
-
-  return Object.freeze({
-
+  layers.forEach((layer,i) => {
+    tileContainer.addChild(new PIXI.Sprite(textures[i]));
   });
+
+  return tileContainer;
 
 };

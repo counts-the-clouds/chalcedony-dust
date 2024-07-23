@@ -15,16 +15,19 @@ window.TileShelfContainer = (function() {
   //       the overall look of things.
   async function create(application) {
     $leftTrim = new PIXI.Graphics();
-    $leftTrim.rect(0,0,20,60);
-    $leftTrim.fill({ color:'rgb(50,58,50)' });
+    $leftTrim.rect(0,20,20,60);
+    $leftTrim.stroke({ color:'rgb(50,58,50)' });
+    $leftTrim.fill({ color:'rgb(10,12,10)' });
 
     $rightTrim = new PIXI.Graphics();
-    $rightTrim.rect(200,0,20,60);
-    $rightTrim.fill({ color:'rgb(50,58,50)' });
+    $rightTrim.rect(200,20,20,60);
+    $rightTrim.stroke({ color:'rgb(50,58,50)' });
+    $rightTrim.fill({ color:'rgb(10,12,10)' });
 
     $center = new PIXI.Graphics();
-    $center.rect(0,10,200,50);
-    $center.fill({ color:'rgb(40,50,40)' });
+    $center.rect(0,30,200,50);
+    $center.stroke({ color:'rgb(40,50,40)' });
+    $center.fill({ color:'rgb(10,12,10)' });
 
     $shelf = new PIXI.Container();
     $shelf.addChild($center);
@@ -38,9 +41,14 @@ window.TileShelfContainer = (function() {
 
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
-    TileShelf.getShelf().forEach(tile => {
-      const tileContainer = TileContainer(tile);
-    });
+    await Promise.all(TileShelf.getShelf().map(async tile => {
+      const container = await TileContainer(tile);
+      container.x = ($shelf.width/2) - 32;
+      container.y = 0;
+      $shelf.addChild(container);
+    }));
+
+    positionShelf();
   }
 
   function handleResize() {
