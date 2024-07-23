@@ -15,6 +15,12 @@ global.TileHighlight = async function() {
 
   function getElement() { return $container; }
 
+  function removeHighlight() {
+    $container.renderable = false;
+    $tweenContext = null;
+    $tweenState = null;
+  }
+
   function showHighlight(x,y) {
     const tileContainer = DungeonView.getTileContainerAt(x,y);
 
@@ -40,12 +46,16 @@ global.TileHighlight = async function() {
     tween.start();
 
     tween.onUpdate(state => {
+      if ($tweenState == null) {
+        running = false;
+        return;
+      }
       $tweenState.shrink = state.shrink;
       $tweenState.alpha = state.alpha;
       updateSprite();
     })
 
-    tween.onComplete(state => {
+    tween.onComplete(() => {
       running = false;
     });
 
@@ -95,5 +105,6 @@ global.TileHighlight = async function() {
     updateScale,
     positionHighlight,
     showHighlight,
+    removeHighlight,
   });
 }

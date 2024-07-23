@@ -60,14 +60,10 @@ window.TileShelfContainer = (function() {
     application.stage.addChild($dragArea);
 
     positionShelf();
-
-    setTimeout(()=> {
-      showHighlight(1,-1);
-    },1000);
   }
 
   function showHighlight(x,y) { $tileHighlight.showHighlight(x,y); }
-
+  function removeHighlight() { $tileHighlight.removeHighlight(); }
   function updateScale() {
     if ($tileHighlight) { $tileHighlight.updateScale(); }
   }
@@ -123,6 +119,7 @@ window.TileShelfContainer = (function() {
     refresh,
     positionTiles,
     showHighlight,
+    removeHighlight,
     updatePosition,
     updateScale,
   })
