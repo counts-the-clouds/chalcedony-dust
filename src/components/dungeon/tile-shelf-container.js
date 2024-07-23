@@ -6,8 +6,6 @@ window.TileShelfContainer = (function() {
   let $rightTrim;
   let $center;
 
-  let $tileHighlight;
-
   let $tileState;
 
   function init() {
@@ -20,7 +18,6 @@ window.TileShelfContainer = (function() {
   //       Might even render something out in Blender. Still thinking about
   //       the overall look of things.
   async function create(application) {
-    $tileHighlight = await TileHighlight();
 
     $leftTrim = new PIXI.Graphics();
     $leftTrim.rect(0,20,20,60);
@@ -48,27 +45,10 @@ window.TileShelfContainer = (function() {
     $dragArea.width = application.screen.width
     $dragArea.height = application.screen.height
 
-    const highlightArea = new PIXI.Container();
-    highlightArea.x = 0;
-    highlightArea.y = 0;
-    highlightArea.width = application.screen.width
-    highlightArea.height = application.screen.height
-    highlightArea.addChild($tileHighlight.getElement());
-
-    application.stage.addChild(highlightArea);
     application.stage.addChild($shelf);
     application.stage.addChild($dragArea);
 
     positionShelf();
-  }
-
-  function showHighlight(x,y) { $tileHighlight.showHighlight(x,y); }
-  function removeHighlight() { $tileHighlight.removeHighlight(); }
-  function updateScale() {
-    if ($tileHighlight) { $tileHighlight.updateScale(); }
-  }
-  function updatePosition() {
-    if($tileHighlight) { $tileHighlight.positionHighlight(); }
   }
 
   function handleResize() {
@@ -118,10 +98,6 @@ window.TileShelfContainer = (function() {
     create,
     refresh,
     positionTiles,
-    showHighlight,
-    removeHighlight,
-    updatePosition,
-    updateScale,
   })
 
 })();

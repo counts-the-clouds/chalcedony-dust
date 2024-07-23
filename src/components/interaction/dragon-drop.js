@@ -27,7 +27,7 @@ window.DragonDrop = (function() {
     if (!isDragging()) { return false; }
 
     TileShelfContainer.positionTiles();
-    TileShelfContainer.removeHighlight();
+    TileHighlight.hide();
 
     $dragContext.tileContainer.cursor = 'grab';
     $dragContext = null;

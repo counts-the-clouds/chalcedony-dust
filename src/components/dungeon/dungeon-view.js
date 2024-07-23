@@ -31,6 +31,7 @@ global.DungeonView = (function() {
     X.first("#dungeonCanvas").appendChild($application.canvas)
 
     DungeonViewport.create($application);
+    await EffectsContainer.create($application);
     await TileShelfContainer.create($application);
     createTileGrid();
   }

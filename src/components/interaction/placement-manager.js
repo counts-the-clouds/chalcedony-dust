@@ -21,7 +21,7 @@ global.PlacementManager = (function () {
   }
   
   function highlightOrigin() {
-    TileShelfContainer.showHighlight(0,0);
+    TileHighlight.show(0,0);
   }
 
   return Object.freeze({
