@@ -1,11 +1,15 @@
 window.TileShelfContainer = (function() {
 
+  let $dragArea;
   let $shelf;
   let $leftTrim;
   let $rightTrim;
   let $center;
 
+  let $tileState;
+
   function init() {
+    $tileState = {};
     window.addEventListener("resize", handleResize);
   }
 
@@ -34,21 +38,32 @@ window.TileShelfContainer = (function() {
     $shelf.addChild($leftTrim);
     $shelf.addChild($rightTrim);
 
-    application.stage.addChild($shelf)
+    $dragArea = new PIXI.Container();
+    $dragArea.x = 0;
+    $dragArea.y = 0;
+    $dragArea.width = application.screen.width
+    $dragArea.height = application.screen.height
+
+    application.stage.addChild($shelf);
+    application.stage.addChild($dragArea);
 
     positionShelf();
   }
 
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
-    await Promise.all(TileShelf.getShelf().map(async tile => {
-      const container = await TileContainer(tile);
-      container.x = ($shelf.width/2) - 32;
-      container.y = 0;
-      $shelf.addChild(container);
-    }));
+    await Promise.all(TileShelf.getShelf().map(async (tile, i) => {
+      const tileContainer = await TileContainer(tile);
+      tileContainer.x = $shelf.x + ($shelf.width/2) - 32
+      tileContainer.y = $shelf.y - 20;
+      tileContainer.on('mousedown',event => {
+        DragonDrop.startDrag({ event, tile, tileContainer });
+      });
 
-    positionShelf();
+      $tileState[tile.getID()] = { tile, tileContainer };
+      
+      $dragArea.addChild(tileContainer);
+    }));
   }
 
   function handleResize() {

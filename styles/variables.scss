@@ -93,7 +93,8 @@ $shadow-scrolling-panel-thumb: -2px -2px 5px rgba(0,0,0,0.4) inset,
 // === Z-Indices ===
 $z-background: 0;
 $z-root: 100;
-$z-viewport: 200;
+$z-canvas: 200;
+$z-viewport: 300;
 // $z-status-bar: 300;
 // $z-tile-shelf: 400;
 // $z-tile-bag: 500;

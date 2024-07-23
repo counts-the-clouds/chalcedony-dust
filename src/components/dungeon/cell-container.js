@@ -38,8 +38,8 @@ global.CellContainer = function(x,y,tile,options) {
   cell.pivot.x = cell.width/2 - HS;
   cell.pivot.y = cell.height/2 - HS;
 
-  cell.on('mouseover', event => { console.log(` --> (${gx},${gy})`); });
-  cell.on('mouseleave', event => { console.log(` <-- (${gx},${gy})`); });
+  // cell.on('mouseover', event => { console.log(` --> (${gx},${gy})`); });
+  // cell.on('mouseleave', event => { console.log(` <-- (${gx},${gy})`); });
 
   return cell;
 }

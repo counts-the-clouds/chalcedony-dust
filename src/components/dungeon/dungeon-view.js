@@ -7,7 +7,6 @@ global.DungeonView = (function() {
   function init() {
     DungeonViewport.init();
     TileShelfContainer.init();
-    DragContainer.init();
   }
 
   async function open() {
@@ -29,9 +28,9 @@ global.DungeonView = (function() {
     });
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
+  
     DungeonViewport.create($application);
     TileShelfContainer.create($application);
-    DragContainer.create($application);
     createTileGrid();
   }
 
