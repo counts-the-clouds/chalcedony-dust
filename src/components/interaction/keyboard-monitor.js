@@ -2,7 +2,7 @@ global.KeyboardMonitor = (function() {
 
   let $keyboardState;
 
-  // Javascript makes it frusteratingly difficult to get the state of the
+  // Javascript makes it frustratingly difficult to get the state of the
   // keyboard. This is an attempt to just globally monitor the keyboard events
   // to keep track of what keys might be down at any given time. It's not a
   // perfect solution. If the browser window loses focus, a key down may happen
@@ -33,7 +33,7 @@ global.KeyboardMonitor = (function() {
     window.removeEventListener('keyup',onUp)
   }
 
-  // We return keys as an Array rather than as a Set, becuase I think that
+  // We return keys as an Array rather than as a Set, because I think that
   // would be less surprising for whatever is calling this.
   function getState() {
     return {
@@ -61,7 +61,7 @@ global.KeyboardMonitor = (function() {
     $keyboardState.modifiers.shift = event.getModifierState("Shift");
   }
 
-  // Tracking lock state is esentially impossible, so we ignore those keys. The
+  // Tracking lock state is essentially impossible, so we ignore those keys. The
   // modifier keys are tracked with the getModifierState() function, rather
   // than relying on key up events which might never come.
   function isModifier(code) {

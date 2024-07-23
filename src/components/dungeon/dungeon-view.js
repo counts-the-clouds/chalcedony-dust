@@ -13,7 +13,7 @@ global.DungeonView = (function() {
   async function open() {
     await DungeonAssets.loadAssets();
     MainContent.setMainContent('views/dungeon-view.html');
-    createApplication();
+    await createApplication();
   }
 
   function close() {
