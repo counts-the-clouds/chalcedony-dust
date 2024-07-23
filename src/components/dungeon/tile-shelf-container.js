@@ -56,16 +56,23 @@ window.TileShelfContainer = (function() {
       const tileContainer = await TileContainer(tile);
       tileContainer.x = $shelf.x + ($shelf.width/2) - 32
       tileContainer.y = $shelf.y - 20;
+
+      tileContainer.cursor = 'grab'
       tileContainer.on('mousedown',event => {
         DragonDrop.startDrag({ event, tile, tileContainer });
       });
+      tileContainer.on('mousemove',DragonDrop.onMove);
+      tileContainer.on('mouseup',DragonDrop.stopDrag);
 
       $tileState[tile.getID()] = { tile, tileContainer };
-      
+
       $dragArea.addChild(tileContainer);
     }));
   }
 
+  // TODO: Also reposition all the tiles on the shelf. I kind of need to wait
+  //       until I can have multiple tiles on the shelf at once to really
+  //       figure out how we're handling tile position.
   function handleResize() {
     positionShelf();
   }
