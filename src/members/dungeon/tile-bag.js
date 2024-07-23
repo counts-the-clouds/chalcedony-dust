@@ -63,7 +63,7 @@ global.TileBag = (function() {
   // first element. Not very functional of you javascript.
   function nextSequentialTile() {
     let tile = $sequenceData.tiles.shift();
-    if (getSequentialTileCount() == 0) { endSequence(); }
+    if (getSequentialTileCount() === 0) { endSequence(); }
     return tile;
   }
 

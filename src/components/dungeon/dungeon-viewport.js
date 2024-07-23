@@ -75,7 +75,7 @@ global.DungeonViewport = (function() {
     WorldState.getKeyBindings().forEach(binding => {
       ['up','down','left','right'].forEach(direction => {
         const action = `action.move-${direction}`;
-        if (binding.action == action) { addBindings(action,binding.codes); }
+        if (binding.action === action) { addBindings(action,binding.codes); }
       });
     });
   }

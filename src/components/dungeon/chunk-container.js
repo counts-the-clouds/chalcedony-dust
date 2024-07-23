@@ -60,7 +60,7 @@ global.ChunkContainer = function(chunkID, chunk) {
       $cellContainers.push(cell);
 
       x += 1;
-      if (x == _chunkSize) {
+      if (x === _chunkSize) {
         x = 0;
         y += 1;
       }

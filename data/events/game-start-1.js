@@ -10,8 +10,8 @@ EventRegistry.register('game-start-1', {
   }],
 
   onServerFinish: state => {
-    rotateNote = { code:'tutorial.rotate-tile', when:_drawn }
-    panNote = { code:'tutorial.pan-map', when:_drawn }
+    const rotateNote = { code:'tutorial.rotate-tile', when:_drawn }
+    const panNote = { code:'tutorial.pan-map', when:_drawn }
 
     let tiles = [
       { code:'forest-2', options:{ }},

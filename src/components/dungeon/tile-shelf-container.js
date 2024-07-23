@@ -57,7 +57,7 @@ window.TileShelfContainer = (function() {
 
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
-    await Promise.all(TileShelf.getShelf().map(async (tile, i) => {
+    await Promise.all(TileShelf.getShelf().map(async tile => {
       const tileContainer = await TileContainer(tile);
       tileContainer.cursor = 'grab'
 

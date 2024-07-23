@@ -31,7 +31,7 @@ global.DungeonView = (function() {
     X.first("#dungeonCanvas").appendChild($application.canvas)
 
     DungeonViewport.create($application);
-    TileShelfContainer.create($application);
+    await TileShelfContainer.create($application);
     createTileGrid();
   }
 
@@ -67,6 +67,7 @@ global.DungeonView = (function() {
   return Object.freeze({
     init,
     open,
+    close,
     resize,
     getChunkExtent,
     getDimensions,

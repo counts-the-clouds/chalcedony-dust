@@ -14,4 +14,3 @@ TileRegistry.register('forest-6', {
   ],
 
 });
-
