@@ -5,15 +5,15 @@ global.DungeonViewport = (function() {
   const FAST = 50;
   const SLOW = 20;
 
-
   let $viewport;
   let $guides;
 
   let $movementBindings;
   let $movementLimits;
-  let $currentLocation = {x:0,y:0};
 
-  let $scale = _defaultScale;
+  let $currentLocation = {x:0,y:0};
+  let $currentScale = _defaultScale;
+
   let $speed = SLOW;
 
   function init() {
@@ -121,34 +121,17 @@ global.DungeonViewport = (function() {
     }
   }
 
-  // TODO: Zooming in and out simply adjusts the scale of the grid, but it
-  //       should take the center point into account, and move the current
-  //       location so that it remains in the center of the map.
-
   function zoomIn(velocity) {
-    if ($viewport && $scale > 0) {
-      $scale -= velocity;
-      if ($scale < 0) { $scale = 0; }
-
-      updateLimits();
-      clampCurrentLocation();
-      positionViewport();
+    if ($viewport && $currentScale > 0) {
+      setScale($currentScale - velocity);
     }
   }
 
   function zoomOut(velocity) {
-    const max = _scaleFactors.length - 1;
-
-    if ($viewport && $scale < max) {
-      $scale += velocity;
-      if ($scale > max) { $scale = max; }
-
-      updateLimits();
-      clampCurrentLocation();
-      positionViewport();
+    if ($viewport && $currentScale < _scaleFactors.length - 1) {
+      setScale($currentScale + velocity);
     }
   }
-
 
   // === Movement ==============================================================
 
@@ -214,10 +197,6 @@ global.DungeonViewport = (function() {
   // The map scale, position, and tile visibility needs to be updated every
   // time the location is updated.
 
-  function getScale() {
-    return _scaleFactors[$scale];
-  }
-
   function getCenterPoint() {
     const screen = DungeonView.getDimensions();
     const scale = getScale();
@@ -226,6 +205,35 @@ global.DungeonViewport = (function() {
       x: (screen.width / 2) - (HS*scale),
       y: (screen.height / 2) - (HS*scale),
     };
+  }
+
+  function getScale() {
+    return _scaleFactors[$currentScale];
+  }
+
+  function setScale(scale) {
+    const screen = DungeonView.getDimensions();
+    const max = _scaleFactors.length - 1;
+
+    const oldScale = getScale();
+    const centerX = (screen.width / 2 - $viewport.x) / oldScale;
+    const centerY = (screen.height / 2 - $viewport.y) / oldScale;
+
+    if (scale < 0) { scale = 0; }
+    if (scale > max) { scale = max; }
+    $currentScale = scale;
+
+    const newScale = getScale();
+    $viewport.scale = newScale;
+    $viewport.x = screen.width / 2 - centerX * newScale;
+    $viewport.y = screen.height / 2 - centerY * newScale;
+
+    const center = getCenterPoint();
+    $currentLocation.x = $viewport.x - center.x;
+    $currentLocation.y = $viewport.y - center.y;
+
+    updateLimits();
+    clampCurrentLocation();
   }
 
   function positionViewport() {
@@ -239,9 +247,11 @@ global.DungeonViewport = (function() {
     updateTileVisibility();
   }
 
+  // === Culling ==============================================================
+
   // TODO: This will need to be redone.
   function updateTileVisibility() {
-    // let scaleFactor = ScaleFactors[$scale];
+    // let scaleFactor = ScaleFactors[$currentScale];
     // let xTileCount = Math.ceil($application.screen.width / (TileSize * scaleFactor) / 2);
     // let yTileCount = Math.ceil($application.screen.height / (TileSize * scaleFactor) / 2);
 
