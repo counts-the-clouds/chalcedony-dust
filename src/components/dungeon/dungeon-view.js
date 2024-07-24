@@ -74,42 +74,28 @@ global.DungeonView = (function() {
 
   // Getting the container by the actual point is a huge expensive pain in the
   // ass that needs to be called on mouse move, so this needs to be as
-  // efficient as possible. Thus the boomer loops with early return.
-  //
-  // TODO: Make this more efficient by calculating what the cell should be at
-  //       the position within the chunk. That's too much math for me right
-  //       now, so I'm just looping through all the children until I find the
-  //       one in bounds. Doing this the right way would be a hundred times
-  //       faster, but doesn't seem too slow right now at least.
-  //
+  // efficient as possible. We loop through the chunks to find one with the
+  // point within its bounds. This isn't too expensive, there should never be
+  // that many of them. With a chunk and an offset within that chunk we can
+  // calculate which cell should be at that position.
   function getCellContainerAtPoint(x,y) {
-    const chunkIDs = Object.keys($chunkContainers);
-    const chunkSize = DungeonViewport.getScale() * _chunkSize;
-
-    for (let i=0; i<chunkIDs.length; i++) {
-      const chunkContainer = $chunkContainers[chunkIDs[i]].getChunkContainer();
-      const position = chunkContainer.getGlobalPosition();
-      if ((x > position.x) && (x < position.x + chunkSize) && (y > position.y) && (y < position.y + chunkSize)) {
-        return getCellContainerInChunkContainerAtPoint(chunkContainer,x,y);
-      }
-    }
-
-    return null;
+    const chunkContainer = getChunkContainerAtPoint(x,y);
+    return chunkContainer ? chunkContainer.getCellContainerAtPoint(x,y) : null;
   }
 
-  function getCellContainerInChunkContainerAtPoint(chunkContainer,x,y) {
-    const tileSize = DungeonViewport.getScale() * _tileSize;
-    for (let i=0; i<chunkContainer.children.length; i++) {
-      const cellContainer = chunkContainer.children[i];
+  function getChunkContainerAtPoint(x,y) {
+      const chunkIDs = Object.keys($chunkContainers);
+      const chunkSize = DungeonViewport.getScale() * _chunkSize;
 
-      if (cellContainer.label === 'CellContainer') {
-        const position = cellContainer.getGlobalPosition();
-        if ((x > position.x) && (x < position.x + tileSize) && (y > position.y) && (y < position.y + tileSize)) {
-          return cellContainer;
+      for (let i=0; i<chunkIDs.length; i++) {
+        const chunkContainer = $chunkContainers[chunkIDs[i]];
+        const position = chunkContainer.getChunkContainer().getGlobalPosition();
+        if ((x > position.x) && (x < position.x + chunkSize) && (y > position.y) && (y < position.y + chunkSize)) {
+          return chunkContainer;
         }
       }
-    }
-    return null;
+
+      return null;
   }
 
   return Object.freeze({

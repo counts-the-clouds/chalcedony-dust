@@ -59,10 +59,24 @@ global.ChunkContainer = function(chunkID) {
     });
   }
 
+  // ===========================================================================
+
+  // Get the cell container at the specified PIXI global point by determining
+  // which cell should be at that location.
+  function getCellContainerAtPoint(x,y) {
+    const tileSize = DungeonViewport.getScale() * _tileSize;
+    const position = $chunkContainer.getGlobalPosition();
+    const row = Math.floor((y-position.y) / tileSize);
+    const col = Math.floor((x-position.x) / tileSize);
+
+    return getCellContainer((row * _chunkLength) + col);
+  }
+
   return Object.freeze({
     getChunkID,
     getChunk,
     getChunkContainer,
     getCellContainer,
+    getCellContainerAtPoint,
   });
 }
