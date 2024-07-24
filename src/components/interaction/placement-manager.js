@@ -17,11 +17,8 @@ global.PlacementManager = (function () {
   }
 
   function placeTile(context) {
-    const hoverCell = DungeonView.getHoverCell();
-
     console.log("=== Drop ===")
     console.log("Drag Context:",context)
-    console.log("Hover Cell:",hoverCell)
   }
 
   function isPlaceOnOrigin() {

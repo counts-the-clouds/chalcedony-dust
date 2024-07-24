@@ -2,9 +2,13 @@ window.DragonDrop = (function() {
 
   let $dragContext;
 
+  // The drag event is placed on the window so that we are guaranteed a mouse
+  // out event if the cursor leaves the window. If the mouse is dragged off the
+  // screen we stop the event, but we only attempt to place the tile on a mouse
+  // up event.
   function init() {
-    window.addEventListener('mouseup',stopDrag);
-    window.addEventListener('mouseout',stopDrag);
+    window.addEventListener('mouseup', event => { stopDrag(true); });
+    window.addEventListener('mouseout', event => { stopDrag(false); });
   }
 
   function isDragging() { return $dragContext != null; }
@@ -23,10 +27,12 @@ window.DragonDrop = (function() {
     }
   }
 
-  function stopDrag() {
+  function stopDrag(placeTile) {
     if (!isDragging()) { return false; }
 
-    PlacementManager.placeTile(getContext());
+    if (placeTile) {
+      PlacementManager.placeTile(getContext());
+    }
 
     TileShelfContainer.positionTiles();
     TileHighlight.hide();
@@ -39,6 +45,18 @@ window.DragonDrop = (function() {
     if (!isDragging()) { return false; }
     $dragContext.tileContainer.x = event.global.x - $dragContext.offset.x;
     $dragContext.tileContainer.y = event.global.y - $dragContext.offset.y;
+
+    const x = event.global.x - $dragContext.offset.x + (_tileSize/4);
+    const y = event.global.y - $dragContext.offset.y + (_tileSize/4);
+
+    const cellContainer = DungeonView.getCellContainerAtPoint(x,y);
+    if (cellContainer) {
+      let cellPosition = cellContainer.accessibleHint;
+      if ($dragContext.hoverCell !== cellPosition) {
+        console.log(` -> ${cellPosition}`)
+        $dragContext.hoverCell = cellPosition;
+      }
+    }
   }
 
   return Object.freeze({

@@ -9,15 +9,18 @@ global.CellContainer = function(x,y,coordinates) {
   function buildContainer() {
 
     const background = new PIXI.Graphics();
+    background.label = 'background';
     background.rect(0,0,TS,TS);
     background.fill('rgba(50,60,70,0.05)');
 
     $cellContainer.eventMode = 'dynamic';
+    $cellContainer.label = 'CellContainer';
     $cellContainer.addChild(background);
     $cellContainer.x = (TS*x);
     $cellContainer.y = (TS*y);
     $cellContainer.pivot.x = $cellContainer.width/2 - HS;
     $cellContainer.pivot.y = $cellContainer.height/2 - HS;
+    $cellContainer.accessibleHint = `${coordinates.gx}:${coordinates.gy}`
 
     buildDevelopmentGuides();
 

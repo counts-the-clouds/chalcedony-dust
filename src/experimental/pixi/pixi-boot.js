@@ -12,4 +12,6 @@ async function run() {
   X.first('#pixiCanvas').appendChild(app.canvas);
 
 
+
+
 }

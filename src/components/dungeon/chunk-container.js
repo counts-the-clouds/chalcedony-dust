@@ -5,6 +5,8 @@ global.ChunkContainer = function(chunkID) {
   const $cellContainers = [];
   const $location = getChunk().getChunkLocation();
 
+  $chunkContainer.label = "ChunkContainer";
+  $chunkContainer.accessibleHint = chunkID;
   $chunkContainer.x = $location.x * _chunkSize;
   $chunkContainer.y = $location.y * _chunkSize;
 

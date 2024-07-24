@@ -21,10 +21,10 @@ global.TileHighlight = (function() {
   }
 
   function show(x,y) {
-    const tileContainer = DungeonView.getTileContainerAt(x,y);
+    const cellContainer = DungeonView.getCellContainerAt(x,y);
 
-    if (tileContainer) {
-      $tweenContext = { tileContainer }
+    if (cellContainer) {
+      $tweenContext = { cellContainer }
       $tweenState = { shrink:(_tileSize * DungeonViewport.getScale() * 0.8), alpha:0 }
       updatePosition();
       startTween();
@@ -39,7 +39,7 @@ global.TileHighlight = (function() {
 
   function updatePosition() {
     if ($tweenContext) {
-      const position = $tweenContext.tileContainer.getGlobalPosition();
+      const position = $tweenContext.cellContainer.getGlobalPosition();
       const TS = _tileSize * DungeonViewport.getScale();
       const size =  TS*3;
 
