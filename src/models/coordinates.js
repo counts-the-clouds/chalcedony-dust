@@ -1,5 +1,4 @@
 global.Coordinates = (function() {
-  let size = _chunkSize;
 
   function chunkID(cx,cy) { return `[${cx}|${cy}]`; }
 
@@ -14,14 +13,14 @@ global.Coordinates = (function() {
   function fromGlobal(gx, gy) {
 
     let translate = function(value) {
-      return (value >= 0) ? (value % size) : (size - (-value % size)) % size;
+      return (value >= 0) ? (value % _chunkLength) : (_chunkLength - (-value % _chunkLength)) % _chunkLength;
     }
 
     let x = translate(gx);
     let y = translate(gy);
 
-    let cx = Math.floor(gx / size);
-    let cy = Math.floor(gy / size);
+    let cx = Math.floor(gx / _chunkLength);
+    let cy = Math.floor(gy / _chunkLength);
 
     return {
       chunkID: chunkID(cx,cy),
@@ -29,7 +28,7 @@ global.Coordinates = (function() {
       gy: gy,
       cx: cx,
       cy: cy,
-      ci: (size * y) + x
+      ci: (_chunkLength * y) + x
     };
   }
 
@@ -38,8 +37,8 @@ global.Coordinates = (function() {
   function fromChunk(cx,cy,ci) {
     return {
       chunkID: chunkID(cx,cy),
-      gx: (cx * size) + (ci % size),
-      gy: (cy * size) + Math.floor(ci / size),
+      gx: (cx * _chunkLength) + (ci % _chunkLength),
+      gy: (cy * _chunkLength) + Math.floor(ci / _chunkLength),
       cx: cx,
       cy: cy,
       ci: ci,

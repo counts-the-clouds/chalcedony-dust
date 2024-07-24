@@ -85,8 +85,10 @@ global._incomplete = 'incomplete';
 global._drawn = 'drawn';
 
 // === Dungeon ===
-global._chunkSize = 16;
+global._chunkLength = 16;
 global._tileSize = 128;
+global._chunkSize = _tileSize * _chunkLength;
+
 
 global._defaultScale = 47
 global._scaleFactors = [2,1.980,1.825,1.713,1.676,1.641,1.570,1.535,1.501,1.467,1.434,1.401,1.368,1.336,1.305,1.273,

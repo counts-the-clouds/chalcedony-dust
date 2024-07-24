@@ -83,18 +83,18 @@ global.DungeonViewport = (function() {
   function updateLimits() {
     const extent = DungeonView.getChunkExtent();
     const scale = getScale();
-    const tileSize = TS*scale
-    const chunkSize = tileSize * _chunkSize;
+    const scaledTileSize = TS*scale
+    const scaledChunkSize = scaledTileSize * _chunkLength;
 
-    let right =  chunkSize;
-    let left =   -chunkSize + tileSize;
-    let top =    chunkSize;
-    let bottom = -chunkSize + tileSize;
+    let right =  scaledChunkSize;
+    let left =   -scaledChunkSize + scaledTileSize;
+    let top =    scaledChunkSize;
+    let bottom = -scaledChunkSize + scaledTileSize;
 
-    right -=  (extent.minx+1) * chunkSize;
-    left -=   (extent.maxx)   * chunkSize;
-    top -=    (extent.miny+1) * chunkSize;
-    bottom -= (extent.maxy)   * chunkSize;
+    right -=  (extent.minx+1) * scaledChunkSize;
+    left -=   (extent.maxx)   * scaledChunkSize;
+    top -=    (extent.miny+1) * scaledChunkSize;
+    bottom -= (extent.maxy)   * scaledChunkSize;
 
     $movementLimits = { top,bottom,left,right };
   }

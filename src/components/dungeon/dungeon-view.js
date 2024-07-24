@@ -3,6 +3,7 @@ global.DungeonView = (function() {
   let $application;
   let $chunkContainers = {}
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
+  let $hoverCell;
 
   function init() {
     DragonDrop.init();
@@ -46,8 +47,8 @@ global.DungeonView = (function() {
       if ($chunkExtent.miny > location.y) { $chunkExtent.miny = location.y }
       if ($chunkExtent.maxy < location.y) { $chunkExtent.maxy = location.y }
 
-      $chunkContainers[chunkID] = ChunkContainer(chunkID, chunks[chunkID]);
-      DungeonViewport.addChild($chunkContainers[chunkID].container);
+      $chunkContainers[chunkID] = ChunkContainer(chunkID);
+      DungeonViewport.addChild($chunkContainers[chunkID].getChunkContainer());
     });
 
     DungeonViewport.updateLimits();
@@ -71,6 +72,9 @@ global.DungeonView = (function() {
     return chunk ? chunk.getCellContainer(coordinates.ci) : null;
   }
 
+  function setHoverCell(cellData) { $hoverCell = cellData; }
+  function getHoverCell() { return $hoverCell; }
+
   return Object.freeze({
     init,
     open,
@@ -79,6 +83,8 @@ global.DungeonView = (function() {
     getChunkExtent,
     getDimensions,
     getTileContainerAt,
+    setHoverCell,
+    getHoverCell,
   });
 
 })();
