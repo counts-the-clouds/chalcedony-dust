@@ -60,37 +60,36 @@ window.TileShelfContainer = (function() {
   async function refresh() {
     await Promise.all(TileShelf.getShelf().map(async tile => {
       const tileContainer = await TileContainer(tile);
-      tileContainer.cursor = 'grab'
+            tileContainer.setOnShelf(true);
 
-      tileContainer.on('mousemove',DragonDrop.onMove);
-      tileContainer.on('mouseup',DragonDrop.stopDrag);
-      tileContainer.on('mousedown',event => {
-        DragonDrop.startDrag({ event, tile, tileContainer });
-        PlacementManager.startDrag();
-      });
+      $tileState[tile.getID()] = tileContainer;
 
-      $tileState[tile.getID()] = { tile, tileContainer };
-
-      $dragArea.addChild(tileContainer);
+      $dragArea.addChild(tileContainer.getTileContainer());
     }));
 
     positionTiles();
   }
 
   function positionTiles() {
-    Object.values($tileState).forEach(shelvedTile => {
-      shelvedTile.tileContainer.x = $shelf.x + ($shelf.width/2) - 32
-      shelvedTile.tileContainer.y = $shelf.y - 20;
+    Object.values($tileState).forEach(tileContainer => {
+      tileContainer.setPosition(
+        ($shelf.x + ($shelf.width/2) - 32),
+        ($shelf.y - 20));
     });
   }
 
   function positionShelf() {
     if ($shelf) {
       const screen = DungeonView.getDimensions();
-
       $shelf.y = screen.height - $shelf.height;
       $shelf.x = (screen.width/2) - ($shelf.width/2);
     }
+  }
+
+  function removeTile(tile) {
+    $tileState[tile.getID()].getTileContainer().destroy({ children:true });
+    delete $tileState[tile.getID()];
+    positionTiles();
   }
 
   return Object.freeze({
@@ -98,6 +97,7 @@ window.TileShelfContainer = (function() {
     create,
     refresh,
     positionTiles,
+    removeTile,
   })
 
 })();

@@ -86,12 +86,12 @@ global.Console = (function() {
     }
   }
 
-  return {
+  return Object.freeze({
     init,
     append,
     log,
     logError,
-  };
+  });
 
 })();
 

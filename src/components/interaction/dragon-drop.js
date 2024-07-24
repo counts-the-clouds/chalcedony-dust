@@ -13,38 +13,28 @@ window.DragonDrop = (function() {
 
   function isDragging() { return $dragContext != null; }
   function getContext() { return { ...$dragContext }; }
-
-  function startDrag(context) {
-    context.tileContainer.cursor = 'grabbing';
-
-    $dragContext = {
-      tile: context.tile,
-      tileContainer: context.tileContainer,
-      offset: {
-        x: context.event.global.x - context.tileContainer.x,
-        y: context.event.global.y - context.tileContainer.y,
-      },
-    }
-  }
+  function setContext(context) { $dragContext = context; }
 
   function stopDrag(placeTile) {
     if (!isDragging()) { return false; }
 
     if (placeTile) {
-      PlacementManager.placeTile(getContext());
+      PlacementManager.placeTile();
     }
 
     TileShelfContainer.positionTiles();
     TileHighlight.hide();
 
-    $dragContext.tileContainer.cursor = 'grab';
+    $dragContext.tileContainer.setCursor('grab');
     $dragContext = null;
   }
 
   function onMove(event) {
     if (!isDragging()) { return false; }
-    $dragContext.tileContainer.x = event.global.x - $dragContext.offset.x;
-    $dragContext.tileContainer.y = event.global.y - $dragContext.offset.y;
+
+    $dragContext.tileContainer.setPosition(
+      (event.global.x - $dragContext.offset.x),
+      (event.global.y - $dragContext.offset.y));
 
     const x = event.global.x - $dragContext.offset.x + (_tileSize/4);
     const y = event.global.y - $dragContext.offset.y + (_tileSize/4);
@@ -53,19 +43,33 @@ window.DragonDrop = (function() {
     if (cellContainer) {
       let cellPosition = cellContainer.accessibleHint;
       if ($dragContext.hoverCell !== cellPosition) {
-        console.log(` -> ${cellPosition}`)
         $dragContext.hoverCell = cellPosition;
+        PlacementManager.checkDropTarget();
       }
     }
+  }
+
+  function getHoverCoordinates() {
+    if ($dragContext.hoverCell == null) { return null; }
+    const [gx,gy] = $dragContext.hoverCell.split(':');
+    return Coordinates.fromGlobal(parseInt(gx),parseInt(gy));
+  }
+
+  function getHoverCell() {
+    if ($dragContext.hoverCell == null) { return null; }
+    const coordinates = getHoverCoordinates();
+    return DungeonView.getCellContainerAt(coordinates.gx,coordinates.gy);
   }
 
   return Object.freeze({
     init,
     isDragging,
     getContext,
-    startDrag,
+    setContext,
     stopDrag,
     onMove,
+    getHoverCell,
+    getHoverCoordinates,
   });
 
 })();
