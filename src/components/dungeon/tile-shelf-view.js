@@ -70,13 +70,7 @@ window.TileShelfView = (function() {
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
     await Promise.all(TileShelf.getShelf().map(async tile => {
-      const tileContainer = await TileContainer(tile);
-      tileContainer.setSize(_tileSize/2);
-      tileContainer.setOnShelf(true);
-
-      $tileState[tile.getID()] = tileContainer;
-
-      $dragArea.addChild(tileContainer.getTileContainer());
+      await addTile(tile)
     }));
 
     positionTiles();
@@ -107,9 +101,14 @@ window.TileShelfView = (function() {
     }
   }
 
-  function drawTile() {
-    // In the old version this set the got the shelf state and rebuilt the
-    // shelf entirely. I don't think that's necessary here.
+  async function addTile(tile) {
+    const tileContainer = await TileContainer(tile);
+    tileContainer.setSize(_tileSize/2);
+    tileContainer.setOnShelf(true);
+
+    $tileState[tile.getID()] = tileContainer;
+
+    $dragArea.addChild(tileContainer.getTileContainer());
   }
 
   function removeTile(tile) {
@@ -132,7 +131,7 @@ window.TileShelfView = (function() {
     create,
     refresh,
     positionTiles,
-    drawTile,
+    addTile,
     removeTile,
     showTileBag,
   })

@@ -27,7 +27,7 @@ EventRegistry.register('game-start-1', {
     }));
 
     TileShelfView.showTileBag();
-    TileShelfView.drawTile();
+    GameController.drawTile();
   },
 
 });
