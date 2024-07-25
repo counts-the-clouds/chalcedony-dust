@@ -15,6 +15,10 @@ window.DragonDrop = (function() {
   function getContext() { return { ...$dragContext }; }
   function setContext(context) { $dragContext = context; }
 
+  function getDragTile() {
+    return $dragContext ? $dragContext.tileContainer.getTile() : null;
+  }
+
   function stopDrag(placeTile) {
     if (!isDragging()) { return false; }
 
@@ -66,6 +70,7 @@ window.DragonDrop = (function() {
     isDragging,
     getContext,
     setContext,
+    getDragTile,
     stopDrag,
     onMove,
     getHoverCell,

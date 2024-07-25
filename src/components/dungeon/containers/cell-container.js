@@ -56,6 +56,9 @@ global.CellContainer = function(x,y,coordinates) {
     }
   }
 
+  function getTileContainer() { return $tileContainer; }
+  function getTile() { return $tileContainer ? $tileContainer.getTile() : null; }
+
   async function setTile(tile) {
     if ($tileContainer != null) {
       throw `Cell(${getID()}) already contains a tile.`
@@ -72,6 +75,8 @@ global.CellContainer = function(x,y,coordinates) {
     getCellContainer,
     getCoordinates,
     getPosition,
+    getTileContainer,
+    getTile,
     setTile,
   });
 }

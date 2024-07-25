@@ -1,7 +1,6 @@
 global.PlacementManager = (function () {
 
   let $placementRules;
-  let $edgeStatus;
   let $placementStatus;
 
   function startDrag() {
@@ -9,29 +8,97 @@ global.PlacementManager = (function () {
     const tile = context.tileContainer.getTile();
 
     $placementRules = tile.getPlacementRules();
-    $edgeStatus = null;
 
     if (isPlaceOnOrigin()) {
       highlightOrigin();
     }
   }
 
-  // We don't want to build the $edgeStatus object every time we drag a tile
-  // over the dungeon. When a tile is rotated though it's edges change, so we
-  // need to set it to null so that it will be rebuilt.
   function tileRotated() {
-    $edgeStatus = null;
     checkDropTarget();
   }
 
+  // === Check Drop Target =====================================================
+
   function checkDropTarget() {
-    console.log(` -> ${DragonDrop.getContext().hoverCell}`)
+    $placementStatus = null;
+
+    // TODO: Hide any highlights or decorations here.
+
+    const hoverCell = DragonDrop.getHoverCell()
+    const neighbors = getNeighboringTiles(hoverCell.getCoordinates());
+    const dragEdges = DragonDrop.getDragTile().getEdges();
+
+    if (neighbors.n || neighbors.s || neighbors.e || neighbors.w) {
+      console.log(`Check Drop Target -> ${DragonDrop.getContext().hoverCell}`);
+      console.log('  Drag Edges',dragEdges)
+      console.log('  Hover Cell Container',hoverCell);
+      console.log('  Neighbors',neighbors);
+
+      const nConnect = (neighbors.n) ? neighbors.n.getEdges().s : null;
+      const sConnect = (neighbors.s) ? neighbors.s.getEdges().n : null;
+      const eConnect = (neighbors.e) ? neighbors.e.getEdges().w : null;
+      const wConnect = (neighbors.w) ? neighbors.w.getEdges().e : null;
+
+      $placementStatus = {
+        n: isLegal(dragEdges.n, nConnect),
+        s: isLegal(dragEdges.s, sConnect),
+        e: isLegal(dragEdges.e, eConnect),
+        w: isLegal(dragEdges.w, wConnect),
+      }
+
+      $placementStatus.canPlace = allLegal();
+
+    //   decorateEdges();
+    }
   }
+
+  function getNeighboringTiles(coordinates) {
+    const x = coordinates.gx;
+    const y = coordinates.gy;
+
+    return {
+      n: DungeonView.getCellContainerAt(x,y - 1).getTile(),
+      s: DungeonView.getCellContainerAt(x,y + 1).getTile(),
+      e: DungeonView.getCellContainerAt(x + 1,y).getTile(),
+      w: DungeonView.getCellContainerAt(x - 1,y).getTile(),
+    }
+  }
+
+  function isLegal(home,neighbor) {
+    // When the neighboring space is empty a tile can be placed there.
+    if (neighbor == null) { return 'empty'; }
+
+    // A forbidden edge can only be placed next to an empty space. Because the
+    // neighboring tile is not null, neither tile can have a forbidden edge.
+    if (home === _forbidden) { return 'no'; }
+    if (neighbor === _forbidden) { return 'no'; }
+
+    // An any edge can be placed next to any other edge.
+    if (home === _any) { return 'yes'; }
+    if (neighbor === _any) { return 'yes'; }
+
+    // Otherwise the edges have to match.
+    return (home === neighbor) ? 'yes' : 'no'
+  }
+
+  function allLegal() {
+    return $placementStatus.n !== 'no' &&
+      $placementStatus.s !== 'no' &&
+      $placementStatus.e !== 'no' &&
+      $placementStatus.w !== 'no';
+  }
+
+  // === Place Tile ============================================================
 
   function placeTile() {
     try {
       const coordinates = DragonDrop.getHoverCoordinates();
       const tile = DragonDrop.getContext().tileContainer.getTile();
+
+      // The coordinates will be null if a player picked up a tile, but never
+      // moved the mouse.
+      if (coordinates == null) { return false; }
 
       const placementData = {
         x: coordinates.gx,
@@ -52,15 +119,24 @@ global.PlacementManager = (function () {
         }
 
         if (TileBag.isSequence()) {
-          TileBag.pushTile();
+          GameController.drawTile();
         }
 
         DungeonView.placeTile(tile);
-        // executePlacementTrigger(response.tile);
+        executePlacementTrigger(tile);
       }
     }
     catch (error) {
       logError(`Error Placing Tile`,error,{ system:'PlacementManager', data:this.placementData });
+    }
+  }
+
+  function executePlacementTrigger(tile) {
+    if (tile.placementTrigger) {
+      localLog("Executing Placement Trigger", tile.placementTrigger);
+
+      // Ahh We do need triggers, because tiles on the shelf are serialized.
+      // TriggerRegistry.lookup(tile.placementTrigger).getTriggerFunction()(tile);
     }
   }
 
@@ -69,6 +145,8 @@ global.PlacementManager = (function () {
     if ($placementStatus) { return $placementStatus.canPlace; }
     return false;
   }
+
+  // ===========================================================================
 
   function isPlaceOnOrigin() {
     return ($placementRules||[]).includes(_placeOnOrigin);
