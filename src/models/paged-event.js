@@ -38,13 +38,8 @@ global.PagedEvent = function(code) {
   function getEventData() { return EventRegistry.lookup($code); }
   function getStages() { return getEventData().stages; }
 
-  function onClientFinish(state) {
-    let finisher = getEventData().onClientFinish;
-    if (typeof finisher === 'function') { finisher(state) }
-  }
-
-  function onServerFinish(state) {
-    let finisher = getEventData().onServerFinish;
+  function onFinish(state) {
+    let finisher = getEventData().onFinish;
     if (typeof finisher === 'function') { finisher(state) }
   }
 
@@ -58,8 +53,6 @@ global.PagedEvent = function(code) {
     advancePage,
     getEventData,
     getStages,
-    onClientFinish,
-    onServerFinish,
-    pack,
+    onFinish,
   });
 }

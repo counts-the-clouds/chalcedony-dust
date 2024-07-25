@@ -1,0 +1,61 @@
+#eventView {
+  @include full-screen;
+
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+
+  background-color: rgba(0,0,0,0.50);
+  z-index: $z-event-view;
+
+  // The standard layout is a horizontal text window near the bottom of the
+  // screen. The image area is optional and should look good with or without it.
+  #standardLayout {
+    width: 800px;
+    min-width: 800px;
+    margin: 0 50px 100px 50px;
+    background-color: rgba(0,0,0,0.70);
+    border: $border-normal;
+    box-shadow: $shadow-overlay;
+    overflow: hidden;
+
+    #imageArea {
+      background-size: cover;
+      aspect-ratio: 16/9;
+      border-bottom: $border-normal;
+    }
+
+    #textArea {
+      height: 100px;
+      .event-text {
+        padding: 20px;
+        font-family: "habibi";
+        text-shadow: 0px 0px 5px black, 0px 0px 2px black;
+      }
+    }
+  }
+
+  #actions {
+    height: 30px;
+    text-align: right;
+    padding: 0 20px 20px 0;
+
+    // By default the buttons are all hidden (and should have the hide class)
+    // When an action becomes available, like the continue button on the last
+    // page, we remove 'hide' and add 'show' so that the buttons fade in.
+    .button {
+      transition-property: opacity;
+      transition-duration: 500ms;
+      opacity: 0;
+    }
+    .button.show {
+      opacity:1;
+    }
+  }
+}
+
+#clickAdvance {
+  @include full-screen;
+  cursor: pointer;
+  z-index: $z-click-advance;
+}

@@ -9,7 +9,7 @@ EventRegistry.register('game-start-1', {
     ]
   }],
 
-  onServerFinish: state => {
+  onFinish: state => {
     const rotateNote = { code:'tutorial.rotate-tile', when:_drawn }
     const panNote = { code:'tutorial.pan-map', when:_drawn }
 
@@ -26,7 +26,8 @@ EventRegistry.register('game-start-1', {
       return Tile(data.code, data.options);
     }));
 
-    Browser.send('trigger',{ code:'tutorial.enable-tile-bag' });
+    TileShelfView.showTileBag();
+    GameController.drawTile();
   },
 
 });

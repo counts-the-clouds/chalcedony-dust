@@ -41,9 +41,34 @@ global.GameController = (function() {
     });
   }
 
+  // TODO: If we try and draw a tile, and there are no tiles in the bag
+  //       this should trigger a game over event, for now we can just throw
+  //       an exception reminding us to do this.
+  async function drawTile() {
+
+    if (TileBag.size() === 0) {
+      throw `There are no more tiles left in the bag. Game over.`
+    }
+
+    const tile = TileBag.drawTile();
+          tile.buildSegments();
+
+    TileBag.raiseHeat();
+    TileShelf.addTile(tile);
+    await TileShelfView.addTile(tile);
+    TileShelfView.positionTiles();
+
+    localLog("Drew Tile",{ code:tile.getCode, id:tile.getID() });
+  }
+
+  function localLog(message,data) {
+    log(message,{ system:'GameController', data:data });
+  }
+
   return Object.freeze({
     beginGame,
     setStage,
+    drawTile,
   });
 
 })();

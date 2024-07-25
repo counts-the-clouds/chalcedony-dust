@@ -19,9 +19,10 @@ global.DungeonViewport = (function() {
   function init() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
-      if (DragonDrop.isDragging()) { return false; }
-      const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
-      (event.deltaY < 0) ? zoomIn(velocity) : zoomOut(velocity);
+      if (DungeonView.isMovementEnabled()) {
+        const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
+        (event.deltaY < 0) ? zoomIn(velocity) : zoomOut(velocity);
+      }
     });
   }
 
@@ -114,9 +115,7 @@ global.DungeonViewport = (function() {
   }
 
   function onTick(time) {
-    if (DragonDrop.isDragging()) { return false; }
-
-    if ($viewport) {
+    if ($viewport && DungeonView.isMovementEnabled()) {
       const keyState = KeyboardMonitor.getState();
       const isMoving = Object.keys($movementBindings).some(key => keyState.keys.includes(key));
 

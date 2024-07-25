@@ -1,6 +1,9 @@
 window.TileShelfView = (function() {
 
+  // Normally I would make all of these consts, but PIXI will not be loaded
+  // when this containing function is first run.
   let $dragArea;
+  let $tileBag
   let $shelf;
   let $leftTrim;
   let $rightTrim;
@@ -17,6 +20,7 @@ window.TileShelfView = (function() {
   //       Eventually we'll want this to be a sprite with "Good Graphics".
   //       Might even render something out in Blender. Still thinking about
   //       the overall look of things.
+  //
   async function create(application) {
 
     $leftTrim = new PIXI.Graphics();
@@ -45,10 +49,17 @@ window.TileShelfView = (function() {
     $dragArea.width = application.screen.width
     $dragArea.height = application.screen.height
 
+    $tileBag = new PIXI.Graphics();
+    $tileBag.rect(0,0,80,80)
+    $tileBag.stroke({ color:'rgb(55,60,55)' });
+    $tileBag.fill({ color:'rgb(12,15,12)' });
+
+    application.stage.addChild($tileBag);
     application.stage.addChild($shelf);
     application.stage.addChild($dragArea);
 
     positionShelf();
+    checkState()
   }
 
   function handleResize() {
@@ -59,13 +70,7 @@ window.TileShelfView = (function() {
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
     await Promise.all(TileShelf.getShelf().map(async tile => {
-      const tileContainer = await TileContainer(tile);
-      tileContainer.setSize(_tileSize/2);
-      tileContainer.setOnShelf(true);
-
-      $tileState[tile.getID()] = tileContainer;
-
-      $dragArea.addChild(tileContainer.getTileContainer());
+      await addTile(tile)
     }));
 
     positionTiles();
@@ -84,7 +89,26 @@ window.TileShelfView = (function() {
       const screen = DungeonView.getDimensions();
       $shelf.y = screen.height - $shelf.height;
       $shelf.x = (screen.width/2) - ($shelf.width/2);
+
+      $tileBag.y = screen.height - $tileBag.height;
+      $tileBag.x = $shelf.x - $tileBag.width;
     }
+  }
+
+  function checkState() {
+    if (GameState.hasFlag('tile-shelf-view.hide-tile-bag')) {
+      $tileBag.renderable = false;
+    }
+  }
+
+  async function addTile(tile) {
+    const tileContainer = await TileContainer(tile);
+    tileContainer.setSize(_tileSize/2);
+    tileContainer.setOnShelf(true);
+
+    $tileState[tile.getID()] = tileContainer;
+
+    $dragArea.addChild(tileContainer.getTileContainer());
   }
 
   function removeTile(tile) {
@@ -93,12 +117,23 @@ window.TileShelfView = (function() {
     positionTiles();
   }
 
+  // TODO: This function should really only be called during the tutorial game.
+  //       My intent is to have the 'tile bag' appear on the screen in a way
+  //       that's more dramatic than having it just appear on screen. When a
+  //       normal game is started the tile bag should just already be visible.
+  //
+  function showTileBag() {
+    $tileBag.renderable = true;
+  }
+
   return Object.freeze({
     init,
     create,
     refresh,
     positionTiles,
+    addTile,
     removeTile,
+    showTileBag,
   })
 
 })();

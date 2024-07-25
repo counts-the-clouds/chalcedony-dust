@@ -48,8 +48,7 @@ global.PlacementManager = (function () {
         DungeonGrid.setCell(coordinates, tile);
 
         if (tile.getPlacementEvent()) {
-          console.log("Trigger Event",tile.getPlacementEvent());
-          // EventManager.triggerEvent(tile.getPlacementEvent());
+          EventView.show(PagedEvent(tile.getPlacementEvent()))
         }
 
         if (TileBag.isSequence()) {

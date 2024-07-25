@@ -146,17 +146,6 @@ global.TileBag = (function() {
     return Tile(code);
   }
 
-  // The pushTile() function is called when some action on the server tells the
-  // tile bag to draw a tile and add it to the shelf.
-  function pushTile() {
-    const tile = drawTile();
-          tile.buildSegments();
-
-    raiseHeat();
-
-    TileShelf.addTile(tile);
-  }
-
   // Each time we draw a tile without drawing a weighted tile we make it more
   // likely (or less likely in some cases) that the weighted tile will be drawn.
   function raiseHeat() {
@@ -166,8 +155,6 @@ global.TileBag = (function() {
       if ($weightedTiles[code].chance <= 0) { deleteWeightedTile(code); }
     });
   }
-
-
 
   // === Serialization =========================================================
   // It's a bit of a pain in the ass here. As part of the game state the tile
@@ -237,7 +224,6 @@ global.TileBag = (function() {
     addWeightedTile,
     deleteWeightedTile,
     drawTile,
-    pushTile,
     raiseHeat,
     pack,
     unpack,

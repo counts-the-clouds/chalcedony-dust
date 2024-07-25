@@ -7,7 +7,7 @@ EventRegistry.register('enter-the-dungeon', {
   }],
 
   // Wipe tile board, place dungeon core tile, reset tile bag with starting tiles
-  onServerFinish: state => {
+  onFinish: state => {
     GameState.clear();
     GameBuilder.beginDefaultGame();
     DungeonController.renderDungeon();

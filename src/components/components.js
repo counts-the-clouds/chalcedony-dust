@@ -5,6 +5,7 @@ global.Components = (function() {
 
     waitForPixi().then(() => {
       DungeonView.init();
+      EventView.init();
       MainMenu.init();
       OptionsOverlay.init();
     });
