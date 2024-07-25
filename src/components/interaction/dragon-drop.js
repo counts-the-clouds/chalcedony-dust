@@ -41,9 +41,9 @@ window.DragonDrop = (function() {
 
     const cellContainer = DungeonView.getCellContainerAtPoint(x,y);
     if (cellContainer) {
-      let cellPosition = cellContainer.accessibleHint;
-      if ($dragContext.hoverCell !== cellPosition) {
-        $dragContext.hoverCell = cellPosition;
+      let cellID = cellContainer.getID();
+      if ($dragContext.hoverCell !== cellID) {
+        $dragContext.hoverCell = cellID;
         PlacementManager.checkDropTarget();
       }
     }

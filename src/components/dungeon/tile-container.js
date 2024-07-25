@@ -19,8 +19,13 @@ global.TileContainer = async function(tile) {
     $tileContainer.label = 'TileContainer';
     $tileContainer.accessibleHint = tile.getID();
     $tileContainer.eventMode = 'dynamic';
-    $tileContainer.height = 64;
-    $tileContainer.width = 64;
+    $tileContainer.height = _tileSize;
+    $tileContainer.width = _tileSize;
+  }
+
+  function setSize(size) {
+    $tileContainer.height = size;
+    $tileContainer.width = size;
   }
 
   function setCursor(cursor) {
@@ -72,6 +77,7 @@ global.TileContainer = async function(tile) {
   return {
     getTile,
     getTileContainer,
+    setSize,
     setCursor,
     setPosition,
     setOnShelf,

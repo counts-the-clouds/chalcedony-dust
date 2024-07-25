@@ -65,6 +65,8 @@ global.DungeonView = (function() {
     }
   }
 
+  // ===========================================================================
+
   // Get the cell container given a tile's global coordinates.
   function getCellContainerAt(x,y) {
     const coordinates = Coordinates.fromGlobal(x,y);
@@ -98,6 +100,13 @@ global.DungeonView = (function() {
       return null;
   }
 
+  // ===========================================================================
+
+  function placeTile(tile) {
+    const coordinates = tile.getCoordinates();
+    getCellContainerAt(coordinates.gx,coordinates.gy).setTile(tile);
+  }
+
   return Object.freeze({
     init,
     open,
@@ -107,6 +116,7 @@ global.DungeonView = (function() {
     getDimensions,
     getCellContainerAt,
     getCellContainerAtPoint,
+    placeTile,
   });
 
 })();

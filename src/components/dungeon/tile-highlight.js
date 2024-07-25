@@ -39,7 +39,7 @@ global.TileHighlight = (function() {
 
   function updatePosition() {
     if ($tweenContext) {
-      const position = $tweenContext.cellContainer.getGlobalPosition();
+      const position = $tweenContext.cellContainer.getPosition();
       const TS = _tileSize * DungeonViewport.getScale();
       const size =  TS*3;
 

@@ -60,7 +60,8 @@ window.TileShelfContainer = (function() {
   async function refresh() {
     await Promise.all(TileShelf.getShelf().map(async tile => {
       const tileContainer = await TileContainer(tile);
-            tileContainer.setOnShelf(true);
+      tileContainer.setSize(_tileSize/2);
+      tileContainer.setOnShelf(true);
 
       $tileState[tile.getID()] = tileContainer;
 

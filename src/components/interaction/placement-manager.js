@@ -16,8 +16,6 @@ global.PlacementManager = (function () {
     }
   }
 
-
-
   // We don't want to build the $edgeStatus object every time we drag a tile
   // over the dungeon. When a tile is rotated though it's edges change, so we
   // need to set it to null so that it will be rebuilt.
@@ -32,7 +30,6 @@ global.PlacementManager = (function () {
 
   function placeTile() {
     try {
-      const cellContainer = DragonDrop.getHoverCell();
       const coordinates = DragonDrop.getHoverCoordinates();
       const tile = DragonDrop.getContext().tileContainer.getTile();
 
@@ -40,7 +37,7 @@ global.PlacementManager = (function () {
         x: coordinates.gx,
         y: coordinates.gy,
         code: tile.getCode(),
-        id: tile.getID() };
+        id: tile.getID()};
 
       if (canPlaceTile(coordinates)) {
         localLog("Place Tile",placementData);
@@ -59,8 +56,7 @@ global.PlacementManager = (function () {
           TileBag.pushTile();
         }
 
-        // returns tile at dungeon grid, and tile shelf...
-        // DungeonGridComponent.placeTile(response.tile);
+        DungeonView.placeTile(tile);
         // executePlacementTrigger(response.tile);
       }
     }

@@ -5,9 +5,14 @@ global.CellContainer = function(x,y,coordinates) {
 
   const $coordinates = coordinates;
   const $cellContainer = new PIXI.Container();
+  let $tileContainer;
+
+  function getID() { return $cellContainer.accessibleHint; }
+  function getCellContainer() { return $cellContainer; }
+  function getCoordinates() { return $coordinates; }
+  function getPosition() { return $cellContainer.getGlobalPosition(); }
 
   function buildContainer() {
-
     const background = new PIXI.Graphics();
     background.label = 'background';
     background.rect(0,0,TS,TS);
@@ -51,5 +56,22 @@ global.CellContainer = function(x,y,coordinates) {
     }
   }
 
-  return buildContainer();
+  async function setTile(tile) {
+    if ($tileContainer != null) {
+      throw `Cell(${getID()}) already contains a tile.`
+    }
+
+    $tileContainer = await TileContainer(tile);
+    $cellContainer.addChild($tileContainer.getTileContainer());
+  }
+
+  buildContainer();
+
+  return Object.freeze({
+    getID,
+    getCellContainer,
+    getCoordinates,
+    getPosition,
+    setTile,
+  });
 }
