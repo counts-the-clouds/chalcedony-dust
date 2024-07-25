@@ -83,7 +83,8 @@ global.DungeonView = (function() {
   function isMovementEnabled() {
     if (DragonDrop.isDragging()) { return false; }
     if (EventView.isVisible()) { return false; }
-    return GameState.getFlag('dungeon-view.movement-enabled') !== false
+    if (GameState.hasFlag('dungeon-view.disable-movement')) { return false; }
+    return true;
   }
 
   // ===========================================================================

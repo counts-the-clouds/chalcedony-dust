@@ -62,6 +62,7 @@ global.GameState = (function() {
     delete state.flags[flag];
   }
 
+  function hasFlag(flag) { return getValue('flags')[flag] != null; }
   function getFlag(flag) { return getValue('flags')[flag]; }
   function getFlags() { return { ...getValue('flags') }; }
 
@@ -134,6 +135,7 @@ global.GameState = (function() {
 
     setFlag,
     clearFlag,
+    hasFlag,
     getFlag,
     getFlags,
 

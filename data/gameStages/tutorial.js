@@ -2,8 +2,8 @@ GameStageRegistry.register(_tutorial,{
   note:'tutorial.place-tile',
 
   flags: [
-    ['dungeon-view.movement-enabled',false],
-    ['tile-bag.show',false]
+    ['dungeon-view.disable-movement',true],
+    ['tile-shelf-view.hide-tile-bag',true]
   ],
 
   shelvedTiles:[
