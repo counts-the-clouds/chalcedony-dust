@@ -1,13 +1,14 @@
 global.DungeonView = (function() {
 
   let $application;
+  let $effectsContainer;
   let $chunkContainers = {}
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
 
   function init() {
     DragonDrop.init();
     DungeonViewport.init();
-    TileShelfContainer.init();
+    TileShelfView.init();
   }
 
   async function open() {
@@ -31,9 +32,20 @@ global.DungeonView = (function() {
     X.first("#dungeonCanvas").appendChild($application.canvas)
 
     DungeonViewport.create($application);
-    await EffectsContainer.create($application);
-    await TileShelfContainer.create($application);
+    await createEffectsContainer();
+    await TileShelfView.create($application);
     createTileGrid();
+  }
+
+  async function createEffectsContainer() {
+    $effectsContainer = new PIXI.Container();
+    $effectsContainer.x = 0;
+    $effectsContainer.y = 0;
+    $effectsContainer.width = $application.screen.width
+    $effectsContainer.height = $application.screen.height
+    $effectsContainer.addChild(await TileHighlight.build());
+
+    $application.stage.addChild($effectsContainer);
   }
 
   function createTileGrid() {
@@ -51,7 +63,7 @@ global.DungeonView = (function() {
     });
 
     DungeonViewport.updateLimits();
-    TileShelfContainer.refresh();
+    TileShelfView.refresh();
   }
 
   function resize() { $application.resize(); }

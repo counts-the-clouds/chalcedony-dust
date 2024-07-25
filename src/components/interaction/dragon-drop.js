@@ -22,7 +22,7 @@ window.DragonDrop = (function() {
       PlacementManager.placeTile();
     }
 
-    TileShelfContainer.positionTiles();
+    TileShelfView.positionTiles();
     TileHighlight.hide();
 
     $dragContext.tileContainer.setCursor('grab');

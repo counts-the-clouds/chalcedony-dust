@@ -1,4 +1,4 @@
-window.TileShelfContainer = (function() {
+window.TileShelfView = (function() {
 
   let $dragArea;
   let $shelf;

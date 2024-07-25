@@ -44,7 +44,7 @@ global.PlacementManager = (function () {
 
         Note.clear();
         TileShelf.removeTile(tile.getID());
-        TileShelfContainer.removeTile(tile);
+        TileShelfView.removeTile(tile);
         DungeonGrid.setCell(coordinates, tile);
 
         if (tile.getPlacementEvent()) {
@@ -74,7 +74,7 @@ global.PlacementManager = (function () {
   function isPlaceOnOrigin() {
     return ($placementRules||[]).includes(_placeOnOrigin);
   }
-  
+
   function highlightOrigin() {
     TileHighlight.show(0,0);
   }
