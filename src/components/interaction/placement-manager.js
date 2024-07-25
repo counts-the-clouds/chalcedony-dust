@@ -127,16 +127,25 @@ global.PlacementManager = (function () {
       }
     }
     catch (error) {
-      logError(`Error Placing Tile`,error,{ system:'PlacementManager', data:this.placementData });
+      logError(`Error Placing Tile`,error,{
+        system:'PlacementManager',
+        data:placementData
+      });
     }
   }
 
   function executePlacementTrigger(tile) {
     if (tile.placementTrigger) {
-      localLog("Executing Placement Trigger", tile.placementTrigger);
-
-      // Ahh We do need triggers, because tiles on the shelf are serialized.
-      // TriggerRegistry.lookup(tile.placementTrigger).getTriggerFunction()(tile);
+      try {
+        localLog("Executing Placement Trigger", { code:tile.placementTrigger });
+        TriggerRegistry.lookup(tile.placementTrigger).friggerFunction(tile);
+      }
+      catch(error) {
+        logError(`Error Executing Placement Trigger`,error,{
+          system:'PlacementManager',
+          data:{ code:tile.placementTrigger }
+        });
+      }
     }
   }
 

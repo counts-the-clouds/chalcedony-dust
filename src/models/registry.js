@@ -37,3 +37,4 @@ global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');
 global.PlaygroundRegistry = Registry('Playground');
 global.TileRegistry = Registry('Tile');
+global.TriggerRegistry = Registry('Trigger');
