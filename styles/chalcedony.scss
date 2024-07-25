@@ -10,12 +10,8 @@
 
 @import 'components/alerts.scss';
 @import 'components/console.scss';
-// @import 'components/dungeon-grid.scss';
 @import 'components/notes.scss';
 @import 'components/test-framework.scss';
-// @import 'components/tile.scss';
-// @import 'components/tile-bag.scss';
-// @import 'components/tile-shelf.scss';
 
 @import 'elements/buttons.scss';
 // @import 'elements/confirmation.scss';
@@ -24,8 +20,8 @@
 @import 'elements/tabs.scss';
 // @import 'elements/tooltip.scss';
 
-// @import 'views/dungeon-view.scss';
 // @import 'views/event-view.scss';
+@import 'views/dungeon.scss';
 @import 'views/main-content.scss';
 @import 'views/main-menu.scss';
 @import 'views/options-overlay.scss';

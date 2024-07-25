@@ -12,6 +12,7 @@ global.TileShelf = (function() {
     $shelf.unshift(tile);
   }
 
+  function getShelf() { return [...$shelf]; }
   function getTile(id) { return $shelf[getTileIndex(id)]; }
   function removeTile(id) { $shelf.splice(getTileIndex(id), 1); }
 
@@ -44,6 +45,7 @@ global.TileShelf = (function() {
     clear,
     setSize,
     getSize,
+    getShelf,
     addTile,
     getTile,
     removeTile,

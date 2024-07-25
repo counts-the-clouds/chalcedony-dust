@@ -2,13 +2,16 @@ global.DungeonAssets = (function() {
 
   let $tileBackgrounds;
   let $tileElements;
+  let $tiles;
 
   async function addAssets() {
     $tileBackgrounds = await compileAssets(`${APP}/assets/tile-backgrounds`);
     $tileElements = await compileAssets(`${APP}/assets/tile-elements`);
+    $tiles = await compileAssets(`${APP}/assets/tiles`);
 
     PIXI.Assets.addBundle('tile-backgrounds', $tileBackgrounds);
     PIXI.Assets.addBundle('tile-elements', $tileElements);
+    PIXI.Assets.addBundle('tiles', $tiles);
 
     PIXI.Assets.addBundle('fonts', [
       { alias: 'roboto', src:`${APP}/assets/fonts/Roboto-Regular.ttf` },
@@ -16,9 +19,10 @@ global.DungeonAssets = (function() {
   }
 
   async function loadAssets() {
+    await PIXI.Assets.loadBundle('tile-backgrounds');
+    await PIXI.Assets.loadBundle('tile-elements');
     await PIXI.Assets.loadBundle('tiles');
     await PIXI.Assets.loadBundle('fonts');
-    await PIXI.Assets.load('dark-box');
   }
 
   async function randomTileBackground() {

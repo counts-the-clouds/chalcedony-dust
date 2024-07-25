@@ -43,11 +43,11 @@ describe("Tile", function() {
     });
   });
 
-  describe("getClientLayers()", function() {
+  describe("getLayers()", function() {
     it('gets the client layers from the segment', function() {
       let tile = Tile('forest-2');
       tile.buildSegments();
-      expect(tile.getClientLayers()[0].background).to.equal('tiles/forest-2.png')
+      expect(tile.getLayers()[0].background).to.equal('f-2');
     });
   })
 

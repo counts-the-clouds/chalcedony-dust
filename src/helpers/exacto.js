@@ -176,5 +176,5 @@ X.assetURL = function(path) {
 // === Helper Functions ========================================================
 
 function lookupActionCodes(action) {
-  return WorldState.getKeyBindings().filter(bind => bind.action == action)[0].codes;
+  return WorldState.getKeyBindings().filter(bind => bind.action === action)[0].codes;
 }

@@ -5,30 +5,47 @@ global.DungeonViewport = (function() {
   const FAST = 50;
   const SLOW = 20;
 
-
   let $viewport;
   let $guides;
 
   let $movementBindings;
   let $movementLimits;
-  let $currentLocation = {x:0,y:0};
 
-  let $scale = _defaultScale;
+  let $currentLocation = {x:0,y:0};
+  let $currentScale = _defaultScale;
+
   let $speed = SLOW;
 
   function init() {
-
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
+      if (DragonDrop.isDragging()) { return false; }
       const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
       (event.deltaY < 0) ? zoomIn(velocity) : zoomOut(velocity);
     });
   }
 
+  // TODO: The Viewport will also need an effect layer. This glow effect is
+  //       okay, but it would be better to render an interesting sequence in
+  //       blender using volumetric clouds and light rays passing though the
+  //       clouds. We could render that as a short loop against a transparent
+  //       background, turn that into a short sequence, then turn that into a
+  //       sprite sheet. A lot of work for just a tile glow, but the edge glow
+  //       effect could do something similar and we'll use that a lot. Just an
+  //       idea to explore.
+  //
+  // const glowTexture = await PIXI.Assets.load('glow-effect');
+  // const $glowEffect = new PIXI.Sprite(glowTexture);
+  // $glowEffect.x = 0;
+  // $glowEffect.y = 0;
+
+
   function create(application) {
     $viewport = new PIXI.Container();
+    $viewport.eventMode = 'static';
+    $viewport.on('mousemove',DragonDrop.onMove);
+
     $guides = new PIXI.Graphics();
-    $guides.alpha = 0.2;
 
     application.stage.addChild($viewport);
     application.stage.addChild($guides);
@@ -58,7 +75,7 @@ global.DungeonViewport = (function() {
     WorldState.getKeyBindings().forEach(binding => {
       ['up','down','left','right'].forEach(direction => {
         const action = `action.move-${direction}`;
-        if (binding.action == action) { addBindings(action,binding.codes); }
+        if (binding.action === action) { addBindings(action,binding.codes); }
       });
     });
   }
@@ -66,18 +83,18 @@ global.DungeonViewport = (function() {
   function updateLimits() {
     const extent = DungeonView.getChunkExtent();
     const scale = getScale();
-    const tileSize = TS*scale
-    const chunkSize = tileSize * _chunkSize;
+    const scaledTileSize = TS*scale
+    const scaledChunkSize = scaledTileSize * _chunkLength;
 
-    let right =  chunkSize;
-    let left =   -chunkSize + tileSize;
-    let top =    chunkSize;
-    let bottom = -chunkSize + tileSize;
+    let right =  scaledChunkSize;
+    let left =   -scaledChunkSize + scaledTileSize;
+    let top =    scaledChunkSize;
+    let bottom = -scaledChunkSize + scaledTileSize;
 
-    right -=  (extent.minx+1) * chunkSize;
-    left -=   (extent.maxx)   * chunkSize;
-    top -=    (extent.miny+1) * chunkSize;
-    bottom -= (extent.maxy)   * chunkSize;
+    right -=  (extent.minx+1) * scaledChunkSize;
+    left -=   (extent.maxx)   * scaledChunkSize;
+    top -=    (extent.miny+1) * scaledChunkSize;
+    bottom -= (extent.maxy)   * scaledChunkSize;
 
     $movementLimits = { top,bottom,left,right };
   }
@@ -97,6 +114,8 @@ global.DungeonViewport = (function() {
   }
 
   function onTick(time) {
+    if (DragonDrop.isDragging()) { return false; }
+
     if ($viewport) {
       const keyState = KeyboardMonitor.getState();
       const isMoving = Object.keys($movementBindings).some(key => keyState.keys.includes(key));
@@ -108,34 +127,17 @@ global.DungeonViewport = (function() {
     }
   }
 
-  // TODO: Zooming in and out simply adjusts the scale of the grid, but it
-  //       should take the center point into account, and move the current
-  //       location so that it remains in the center of the map.
-
   function zoomIn(velocity) {
-    if ($viewport && $scale > 0) {
-      $scale -= velocity;
-      if ($scale < 0) { $scale = 0; }
-
-      updateLimits();
-      clampCurrentLocation();
-      positionViewport();
+    if ($viewport && $currentScale > 0) {
+      setScale($currentScale - velocity);
     }
   }
 
   function zoomOut(velocity) {
-    const max = _scaleFactors.length - 1;
-
-    if ($viewport && $scale < max) {
-      $scale += velocity;
-      if ($scale > max) { $scale = max; }
-
-      updateLimits();
-      clampCurrentLocation();
-      positionViewport();
+    if ($viewport && $currentScale < _scaleFactors.length - 1) {
+      setScale($currentScale + velocity);
     }
   }
-
 
   // === Movement ==============================================================
 
@@ -191,19 +193,15 @@ global.DungeonViewport = (function() {
     if ($guides) {
       $guides.clear()
       $guides.rect((screen.width/2)-1,0,2,screen.height)
-      $guides.fill(0xFF4030);
+      $guides.fill('rgba(200,50,50,0.1)');
       $guides.rect(0,(screen.height/2)-1,screen.width,2);
-      $guides.fill(0xFF4030);
+      $guides.fill('rgba(200,50,50,0.1)');
     }
   }
 
   // === Positioning ===========================================================
   // The map scale, position, and tile visibility needs to be updated every
   // time the location is updated.
-
-  function getScale() {
-    return _scaleFactors[$scale];
-  }
 
   function getCenterPoint() {
     const screen = DungeonView.getDimensions();
@@ -215,6 +213,36 @@ global.DungeonViewport = (function() {
     };
   }
 
+  function getScale() {
+    return _scaleFactors[$currentScale];
+  }
+
+  function setScale(scale) {
+    const screen = DungeonView.getDimensions();
+    const max = _scaleFactors.length - 1;
+
+    const oldScale = getScale();
+    const centerX = (screen.width / 2 - $viewport.x) / oldScale;
+    const centerY = (screen.height / 2 - $viewport.y) / oldScale;
+
+    if (scale < 0) { scale = 0; }
+    if (scale > max) { scale = max; }
+    $currentScale = scale;
+
+    const newScale = getScale();
+    $viewport.scale = newScale;
+    $viewport.x = screen.width / 2 - centerX * newScale;
+    $viewport.y = screen.height / 2 - centerY * newScale;
+
+    const center = getCenterPoint();
+    $currentLocation.x = $viewport.x - center.x;
+    $currentLocation.y = $viewport.y - center.y;
+
+    updateLimits();
+    clampCurrentLocation();
+    TileHighlight.updatePosition();
+  }
+
   function positionViewport() {
     const center = getCenterPoint();
 
@@ -224,11 +252,14 @@ global.DungeonViewport = (function() {
 
     drawGuides();
     updateTileVisibility();
+    TileHighlight.updatePosition();
   }
+
+  // === Culling ==============================================================
 
   // TODO: This will need to be redone.
   function updateTileVisibility() {
-    // let scaleFactor = ScaleFactors[$scale];
+    // let scaleFactor = ScaleFactors[$currentScale];
     // let xTileCount = Math.ceil($application.screen.width / (TileSize * scaleFactor) / 2);
     // let yTileCount = Math.ceil($application.screen.height / (TileSize * scaleFactor) / 2);
 
@@ -255,6 +286,7 @@ global.DungeonViewport = (function() {
     create,
     addChild,
     updateLimits,
+    getScale,
   });
 
 })();

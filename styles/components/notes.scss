@@ -15,6 +15,7 @@
   opacity: 0;
   transition-property: opacity;
   transition-duration: 2000ms;
+  pointer-events: none;
 
   z-index: $z-overlay;
 

@@ -1,16 +1,20 @@
 global.DungeonView = (function() {
 
   let $application;
+  let $effectsContainer;
   let $chunkContainers = {}
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
 
   function init() {
+    DragonDrop.init();
+    DungeonViewport.init();
+    TileShelfView.init();
   }
 
   async function open() {
     await DungeonAssets.loadAssets();
     MainContent.setMainContent('views/dungeon-view.html');
-    createApplication();
+    await createApplication();
   }
 
   function close() {
@@ -26,8 +30,22 @@ global.DungeonView = (function() {
     });
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
+
     DungeonViewport.create($application);
+    await createEffectsContainer();
+    await TileShelfView.create($application);
     createTileGrid();
+  }
+
+  async function createEffectsContainer() {
+    $effectsContainer = new PIXI.Container();
+    $effectsContainer.x = 0;
+    $effectsContainer.y = 0;
+    $effectsContainer.width = $application.screen.width
+    $effectsContainer.height = $application.screen.height
+    $effectsContainer.addChild(await TileHighlight.build());
+
+    $application.stage.addChild($effectsContainer);
   }
 
   function createTileGrid() {
@@ -40,11 +58,12 @@ global.DungeonView = (function() {
       if ($chunkExtent.miny > location.y) { $chunkExtent.miny = location.y }
       if ($chunkExtent.maxy < location.y) { $chunkExtent.maxy = location.y }
 
-      $chunkContainers[chunkID] = ChunkContainer(chunkID, chunks[chunkID]);
-      DungeonViewport.addChild($chunkContainers[chunkID].container);
+      $chunkContainers[chunkID] = ChunkContainer(chunkID);
+      DungeonViewport.addChild($chunkContainers[chunkID].getChunkContainer());
     });
 
     DungeonViewport.updateLimits();
+    TileShelfView.refresh();
   }
 
   function resize() { $application.resize(); }
@@ -58,12 +77,58 @@ global.DungeonView = (function() {
     }
   }
 
+  // ===========================================================================
+
+  // Get the cell container given a tile's global coordinates.
+  function getCellContainerAt(x,y) {
+    const coordinates = Coordinates.fromGlobal(x,y);
+    const chunk = $chunkContainers[coordinates.chunkID];
+    return chunk ? chunk.getCellContainer(coordinates.ci) : null;
+  }
+
+  // Getting the container by the actual point is a huge expensive pain in the
+  // ass that needs to be called on mouse move, so this needs to be as
+  // efficient as possible. We loop through the chunks to find one with the
+  // point within its bounds. This isn't too expensive, there should never be
+  // that many of them. With a chunk and an offset within that chunk we can
+  // calculate which cell should be at that position.
+  function getCellContainerAtPoint(x,y) {
+    const chunkContainer = getChunkContainerAtPoint(x,y);
+    return chunkContainer ? chunkContainer.getCellContainerAtPoint(x,y) : null;
+  }
+
+  function getChunkContainerAtPoint(x,y) {
+      const chunkIDs = Object.keys($chunkContainers);
+      const chunkSize = DungeonViewport.getScale() * _chunkSize;
+
+      for (let i=0; i<chunkIDs.length; i++) {
+        const chunkContainer = $chunkContainers[chunkIDs[i]];
+        const position = chunkContainer.getChunkContainer().getGlobalPosition();
+        if ((x > position.x) && (x < position.x + chunkSize) && (y > position.y) && (y < position.y + chunkSize)) {
+          return chunkContainer;
+        }
+      }
+
+      return null;
+  }
+
+  // ===========================================================================
+
+  function placeTile(tile) {
+    const coordinates = tile.getCoordinates();
+    getCellContainerAt(coordinates.gx,coordinates.gy).setTile(tile);
+  }
+
   return Object.freeze({
     init,
     open,
+    close,
     resize,
     getChunkExtent,
     getDimensions,
+    getCellContainerAt,
+    getCellContainerAtPoint,
+    placeTile,
   });
 
 })();

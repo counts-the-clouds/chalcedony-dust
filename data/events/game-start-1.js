@@ -10,15 +10,15 @@ EventRegistry.register('game-start-1', {
   }],
 
   onServerFinish: state => {
-    rotateNote = { code:'tutorial.rotate-tile', when:_drawn }
-    panNote = { code:'tutorial.pan-map', when:_drawn }
+    const rotateNote = { code:'tutorial.rotate-tile', when:_drawn }
+    const panNote = { code:'tutorial.pan-map', when:_drawn }
 
     let tiles = [
       { code:'forest-2', options:{ }},
       { code:'forest-3', options:{ enableNote:rotateNote, placementTrigger:'tutorial.enable-movement' }},
-      { code:'forest-2', options:{ enableNote:panNote }},
-      { code:'forest-3', options:{ placementEvent:'game-start-2' }},
-      { code:'forest-1', options:{ placementEvent:'enter-the-dungeon' }},
+      { code:'forest-4', options:{ enableNote:panNote }},
+      { code:'forest-5', options:{ placementEvent:'game-start-2' }},
+      { code:'forest-6', options:{ placementEvent:'enter-the-dungeon' }},
     ];
 
     TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });

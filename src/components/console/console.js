@@ -61,7 +61,7 @@ global.Console = (function() {
     ScrollingPanel.resize('#console .scrolling-panel');
 
     if (Environment.isDevelopment) {
-      if (logData.type == _error || logData.type == _warning) {
+      if (logData.type === _error || logData.type === _warning) {
         Alert.showFromLog(logData)
       }
     }
@@ -86,12 +86,12 @@ global.Console = (function() {
     }
   }
 
-  return {
+  return Object.freeze({
     init,
     append,
     log,
     logError,
-  };
+  });
 
 })();
 

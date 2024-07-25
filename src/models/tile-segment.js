@@ -1,7 +1,7 @@
 
 // Segments are a little complicated, and I'm still working on their
 // implementation. A segment is a single feature of a tile. A tile might have
-// a room and a hall for instace. Both would have their own segment state in
+// a room and a hall for instance. Both would have their own segment state in
 // order to keep track of upgrades and such. The tile graphics will be built
 // in layers with one layer for each segment, with transparent masks that
 // allow for all the other segments to be seen through the layer stack.
@@ -12,7 +12,7 @@
 // clearly a many-to-many relationship so we'll probably want a join table to
 // associate tile ids to feature ids.
 //
-// When a tile is first built though all it has are it's default segments,
+// When a tile is first built though, all it has are its default segments,
 // which should all be set to base or incomplete. If there are exits we know
 // the tile is incomplete. If there are no exits the feature is a single tile
 // feature and starts at the 'base' state. At least, that's my current
