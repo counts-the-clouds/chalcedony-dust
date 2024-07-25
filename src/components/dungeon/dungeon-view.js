@@ -77,6 +77,15 @@ global.DungeonView = (function() {
     }
   }
 
+  // Normally the movement is disabled by when dragging tiles, during events,
+  // or when other dialogs are open. Movement can also be disabled with a game
+  // flag in the case of the tutorial game.
+  function isMovementEnabled() {
+    if (DragonDrop.isDragging()) { return false; }
+    if (EventView.isVisible()) { return false; }
+    return GameState.getFlag('dungeon-view.movement-enabled') !== false
+  }
+
   // ===========================================================================
 
   // Get the cell container given a tile's global coordinates.
@@ -126,6 +135,7 @@ global.DungeonView = (function() {
     resize,
     getChunkExtent,
     getDimensions,
+    isMovementEnabled,
     getCellContainerAt,
     getCellContainerAtPoint,
     placeTile,

@@ -2,7 +2,6 @@ window.EventView = (function() {
 
   let $event;
   let $returnState;
-  let $previousMovementState;
 
   function init() {
     // X.onClick('#clickAdvance', nextPage);
@@ -11,15 +10,19 @@ window.EventView = (function() {
   }
 
   function show(data) {
-  //   $previousMovementState = DungeonView.isMovementEnabled();
+    log("Show",{ system:"EventView", data:data });
+
+    X.removeClass('#eventView','hide');
+
   //   $event = TileEvent.unpack(data.event);
   //   $returnState = { };
 
-  //   log("Show",{ system:"EventView", data:data });
-
-  //   DungeonView.setMovementEnabled(false);
   //   setLayout();
   //   showStage();
+  }
+
+  function isVisible() {
+    return !X.hasClass('#eventView','hide');
   }
 
   // function completeEvent() {
@@ -30,7 +33,6 @@ window.EventView = (function() {
   //   X.removeClass('#eventView .continue-button','show');
 
   //   ClientCommands.send('event.finished', $event.pack(), $returnState);
-  //   DungeonView.setMovementEnabled($previousMovementState);
 
   //   $event.onClientFinish($returnState);
   //   $event = null;
@@ -110,6 +112,7 @@ window.EventView = (function() {
   return {
     init,
     show,
+    isVisible,
   }
 
 })();
