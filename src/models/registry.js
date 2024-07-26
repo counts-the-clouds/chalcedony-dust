@@ -32,6 +32,7 @@ global.Registry = function(typeName) {
   });
 }
 
+global.AnimationRegistry = Registry('Animation');
 global.EventRegistry = Registry('PagedEvent');
 global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');

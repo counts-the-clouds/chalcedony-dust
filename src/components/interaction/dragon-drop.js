@@ -79,7 +79,7 @@ window.DragonDrop = (function() {
 
     if (!AnimationController.isPlaying(tileContainer.getID())) {
       if (isRotateAllowed(tile) === false) {
-        return AnimationController.rotatePrevented({
+        return AnimationController.addAnimation('rotate-prevented',{
           id: tileContainer.getID(),
           direction: direction,
           target: tileContainer.getTileContainer()
@@ -88,7 +88,7 @@ window.DragonDrop = (function() {
 
       (direction > 0) ? tile.rotateClockwise() : tile.rotateWiddershins();
 
-      AnimationController.rotateTile({
+      AnimationController.addAnimation('rotate-tile',{
         id: tileContainer.getID(),
         direction: direction,
         target: tileContainer.getTileContainer(),
