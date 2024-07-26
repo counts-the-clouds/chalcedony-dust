@@ -9,6 +9,9 @@ window.DragonDrop = (function() {
   function init() {
     window.addEventListener('mouseup', event => { stopDrag(true); });
     window.addEventListener('mouseout', event => { stopDrag(false); });
+
+    X.registerKeyAction("action.rotate-clockwise", isDragging, rotateClockwise);
+    X.registerKeyAction("action.rotate-widdershins", isDragging, rotateWiddershins);
   }
 
   function isDragging() { return $dragContext != null; }
@@ -19,19 +22,19 @@ window.DragonDrop = (function() {
     return $dragContext ? $dragContext.tileContainer.getTile() : null;
   }
 
-  function stopDrag(placeTile) {
-    if (!isDragging()) { return false; }
-
-    if (placeTile) {
-      PlacementManager.placeTile();
-    }
-
-    TileShelfView.positionTiles();
-    TileHighlight.hide();
-
-    $dragContext.tileContainer.setCursor('grab');
-    $dragContext = null;
+  function getHoverCoordinates() {
+    if ($dragContext.hoverCell == null) { return null; }
+    const [gx,gy] = $dragContext.hoverCell.split(':');
+    return Coordinates.fromGlobal(parseInt(gx),parseInt(gy));
   }
+
+  function getHoverCell() {
+    if ($dragContext.hoverCell == null) { return null; }
+    const coordinates = getHoverCoordinates();
+    return DungeonView.getCellContainerAt(coordinates.gx,coordinates.gy);
+  }
+
+  // === Drag & Drop ===========================================================
 
   function onMove(event) {
     if (!isDragging()) { return false; }
@@ -53,17 +56,52 @@ window.DragonDrop = (function() {
     }
   }
 
-  function getHoverCoordinates() {
-    if ($dragContext.hoverCell == null) { return null; }
-    const [gx,gy] = $dragContext.hoverCell.split(':');
-    return Coordinates.fromGlobal(parseInt(gx),parseInt(gy));
+  function stopDrag(placeTile) {
+    if (!isDragging()) { return false; }
+
+    if (placeTile) {
+      PlacementManager.placeTile();
+    }
+
+    TileShelfView.positionTiles();
+    TileHighlight.hide();
+
+    $dragContext.tileContainer.setCursor('grab');
+    $dragContext = null;
   }
 
-  function getHoverCell() {
-    if ($dragContext.hoverCell == null) { return null; }
-    const coordinates = getHoverCoordinates();
-    return DungeonView.getCellContainerAt(coordinates.gx,coordinates.gy);
+  // === Rotate ================================================================
+
+  function rotateClockwise() {
+    const tileContainer = $dragContext.tileContainer;
+    const tile = tileContainer.getTile();
+
+    if (isRotateAllowed(tile) === false) {
+      AnimationController.addFlick({
+        id: tileContainer.getID(),
+        code: 'no-rotation-clockwise',
+        target: tileContainer
+      });
+    }
   }
+
+  function rotateWiddershins() {
+    const tileContainer = $dragContext.tileContainer;
+    const tile = tileContainer.getTile();
+
+    if (isRotateAllowed(tile) === false) {
+      AnimationController.addFlick({
+        id: tileContainer.getID(),
+        code: 'no-rotation-widdershins',
+        target: tileContainer
+      });
+    }
+  }
+
+  function isRotateAllowed(tile) {
+    return ! (tile.getPlacementRules()||[]).includes(_noRotate);
+  }
+
 
   return Object.freeze({
     init,

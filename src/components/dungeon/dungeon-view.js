@@ -29,6 +29,8 @@ global.DungeonView = (function() {
       resizeTo: window,
     });
 
+    $application.ticker.add(AnimationController.onTick);
+
     X.first("#dungeonCanvas").appendChild($application.canvas)
 
     DungeonViewport.create($application);

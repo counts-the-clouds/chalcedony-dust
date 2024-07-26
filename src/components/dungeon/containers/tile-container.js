@@ -3,6 +3,7 @@ global.TileContainer = async function(tile) {
   const $tile = tile;
   const $tileContainer = new PIXI.Container();
 
+  function getID() { return $tile.getID(); }
   function getTile() { return $tile; }
   function getTileContainer() { return $tileContainer; }
 
@@ -75,6 +76,7 @@ global.TileContainer = async function(tile) {
   await buildContainer();
 
   return {
+    getID,
     getTile,
     getTileContainer,
     setSize,
