@@ -65,6 +65,7 @@ global.CellContainer = function(x,y,coordinates) {
     }
 
     $tileContainer = await TileContainer(tile);
+    $tileContainer.setPosition(HS,HS);
     $cellContainer.addChild($tileContainer.getTileContainer());
   }
 

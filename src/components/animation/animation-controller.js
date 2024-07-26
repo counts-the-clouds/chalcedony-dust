@@ -1,22 +1,20 @@
 global.AnimationController = (function () {
 
+  // I'm assuming I'm going to need to keep track of all the animations running
+  // in the system, just in case there's a long running animation that I need
+  // to modify or cancel while it's playing.
   let $flicks = {};
 
   function addFlick(options) {
     const flick = Flick(options.code);
-          flick.setAnimationID(options.id);
-          flick.setAnimationTarget(options.target);
-
-    // TODO: There might should be a way to cancel an animation, either
-    //       returning the target object to the initial state or placing the
-    //       target in the final state immediately. It would be bad if we start
-    //       another animation before finishing the first. If that happens we
-    //       could instantly finish the first animation or append the new
-    //       animation's keyframes to the currently playing animation.
+    flick.setAnimationID(options.id);
+    flick.setAnimationTarget(options.target);
+    flick.start();
 
     if ($flicks[options.id]) {
       removeFlick(options.id);
-      throw 'Need to handle multiple animations on the same object.'
+      console.warn(`An animation on ${options.id} is already playing.`);
+      console.warn(`Not sure what to do in this case yet.`)
     }
 
     $flicks[options.id] = flick;
@@ -26,15 +24,9 @@ global.AnimationController = (function () {
     delete $flicks[id];
   }
 
-  function onTick(time) {
-    Object.keys($flicks).forEach(id => {
-      console.log(`Update Flick(${id})`,time.deltaTime);
-    });
-  }
-
   return Object.freeze({
     addFlick,
-    onTick,
+    removeFlick,
   });
 
 })();

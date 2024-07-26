@@ -79,8 +79,8 @@ window.TileShelfView = (function() {
   function positionTiles() {
     Object.values($tileState).forEach(tileContainer => {
       tileContainer.setPosition(
-        ($shelf.x + ($shelf.width/2) - 32),
-        ($shelf.y - 20));
+        ($shelf.x + ($shelf.width/2)),
+        ($shelf.y + 12));
     });
   }
 

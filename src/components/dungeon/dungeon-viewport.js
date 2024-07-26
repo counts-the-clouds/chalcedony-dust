@@ -19,7 +19,7 @@ global.DungeonViewport = (function() {
   function init() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
-      if (DungeonView.isMovementEnabled()) {
+      if (DungeonView.isVisible() && DungeonView.isMovementEnabled()) {
         const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
         (event.deltaY < 0) ? zoomIn(velocity) : zoomOut(velocity);
       }

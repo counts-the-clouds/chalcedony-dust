@@ -22,6 +22,8 @@ global.TileContainer = async function(tile) {
     $tileContainer.eventMode = 'dynamic';
     $tileContainer.height = _tileSize;
     $tileContainer.width = _tileSize;
+    $tileContainer.pivot.x = _tileSize/2;
+    $tileContainer.pivot.y = _tileSize/2;
   }
 
   function setSize(size) {

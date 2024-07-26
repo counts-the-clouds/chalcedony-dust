@@ -1,6 +1,6 @@
 FlickRegistry.register('no-rotation-widdershins',{
   keyframes:[
-    { time:100, angle:-20, easing:['Quadratic','In'] },
-    { time:200, angle:0,   easing:['Quadratic','Out'] },
+    { properties:{ angle: -20 }, options:{ duration: 100, ease:'easeInQuad' }},
+    { properties:{ angle: 0   }, options:{ duration: 100, ease:'easeOutQuad' }},
   ]
 });

@@ -11,6 +11,7 @@ global.MainContent = (function() {
     addScriptTag(`${APP}/lib/pixi.min.js`);
 
     global.Tween = await require(`${APP}/lib/tween.umd.js`);
+    global.Ease = await require(`${APP}/lib/ease.js`);
   }
 
   function loadMainContent() {

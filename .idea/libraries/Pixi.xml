@@ -1,6 +1,12 @@
 <component name="libraryTable">
   <library name="Pixi" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/lib/pixi.js" />
+      </sourceFilesUrls>
+    </properties>
     <CLASSES>
+      <root url="file://$PROJECT_DIR$/lib/pixi.js" />
       <root url="file://$PROJECT_DIR$/lib/pixi.min.js" />
     </CLASSES>
     <JAVADOC />

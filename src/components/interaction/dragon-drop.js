@@ -43,13 +43,14 @@ window.DragonDrop = (function() {
       (event.global.x - $dragContext.offset.x),
       (event.global.y - $dragContext.offset.y));
 
-    const x = event.global.x - $dragContext.offset.x + (_tileSize/4);
-    const y = event.global.y - $dragContext.offset.y + (_tileSize/4);
+    const x = event.global.x - $dragContext.offset.x;
+    const y = event.global.y - $dragContext.offset.y;
 
     const cellContainer = DungeonView.getCellContainerAtPoint(x,y);
     if (cellContainer) {
       let cellID = cellContainer.getID();
       if ($dragContext.hoverCell !== cellID) {
+        // console.log(`Over(${cellID})`)
         $dragContext.hoverCell = cellID;
         PlacementManager.checkDropTarget();
       }
@@ -80,7 +81,7 @@ window.DragonDrop = (function() {
       AnimationController.addFlick({
         id: tileContainer.getID(),
         code: 'no-rotation-clockwise',
-        target: tileContainer
+        target: tileContainer.getTileContainer()
       });
     }
   }
@@ -93,7 +94,7 @@ window.DragonDrop = (function() {
       AnimationController.addFlick({
         id: tileContainer.getID(),
         code: 'no-rotation-widdershins',
-        target: tileContainer
+        target: tileContainer.getTileContainer()
       });
     }
   }

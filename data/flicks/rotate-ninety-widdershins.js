@@ -1,6 +1,5 @@
 FlickRegistry.register('rotate-ninety-widdershins',{
-  easing: ['Quadratic','InOut'],
-  keyframes:[
-    { time:300, angle:-90 },
+  keyframes: [
+    { properties:{ angle:-90 }, options:{ duration:300, ease:'easeInQuad' }},
   ]
 });
