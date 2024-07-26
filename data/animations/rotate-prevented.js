@@ -1,5 +1,4 @@
 AnimationRegistry.register('rotate-prevented', {
-
   build: (options) => {
     if (AnimationController.isPlaying(options.id)) { throw "A rotation animation is already playing." }
 
@@ -9,5 +8,4 @@ AnimationRegistry.register('rotate-prevented', {
 
     AnimationController.start(options.id, animation);
   }
-
 });

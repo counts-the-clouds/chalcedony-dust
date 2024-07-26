@@ -1,5 +1,4 @@
 AnimationRegistry.register('rotate-tile', {
-
   // Keeping the actual tile rotation in sync with the animation is a
   // surprisingly complicated task. The tile should only know what direction
   // it's pointing in, so keeping the rotation angle in sync with the direction
@@ -25,5 +24,4 @@ AnimationRegistry.register('rotate-tile', {
 
     AnimationController.start(options.id, animation);
   }
-
 });

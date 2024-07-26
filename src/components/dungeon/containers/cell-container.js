@@ -67,6 +67,10 @@ global.CellContainer = function(x,y,coordinates) {
     $tileContainer = await TileContainer(tile);
     $tileContainer.setPosition(HS,HS);
     $cellContainer.addChild($tileContainer.getTileContainer());
+
+    if (tile.getRotation() > 0) {
+      $tileContainer.getTileContainer().angle = tile.getRotation() * 90;
+    }
   }
 
   buildContainer();
