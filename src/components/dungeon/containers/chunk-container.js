@@ -1,7 +1,7 @@
 global.ChunkContainer = function(chunkID) {
 
   const $chunkID = chunkID;
-  const $chunkContainer = new PIXI.Container();
+  const $chunkContainer = new Pixi.Container();
   const $cellContainers = [];
   const $location = getChunk().getChunkLocation();
 
@@ -22,11 +22,11 @@ global.ChunkContainer = function(chunkID) {
 
   function buildDevelopmentGuides() {
     if (Environment.isDevelopment) {
-      const border = new PIXI.Graphics();
+      const border = new Pixi.Graphics();
       border.rect(0,0,_chunkSize,_chunkSize);
       border.stroke({ width:3, color:'rgb(100,80,60,0.4)' });
 
-      const text = new PIXI.Text({ text:`Chunk${$chunkID}`, style: {
+      const text = new Pixi.Text({ text:`Chunk${$chunkID}`, style: {
         fontFamily:'roboto',
         fontSize:200,
         fill:'rgba(150,140,130,0.4)',
@@ -61,7 +61,7 @@ global.ChunkContainer = function(chunkID) {
 
   // ===========================================================================
 
-  // Get the cell container at the specified PIXI global point by determining
+  // Get the cell container at the specified Pixi global point by determining
   // which cell should be at that location.
   function getCellContainerAtPoint(x,y) {
     const tileSize = DungeonViewport.getScale() * _tileSize;

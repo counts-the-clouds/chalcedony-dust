@@ -8,9 +8,12 @@ EventRegistry.register('enter-the-dungeon', {
 
   // Wipe tile board, place dungeon core tile, reset tile bag with starting tiles
   onFinish: state => {
-    GameState.clear();
-    GameBuilder.beginDefaultGame();
-    DungeonController.renderDungeon();
+
+    console.log("TODO: Clear and start")
+
+    // GameState.clear();
+    // GameBuilder.beginDefaultGame();
+    // DungeonController.renderDungeon();
   },
 
 });

@@ -7,12 +7,12 @@ global.TileHighlight = (function() {
   let $tweenState;
 
   async function build() {
-    $mask = new PIXI.Graphics();
+    $mask = new Pixi.Graphics();
 
-    $sprite = new PIXI.Sprite(await PIXI.Assets.load('glow-effect'));
+    $sprite = new Pixi.Sprite(await Pixi.Assets.load('glow-effect'));
     $sprite.mask = $mask;
 
-    $container = new PIXI.Container();
+    $container = new Pixi.Container();
     $container.addChild($mask);
     $container.addChild($sprite);
     $container.renderable = false;
@@ -27,7 +27,9 @@ global.TileHighlight = (function() {
       $tweenContext = { cellContainer }
       $tweenState = { shrink:(_tileSize * DungeonViewport.getScale() * 0.8), alpha:0 }
       updatePosition();
-      startTween();
+
+      // TODO: Turn this into an Animation
+      // startTween();
     }
   }
 

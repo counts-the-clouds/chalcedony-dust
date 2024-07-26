@@ -19,34 +19,19 @@ global.DungeonViewport = (function() {
   function init() {
     window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
-      if (DungeonView.isMovementEnabled()) {
+      if (DungeonView.isVisible() && DungeonView.isMovementEnabled()) {
         const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
         (event.deltaY < 0) ? zoomIn(velocity) : zoomOut(velocity);
       }
     });
   }
 
-  // TODO: The Viewport will also need an effect layer. This glow effect is
-  //       okay, but it would be better to render an interesting sequence in
-  //       blender using volumetric clouds and light rays passing though the
-  //       clouds. We could render that as a short loop against a transparent
-  //       background, turn that into a short sequence, then turn that into a
-  //       sprite sheet. A lot of work for just a tile glow, but the edge glow
-  //       effect could do something similar and we'll use that a lot. Just an
-  //       idea to explore.
-  //
-  // const glowTexture = await PIXI.Assets.load('glow-effect');
-  // const $glowEffect = new PIXI.Sprite(glowTexture);
-  // $glowEffect.x = 0;
-  // $glowEffect.y = 0;
-
-
   function create(application) {
-    $viewport = new PIXI.Container();
+    $viewport = new Pixi.Container();
     $viewport.eventMode = 'static';
     $viewport.on('mousemove',DragonDrop.onMove);
 
-    $guides = new PIXI.Graphics();
+    $guides = new Pixi.Graphics();
 
     application.stage.addChild($viewport);
     application.stage.addChild($guides);

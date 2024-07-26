@@ -17,17 +17,23 @@ global.DungeonView = (function() {
     await createApplication();
   }
 
+  function isVisible() {
+    return X.first('#dungeonView') != null;
+  }
+
   function close() {
     $application.destroy();
     $application = null;
   }
 
   async function createApplication() {
-    $application = new PIXI.Application();
+    $application = new Pixi.Application();
     await $application.init({
       antialias: true,
       resizeTo: window,
     });
+
+    $application.ticker.add(AnimationController.onTick);
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
 
@@ -38,7 +44,7 @@ global.DungeonView = (function() {
   }
 
   async function createEffectsContainer() {
-    $effectsContainer = new PIXI.Container();
+    $effectsContainer = new Pixi.Container();
     $effectsContainer.x = 0;
     $effectsContainer.y = 0;
     $effectsContainer.width = $application.screen.width
@@ -81,9 +87,9 @@ global.DungeonView = (function() {
   // or when other dialogs are open. Movement can also be disabled with a game
   // flag in the case of the tutorial game.
   function isMovementEnabled() {
+    if (GameState.hasFlag('dungeon-view.disable-movement')) { return false; }
     if (DragonDrop.isDragging()) { return false; }
     if (EventView.isVisible()) { return false; }
-    if (GameState.hasFlag('dungeon-view.disable-movement')) { return false; }
     return true;
   }
 
@@ -132,6 +138,7 @@ global.DungeonView = (function() {
   return Object.freeze({
     init,
     open,
+    isVisible,
     close,
     resize,
     getChunkExtent,

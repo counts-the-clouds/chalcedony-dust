@@ -17,9 +17,9 @@ global.Validate = (function() {
   //   }
   // }
 
-  // function exists(name, value, message=null) {
-  //   if (value == null) { throw message ? message : `Validation Failed: ${name} is null.` }
-  // }
+  function exists(name, value, message=null) {
+    if (value == null) { throw message ? message : `Validation Failed: ${name} is null.` }
+  }
 
   // function arrayLength(name, array, length, message=null) {
   //   if (array.length !== length) { throw message ? message : `Validation Failed: ${name} is not ${length} elements long.` }

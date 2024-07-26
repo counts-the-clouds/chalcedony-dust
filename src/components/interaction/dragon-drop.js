@@ -9,11 +9,53 @@ window.DragonDrop = (function() {
   function init() {
     window.addEventListener('mouseup', event => { stopDrag(true); });
     window.addEventListener('mouseout', event => { stopDrag(false); });
+
+    X.registerKeyAction("action.rotate-clockwise", isDragging, () => { rotateTile(1) });
+    X.registerKeyAction("action.rotate-widdershins", isDragging, () => { rotateTile(-1) });
   }
 
   function isDragging() { return $dragContext != null; }
   function getContext() { return { ...$dragContext }; }
   function setContext(context) { $dragContext = context; }
+
+  function getDragTile() {
+    return $dragContext ? $dragContext.tileContainer.getTile() : null;
+  }
+
+  function getHoverCoordinates() {
+    if ($dragContext.hoverCell == null) { return null; }
+    const [gx,gy] = $dragContext.hoverCell.split(':');
+    return Coordinates.fromGlobal(parseInt(gx),parseInt(gy));
+  }
+
+  function getHoverCell() {
+    if ($dragContext.hoverCell == null) { return null; }
+    const coordinates = getHoverCoordinates();
+    return DungeonView.getCellContainerAt(coordinates.gx,coordinates.gy);
+  }
+
+  // === Drag & Drop ===========================================================
+
+  function onMove(event) {
+    if (!isDragging()) { return false; }
+
+    $dragContext.tileContainer.setPosition(
+      (event.global.x - $dragContext.offset.x),
+      (event.global.y - $dragContext.offset.y));
+
+    const x = event.global.x - $dragContext.offset.x;
+    const y = event.global.y - $dragContext.offset.y;
+
+    const cellContainer = DungeonView.getCellContainerAtPoint(x,y);
+    if (cellContainer) {
+      let cellID = cellContainer.getID();
+      if ($dragContext.hoverCell !== cellID) {
+        // console.log(`Over(${cellID})`)
+        $dragContext.hoverCell = cellID;
+        PlacementManager.checkDropTarget();
+      }
+    }
+  }
 
   function stopDrag(placeTile) {
     if (!isDragging()) { return false; }
@@ -29,43 +71,42 @@ window.DragonDrop = (function() {
     $dragContext = null;
   }
 
-  function onMove(event) {
-    if (!isDragging()) { return false; }
+  // === Rotate ================================================================
 
-    $dragContext.tileContainer.setPosition(
-      (event.global.x - $dragContext.offset.x),
-      (event.global.y - $dragContext.offset.y));
+  function rotateTile(direction) {
+    const tileContainer = $dragContext.tileContainer;
+    const tile = tileContainer.getTile();
 
-    const x = event.global.x - $dragContext.offset.x + (_tileSize/4);
-    const y = event.global.y - $dragContext.offset.y + (_tileSize/4);
-
-    const cellContainer = DungeonView.getCellContainerAtPoint(x,y);
-    if (cellContainer) {
-      let cellID = cellContainer.getID();
-      if ($dragContext.hoverCell !== cellID) {
-        $dragContext.hoverCell = cellID;
-        PlacementManager.checkDropTarget();
+    if (!AnimationController.isPlaying(tileContainer.getID())) {
+      if (isRotateAllowed(tile) === false) {
+        return AnimationController.addAnimation('rotate-prevented',{
+          id: tileContainer.getID(),
+          direction: direction,
+          target: tileContainer.getTileContainer()
+        });
       }
+
+      (direction > 0) ? tile.rotateClockwise() : tile.rotateWiddershins();
+
+      AnimationController.addAnimation('rotate-tile',{
+        id: tileContainer.getID(),
+        direction: direction,
+        target: tileContainer.getTileContainer(),
+      });
     }
   }
 
-  function getHoverCoordinates() {
-    if ($dragContext.hoverCell == null) { return null; }
-    const [gx,gy] = $dragContext.hoverCell.split(':');
-    return Coordinates.fromGlobal(parseInt(gx),parseInt(gy));
+  function isRotateAllowed(tile) {
+    return ! (tile.getPlacementRules()||[]).includes(_noRotate);
   }
 
-  function getHoverCell() {
-    if ($dragContext.hoverCell == null) { return null; }
-    const coordinates = getHoverCoordinates();
-    return DungeonView.getCellContainerAt(coordinates.gx,coordinates.gy);
-  }
 
   return Object.freeze({
     init,
     isDragging,
     getContext,
     setContext,
+    getDragTile,
     stopDrag,
     onMove,
     getHoverCell,

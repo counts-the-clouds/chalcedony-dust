@@ -1,19 +1,20 @@
 global.TileContainer = async function(tile) {
 
   const $tile = tile;
-  const $tileContainer = new PIXI.Container();
+  const $tileContainer = new Pixi.Container();
 
+  function getID() { return $tile.getID(); }
   function getTile() { return $tile; }
   function getTileContainer() { return $tileContainer; }
 
   async function buildContainer() {
     const layers = $tile.getLayers();
     const textures = await Promise.all(layers.map(async layer => {
-      return await PIXI.Assets.load(layer.background);
+      return await Pixi.Assets.load(layer.background);
     }));
 
     layers.forEach((layer,i) => {
-      $tileContainer.addChild(new PIXI.Sprite(textures[i]));
+      $tileContainer.addChild(new Pixi.Sprite(textures[i]));
     });
 
     $tileContainer.label = 'TileContainer';
@@ -21,6 +22,8 @@ global.TileContainer = async function(tile) {
     $tileContainer.eventMode = 'dynamic';
     $tileContainer.height = _tileSize;
     $tileContainer.width = _tileSize;
+    $tileContainer.pivot.x = _tileSize/2;
+    $tileContainer.pivot.y = _tileSize/2;
   }
 
   function setSize(size) {
@@ -75,6 +78,7 @@ global.TileContainer = async function(tile) {
   await buildContainer();
 
   return {
+    getID,
     getTile,
     getTileContainer,
     setSize,

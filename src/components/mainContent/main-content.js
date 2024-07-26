@@ -3,14 +3,29 @@ global.MainContent = (function() {
   // Just requiring PixiJS doesn't do anything, so I'll just add a script tag
   // to the head like some kind of boomer. I'm also not sure when Pixi
   // becomes available doing it this way.
-  //
-  // TODO: If the loading time becomes noticible, set up a while loop to poll
-  //       for PIXI appearing in the global scope, then start background
-  //       loading all the assets while the main menu is open.
   async function loadDependencies() {
     addScriptTag(`${APP}/lib/pixi.min.js`);
+    await waitForPixi();
+    global.Pixi = PIXI;
 
-    global.Tween = await require(`${APP}/lib/tween.umd.js`);
+    const tween = await require(`${APP}/lib/tween.umd.js`);
+    global.Tween = tween.Tween;
+    global.Easing = tween.Easing;
+  }
+
+  // Because PixiJS is coming from a <script> tag that's added after the page
+  // has already loaded, it takes a little while to show up. So we to wait a
+  // few milliseconds for to finish loading before we do the rest of the
+  // initialization.
+  function waitForPixi() {
+    return new Promise(resolve => {
+      let interval = setInterval(() => {
+        if (global.PIXI) {
+          clearInterval(interval);
+          resolve();
+        }
+      },10);
+    });
   }
 
   function loadMainContent() {

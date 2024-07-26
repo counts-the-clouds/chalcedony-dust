@@ -58,7 +58,7 @@ global.GameController = (function() {
     await TileShelfView.addTile(tile);
     TileShelfView.positionTiles();
 
-    localLog("Drew Tile",{ code:tile.getCode, id:tile.getID() });
+    localLog("Drew Tile",{ code:tile.getCode(), id:tile.getID() });
   }
 
   function localLog(message,data) {
