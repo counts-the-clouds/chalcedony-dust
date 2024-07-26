@@ -4,7 +4,7 @@ global.CellContainer = function(x,y,coordinates) {
   const HS = Math.floor(_tileSize/2);
 
   const $coordinates = coordinates;
-  const $cellContainer = new PIXI.Container();
+  const $cellContainer = new Pixi.Container();
   let $tileContainer;
 
   function getID() { return $cellContainer.accessibleHint; }
@@ -13,7 +13,7 @@ global.CellContainer = function(x,y,coordinates) {
   function getPosition() { return $cellContainer.getGlobalPosition(); }
 
   function buildContainer() {
-    const background = new PIXI.Graphics();
+    const background = new Pixi.Graphics();
     background.label = 'background';
     background.rect(0,0,TS,TS);
     background.fill('rgba(50,60,70,0.05)');
@@ -34,12 +34,12 @@ global.CellContainer = function(x,y,coordinates) {
 
   function buildDevelopmentGuides() {
     if (Environment.isDevelopment) {
-      const border = new PIXI.Graphics();
+      const border = new Pixi.Graphics();
       border.rect(0, 0, TS, TS);
       border.stroke({color: 'rgb(60,80,100,0.3)'});
       border.fill({color: 'rgb(60,80,100,0.01)'});
 
-      const text = new PIXI.Text({
+      const text = new Pixi.Text({
         text: `(${$coordinates.gx},${$coordinates.gy})`, style: {
           fontFamily: 'roboto',
           align: 'center',

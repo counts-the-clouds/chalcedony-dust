@@ -1,6 +1,6 @@
 window.TileShelfView = (function() {
 
-  // Normally I would make all of these consts, but PIXI will not be loaded
+  // Normally I would make all of these consts, but Pixi will not be loaded
   // when this containing function is first run.
   let $dragArea;
   let $tileBag
@@ -23,33 +23,33 @@ window.TileShelfView = (function() {
   //
   async function create(application) {
 
-    $leftTrim = new PIXI.Graphics();
+    $leftTrim = new Pixi.Graphics();
     $leftTrim.rect(0,20,20,60);
     $leftTrim.stroke({ color:'rgb(50,58,50)' });
     $leftTrim.fill({ color:'rgb(10,12,10)' });
 
-    $rightTrim = new PIXI.Graphics();
+    $rightTrim = new Pixi.Graphics();
     $rightTrim.rect(200,20,20,60);
     $rightTrim.stroke({ color:'rgb(50,58,50)' });
     $rightTrim.fill({ color:'rgb(10,12,10)' });
 
-    $center = new PIXI.Graphics();
+    $center = new Pixi.Graphics();
     $center.rect(0,30,200,50);
     $center.stroke({ color:'rgb(40,50,40)' });
     $center.fill({ color:'rgb(10,12,10)' });
 
-    $shelf = new PIXI.Container();
+    $shelf = new Pixi.Container();
     $shelf.addChild($center);
     $shelf.addChild($leftTrim);
     $shelf.addChild($rightTrim);
 
-    $dragArea = new PIXI.Container();
+    $dragArea = new Pixi.Container();
     $dragArea.x = 0;
     $dragArea.y = 0;
     $dragArea.width = application.screen.width
     $dragArea.height = application.screen.height
 
-    $tileBag = new PIXI.Graphics();
+    $tileBag = new Pixi.Graphics();
     $tileBag.rect(0,0,80,80)
     $tileBag.stroke({ color:'rgb(55,60,55)' });
     $tileBag.fill({ color:'rgb(12,15,12)' });

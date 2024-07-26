@@ -33,7 +33,6 @@ global.Registry = function(typeName) {
 }
 
 global.EventRegistry = Registry('PagedEvent');
-global.FlickRegistry = Registry('Flick');
 global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');
 global.PlaygroundRegistry = Registry('Playground');

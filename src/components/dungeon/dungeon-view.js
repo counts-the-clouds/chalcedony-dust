@@ -27,11 +27,13 @@ global.DungeonView = (function() {
   }
 
   async function createApplication() {
-    $application = new PIXI.Application();
+    $application = new Pixi.Application();
     await $application.init({
       antialias: true,
       resizeTo: window,
     });
+
+    $application.ticker.add(AnimationController.onTick);
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
 
@@ -42,7 +44,7 @@ global.DungeonView = (function() {
   }
 
   async function createEffectsContainer() {
-    $effectsContainer = new PIXI.Container();
+    $effectsContainer = new Pixi.Container();
     $effectsContainer.x = 0;
     $effectsContainer.y = 0;
     $effectsContainer.width = $application.screen.width

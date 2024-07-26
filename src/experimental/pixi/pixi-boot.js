@@ -8,7 +8,7 @@ function init() {}
 let app;
 
 async function run() {
-  app = new PIXI.Application();
+  app = new Pixi.Application();
   await app.init({ background:'rgb(20,25,30)', resizeTo:window });
   X.first('#pixiCanvas').appendChild(app.canvas);
 
@@ -16,13 +16,13 @@ async function run() {
 }
 
 function testEase() {
-  const container = new PIXI.Container();
+  const container = new Pixi.Container();
   container.pivot.x = 250;
   container.pivot.y = 150;
   container.x = app.screen.width/2;
   container.y = app.screen.height/2;
 
-  const square = new PIXI.Sprite(PIXI.Texture.WHITE);
+  const square = new Pixi.Sprite(Pixi.Texture.WHITE);
   square.height = 300;
   square.width = 500;
   square.tint = 'rgb(50,60,70)'

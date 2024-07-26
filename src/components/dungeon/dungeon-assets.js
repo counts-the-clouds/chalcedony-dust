@@ -9,24 +9,24 @@ global.DungeonAssets = (function() {
     $tileElements = await compileAssets(`${APP}/assets/tile-elements`);
     $tiles = await compileAssets(`${APP}/assets/tiles`);
 
-    PIXI.Assets.addBundle('tile-backgrounds', $tileBackgrounds);
-    PIXI.Assets.addBundle('tile-elements', $tileElements);
-    PIXI.Assets.addBundle('tiles', $tiles);
+    Pixi.Assets.addBundle('tile-backgrounds', $tileBackgrounds);
+    Pixi.Assets.addBundle('tile-elements', $tileElements);
+    Pixi.Assets.addBundle('tiles', $tiles);
 
-    PIXI.Assets.addBundle('fonts', [
+    Pixi.Assets.addBundle('fonts', [
       { alias: 'roboto', src:`${APP}/assets/fonts/Roboto-Regular.ttf` },
     ]);
   }
 
   async function loadAssets() {
-    await PIXI.Assets.loadBundle('tile-backgrounds');
-    await PIXI.Assets.loadBundle('tile-elements');
-    await PIXI.Assets.loadBundle('tiles');
-    await PIXI.Assets.loadBundle('fonts');
+    await Pixi.Assets.loadBundle('tile-backgrounds');
+    await Pixi.Assets.loadBundle('tile-elements');
+    await Pixi.Assets.loadBundle('tiles');
+    await Pixi.Assets.loadBundle('fonts');
   }
 
   async function randomTileBackground() {
-    return await PIXI.Assets.load(Random.from($tileBackgrounds).alias);
+    return await Pixi.Assets.load(Random.from($tileBackgrounds).alias);
   }
 
   function compileAssets(directory) {

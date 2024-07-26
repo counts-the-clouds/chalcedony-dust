@@ -10,8 +10,8 @@ window.DragonDrop = (function() {
     window.addEventListener('mouseup', event => { stopDrag(true); });
     window.addEventListener('mouseout', event => { stopDrag(false); });
 
-    X.registerKeyAction("action.rotate-clockwise", isDragging, rotateClockwise);
-    X.registerKeyAction("action.rotate-widdershins", isDragging, rotateWiddershins);
+    X.registerKeyAction("action.rotate-clockwise", isDragging, () => { rotateTile(1) });
+    X.registerKeyAction("action.rotate-widdershins", isDragging, () => { rotateTile(-1) });
   }
 
   function isDragging() { return $dragContext != null; }
@@ -73,28 +73,25 @@ window.DragonDrop = (function() {
 
   // === Rotate ================================================================
 
-  function rotateClockwise() {
+  function rotateTile(direction) {
     const tileContainer = $dragContext.tileContainer;
     const tile = tileContainer.getTile();
 
-    if (isRotateAllowed(tile) === false) {
-      AnimationController.addFlick({
-        id: tileContainer.getID(),
-        code: 'no-rotation-clockwise',
-        target: tileContainer.getTileContainer()
-      });
-    }
-  }
+    if (!AnimationController.isPlaying(tileContainer.getID())) {
+      if (isRotateAllowed(tile) === false) {
+        return AnimationController.rotatePrevented({
+          id: tileContainer.getID(),
+          direction: direction,
+          target: tileContainer.getTileContainer()
+        });
+      }
 
-  function rotateWiddershins() {
-    const tileContainer = $dragContext.tileContainer;
-    const tile = tileContainer.getTile();
+      (direction > 0) ? tile.rotateClockwise() : tile.rotateWiddershins();
 
-    if (isRotateAllowed(tile) === false) {
-      AnimationController.addFlick({
+      AnimationController.rotateTile({
         id: tileContainer.getID(),
-        code: 'no-rotation-widdershins',
-        target: tileContainer.getTileContainer()
+        direction: direction,
+        target: tileContainer.getTileContainer(),
       });
     }
   }
