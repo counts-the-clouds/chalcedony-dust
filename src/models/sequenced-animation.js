@@ -47,12 +47,12 @@ global.SequencedAnimation = function (id, target) {
     $tween.onComplete(properties => {
       $frameIndex += 1;
       if ($frameIndex < $keyframes.length) { return playFrame(properties); }
-      if (typeof $onComplete === 'function') { $onComplete($id) }
+      if (typeof $onComplete === 'function') { $onComplete(properties) }
       AnimationController.onComplete($id);
     });
   }
 
-  function update(time) {
+  function update() {
     if ($tween) { $tween.update(); }
   }
 

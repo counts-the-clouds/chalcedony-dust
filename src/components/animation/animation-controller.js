@@ -16,12 +16,21 @@ global.AnimationController = (function () {
     delete $animations[id];
   }
 
-  async function addAnimation(code, id, target, options={}) {
+  async function addAnimation(code, id, options={}) {
     const animationData = AnimationRegistry.lookup(code)
-    const animation = await animationData.build(id, target, options);
+    const animation = await animationData.build(id, options);
 
     $animations[id] = animation;
     animation.start();
+  }
+
+  function stop(id) {
+    if ($animations[id]) {
+      if (typeof $animations[id].stop === 'function') {
+        $animations[id].stop();
+      }
+      delete $animations[id];
+    }
   }
 
   return Object.freeze({
@@ -29,6 +38,7 @@ global.AnimationController = (function () {
     onTick,
     onComplete,
     addAnimation,
+    stop,
   });
 
 })();

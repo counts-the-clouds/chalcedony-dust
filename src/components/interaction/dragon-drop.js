@@ -79,25 +79,22 @@ window.DragonDrop = (function() {
 
     if (!AnimationController.isPlaying(tileContainer.getID())) {
       if (isRotateAllowed(tile) === false) {
-        return AnimationController.addAnimation('rotate-prevented',
-          tileContainer.getID(),
-          tileContainer.getTileContainer(),
-          { direction });
+        return AnimationController.addAnimation('rotate-prevented', tileContainer.getID(), {
+          target:tileContainer.getTileContainer(), direction });
       }
 
       (direction > 0) ? tile.rotateClockwise() : tile.rotateWiddershins();
 
-      AnimationController.addAnimation('rotate-tile',
-        tileContainer.getID(),
-        tileContainer.getTileContainer(),
-        { direction });
+      AnimationController.addAnimation('rotate-tile', tileContainer.getID(), {
+        target:tileContainer.getTileContainer(), direction });
+
+      PlacementManager.tileRotated();
     }
   }
 
   function isRotateAllowed(tile) {
     return ! (tile.getPlacementRules()||[]).includes(_noRotate);
   }
-
 
   return Object.freeze({
     init,
