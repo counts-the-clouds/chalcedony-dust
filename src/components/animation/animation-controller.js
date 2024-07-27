@@ -16,11 +16,10 @@ global.AnimationController = (function () {
     delete $animations[id];
   }
 
-  function addAnimation(code, options) {
-    AnimationRegistry.lookup(code).build(options);
-  }
+  async function addAnimation(code, id, target, options={}) {
+    const animationData = AnimationRegistry.lookup(code)
+    const animation = await animationData.build(id, target, options);
 
-  function start(id, animation) {
     $animations[id] = animation;
     animation.start();
   }
@@ -30,7 +29,6 @@ global.AnimationController = (function () {
     onTick,
     onComplete,
     addAnimation,
-    start,
   });
 
 })();

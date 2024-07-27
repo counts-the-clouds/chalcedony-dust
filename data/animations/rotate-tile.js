@@ -4,24 +4,24 @@ AnimationRegistry.register('rotate-tile', {
   // it's pointing in, so keeping the rotation angle in sync with the direction
   // without having the tile flip around like crazy is non trivial. Easier just
   // to forbid rotating while a rotation animation is already playing.
-  build: (options) => {
-    if (AnimationController.isPlaying(options.id)) { throw "A rotation animation is already playing." }
+  build: async (id,target,options) => {
+    if (AnimationController.isPlaying(id)) { throw "A rotation animation is already playing." }
 
-    let angle = options.target.angle;
+    let angle = target.angle;
     if (options.direction < 0) { angle -= 90; }
     if (options.direction > 0) { angle += 90; }
 
-    const animation = ResoluteAnimation(options.id, options.target);
+    const animation = ResoluteAnimation(id, target);
     animation.setDuration(200);
     animation.setEasing(Easing.Quadratic.InOut);
     animation.setGoal({ angle });
 
     animation.onComplete(() => {
       if (Math.abs(angle) % 360 === 0) {
-        options.target.angle = 0;
+        target.angle = 0;
       }
     });
 
-    AnimationController.start(options.id, animation);
+    return animation;
   }
 });
