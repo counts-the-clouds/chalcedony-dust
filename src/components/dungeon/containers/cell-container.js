@@ -5,6 +5,8 @@ global.CellContainer = function(x,y,coordinates) {
 
   const $coordinates = coordinates;
   const $cellContainer = new Pixi.Container();
+
+  let $background;
   let $tileContainer;
 
   function getID() { return $cellContainer.accessibleHint; }
@@ -13,20 +15,19 @@ global.CellContainer = function(x,y,coordinates) {
   function getPosition() { return $cellContainer.getGlobalPosition(); }
 
   function buildContainer() {
-    const background = new Pixi.Graphics();
-    background.label = 'background';
-    background.rect(0,0,TS,TS);
-    background.fill('rgba(50,60,70,0.05)');
+    $background = new Pixi.Graphics();
+    $background.label = 'background';
 
     $cellContainer.eventMode = 'dynamic';
     $cellContainer.label = 'CellContainer';
-    $cellContainer.addChild(background);
+    $cellContainer.addChild($background);
     $cellContainer.x = (TS*x);
     $cellContainer.y = (TS*y);
     $cellContainer.pivot.x = $cellContainer.width/2 - HS;
     $cellContainer.pivot.y = $cellContainer.height/2 - HS;
     $cellContainer.accessibleHint = `${coordinates.gx}:${coordinates.gy}`
 
+    resetBackgroundColor();
     buildDevelopmentGuides();
 
     return $cellContainer;
@@ -73,6 +74,16 @@ global.CellContainer = function(x,y,coordinates) {
     }
   }
 
+  function resetBackgroundColor() {
+    $background.rect(0,0,TS,TS);
+    $background.fill('rgba(50,60,70,0.05)');
+  }
+
+  function setBackgroundColor(color) {
+    $background.rect(0,0,TS,TS);
+    $background.fill(color);
+  }
+
   buildContainer();
 
   return Object.freeze({
@@ -83,5 +94,7 @@ global.CellContainer = function(x,y,coordinates) {
     getTileContainer,
     getTile,
     setTile,
+    resetBackgroundColor,
+    setBackgroundColor,
   });
 }

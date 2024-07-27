@@ -1,6 +1,6 @@
-AnimationRegistry.register('tile-highlight-outer', {
+AnimationRegistry.register('cell-highlight-outer', {
   build: async (id,options) => {
-    if (AnimationController.isPlaying(id)) { throw "A tile highlight is already playing." }
+    if (AnimationController.isPlaying(id)) { throw "A cell highlight is already playing." }
 
     const sprite = options.sprite;
     const TS = _tileSize * DungeonViewport.getScale();

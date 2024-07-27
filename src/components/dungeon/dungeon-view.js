@@ -49,7 +49,7 @@ global.DungeonView = (function() {
     $effectsContainer.y = 0;
     $effectsContainer.width = $application.screen.width
     $effectsContainer.height = $application.screen.height
-    $effectsContainer.addChild(await TileHighlight.build());
+    $effectsContainer.addChild(await CellHighlight.build());
 
     $application.stage.addChild($effectsContainer);
   }

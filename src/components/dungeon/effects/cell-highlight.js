@@ -1,4 +1,4 @@
-global.TileHighlight = (function() {
+global.CellHighlight = (function() {
 
   let $mask;
   let $sprite;
@@ -38,14 +38,14 @@ global.TileHighlight = (function() {
     updatePosition();
 
     if ($highlightedCell) {
-      AnimationController.addAnimation('tile-highlight-outer','(THO)',{
+      AnimationController.addAnimation('cell-highlight-outer','(CHO)',{
         sprite: $sprite,
       });
     }
   }
 
   function hide() {
-    AnimationController.stop('(THO)');
+    AnimationController.stop('(CHO)');
     $highlightContainer.renderable = false;
     $highlightedCell = null;
   }
