@@ -1,7 +1,14 @@
 
+
+
+
 NoteRegistry.register('tutorial.place-tile', {
   text: `Pick up the tile by clicking on it, then place it in the cell in the center of the screen.`,
   delay: 3000,
+});
+
+NoteRegistry.register('tutorial.connecting-tiles', {
+  text: `Tiles can be placed next to other tiles with matching edges.`
 });
 
 NoteRegistry.register('tutorial.rotate-tile', {

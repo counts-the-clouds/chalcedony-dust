@@ -53,6 +53,10 @@ global.GameController = (function() {
     const tile = TileBag.drawTile();
           tile.buildSegments();
 
+    if (tile.getDrawNote()) {
+      Note.show(tile.getDrawNote());
+    }
+
     TileBag.raiseHeat();
     TileShelf.addTile(tile);
     await TileShelfView.addTile(tile);

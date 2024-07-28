@@ -50,9 +50,11 @@ window.DragonDrop = (function() {
     if (cellContainer) {
       let cellID = cellContainer.getID();
       if ($dragContext.hoverCell !== cellID) {
-        console.log(`Over(${cellID})`)
+        // console.log(`DragonDrop.onMove(${cellID})`)
         $dragContext.hoverCell = cellID;
-        PlacementManager.checkDropTarget();
+        if (getHoverCell().getTile() == null) {
+          PlacementManager.checkDropTarget();
+        }
       }
     }
   }

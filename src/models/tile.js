@@ -7,11 +7,12 @@ global.Tile = function(code, options={}) {
   const $placementEvent = options.placementEvent;
   const $placementTrigger = options.placementTrigger;
   const $placementRules = options.placementRules;
-  const $enableNote = options.enableNote;
 
-  if (options.enableNote) {
-    NoteRegistry.lookup($enableNote.code);
-  }
+  const $placementNote = options.placementNote;
+  const $drawNote = options.drawNote;
+
+  if ($placementNote) { NoteRegistry.lookup($placementNote); }
+  if ($drawNote) { NoteRegistry.lookup($drawNote); }
 
   let $coordinates;
   let $rotation = 0;
@@ -21,9 +22,11 @@ global.Tile = function(code, options={}) {
   function getTileData() { return TileRegistry.lookup($code); }
   function getID() { return $id; }
 
+  function getDrawNote() { return $drawNote; }
   function getPlacementEvent() { return $placementEvent; }
   function getPlacementTrigger() { return $placementTrigger; }
   function getPlacementRules() { return $placementRules; }
+  function getPlacementNote() { return $placementNote; }
 
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return { ...$coordinates }; }
@@ -72,17 +75,6 @@ global.Tile = function(code, options={}) {
     });
   }
 
-  // === Note ===
-
-  function getNote() {
-    if ($enableNote) {
-      const note = NoteRegistry.lookup($enableNote.code);
-            note.setTrigger($enableNote.when)
-
-      return note;
-    }
-  }
-
   // === Serialization ===
 
   function pack() {
@@ -91,10 +83,11 @@ global.Tile = function(code, options={}) {
       id: $id,
       coordinates: $coordinates,
       rotation: $rotation,
+      drawNote: $drawNote,
       placementEvent: $placementEvent,
       placementTrigger: $placementTrigger,
       placementRules: $placementRules,
-      enableNote: $enableNote,
+      placementNote: $placementNote,
     }
 
     if ($segments) {
@@ -114,10 +107,11 @@ global.Tile = function(code, options={}) {
     getCode,
     getTileData,
     getID,
+    getDrawNote,
     getPlacementEvent,
     getPlacementTrigger,
     getPlacementRules,
-
+    getPlacementNote,
     setCoordinates,
     getCoordinates,
 
@@ -132,7 +126,6 @@ global.Tile = function(code, options={}) {
     getSegments,
 
     getLayers,
-    getNote,
     pack,
     toString,
   });
@@ -141,9 +134,11 @@ global.Tile = function(code, options={}) {
 Tile.unpack = function(data) {
   let tile = Tile(data.code, {
     id: data.id,
+    drawNote: data.drawNote,
     placementEvent: data.placementEvent,
     placementTrigger: data.placementTrigger,
     placementRules: data.placementRules,
+    placementNote: data.placementNote,
     enableNote: data.enableNote,
   });
 

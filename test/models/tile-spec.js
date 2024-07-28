@@ -67,7 +67,7 @@ describe("Tile", function() {
 
       let packed = tile.pack();
 
-      expect(Object.keys(packed).length).to.equal(8);
+      expect(Object.keys(packed).length).to.equal(9);
       expect(packed.id).to.equal(42);
       expect(packed.code).to.equal('forest-1');
       expect(packed.coordinates.gx).to.equal(5);
@@ -87,11 +87,8 @@ describe("Tile", function() {
     })
 
     it('with note', function() {
-      let tile = Tile('forest-2', { enableNote:{ code:'tutorial.rotate-tile', when:_drawn }});
-      let pack = tile.pack();
-
-      expect(pack.enableNote.code).to.equal('tutorial.rotate-tile');
-      expect(pack.enableNote.when).to.equal('drawn');
+      let tile = Tile('forest-2', { drawNote:'tutorial.rotate-tile' });
+      expect(tile.pack().drawNote).to.equal('tutorial.rotate-tile');
     });
   });
 

@@ -132,15 +132,17 @@ global.PlacementManager = (function () {
   }
 
   function executePlacementTrigger(tile) {
-    if (tile.placementTrigger) {
+    const trigger = tile.getPlacementTrigger();
+
+    if (trigger) {
       try {
-        localLog("Executing Placement Trigger", { code:tile.placementTrigger });
-        TriggerRegistry.lookup(tile.placementTrigger).friggerFunction(tile);
+        localLog("Executing Placement Trigger", { code:trigger });
+        TriggerRegistry.lookup(trigger).triggerFunction(tile);
       }
       catch(error) {
-        logError(`Error Executing Placement Trigger`,error,{
+        logError(`Error Executing Placement Trigger`, error, {
           system:'PlacementManager',
-          data:{ code:tile.placementTrigger }
+          data:{ code:trigger }
         });
       }
     }
