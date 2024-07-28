@@ -65,7 +65,7 @@ window.DragonDrop = (function() {
     }
 
     TileShelfView.positionTiles();
-    CellHighlight.hide();
+    OuterCellHighlight.hide();
 
     $dragContext.tileContainer.setCursor('grab');
     $dragContext = null;

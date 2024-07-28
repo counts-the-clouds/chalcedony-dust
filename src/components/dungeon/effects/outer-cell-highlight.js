@@ -1,4 +1,4 @@
-global.CellHighlight = (function() {
+global.OuterCellHighlight = (function() {
 
   let $mask;
   let $sprite;
@@ -6,8 +6,7 @@ global.CellHighlight = (function() {
   let $highlightedCell;
 
   async function build() {
-    console.log("Building Tile Highlight");
-    const TS = _tileSize * DungeonViewport.getScale();
+    const TS = DungeonView.getTileSize();
     const size =  TS*3;
 
     $mask = new Pixi.Graphics();
@@ -53,7 +52,7 @@ global.CellHighlight = (function() {
   function updatePosition() {
     if ($highlightedCell) {
       const position = $highlightedCell.getPosition();
-      const TS = _tileSize * DungeonViewport.getScale()
+      const TS = DungeonView.getTileSize();
 
       $highlightContainer.renderable = true;
       $highlightContainer.x = position.x - TS;

@@ -3,7 +3,7 @@ AnimationRegistry.register('cell-highlight-outer', {
     if (AnimationController.isPlaying(id)) { throw "A cell highlight is already playing." }
 
     const sprite = options.sprite;
-    const TS = _tileSize * DungeonViewport.getScale();
+    const TS = DungeonView.getTileSize();
 
     const animation = ComplexAnimation(id);
     animation.setInitialState({ alpha:0, shrink:(TS * 0.8) });

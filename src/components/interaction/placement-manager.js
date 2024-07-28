@@ -27,7 +27,7 @@ global.PlacementManager = (function () {
     const neighbors = getNeighboringTiles(hoverCell.getCoordinates());
     const dragEdges = DragonDrop.getDragTile().getEdges();
 
-    AnimationController.stop(hoverCell.getID());
+    InnerCellHighlight.hide();
 
     if (neighbors.n || neighbors.s || neighbors.e || neighbors.w) {
 
@@ -118,6 +118,7 @@ global.PlacementManager = (function () {
           GameController.drawTile();
         }
 
+        InnerCellHighlight.hide();
         DungeonView.placeTile(tile);
         executePlacementTrigger(tile);
       }
@@ -154,16 +155,15 @@ global.PlacementManager = (function () {
   // === Highlighting ==========================================================
 
   function highlightOrigin() {
-    CellHighlight.show(0,0);
+    OuterCellHighlight.show(0,0);
   }
 
   function highlightCell() {
     if ($placementStatus && $placementStatus.canPlace) {
       const hoverCell = DragonDrop.getHoverCell();
 
-      AnimationController.addAnimation('cell-highlight-inner', hoverCell.getID(), {
-        hoverCell: hoverCell,
-      });
+      InnerCellHighlight.show(hoverCell, $placementStatus);
+
     }
   }
 

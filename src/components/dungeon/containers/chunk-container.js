@@ -64,7 +64,7 @@ global.ChunkContainer = function(chunkID) {
   // Get the cell container at the specified Pixi global point by determining
   // which cell should be at that location.
   function getCellContainerAtPoint(x,y) {
-    const tileSize = DungeonViewport.getScale() * _tileSize;
+    const tileSize = DungeonView.getTileSize();
     const position = $chunkContainer.getGlobalPosition();
     const row = Math.floor((y-position.y) / tileSize);
     const col = Math.floor((x-position.x) / tileSize);
