@@ -5,6 +5,7 @@ global.CellContainer = function(x,y,coordinates) {
 
   const $coordinates = coordinates;
   const $cellContainer = new Pixi.Container();
+
   let $tileContainer;
 
   function getID() { return $cellContainer.accessibleHint; }

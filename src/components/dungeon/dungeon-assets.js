@@ -1,15 +1,12 @@
 global.DungeonAssets = (function() {
 
-  let $tileBackgrounds;
   let $tileElements;
   let $tiles;
 
   async function addAssets() {
-    $tileBackgrounds = await compileAssets(`${APP}/assets/tile-backgrounds`);
     $tileElements = await compileAssets(`${APP}/assets/tile-elements`);
     $tiles = await compileAssets(`${APP}/assets/tiles`);
 
-    Pixi.Assets.addBundle('tile-backgrounds', $tileBackgrounds);
     Pixi.Assets.addBundle('tile-elements', $tileElements);
     Pixi.Assets.addBundle('tiles', $tiles);
 
@@ -23,10 +20,6 @@ global.DungeonAssets = (function() {
     await Pixi.Assets.loadBundle('tile-elements');
     await Pixi.Assets.loadBundle('tiles');
     await Pixi.Assets.loadBundle('fonts');
-  }
-
-  async function randomTileBackground() {
-    return await Pixi.Assets.load(Random.from($tileBackgrounds).alias);
   }
 
   function compileAssets(directory) {
@@ -45,7 +38,6 @@ global.DungeonAssets = (function() {
   return {
     addAssets,
     loadAssets,
-    randomTileBackground,
   }
 
 })();

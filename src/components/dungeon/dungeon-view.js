@@ -49,7 +49,8 @@ global.DungeonView = (function() {
     $effectsContainer.y = 0;
     $effectsContainer.width = $application.screen.width
     $effectsContainer.height = $application.screen.height
-    $effectsContainer.addChild(await TileHighlight.build());
+    $effectsContainer.addChild(await OuterCellHighlight.build());
+    $effectsContainer.addChild(await InnerCellHighlight.build());
 
     $application.stage.addChild($effectsContainer);
   }
@@ -75,6 +76,8 @@ global.DungeonView = (function() {
   function resize() { $application.resize(); }
 
   function getChunkExtent() { return $chunkExtent }
+
+  function getTileSize() { return _tileSize * DungeonViewport.getScale(); }
 
   function getDimensions() {
     return {
@@ -140,6 +143,7 @@ global.DungeonView = (function() {
     open,
     isVisible,
     close,
+    getTileSize,
     resize,
     getChunkExtent,
     getDimensions,

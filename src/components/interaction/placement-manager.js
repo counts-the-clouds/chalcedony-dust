@@ -23,17 +23,13 @@ global.PlacementManager = (function () {
   function checkDropTarget() {
     $placementStatus = null;
 
-    // TODO: Hide any highlights or decorations here.
-
     const hoverCell = DragonDrop.getHoverCell()
     const neighbors = getNeighboringTiles(hoverCell.getCoordinates());
     const dragEdges = DragonDrop.getDragTile().getEdges();
 
+    InnerCellHighlight.hide();
+
     if (neighbors.n || neighbors.s || neighbors.e || neighbors.w) {
-      console.log(`Check Drop Target -> ${DragonDrop.getContext().hoverCell}`);
-      console.log('  Drag Edges',dragEdges)
-      console.log('  Hover Cell Container',hoverCell);
-      console.log('  Neighbors',neighbors);
 
       const nConnect = (neighbors.n) ? neighbors.n.getEdges().s : null;
       const sConnect = (neighbors.s) ? neighbors.s.getEdges().n : null;
@@ -49,7 +45,7 @@ global.PlacementManager = (function () {
 
       $placementStatus.canPlace = allLegal();
 
-    //   decorateEdges();
+      highlightCell();
     }
   }
 
@@ -122,6 +118,7 @@ global.PlacementManager = (function () {
           GameController.drawTile();
         }
 
+        InnerCellHighlight.hide();
         DungeonView.placeTile(tile);
         executePlacementTrigger(tile);
       }
@@ -155,14 +152,25 @@ global.PlacementManager = (function () {
     return false;
   }
 
+  // === Highlighting ==========================================================
+
+  function highlightOrigin() {
+    OuterCellHighlight.show(0,0);
+  }
+
+  function highlightCell() {
+    if ($placementStatus && $placementStatus.canPlace) {
+      const hoverCell = DragonDrop.getHoverCell();
+
+      InnerCellHighlight.show(hoverCell, $placementStatus);
+
+    }
+  }
+
   // ===========================================================================
 
   function isPlaceOnOrigin() {
     return ($placementRules||[]).includes(_placeOnOrigin);
-  }
-
-  function highlightOrigin() {
-    TileHighlight.show(0,0);
   }
 
   function localLog(message, data) {

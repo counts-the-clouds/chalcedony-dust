@@ -50,7 +50,7 @@ window.DragonDrop = (function() {
     if (cellContainer) {
       let cellID = cellContainer.getID();
       if ($dragContext.hoverCell !== cellID) {
-        // console.log(`Over(${cellID})`)
+        console.log(`Over(${cellID})`)
         $dragContext.hoverCell = cellID;
         PlacementManager.checkDropTarget();
       }
@@ -65,7 +65,7 @@ window.DragonDrop = (function() {
     }
 
     TileShelfView.positionTiles();
-    TileHighlight.hide();
+    OuterCellHighlight.hide();
 
     $dragContext.tileContainer.setCursor('grab');
     $dragContext = null;
