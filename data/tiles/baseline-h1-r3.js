@@ -1,20 +1,20 @@
 TileRegistry.register('baseline-h1-r3', {
 
   edges:{
-    n: _stone,
-    s: _stone,
-    e: _stone,
-    w: _stone,
+    n: _hall,
+    s: _room,
+    e: _room,
+    w: _room,
   },
 
   segments:[
-    { type:_room, exits:[], forms:{
-        incomplete:{ background:'room-2s' }
-      }},
+    { type:_room, exits:[_s,_e,_w], forms:{
+      incomplete:{ background:'room-3' }
+    }},
 
-    { type:_hall, exits:[], forms:{
-        incomplete:{ background:'hall-1', angle:180 }
-      }},
+    { type:_hall, exits:[_n], forms:{
+      incomplete:{ background:'hall-1' }
+    }},
   ],
 
 });
