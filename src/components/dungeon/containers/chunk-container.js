@@ -21,7 +21,7 @@ global.ChunkContainer = function(chunkID) {
   // === Building ==============================================================
 
   function buildDevelopmentGuides() {
-    if (Environment.isDevelopment) {
+    if (false && Environment.isDevelopment) {
       const border = new Pixi.Graphics();
       border.rect(0,0,_chunkSize,_chunkSize);
       border.stroke({ width:3, color:'rgb(100,80,60,0.4)' });

@@ -1,19 +1,16 @@
 global.DungeonViewport = (function() {
 
-  const TS = _tileSize;
-  const HS = Math.floor(_tileSize/2);
   const FAST = 50;
   const SLOW = 20;
 
   let $viewport;
-  let $guides;
+  let $application;
 
   let $movementBindings;
   let $movementLimits;
 
   let $currentLocation = {x:0,y:0};
   let $currentScale = _defaultScale;
-
   let $speed = SLOW;
 
   function init() {
@@ -31,11 +28,9 @@ global.DungeonViewport = (function() {
     $viewport.eventMode = 'static';
     $viewport.on('mousemove',DragonDrop.onMove);
 
-    $guides = new Pixi.Graphics();
-
-    application.stage.addChild($viewport);
-    application.stage.addChild($guides);
-    application.ticker.add(onTick);
+    $application = application;
+    $application.stage.addChild($viewport);
+    $application.ticker.add(onTick);
 
     updateKeybindings();
     positionViewport();
@@ -68,8 +63,7 @@ global.DungeonViewport = (function() {
 
   function updateLimits() {
     const extent = DungeonView.getChunkExtent();
-    const scale = getScale();
-    const scaledTileSize = TS*scale
+    const scaledTileSize = _tileSize * getScale();
     const scaledChunkSize = scaledTileSize * _chunkLength;
 
     let right =  scaledChunkSize;
@@ -172,14 +166,17 @@ global.DungeonViewport = (function() {
   // === Guides ================================================================
 
   function drawGuides() {
-    const screen = DungeonView.getDimensions();
+    if (false && Environment.isDevelopment) {
+      const screen = DungeonView.getDimensions();
+      const guides = new Pixi.Graphics();
 
-    if ($guides) {
-      $guides.clear()
-      $guides.rect((screen.width/2)-1,0,2,screen.height)
-      $guides.fill('rgba(200,50,50,0.1)');
-      $guides.rect(0,(screen.height/2)-1,screen.width,2);
-      $guides.fill('rgba(200,50,50,0.1)');
+      guides.clear();
+      guides.rect((screen.width/2)-1,0,2,screen.height);
+      guides.fill('rgba(200,50,50,0.1)');
+      guides.rect(0,(screen.height/2)-1,screen.width,2);
+      guides.fill('rgba(200,50,50,0.1)');
+
+      $application.stage.addChild(guides);
     }
   }
 
@@ -189,11 +186,11 @@ global.DungeonViewport = (function() {
 
   function getCenterPoint() {
     const screen = DungeonView.getDimensions();
-    const scale = getScale();
+    const halfSize = (_tileSize * getScale()) / 2
 
     return {
-      x: (screen.width / 2) - (HS*scale),
-      y: (screen.height / 2) - (HS*scale),
+      x: (screen.width / 2) - halfSize,
+      y: (screen.height / 2) - halfSize,
     };
   }
 

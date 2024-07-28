@@ -34,7 +34,7 @@ global.CellContainer = function(x,y,coordinates) {
   }
 
   function buildDevelopmentGuides() {
-    if (Environment.isDevelopment) {
+    if (false && Environment.isDevelopment) {
       const border = new Pixi.Graphics();
       border.rect(0, 0, TS, TS);
       border.stroke({color: 'rgb(60,80,100,0.3)'});
