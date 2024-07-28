@@ -13,6 +13,7 @@ global.TileShelf = (function() {
   }
 
   function getShelf() { return [...$shelf]; }
+  function hasTile(id) { return getTileIndex(id) >= 0; }
   function getTile(id) { return $shelf[getTileIndex(id)]; }
   function removeTile(id) { $shelf.splice(getTileIndex(id), 1); }
 
@@ -21,11 +22,7 @@ global.TileShelf = (function() {
       return tile.getID() === id;
     });
 
-    if (index == null) {
-      throw `No tile with ID[${id}] is on the tile shelf.`;
-    }
-
-    return index;
+    return (index == null) ? -1 : index;
   }
 
   // We pack the tile shelf when saving and loading the game.
@@ -47,6 +44,7 @@ global.TileShelf = (function() {
     getSize,
     getShelf,
     addTile,
+    hasTile,
     getTile,
     removeTile,
     pack,

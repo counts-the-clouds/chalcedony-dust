@@ -71,7 +71,12 @@ global.Tile = function(code, options={}) {
   // we'll probably need to add icons and shit.
   function getLayers() {
     return $segments.map(segment => {
-      return { background: segment.getSegmentData().forms[segment.getForm()].background };
+      const form = segment.getSegmentData().forms[segment.getForm()]
+      const layer = { background: form.background };
+
+      if (form.angle) { layer.angle = form.angle; }
+
+      return layer;
     });
   }
 

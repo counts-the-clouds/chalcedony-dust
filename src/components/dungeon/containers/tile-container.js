@@ -14,7 +14,12 @@ global.TileContainer = async function(tile) {
     }));
 
     layers.forEach((layer,i) => {
-      $tileContainer.addChild(new Pixi.Sprite(textures[i]));
+      const sprite = new Pixi.Sprite(textures[i]);
+      sprite.anchor = 0.5;
+      sprite.x = _tileSize / 2;
+      sprite.y = _tileSize / 2;
+      sprite.angle = layer.angle ? layer.angle : 0;
+      $tileContainer.addChild(sprite);
     });
 
     $tileContainer.label = 'TileContainer';

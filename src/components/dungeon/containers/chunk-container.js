@@ -20,6 +20,10 @@ global.ChunkContainer = function(chunkID) {
 
   // === Building ==============================================================
 
+  function destroy() {
+    $chunkContainer.destroy({ children:true });
+  }
+
   function buildDevelopmentGuides() {
     if (false && Environment.isDevelopment) {
       const border = new Pixi.Graphics();
@@ -73,6 +77,7 @@ global.ChunkContainer = function(chunkID) {
   }
 
   return Object.freeze({
+    destroy,
     getChunkID,
     getChunk,
     getChunkContainer,

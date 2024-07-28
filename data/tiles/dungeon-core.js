@@ -9,19 +9,19 @@ TileRegistry.register('dungeon-core', {
 
   segments:[
     { type:'floor', exits:[], forms:{
-      base:{ background:'tiles/core-room-floor.png' }
+      base:{ background:'cell-background' }
     }},
 
     { type:_room, exits:[_e,_w], forms:{
-      incomplete:{ background:'tiles/core-room-incomplete.png' }
+      incomplete:{ background:'room-2s' }
     }},
 
     { type:_hall, exits:[_s], forms:{
-      incomplete:{ background:'tiles/core-hall-incomplete.png' }
+      incomplete:{ background:'hall-1', angle:180 }
     }},
 
     { type:'core', exits:[], forms:{
-      base:{ background:'tiles/core-room-core.png' }
+      base:{ background:'core' }
     }},
   ],
 

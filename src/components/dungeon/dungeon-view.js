@@ -11,6 +11,19 @@ global.DungeonView = (function() {
     TileShelfView.init();
   }
 
+  function reset() {
+    log('Reset',{ level:1, system:'DungeonView' });
+
+    Object.values($chunkContainers).forEach(chunk => {
+      chunk.destroy();
+    });
+
+    $chunkContainers = {}
+    $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 };
+
+    createTileGrid();
+  }
+
   async function open() {
     await DungeonAssets.loadAssets();
     MainContent.setMainContent('views/dungeon-view.html');
@@ -140,6 +153,7 @@ global.DungeonView = (function() {
 
   return Object.freeze({
     init,
+    reset,
     open,
     isVisible,
     close,

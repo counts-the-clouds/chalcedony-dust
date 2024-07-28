@@ -88,65 +88,16 @@ global.PlacementManager = (function () {
   // === Place Tile ============================================================
 
   function placeTile() {
-    try {
-      const coordinates = DragonDrop.getHoverCoordinates();
-      const tile = DragonDrop.getContext().tileContainer.getTile();
+    const coordinates = DragonDrop.getHoverCoordinates();
+    const tile = DragonDrop.getContext().tileContainer.getTile();
 
-      // The coordinates will be null if a player picked up a tile, but never
-      // moved the mouse.
-      if (coordinates == null) { return false; }
-
-      const placementData = {
-        x: coordinates.gx,
-        y: coordinates.gy,
-        code: tile.getCode(),
-        id: tile.getID()};
-
-      if (canPlaceTile(coordinates)) {
-        localLog("Place Tile",placementData);
-
-        Note.clear();
-        TileShelf.removeTile(tile.getID());
-        TileShelfView.removeTile(tile);
-        DungeonGrid.setCell(coordinates, tile);
-
-        if (tile.getPlacementEvent()) {
-          EventView.show(PagedEvent(tile.getPlacementEvent()))
-        }
-
-        if (TileBag.isSequence()) {
-          GameController.drawTile();
-        }
-
-        InnerCellHighlight.hide();
-        DungeonView.placeTile(tile);
-        executePlacementTrigger(tile);
-      }
-    }
-    catch (error) {
-      logError(`Error Placing Tile`,error,{
-        system:'PlacementManager',
-        data:placementData
-      });
+    // The coordinates will be null if a player picked up a tile, but never
+    // moved the mouse.
+    if (coordinates && canPlaceTile(coordinates)) {
+      GameController.placeTile(coordinates, tile)
     }
   }
 
-  function executePlacementTrigger(tile) {
-    const trigger = tile.getPlacementTrigger();
-
-    if (trigger) {
-      try {
-        localLog("Executing Placement Trigger", { code:trigger });
-        TriggerRegistry.lookup(trigger).triggerFunction(tile);
-      }
-      catch(error) {
-        logError(`Error Executing Placement Trigger`, error, {
-          system:'PlacementManager',
-          data:{ code:trigger }
-        });
-      }
-    }
-  }
 
   function canPlaceTile(coordinates) {
     if (isPlaceOnOrigin()) { return coordinates.gx === 0 && coordinates.gy === 0; }

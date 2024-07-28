@@ -65,6 +65,47 @@ global.GameController = (function() {
     localLog("Drew Tile",{ code:tile.getCode(), id:tile.getID() });
   }
 
+  function placeTile(coordinates,tile) {
+    const placementData = {
+      x: coordinates.gx,
+      y: coordinates.gy,
+      code: tile.getCode(),
+      id: tile.getID() };
+
+    try {
+      localLog("Place Tile",placementData);
+
+      Note.clear();
+      InnerCellHighlight.hide();
+
+      DungeonGrid.setCell(coordinates, tile);
+      DungeonView.placeTile(tile);
+
+      // If a tile is placed programmatically (like the core tile) it will not
+      // be on the shelf.
+      if (TileShelf.hasTile(tile.getID())) {
+        TileShelf.removeTile(tile.getID());
+        TileShelfView.removeTile(tile);
+      }
+
+      if (tile.getPlacementEvent()) {
+        EventView.show(PagedEvent(tile.getPlacementEvent()))
+      }
+      if (tile.getPlacementTrigger()) {
+        TriggerRegistry.lookup(tile.getPlacementTrigger()).triggerFunction(tile);
+      }
+      if (TileBag.isSequence()) {
+        GameController.drawTile();
+      }
+    }
+    catch (error) {
+      logError(`Error Placing Tile`, error, {
+        system:'GameController',
+        data:placementData
+      });
+    }
+  }
+
   function localLog(message,data) {
     log(message,{ system:'GameController', data:data });
   }
@@ -73,6 +114,7 @@ global.GameController = (function() {
     beginGame,
     setStage,
     drawTile,
+    placeTile,
   });
 
 })();

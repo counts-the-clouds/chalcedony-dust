@@ -6,14 +6,16 @@ EventRegistry.register('enter-the-dungeon', {
     ]
   }],
 
-  // Wipe tile board, place dungeon core tile, reset tile bag with starting tiles
+  // Wipe tile board, place dungeon core tile, reset tile bag with starting
+  // tiles.
   onFinish: state => {
+    GameState.reset();
+    DungeonView.reset();
 
-    console.log("TODO: Clear and start")
+    const core = Tile('dungeon-core',{})
+          core.buildSegments()
 
-    // GameState.clear();
-    // GameBuilder.beginDefaultGame();
-    // DungeonController.renderDungeon();
+    GameController.placeTile(Coordinates.fromGlobal(0,0),core);
   },
 
 });
