@@ -16,6 +16,7 @@ global.Tile = function(code, options={}) {
 
   let $coordinates;
   let $rotation = 0;
+  let $edges = options.edges;
   let $segments;
 
   function getCode() { return $code; }
@@ -43,21 +44,28 @@ global.Tile = function(code, options={}) {
   }
 
   function getEdges() {
-    let edges = { ...getTileData().edges };
-
-    if ($rotation === 1) { return { n:edges.w, s:edges.e, e:edges.n, w:edges.s }; }
-    if ($rotation === 2) { return { n:edges.s, s:edges.n, e:edges.w, w:edges.e }; }
-    if ($rotation === 3) { return { n:edges.e, s:edges.w, e:edges.s, w:edges.n }; }
-
-    return edges;
+    if ($rotation === 1) { return { n:$edges.w, s:$edges.e, e:$edges.n, w:$edges.s }; }
+    if ($rotation === 2) { return { n:$edges.s, s:$edges.n, e:$edges.w, w:$edges.e }; }
+    if ($rotation === 3) { return { n:$edges.e, s:$edges.w, e:$edges.s, w:$edges.n }; }
+    return { ...$edges };
   }
 
   // === Segments ===
 
   function buildSegments() {
+    const empty = getTileData().emptyEdgeType || _stone;
+
+    $edges = { n:empty, s:empty, e:empty, w:empty };
     $segments = [];
+
     for (let index = 0; index < getTileData().segments.length; index++) {
-      $segments.push(TileSegment(this,index));
+      const segment = TileSegment(this,index);
+
+      segment.getExits().forEach(exit => {
+        $edges[exit] = segment.getType();
+      });
+
+      $segments.push(segment);
     }
   }
 
@@ -88,6 +96,7 @@ global.Tile = function(code, options={}) {
       id: $id,
       coordinates: $coordinates,
       rotation: $rotation,
+      edges: $edges,
       drawNote: $drawNote,
       placementEvent: $placementEvent,
       placementTrigger: $placementTrigger,
@@ -139,6 +148,7 @@ global.Tile = function(code, options={}) {
 Tile.unpack = function(data) {
   let tile = Tile(data.code, {
     id: data.id,
+    edges: data.edges,
     drawNote: data.drawNote,
     placementEvent: data.placementEvent,
     placementTrigger: data.placementTrigger,

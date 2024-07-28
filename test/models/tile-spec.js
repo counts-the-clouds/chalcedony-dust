@@ -14,30 +14,36 @@ describe("Tile", function() {
     });
 
     it('setting rotation rotates tiles',function() {
-      let tile = Tile('forest-1');
-      expect(tile.getEdges().s).to.equal('forest-path');
-      expect(tile.getEdges().n).to.equal('forbidden');
-      expect(tile.getEdges().e).to.equal('forbidden');
-      expect(tile.getEdges().w).to.equal('forbidden');
+      let tile = Tile('baseline-h2-r1-0');
+          tile.buildSegments();
+
+      expect(tile.getEdges().s).to.equal(_stone);
+      expect(tile.getEdges().n).to.equal(_room);
+      expect(tile.getEdges().e).to.equal(_hall);
+      expect(tile.getEdges().w).to.equal(_hall);
 
       tile.setRotation(1);
-      expect(tile.getEdges().w).to.equal('forest-path');
+      expect(tile.getEdges().e).to.equal(_room);
 
       tile.setRotation(2);
-      expect(tile.getEdges().n).to.equal('forest-path');
+      expect(tile.getEdges().s).to.equal(_room);
 
       tile.setRotation(3);
-      expect(tile.getEdges().e).to.equal('forest-path');
+      expect(tile.getEdges().w).to.equal(_room);
     });
 
     it('rotates clockwise', function() {
       let tile = Tile('forest-1');
+          tile.buildSegments();
+
       tile.rotateClockwise();
       expect(tile.getEdges().w).to.equal('forest-path');
     });
 
     it('rotates widdershins', function() {
       let tile = Tile('forest-1');
+          tile.buildSegments();
+
       tile.rotateWiddershins();
       expect(tile.getEdges().e).to.equal('forest-path');
     });
@@ -63,28 +69,25 @@ describe("Tile", function() {
 
     it('with placement events', function() {
       let tile = Tile('forest-1', { id:42, placementEvent:'fake-event', placementRules:[_noDiscard] });
+          tile.buildSegments();
           tile.setCoordinates(Coordinates.fromGlobal(5,10));
 
       let packed = tile.pack();
 
-      expect(Object.keys(packed).length).to.equal(9);
+      let segment = packed.segments[0];
+      expect(segment.index).to.equal(0);
+      expect(segment.form).to.equal(_incomplete);
+
+      expect(Object.keys(packed).length).to.equal(11);
       expect(packed.id).to.equal(42);
       expect(packed.code).to.equal('forest-1');
       expect(packed.coordinates.gx).to.equal(5);
       expect(packed.coordinates.gy).to.equal(10);
+      expect(packed.edges.s).to.equal('forest-path');
       expect(packed.placementEvent).to.equal('fake-event');
       expect(packed.placementRules[0]).to.equal(_noDiscard);
       expect(packed.rotation).to.equal(0);
     });
-
-    it('with segments built', function() {
-      let tile = Tile('forest-2');
-          tile.buildSegments();
-
-      let segment = tile.pack().segments[0];
-      expect(segment.index).to.equal(0);
-      expect(segment.form).to.equal(_incomplete);
-    })
 
     it('with note', function() {
       let tile = Tile('forest-2', { drawNote:'tutorial.rotate-tile' });
@@ -114,6 +117,7 @@ describe("Tile", function() {
       let unpacked = Tile.unpack(tile.pack());
       let segment = unpacked.getSegments()[0];
 
+      expect(unpacked.getEdges().s).to.equal('forest-path');
       expect(unpacked.getSegments().length).to.equal(1);
       expect(segment.getIndex()).to.equal(0);
       expect(segment.getForm()).to.equal(_incomplete);

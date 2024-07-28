@@ -28,6 +28,8 @@ global.TileSegment = function(tile, index, options={}) {
   function getTile() { return $tile; }
   function getIndex() { return $index; }
   function getForm() { return $form; }
+  function getType() { return getSegmentData().type; }
+  function getExits() { return getSegmentData().exits; }
 
   function pack() {
     return {
@@ -40,7 +42,9 @@ global.TileSegment = function(tile, index, options={}) {
     getSegmentData,
     getTile,
     getIndex,
+    getType,
     getForm,
+    getExits,
     pack,
   });
 }
