@@ -1,11 +1,5 @@
 TileRegistry.register('forest-1', {
-
-  edges:{
-    n: _forbidden,
-    s: _forestPath,
-    e: _forbidden,
-    w: _forbidden,
-  },
+  emptyEdgeType: _forbidden,
 
   segments:[
     { type:_forestPath, exits:[_s], forms:{

@@ -1,12 +1,5 @@
 TileRegistry.register('dungeon-core', {
 
-  edges:{
-    n: _stone,
-    s: _hall,
-    e: _room,
-    w: _room,
-  },
-
   segments:[
     { type:_room, exits:[_e,_w], forms:{
       incomplete:{ background:'room-2s' }
