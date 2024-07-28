@@ -8,10 +8,6 @@ TileRegistry.register('dungeon-core', {
   },
 
   segments:[
-    { type:'floor', exits:[], forms:{
-      base:{ background:'cell-background' }
-    }},
-
     { type:_room, exits:[_e,_w], forms:{
       incomplete:{ background:'room-2s' }
     }},
