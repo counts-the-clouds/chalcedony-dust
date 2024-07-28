@@ -30,17 +30,14 @@ global.InnerCellHighlight = (function () {
 
   function show(cellContainer, placementStatus) {
     positionContainer(cellContainer.getCellContainer().getGlobalPosition());
-    console.log("Show")
-    console.log(cellContainer);
-    console.log(placementStatus);
 
     const yarp = (dir) => { return (placementStatus[dir] === 'yes') ? 1 : 0 }
 
     switch (yarp('n') + yarp('s') + yarp('e') + yarp('w')) {
-      case 1: return showSinglePlacement(placementStatus)
-      case 2: return showDoublePlacement(placementStatus)
-      case 3: return showTriplePlacement(placementStatus)
-      case 4: return showQuadPlacement()
+      case 1: return fadeIn(showSinglePlacement(placementStatus), cellContainer);
+      case 2: return fadeIn(showDoublePlacement(placementStatus), cellContainer);
+      case 3: return fadeIn(showTriplePlacement(placementStatus), cellContainer);
+      case 4: return fadeIn(showQuadPlacement(), cellContainer);
       default: throw `InnerCellHighlight.show() called with no active cells in the placement status.`;
     }
   }
@@ -48,10 +45,14 @@ global.InnerCellHighlight = (function () {
   function showSinglePlacement(placementStatus) {
     let highlight = $highlights['h_1'];
     highlight.angle = 0;
+    highlight.alpha = 0;
     highlight.renderable = true;
+
     if (placementStatus.e === 'yes') { highlight.angle = 90 }
     if (placementStatus.s === 'yes') { highlight.angle = 180 }
     if (placementStatus.w === 'yes') { highlight.angle = 270 }
+
+    return highlight;
   }
 
   function showDoublePlacement(placementStatus) {
@@ -70,20 +71,31 @@ global.InnerCellHighlight = (function () {
 
     highlight = $highlights[type === 'corner' ? 'h_2c' : 'h_2s'];
     highlight.angle = angle;
+    highlight.alpha = 0;
     highlight.renderable = true;
+
+    return highlight;
   }
 
   function showTriplePlacement(placementStatus) {
     let highlight = $highlights['h_3'];
     highlight.angle = 0;
+    highlight.alpha = 0;
     highlight.renderable = true;
+
     if (placementStatus.w !== 'yes') { highlight.angle = 90 }
     if (placementStatus.n !== 'yes') { highlight.angle = 180 }
     if (placementStatus.e !== 'yes') { highlight.angle = 270 }
+
+    return highlight;
   }
 
   function showQuadPlacement() {
-    $highlights['h_4'].renderable = true;
+    let highlight = $highlights['h_4'];
+    highlight.renderable = true;
+    highlight.alpha = 0;
+
+    return highlight;
   }
 
   function positionContainer(position) {
@@ -94,9 +106,11 @@ global.InnerCellHighlight = (function () {
     $container.y = position.y + tileSize/2;
   }
 
-  function hide() {
-    // AnimationController.stop(hoverCell.getID());
+  function fadeIn(highlight, cellContainer) {
+    AnimationController.addAnimation('fade-in', cellContainer.getID(), { target:highlight, duration:500 });
+  }
 
+  function hide() {
     Object.values($highlights).forEach(sprite => {
       sprite.renderable = false;
     });

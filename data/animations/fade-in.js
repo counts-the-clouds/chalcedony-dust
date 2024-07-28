@@ -1,4 +1,4 @@
-AnimationRegistry.register('fade', {
+AnimationRegistry.register('fade-in', {
   build: async (id,options) => {
 
     const animation = ResoluteAnimation(id, options.target);
