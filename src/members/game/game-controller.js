@@ -7,7 +7,11 @@ global.GameController = (function() {
   // the state of all the stateful game components.
   async function beginGame() {
     await GameState.clear();
-    setStage(GameStageRegistry.lookup(WorldState.getChapter()));
+
+    setStage(GameStageRegistry.lookup('baseline'));
+    // TODO: While were testing the baseline tiles...
+    // setStage(GameStageRegistry.lookup(WorldState.getChapter()));
+
     await GameState.saveState();
   }
 
@@ -20,6 +24,14 @@ global.GameController = (function() {
     (stageData.flags||[]).forEach(flag => {
       GameState.setFlag(flag[0],flag[1]);
     });
+
+    // TODO: The baseline bagged tiles is a code for a frequency map of bagged
+    //       tiles. We might want to make this accept an array of codes as well
+    //       to handle more complex games. We might also want to loop through
+    //       the game flags to see what tiles have been enabled.
+    if (stageData.baggedTiles) {
+      TileBag.addBaggedTiles(TileBagRegistry.lookup(stageData.baggedTiles));
+    }
 
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
