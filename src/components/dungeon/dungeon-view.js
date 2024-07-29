@@ -28,6 +28,9 @@ global.DungeonView = (function() {
     await DungeonAssets.loadAssets();
     MainContent.setMainContent('views/dungeon-view.html');
     await createApplication();
+
+    // TODO: Temp
+    GameController.drawTile();
   }
 
   function isVisible() {

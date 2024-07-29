@@ -51,6 +51,10 @@ global.ChunkContainer = function(chunkID) {
       const coordinates = Coordinates.fromChunk($location.x, $location.y, i);
       const cellContainer = CellContainer(x,y,coordinates);
 
+      if (tile !== 0) {
+        cellContainer.setTile(tile);
+      }
+
       $chunkContainer.addChild(cellContainer.getCellContainer());
       $cellContainers.push(cellContainer);
 

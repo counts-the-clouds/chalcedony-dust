@@ -64,6 +64,7 @@ global.PlacementManager = (function () {
   function isLegal(home,neighbor) {
     // When the neighboring space is empty a tile can be placed there.
     if (neighbor == null) { return 'empty'; }
+    if (neighbor == _stone && home == _stone) { return 'empty'; }
 
     // A forbidden edge can only be placed next to an empty space. Because the
     // neighboring tile is not null, neither tile can have a forbidden edge.
@@ -78,11 +79,13 @@ global.PlacementManager = (function () {
     return (home === neighbor) ? 'yes' : 'no'
   }
 
+  // For the placement to be legal there needs to be one edge that has a
+  // positive 'yes' match. There cannot be any edges that have a negative 'no'
+  // match.
   function allLegal() {
-    return $placementStatus.n !== 'no' &&
-      $placementStatus.s !== 'no' &&
-      $placementStatus.e !== 'no' &&
-      $placementStatus.w !== 'no';
+    const matches = Object.values($placementStatus)
+    if (matches.indexOf('yes') == -1) { return false; }
+    return matches.indexOf('no') === -1
   }
 
   // === Place Tile ============================================================
