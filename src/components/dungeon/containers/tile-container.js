@@ -13,6 +13,12 @@ global.TileContainer = async function(tile) {
       return await Pixi.Assets.load(layer.background);
     }));
 
+    const background = new Pixi.Graphics;
+    background.rect(0,0,_tileSize,_tileSize);
+    background.fill('rgb(20,20,20)');
+
+    $tileContainer.addChild(background);
+
     layers.forEach((layer,i) => {
       const sprite = new Pixi.Sprite(textures[i]);
       sprite.anchor = 0.5;

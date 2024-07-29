@@ -7,8 +7,8 @@ window.DragonDrop = (function() {
   // screen we stop the event, but we only attempt to place the tile on a mouse
   // up event.
   function init() {
-    window.addEventListener('mouseup', event => { stopDrag(true); });
-    window.addEventListener('mouseout', event => { stopDrag(false); });
+    window.addEventListener('mouseup', event => { stopDrag(event); });
+    window.addEventListener('mouseout', event => { stopDrag(event, 'cancel'); });
 
     X.registerKeyAction("action.rotate-clockwise", isDragging, () => { rotateTile(1) });
     X.registerKeyAction("action.rotate-widdershins", isDragging, () => { rotateTile(-1) });
@@ -59,11 +59,13 @@ window.DragonDrop = (function() {
     }
   }
 
-  function stopDrag(placeTile) {
+  function stopDrag(event, command) {
     if (!isDragging()) { return false; }
 
-    if (placeTile) {
-      PlacementManager.placeTile();
+    if (command !== 'cancel') {
+      if (getHoverCell() && getHoverCell().getTile() == null) {
+        PlacementManager.placeTile();
+      }
     }
 
     TileShelfView.positionTiles();

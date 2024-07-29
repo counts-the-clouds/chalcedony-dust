@@ -23,7 +23,7 @@ global.PlacementManager = (function () {
   function checkDropTarget() {
     $placementStatus = null;
 
-    const hoverCell = DragonDrop.getHoverCell()
+    const hoverCell = DragonDrop.getHoverCell();
     const neighbors = getNeighboringTiles(hoverCell.getCoordinates());
     const dragEdges = DragonDrop.getDragTile().getEdges();
 
