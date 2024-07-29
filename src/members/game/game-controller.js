@@ -94,9 +94,12 @@ global.GameController = (function() {
       if (tile.getPlacementTrigger()) {
         TriggerRegistry.lookup(tile.getPlacementTrigger()).triggerFunction(tile);
       }
-      if (TileBag.isSequence()) {
-        GameController.drawTile();
-      }
+
+      // TODO: Eventually we'll want to draw tiles on a timer. Tiles in sequence should speed up that draw timer so
+      //       that they're drawn immediately. For now though we can just draw tiles when they're placed.
+      // if (TileBag.isSequence()) { GameController.drawTile(); }
+      GameController.drawTile();
+
     }
     catch (error) {
       logError(`Error Placing Tile`, error, {

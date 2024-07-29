@@ -1,0 +1,27 @@
+global.TileBags = {
+  baseline:{
+    'baseline-h1-0': 1,
+    'baseline-h1-r1-0': 1,
+    'baseline-h1-r1-1': 1,
+    'baseline-h1-r1-2': 1,
+    'baseline-h1-r2-0': 1,
+    'baseline-h1-r2-1': 1,
+    'baseline-h1-r2-2': 1,
+    'baseline-h1-r3': 1,
+    'baseline-h2-0': 1,
+    'baseline-h2-1': 1,
+    'baseline-h2-r1-0': 1,
+    'baseline-h2-r1-1': 1,
+    'baseline-h2-r1-2': 1,
+    'baseline-h2-r2-0': 1,
+    'baseline-h2-r2-1': 1,
+    'baseline-h3-0': 1,
+    'baseline-h3-r1-0': 1,
+    'baseline-h4-0': 1,
+    'baseline-r1-0': 1,
+    'baseline-r2-0': 1,
+    'baseline-r2-1': 1,
+    'baseline-r3-0': 1,
+    'baseline-r4-0': 1,
+  }
+};

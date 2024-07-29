@@ -15,7 +15,10 @@ EventRegistry.register('enter-the-dungeon', {
     const core = Tile('dungeon-core',{})
           core.buildSegments()
 
+    TileBag.addBaggedTiles(TileBags.baseline);
+
     GameController.placeTile(Coordinates.fromGlobal(0,0),core);
+    GameController.drawTile();
   },
 
 });
