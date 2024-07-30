@@ -8,9 +8,9 @@ global.GameController = (function() {
   async function beginGame() {
     await GameState.clear();
 
-    setStage(GameStageRegistry.lookup('baseline'));
-    // TODO: While were testing the baseline tiles...
+    // TEMP: While were testing the baseline tiles...
     // setStage(GameStageRegistry.lookup(WorldState.getChapter()));
+    setStage(GameStageRegistry.lookup('baseline'));
 
     await GameState.saveState();
   }

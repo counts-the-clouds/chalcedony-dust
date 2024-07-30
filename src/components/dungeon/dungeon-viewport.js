@@ -27,6 +27,9 @@ global.DungeonViewport = (function() {
     $viewport = new Pixi.Container();
     $viewport.eventMode = 'static';
     $viewport.on('mousemove',DragonDrop.onMove);
+    $viewport.on('mousedown', MouseMovement.startDrag);
+    $viewport.on('mousemove',MouseMovement.onMove);
+    $viewport.on('mouseup', MouseMovement.stopDrag);
 
     $application = application;
     $application.stage.addChild($viewport);
@@ -94,7 +97,7 @@ global.DungeonViewport = (function() {
   }
 
   function onTick(time) {
-    if ($viewport && DungeonView.isMovementEnabled()) {
+    if ($viewport && DungeonView.isMovementEnabled() && !MouseMovement.isDragging()) {
       const keyState = KeyboardMonitor.getState();
       const isMoving = Object.keys($movementBindings).some(key => keyState.keys.includes(key));
 
@@ -118,6 +121,17 @@ global.DungeonViewport = (function() {
   }
 
   // === Movement ==============================================================
+
+  function getLocation() {
+    return { ...$currentLocation };
+  }
+
+  function setLocation(x,y) {
+    $currentLocation.x = x;
+    $currentLocation.y = y;
+    clampCurrentLocation();
+    positionViewport();
+  }
 
   function prepareMove(time, keyState) {
     $speed = keyState.modifiers.shift ? FAST : SLOW;
@@ -267,6 +281,8 @@ global.DungeonViewport = (function() {
     create,
     addChild,
     updateLimits,
+    getLocation,
+    setLocation,
     getScale,
   });
 

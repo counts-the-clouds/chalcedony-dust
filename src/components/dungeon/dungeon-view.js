@@ -29,7 +29,7 @@ global.DungeonView = (function() {
     MainContent.setMainContent('views/dungeon-view.html');
     await createApplication();
 
-    // TODO: Temp
+    // TEMP: This needs to be on the game clock.
     GameController.drawTile();
   }
 
