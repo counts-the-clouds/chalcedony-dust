@@ -33,6 +33,7 @@ global.Registry = function(typeName) {
 }
 
 global.AnimationRegistry = Registry('Animation');
+global.ClockRegistry = Registry('Clock');
 global.EventRegistry = Registry('PagedEvent');
 global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');

@@ -15,4 +15,14 @@ global.TimeHelper = {
     return `${h}:${m}:${s}`
   },
 
+  millisecondsToTimeString: function(ms) {
+    let minutes = `${Math.floor((ms / 1000) / 60)}`;
+    let seconds = `${Math.floor((ms / 1000) % 60)}`;
+
+    if (minutes.length === 1) { minutes = `0${minutes}` }
+    if (seconds.length === 1) { seconds = `0${seconds}` }
+
+    return `${minutes}:${seconds}`;
+  }
+
 };

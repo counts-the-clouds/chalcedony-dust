@@ -24,7 +24,9 @@ EventRegistry.register('game-start-1', {
     }));
 
     TileShelfView.showTileBag();
-    GameController.drawTile();
+
+    // TODO: We'll need to adjust the generate tile clock here so it does the
+    //       right thing.
   },
 
 });

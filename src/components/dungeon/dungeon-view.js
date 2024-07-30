@@ -18,9 +18,10 @@ global.DungeonView = (function() {
       chunk.destroy();
     });
 
-    $chunkContainers = {}
+    $chunkContainers = {};
     $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 };
 
+    ClockManager.reset();
     createTileGrid();
   }
 
@@ -29,8 +30,7 @@ global.DungeonView = (function() {
     MainContent.setMainContent('views/dungeon-view.html');
     await createApplication();
 
-    // TEMP: This needs to be on the game clock.
-    GameController.drawTile();
+    ClockManager.addClock('generate-tile');
   }
 
   function isVisible() {
@@ -50,6 +50,7 @@ global.DungeonView = (function() {
     });
 
     $application.ticker.add(AnimationController.onTick);
+    $application.ticker.add(ClockManager.onTick);
 
     X.first("#dungeonCanvas").appendChild($application.canvas)
 

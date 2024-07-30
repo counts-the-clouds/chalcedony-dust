@@ -16,10 +16,6 @@ EventRegistry.register('enter-the-dungeon', {
 
     GameController.placeTile(Coordinates.fromGlobal(0,0),Tile('dungeon-core'));
     DungeonViewport.setLocation(0,0);
-
-    // TEMP: Really we want to start the draw timer here.
-    GameController.drawTile();
-
   },
 
 });
