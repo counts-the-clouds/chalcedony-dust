@@ -36,20 +36,15 @@ global.GameController = (function() {
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
     (stageData.shelvedTiles||[]).forEach(tileData => {
-      const tile = Tile(tileData.code, tileData.options)
-            tile.buildSegments();
-
-      TileShelf.addTile(tile);
+      TileShelf.addTile(Tile(tileData.code, tileData.options));
     });
 
     // Placed tiles need the code, options, as well as the global (x,y)
     // coordinates for where the tiles should be placed: [{ x,y,code,options }]
     (stageData.placedTiles||[]).forEach(tileData => {
-      const coords = Coordinates.fromGlobal(tileData.x,tileData.y);
-      const tile = Tile(tileData.code, tileData.options);
-            tile.buildSegments();
-
-      DungeonGrid.setCell(coords, tile);
+      DungeonGrid.setCell(
+        Coordinates.fromGlobal(tileData.x,tileData.y),
+        Tile(tileData.code, tileData.options));
     });
   }
 
@@ -63,7 +58,6 @@ global.GameController = (function() {
     }
 
     const tile = TileBag.drawTile();
-          tile.buildSegments();
 
     if (tile.getDrawNote()) {
       Note.show(tile.getDrawNote());
