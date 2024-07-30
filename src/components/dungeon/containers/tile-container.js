@@ -51,25 +51,24 @@ global.TileContainer = async function(tile) {
     $tileContainer.y = y;
   }
 
-  function setOnShelf(isOnShelf) {
 
-    // This is ugly from a code organization point of view, but we need to have
-    // this function inside the setOnShelf() function for a couple reasons. We
-    // need to send 'this' along to the DragonDrop context so that we don't
-    // lose a handle onto this object. We also need to remove this function
-    // as a listener when the drag is finished.
+  // Setting a tile on the shelf enables the drag and drop action on that tile.
+  // This is ugly from a code organization point of view, but we need to have
+  // the startDrag() function inside the setOnShelf() function for a couple
+  // reasons. We need to send 'this' along to the DragonDrop context so that
+  // we don't lose a handle onto this tile container. We also need to remove
+  // the listeners when the drag is finished.
+  function setOnShelf(isOnShelf) {
     const startDrag = event => {
       $tileContainer.cursor = 'grabbing'
 
-      DragonDrop.setContext({
+      DragonDrop.startDrag({
         tileContainer: this,
         offset:{
           x: event.global.x - $tileContainer.x,
           y: event.global.y - $tileContainer.y,
         }
       });
-
-      PlacementManager.startDrag();
     }
 
     if (isOnShelf) {

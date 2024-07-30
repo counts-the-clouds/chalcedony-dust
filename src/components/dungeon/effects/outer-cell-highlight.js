@@ -31,6 +31,12 @@ global.OuterCellHighlight = (function() {
     return $highlightContainer;
   }
 
+  function dragStarted(tile) {
+    if ((tile.getPlacementRules()||[]).includes(_placeOnOrigin)) {
+      show(0,0);
+    }
+  }
+
   function show(x,y) {
     $highlightedCell = DungeonView.getCellContainerAt(x,y);
 
@@ -62,6 +68,7 @@ global.OuterCellHighlight = (function() {
 
   return Object.freeze({
     build,
+    dragStarted,
     show,
     hide,
     updatePosition,

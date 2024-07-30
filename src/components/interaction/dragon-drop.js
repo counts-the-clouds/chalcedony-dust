@@ -16,7 +16,6 @@ window.DragonDrop = (function() {
 
   function isDragging() { return $dragContext != null; }
   function getContext() { return { ...$dragContext }; }
-  function setContext(context) { $dragContext = context; }
 
   function getDragTile() {
     return $dragContext ? $dragContext.tileContainer.getTile() : null;
@@ -35,6 +34,13 @@ window.DragonDrop = (function() {
   }
 
   // === Drag & Drop ===========================================================
+
+  function startDrag(context) {
+    $dragContext = context;
+
+    OuterCellHighlight.dragStarted(getDragTile());
+  }
+
 
   function onMove(event) {
     if (!isDragging()) { return false; }
@@ -63,13 +69,12 @@ window.DragonDrop = (function() {
     if (!isDragging()) { return false; }
 
     if (command !== 'cancel') {
-      if (getHoverCell() && getHoverCell().getTile() == null) {
-        PlacementManager.placeTile();
-      }
+      PlacementManager.placeTile();
     }
 
     TileShelfView.positionTiles();
     OuterCellHighlight.hide();
+    InnerCellHighlight.hide();
 
     $dragContext.tileContainer.setCursor('grab');
     $dragContext = null;
@@ -92,7 +97,7 @@ window.DragonDrop = (function() {
       AnimationController.addAnimation('rotate-tile', tileContainer.getID(), {
         target:tileContainer.getTileContainer(), direction });
 
-      PlacementManager.tileRotated();
+      PlacementManager.checkDropTarget();
     }
   }
 
@@ -104,8 +109,8 @@ window.DragonDrop = (function() {
     init,
     isDragging,
     getContext,
-    setContext,
     getDragTile,
+    startDrag,
     stopDrag,
     onMove,
     getHoverCell,

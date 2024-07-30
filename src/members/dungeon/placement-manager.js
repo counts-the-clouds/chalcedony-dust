@@ -1,22 +1,6 @@
 global.PlacementManager = (function () {
 
-  let $placementRules;
   let $placementStatus;
-
-  function startDrag() {
-    const context = DragonDrop.getContext();
-    const tile = context.tileContainer.getTile();
-
-    $placementRules = tile.getPlacementRules();
-
-    if (isPlaceOnOrigin()) {
-      highlightOrigin();
-    }
-  }
-
-  function tileRotated() {
-    checkDropTarget();
-  }
 
   // === Check Drop Target =====================================================
 
@@ -88,19 +72,32 @@ global.PlacementManager = (function () {
     return matches.indexOf('no') === -1
   }
 
-  // === Place Tile ============================================================
-
-  function placeTile() {
-    const coordinates = DragonDrop.getHoverCoordinates();
-    const tile = DragonDrop.getContext().tileContainer.getTile();
-
-    // The coordinates will be null if a player picked up a tile, but never
-    // moved the mouse.
-    if (coordinates && canPlaceTile(coordinates)) {
-      GameController.placeTile(coordinates, tile)
+  function highlightCell() {
+    if ($placementStatus && $placementStatus.canPlace) {
+      InnerCellHighlight.show(DragonDrop.getHoverCell(), $placementStatus);
     }
   }
 
+  // === Place Tile ============================================================
+
+  // TODO: The hover cell could also be null if we're placing a tile off of the
+  //       edge of a chunk. We'll need to handle this earlier and build a new
+  //       chunk when a tile is placed at the edge of the chunk extent.
+  //
+  function placeTile() {
+    const hoverCell = DragonDrop.getHoverCell();
+    const coordinates = DragonDrop.getHoverCoordinates();
+    const tile = DragonDrop.getDragTile();
+
+    // The hoverCell will be null if a player picked up a tile, but never
+    // moved the mouse.
+    if (hoverCell == null) { return false; }
+    if (hoverCell.getTile() != null) { return false; }
+
+    if (canPlaceTile(coordinates)) {
+      GameController.placeTile(coordinates, tile)
+    }
+  }
 
   function canPlaceTile(coordinates) {
     if (isPlaceOnOrigin()) { return coordinates.gx === 0 && coordinates.gy === 0; }
@@ -108,34 +105,11 @@ global.PlacementManager = (function () {
     return false;
   }
 
-  // === Highlighting ==========================================================
-
-  function highlightOrigin() {
-    OuterCellHighlight.show(0,0);
-  }
-
-  function highlightCell() {
-    if ($placementStatus && $placementStatus.canPlace) {
-      const hoverCell = DragonDrop.getHoverCell();
-
-      InnerCellHighlight.show(hoverCell, $placementStatus);
-
-    }
-  }
-
-  // ===========================================================================
-
   function isPlaceOnOrigin() {
-    return ($placementRules||[]).includes(_placeOnOrigin);
-  }
-
-  function localLog(message, data) {
-    log(message, { system:'PlacementManager', data:data });
+    return (DragonDrop.getDragTile().getPlacementRules()||[]).includes(_placeOnOrigin);
   }
 
   return Object.freeze({
-    startDrag,
-    tileRotated,
     checkDropTarget,
     placeTile,
   });
