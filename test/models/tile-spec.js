@@ -15,7 +15,6 @@ describe("Tile", function() {
 
     it('setting rotation rotates tiles',function() {
       let tile = Tile('baseline-h2-r1-0');
-          tile.buildSegments();
 
       expect(tile.getEdges().s).to.equal(_stone);
       expect(tile.getEdges().n).to.equal(_room);
@@ -34,16 +33,12 @@ describe("Tile", function() {
 
     it('rotates clockwise', function() {
       let tile = Tile('forest-1');
-          tile.buildSegments();
-
       tile.rotateClockwise();
       expect(tile.getEdges().w).to.equal('forest-path');
     });
 
     it('rotates widdershins', function() {
       let tile = Tile('forest-1');
-          tile.buildSegments();
-
       tile.rotateWiddershins();
       expect(tile.getEdges().e).to.equal('forest-path');
     });
@@ -52,7 +47,6 @@ describe("Tile", function() {
   describe("getLayers()", function() {
     it('gets the client layers from the segment', function() {
       let tile = Tile('forest-2');
-      tile.buildSegments();
       expect(tile.getLayers()[0].background).to.equal('f-2');
     });
   })
@@ -69,7 +63,6 @@ describe("Tile", function() {
 
     it('with placement events', function() {
       let tile = Tile('forest-1', { id:42, placementEvent:'fake-event', placementRules:[_noDiscard] });
-          tile.buildSegments();
           tile.setCoordinates(Coordinates.fromGlobal(5,10));
 
       let packed = tile.pack();
@@ -112,8 +105,6 @@ describe("Tile", function() {
 
     it("with segments", function() {
       let tile = Tile('forest-2');
-          tile.buildSegments();
-
       let unpacked = Tile.unpack(tile.pack());
       let segment = unpacked.getSegments()[0];
 

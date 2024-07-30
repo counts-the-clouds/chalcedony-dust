@@ -3,7 +3,7 @@
 // global object they're not actually immutable. Prefix them with an underscore
 // to indicate that they shouldn't be set.
 
-// === Return (and logging) Codes ===
+// === Logging Codes ===
 global._info = "info";
 global._success = "success";
 global._warning = "warning";
@@ -50,17 +50,25 @@ global._keyCodeW = 'KeyW';
 
 global._keyCodeF11 = 'F11';
 
-// === Game Stages ===
+// === Game ====================================================================
+
+// Stages
 global._tutorial = 'tutorial';
 global._baseline = 'baseline';
 
-// === Directions ===
+// === Tiles ===================================================================
+
+// Directions
 global._n = 'n';
 global._s = 's';
 global._e = 'e';
 global._w = 'w';
 
-// === Edge Types ===
+// Forms
+global._base = 'base';
+global._incomplete = 'incomplete';
+
+// Edge Types
 global._any = 'any';
 global._forbidden = 'forbidden';
 global._forestPath = 'forest-path'
@@ -71,24 +79,16 @@ global._hall = 'hall'
 global._river = 'river'
 global._lake = 'lake'
 
-// === Tile Placement Rules ===
+// Tile Placement Rules
 global._placeOnOrigin = 'place-on-origin';
 global._noRotate = 'no-rotate';
 global._noDiscard = 'no-discard';
 global._placeNext = 'place-next';
 
-// === Tile Segments ===
-global._base = 'base';
-global._incomplete = 'incomplete';
-
-// === Note Triggers ===
-global._drawn = 'drawn';
-
-// === Dungeon ===
+// === Dungeon =================================================================
 global._chunkLength = 16;
 global._tileSize = 128;
 global._chunkSize = _tileSize * _chunkLength;
-
 
 global._defaultScale = 47
 global._scaleFactors = [2,1.980,1.825,1.713,1.676,1.641,1.570,1.535,1.501,1.467,1.434,1.401,1.368,1.336,1.305,1.273,

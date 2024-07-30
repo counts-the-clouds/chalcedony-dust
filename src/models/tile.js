@@ -16,8 +16,33 @@ global.Tile = function(code, options={}) {
 
   let $coordinates;
   let $rotation = 0;
+
   let $edges = options.edges;
-  let $segments;
+  let $segments = (options.segments||[]).map(segmentData => {
+    return TileSegment.unpack(segmentData);
+  });
+
+  // Build the TileSegments if they weren't passed in the options. If this Tile
+  // is coming from a packed Tile it should have segments. If it's from a new
+  // tile though they won't be present.
+  if ($segments.length == 0) {
+    const tileData = getTileData();
+    const empty = tileData.emptyEdgeType || _stone;
+
+    $edges = { n:empty, s:empty, e:empty, w:empty };
+
+    for (let index=0; index<getTileData().segments.length; index++) {
+      const segment = TileSegment($code, index);
+
+      segment.getExits().forEach(exit => {
+        $edges[exit] = segment.getType();
+      });
+
+      $segments.push(segment);
+    }
+  }
+
+  // ===========================================================================
 
   function getCode() { return $code; }
   function getTileData() { return TileRegistry.lookup($code); }
@@ -50,29 +75,9 @@ global.Tile = function(code, options={}) {
     return { ...$edges };
   }
 
-  // === Segments ===
-
-  function buildSegments() {
-    const empty = getTileData().emptyEdgeType || _stone;
-
-    $edges = { n:empty, s:empty, e:empty, w:empty };
-    $segments = [];
-
-    for (let index = 0; index < getTileData().segments.length; index++) {
-      const segment = TileSegment(this,index);
-
-      segment.getExits().forEach(exit => {
-        $edges[exit] = segment.getType();
-      });
-
-      $segments.push(segment);
-    }
-  }
-
-  function setSegments(segments) { $segments = segments; }
-  function getSegments() { return $segments; }
-
   // === Layers ===
+
+  function getSegments() { return $segments; }
 
   // The getLayers() function should return the current forms of all the segments so that they can
   // be drawn in the user interface. Right now the layers only contain backgrounds. At some point
@@ -88,15 +93,17 @@ global.Tile = function(code, options={}) {
     });
   }
 
-  // === Serialization ===
+  // === Serialization =========================================================
 
   function pack() {
     let tileData = {
       code: $code,
       id: $id,
+
       coordinates: $coordinates,
       rotation: $rotation,
       edges: $edges,
+
       drawNote: $drawNote,
       placementEvent: $placementEvent,
       placementTrigger: $placementTrigger,
@@ -133,13 +140,11 @@ global.Tile = function(code, options={}) {
     rotateWiddershins,
     setRotation,
     getRotation,
+
     getEdges,
-
-    buildSegments,
-    setSegments,
     getSegments,
-
     getLayers,
+
     pack,
     toString,
   });
@@ -149,6 +154,8 @@ Tile.unpack = function(data) {
   let tile = Tile(data.code, {
     id: data.id,
     edges: data.edges,
+    segments: data.segments,
+
     drawNote: data.drawNote,
     placementEvent: data.placementEvent,
     placementTrigger: data.placementTrigger,
@@ -159,12 +166,6 @@ Tile.unpack = function(data) {
 
   tile.setCoordinates(data.coordinates);
   tile.setRotation(data.rotation);
-
-  if (data.segments) {
-    tile.setSegments(data.segments.map(segmentData => {
-      return TileSegment.unpack(tile,segmentData);
-    }));
-  }
 
   return tile;
 }
