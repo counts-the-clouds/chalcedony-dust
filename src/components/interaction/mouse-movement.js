@@ -7,7 +7,7 @@ global.MouseMovement = (function() {
   }
 
   function startDrag(event) {
-    if (DungeonView.isMovementEnabled()) {
+    if (!DragonDrop.isDragging() && DungeonView.isMovementEnabled()) {
       $dragContext = {
         initialViewportLocation: DungeonViewport.getLocation(),
         origin: {

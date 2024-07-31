@@ -8,6 +8,9 @@ global.WorldState = (function() {
     { name:'Rotate Clockwise',   action:'action.rotate-clockwise',   codes:[ _keyCodeE ]},
     { name:'Rotate Widdershins', action:'action.rotate-widdershins', codes:[ _keyCodeQ ]},
     { name:'Pause',              action:'action.pause',              codes:[ _keyCodeSpace ]},
+    { name:'Set Speed ▶',        action:'action.set-speed-1',        codes:[ _keyDigit1, _keyNumpad1 ]},
+    { name:'Set Speed ▶▶',       action:'action.set-speed-2',        codes:[ _keyDigit2, _keyNumpad2 ]},
+    { name:'Set Speed ▶▶▶',      action:'action.set-speed-3',        codes:[ _keyDigit3, _keyNumpad3 ]},
   ];
 
   const DefaultState = {

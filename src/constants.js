@@ -41,6 +41,14 @@ global._keyCodeArrowDown = 'ArrowDown';
 global._keyCodeArrowLeft = 'ArrowLeft';
 global._keyCodeArrowRight = 'ArrowRight';
 
+global._keyDigit1 = 'Digit1';
+global._keyDigit2 = 'Digit2';
+global._keyDigit3 = 'Digit3';
+
+global._keyNumpad1 = 'Numpad1';
+global._keyNumpad2 = 'Numpad2';
+global._keyNumpad3 = 'Numpad3';
+
 global._keyCodeA = 'KeyA';
 global._keyCodeD = 'KeyD';
 global._keyCodeE = 'KeyE';

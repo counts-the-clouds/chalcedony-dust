@@ -37,10 +37,8 @@ window.DragonDrop = (function() {
 
   function startDrag(context) {
     $dragContext = context;
-
     OuterCellHighlight.dragStarted(getDragTile());
   }
-
 
   function onMove(event) {
     if (!isDragging()) { return false; }

@@ -1,15 +1,24 @@
 global.ClockManager = (function() {
 
+  const SPEED_FACTORS = { 0:0, 1:1, 2:3.33, 3:10 };
+
   let $clocks = {};
   let $clockSpeed = 1;
+  let $previousSpeed = 1;
+
+  function init() {
+    X.registerKeyAction('action.pause',canChangeSpeed,togglePause)
+    X.registerKeyAction('action.set-speed-1',canChangeSpeed,() => { setClockSpeed(1); });
+    X.registerKeyAction('action.set-speed-2',canChangeSpeed,() => { setClockSpeed(2); });
+    X.registerKeyAction('action.set-speed-3',canChangeSpeed,() => { setClockSpeed(3); });
+  }
 
   function reset() { $clocks = {}; }
   function addClock(clock) { $clocks[clock.getID()] = clock; }
   function removeClock(id) { delete $clocks[id]; }
-  function setClockSpeed(speed) { $clockSpeed = speed; }
 
   function onTick(time) {
-    const ms = time.elapsedMS * $clockSpeed;
+    const ms = time.elapsedMS * SPEED_FACTORS[$clockSpeed];
 
     if (ms > 0) {
       Object.values($clocks).forEach(clock => {
@@ -35,7 +44,34 @@ global.ClockManager = (function() {
     clock.onUpdate();
   }
 
+  // === Clock Speed ==========================================================
+  //
+  // TODO: Certain actions like showing an event will force pause the game.
+  //       If that happens we shouldn't allow speed changes using the keyboard
+  //       shortcuts.
+  //
+  function canChangeSpeed() { return DungeonView.isVisible() }
+
+  function togglePause() {
+    if ($clockSpeed === 0) {
+      $clockSpeed = $previousSpeed;
+      return console.log(`Restore Speed: ${$clockSpeed}`);
+    }
+
+    if ($clockSpeed > 0) {
+      console.log("== Pause ==")
+      $previousSpeed = $clockSpeed;
+      $clockSpeed = 0
+    }
+  }
+
+  function setClockSpeed(speed) {
+    $clockSpeed = speed
+    console.log(`Set Speed: ${$clockSpeed}`);
+  }c
+
   return Object.freeze({
+    init,
     reset,
     addClock,
     removeClock,

@@ -38,10 +38,10 @@ global.PlacementManager = (function () {
     const y = coordinates.gy;
 
     return {
-      n: DungeonView.getCellContainerAt(x,y - 1).getTile(),
-      s: DungeonView.getCellContainerAt(x,y + 1).getTile(),
-      e: DungeonView.getCellContainerAt(x + 1,y).getTile(),
-      w: DungeonView.getCellContainerAt(x - 1,y).getTile(),
+      n: DungeonView.getTileAt(x,y - 1),
+      s: DungeonView.getTileAt(x,y + 1),
+      e: DungeonView.getTileAt(x + 1,y),
+      w: DungeonView.getTileAt(x - 1,y),
     }
   }
 

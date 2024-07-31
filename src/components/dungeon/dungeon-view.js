@@ -9,6 +9,7 @@ global.DungeonView = (function() {
     DragonDrop.init();
     DungeonViewport.init();
     TileShelfView.init();
+    ClockManager.init();
   }
 
   function reset() {
@@ -118,6 +119,12 @@ global.DungeonView = (function() {
 
   // ===========================================================================
 
+  // Get the tile given a global coordinate.
+  function getTileAt(x,y) {
+    const cellContainer = getCellContainerAt(x,y)
+    return cellContainer ? cellContainer.getTile() : null;
+  }
+
   // Get the cell container given a tile's global coordinates.
   function getCellContainerAt(x,y) {
     const coordinates = Coordinates.fromGlobal(x,y);
@@ -169,6 +176,7 @@ global.DungeonView = (function() {
     getChunkExtent,
     getDimensions,
     isMovementEnabled,
+    getTileAt,
     getCellContainerAt,
     getCellContainerAtPoint,
     placeTile,
