@@ -62,7 +62,7 @@ describe("Tile", function() {
     })
 
     it('with placement events', function() {
-      let tile = Tile({ code:'forest-1', id:42, extra:{
+      let tile = Tile({ code:'forest-2', id:42, extra:{
         placementEvent:'fake-event',
         placementRules:[_noDiscard] }});
       tile.setCoordinates(Coordinates.fromGlobal(5,10));
@@ -75,7 +75,7 @@ describe("Tile", function() {
 
       expect(Object.keys(packed).length).to.equal(7);
       expect(packed.id).to.equal(42);
-      expect(packed.code).to.equal('forest-1');
+      expect(packed.code).to.equal('forest-2');
       expect(packed.coordinates.gx).to.equal(5);
       expect(packed.coordinates.gy).to.equal(10);
       expect(packed.edges.s).to.equal('forest-path');

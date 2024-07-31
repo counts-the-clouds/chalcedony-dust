@@ -8,6 +8,7 @@ global.Clock = function(options) {
   const $code = options.code || options.id;
 
   let $elapsedTime = options.elapsedTime || 0;
+  let $tileContainer;
 
   function getID() { return $id; }
   function getCode() { return $code; }
@@ -18,8 +19,16 @@ global.Clock = function(options) {
   function getElapsedTime() { return $elapsedTime; }
   function setElapsedTime(time) { $elapsedTime = time; }
 
-  function onUpdate() { getClockData().onUpdate(this); }
+  function onUpdate() {
+    if ($tileContainer) {
+      $tileContainer.updateClock((getElapsedTime() / getDuration()) * 100);
+    }
+  }
+
   function onComplete() { getClockData().onComplete(this); }
+
+  function attachTileContainer(tileContainer) { $tileContainer = tileContainer; }
+  function getTileContainer() { return $tileContainer; }
 
   function pack() {
     return {
@@ -38,6 +47,8 @@ global.Clock = function(options) {
     setElapsedTime,
     onUpdate,
     onComplete,
+    attachTileContainer,
+    getTileContainer,
     pack,
   });
 }

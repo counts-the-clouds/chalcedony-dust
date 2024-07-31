@@ -22,9 +22,6 @@ EventRegistry.register('game-start-1', {
     TileBag.addSequentialTiles(tiles.map(data => { return Tile(data); }));
 
     TileShelfView.showTileBag();
-
-    // TODO: We'll need to adjust the generate tile clock here so it does the
-    //       right thing.
   },
 
 });

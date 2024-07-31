@@ -3,6 +3,8 @@ global.TileContainer = async function(tile) {
   const $tile = tile;
   const $tileContainer = new Pixi.Container();
 
+  let $clockContainer;
+
   function getID() { return $tile.getID(); }
   function getTile() { return $tile; }
   function getTileContainer() { return $tileContainer; }
@@ -51,6 +53,22 @@ global.TileContainer = async function(tile) {
     $tileContainer.y = y;
   }
 
+  async function enableClock() {
+    const clock = getTile().getClock();
+    if (clock) {
+      $clockContainer = await ClockContainer(clock);
+
+      clock.attachTileContainer(this);
+
+      $tileContainer.addChild($clockContainer.getContainer());
+
+      ClockManager.addClock(clock);
+    }
+  }
+
+  async function updateClock(percent) {
+    $clockContainer.updateClock(percent);
+  }
 
   // Setting a tile on the shelf enables the drag and drop action on that tile.
   // This is ugly from a code organization point of view, but we need to have
@@ -94,6 +112,8 @@ global.TileContainer = async function(tile) {
     setSize,
     setCursor,
     setPosition,
+    enableClock,
+    updateClock,
     setOnShelf,
   };
 };
