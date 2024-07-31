@@ -11,17 +11,15 @@ EventRegistry.register('game-start-1', {
 
   onFinish: state => {
     let tiles = [
-      { code:'forest-2', options:{ drawNote:'tutorial.connecting-tiles' }},
-      { code:'forest-3', options:{ drawNote:'tutorial.rotate-tile', placementTrigger:'tutorial.enable-movement' }},
-      { code:'forest-4', options:{ drawNote:'tutorial.pan-map' }},
-      { code:'forest-5', options:{ placementEvent:'game-start-2' }},
-      { code:'forest-6', options:{ placementEvent:'enter-the-dungeon' }},
+      { code:'forest-2', extra:{ drawNote:'tutorial.connecting-tiles' }},
+      { code:'forest-3', extra:{ drawNote:'tutorial.rotate-tile', placementTrigger:'tutorial.enable-movement' }},
+      { code:'forest-4', extra:{ drawNote:'tutorial.pan-map' }},
+      { code:'forest-5', extra:{ placementEvent:'game-start-2' }},
+      { code:'forest-6', extra:{ placementEvent:'enter-the-dungeon' }},
     ];
 
     TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });
-    TileBag.addSequentialTiles(tiles.map(data => {
-      return Tile(data.code, data.options);
-    }));
+    TileBag.addSequentialTiles(tiles.map(data => { return Tile(data); }));
 
     TileShelfView.showTileBag();
 

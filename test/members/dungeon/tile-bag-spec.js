@@ -9,9 +9,9 @@ describe("TileBag", function() {
 
   it('empty(), isEmpty(), and size()', function() {
     startSequence();
-    TileBag.addSequentialTiles([ Tile('forest-1') ]);
+    TileBag.addSequentialTiles([ Tile({ code:'forest-1'}) ]);
     TileBag.addBaggedTiles({ 'forest-1':3 });
-    TileBag.addWeightedTile( Tile('forest-3'), 50, 10);
+    TileBag.addWeightedTile( Tile({ code:'forest-3' }), 50, 10);
     TileBag.empty();
 
     expect(TileBag.size()).to.equal(0);
@@ -20,8 +20,8 @@ describe("TileBag", function() {
 
   it('addSequentialTiles()', function() {
     startSequence();
-    TileBag.addSequentialTiles([ Tile('forest-1'), Tile('forest-2') ]);
-    TileBag.addSequentialTiles([ Tile('forest-2'), Tile('forest-1') ]);
+    TileBag.addSequentialTiles([ Tile({ code:'forest-1' }), Tile({ code:'forest-2' }) ]);
+    TileBag.addSequentialTiles([ Tile({ code:'forest-2' }), Tile({ code:'forest-1' }) ]);
 
     let codes = TileBag.pack().sequenceData.tiles.map(tile => { return tile.code });
 
@@ -68,7 +68,7 @@ describe("TileBag", function() {
   });
 
   it('addWeightedTile()', function() {
-    TileBag.addWeightedTile(Tile('forest-3'),50,10);
+    TileBag.addWeightedTile(Tile({ code:'forest-3' }),50,10);
 
     let entry = TileBag.pack().weightedTiles['forest-3'];
     expect(entry.tile.code).to.equal('forest-3');
@@ -77,7 +77,7 @@ describe("TileBag", function() {
   });
 
   it('deleteWeightedTile()', function() {
-    TileBag.addWeightedTile(Tile('forest-3'),50,10);
+    TileBag.addWeightedTile(Tile({ code:'forest-3' }),50,10);
     TileBag.deleteWeightedTile('forest-3');
     expect(TileBag.pack().weightedTiles['forest-3']).to.be.undefined;
   });
@@ -91,32 +91,32 @@ describe("TileBag", function() {
     it('draws with sequential tiles', function() {
       startSequence();
       TileBag.addBaggedTiles({ 'forest-1':30, 'forest-2':50 });
-      TileBag.addSequentialTiles([ Tile('forest-3') ]);
+      TileBag.addSequentialTiles([ Tile({ code:'forest-3' }) ]);
       expect(TileBag.drawTile().getCode()).to.equal('forest-3');
     });
 
     it('draws with weighted tile', function() {
       TileBag.addBaggedTiles({ 'forest-1':3, 'forest-2':2 });
-      TileBag.addWeightedTile( Tile('forest-3'), 50, 10);
+      TileBag.addWeightedTile( Tile({ code:'forest-3' }), 50, 10);
       expect(TileBag.drawTile().getCode()).to.be.oneOf(['forest-1','forest-2','forest-3']);
     });
   });
 
   describe('raiseHeat()', function() {
     it('raises heat', function() {
-      TileBag.addWeightedTile( Tile('forest-3'), 50, 10);
+      TileBag.addWeightedTile( Tile({ code:'forest-3' }), 50, 10);
       TileBag.raiseHeat();
       expect(TileBag.pack().weightedTiles['forest-3'].chance).to.equal(60);
     })
 
     it('caps at 100', function() {
-      TileBag.addWeightedTile(Tile('forest-3'), 80, 70);
+      TileBag.addWeightedTile(Tile({ code:'forest-3' }), 80, 70);
       TileBag.raiseHeat();
       expect(TileBag.pack().weightedTiles['forest-3'].chance).to.equal(100);
     });
 
     it('removes tile at 0', function() {
-      TileBag.addWeightedTile(Tile('forest-3'), 10, -20);
+      TileBag.addWeightedTile(Tile({ code:'forest-3' }), 10, -20);
       TileBag.raiseHeat();
       expect(TileBag.pack().weightedTiles['forest-3']).to.be.undefined;
     });
@@ -125,8 +125,11 @@ describe("TileBag", function() {
   it('unpack()', function() {
     startSequence();
     TileBag.addBaggedTiles({ 'forest-1':30, 'forest-2':50 });
-    TileBag.addSequentialTiles([ Tile('forest-1'), Tile('forest-2') ]);
-    TileBag.addWeightedTile(Tile('forest-3'), 50, 10);
+    TileBag.addWeightedTile(Tile({ code:'forest-3' }), 50, 10);
+    TileBag.addSequentialTiles([
+      Tile({ code:'forest-1'}),
+      Tile({ code:'forest-2'})
+    ]);
 
     let data = TileBag.pack();
 

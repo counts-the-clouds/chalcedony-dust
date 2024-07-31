@@ -16,7 +16,7 @@ describe("DungeonGrid", function() {
 
     it("when cell has a value", function() {
       const coords = Coordinates.fromGlobal(5,15);
-      DungeonGrid.setCell(coords, Tile('forest-1'));
+      DungeonGrid.setCell(coords, Tile({ code:'forest-1'}));
 
       const tile = DungeonGrid.getCell(coords);
       expect(tile.getCode()).to.equal('forest-1');
@@ -26,7 +26,7 @@ describe("DungeonGrid", function() {
   describe("setCell()", function() {
     it('creates a new chunk if needed', function() {
       const coords = Coordinates.fromGlobal(150,75);
-      DungeonGrid.setCell(coords, Tile('forest-1'));
+      DungeonGrid.setCell(coords, Tile({ code:'forest-1' }));
       expect(DungeonGrid.pack().chunks['[9|4]'].cells[coords.ci].code).to.equal('forest-1');
     });
   });

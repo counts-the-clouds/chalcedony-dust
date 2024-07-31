@@ -1,61 +1,72 @@
-global.Tile = function(code, options={}) {
+global.Tile = function(options) {
 
-  TileRegistry.lookup(code);
-
-  const $code = code;
+  const $code = options.code;
   const $id = options.id || GameState.nextTileID();
-  const $placementEvent = options.placementEvent;
-  const $placementTrigger = options.placementTrigger;
-  const $placementRules = options.placementRules;
 
-  const $placementNote = options.placementNote;
-  const $drawNote = options.drawNote;
-
-  if ($placementNote) { NoteRegistry.lookup($placementNote); }
-  if ($drawNote) { NoteRegistry.lookup($drawNote); }
-
-  let $coordinates;
-  let $rotation = 0;
-
+  let $coordinates = options.coordinates;
+  let $rotation = options.rotation || 0;
   let $edges = options.edges;
-  let $segments = (options.segments||[]).map(segmentData => {
-    return TileSegment.unpack(segmentData);
-  });
+  let $extra = options.extra || {};
+
+  let $clock;
+  let $segments;
+
+  buildClock(options);
+  buildSegments(options);
+
+  // If the tile data specifies that this tile should have a clock we add it
+  // to the tile automatically. This clock won't actually do anything until
+  // it's added to the ClockManager when the tile is added to the dungeon.
+  function buildClock(options) {
+    if (options.clock) {
+      $clock = Clock(options.clock);
+    }
+
+    if ($clock == null && getTileData().clock) {
+      $clock = Clock({ id:$id, code:getTileData().clock.code });
+    }
+  }
 
   // Build the TileSegments if they weren't passed in the options. If this Tile
   // is coming from a packed Tile it should have segments. If it's from a new
   // tile though they won't be present.
-  if ($segments.length == 0) {
-    const tileData = getTileData();
-    const empty = tileData.emptyEdgeType || _stone;
+  function buildSegments(options) {
+    $segments = (options.segments||[]).map(segmentData => {
+      return TileSegment.unpack(segmentData);
+    });
 
-    $edges = { n:empty, s:empty, e:empty, w:empty };
+    if ($segments.length === 0) {
+      const empty = getTileData().emptyEdgeType || _stone;
 
-    for (let index=0; index<getTileData().segments.length; index++) {
-      const segment = TileSegment($code, index);
+      $edges = { n:empty, s:empty, e:empty, w:empty };
 
-      segment.getExits().forEach(exit => {
-        $edges[exit] = segment.getType();
-      });
+      for (let index=0; index<getTileData().segments.length; index++) {
+        const segment = TileSegment($code, index);
 
-      $segments.push(segment);
+        segment.getExits().forEach(exit => {
+          $edges[exit] = segment.getType();
+        });
+
+        $segments.push(segment);
+      }
     }
   }
 
   // ===========================================================================
 
   function getCode() { return $code; }
-  function getTileData() { return TileRegistry.lookup($code); }
   function getID() { return $id; }
 
-  function getDrawNote() { return $drawNote; }
-  function getPlacementEvent() { return $placementEvent; }
-  function getPlacementTrigger() { return $placementTrigger; }
-  function getPlacementRules() { return $placementRules; }
-  function getPlacementNote() { return $placementNote; }
+  function getTileData() { return TileRegistry.lookup($code); }
+  function getDrawNote()         { return $extra.drawNote         || getTileData().drawNote; }
+  function getPlacementEvent()   { return $extra.placementEvent   || getTileData().placementEvent; }
+  function getPlacementTrigger() { return $extra.placementTrigger || getTileData().placementTrigger; }
+  function getPlacementRules()   { return $extra.placementRules   || getTileData().placementRules; }
+  function getPlacementNote()    { return $extra.placementNote    || getTileData().placementNote; }
 
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return { ...$coordinates }; }
+  function getClock() { return $clock; }
 
   // === Rotation ===
 
@@ -103,12 +114,11 @@ global.Tile = function(code, options={}) {
       coordinates: $coordinates,
       rotation: $rotation,
       edges: $edges,
+      extra: $extra,
+    }
 
-      drawNote: $drawNote,
-      placementEvent: $placementEvent,
-      placementTrigger: $placementTrigger,
-      placementRules: $placementRules,
-      placementNote: $placementNote,
+    if ($clock) {
+      tileData.clock = $clock.pack();
     }
 
     if ($segments) {
@@ -135,6 +145,7 @@ global.Tile = function(code, options={}) {
     getPlacementNote,
     setCoordinates,
     getCoordinates,
+    getClock,
 
     rotateClockwise,
     rotateWiddershins,
@@ -148,24 +159,4 @@ global.Tile = function(code, options={}) {
     pack,
     toString,
   });
-}
-
-Tile.unpack = function(data) {
-  let tile = Tile(data.code, {
-    id: data.id,
-    edges: data.edges,
-    segments: data.segments,
-
-    drawNote: data.drawNote,
-    placementEvent: data.placementEvent,
-    placementTrigger: data.placementTrigger,
-    placementRules: data.placementRules,
-    placementNote: data.placementNote,
-    enableNote: data.enableNote,
-  });
-
-  tile.setCoordinates(data.coordinates);
-  tile.setRotation(data.rotation);
-
-  return tile;
 }

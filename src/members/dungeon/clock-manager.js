@@ -4,22 +4,9 @@ global.ClockManager = (function() {
   let $clockSpeed = 1;
 
   function reset() { $clocks = {}; }
-
-  // If a clock is attached to a tile we should use the tile's id as the clock
-  // id. If there should only be one of these clocks in the game at once then
-  // the clock code can be used as the id.
-  function addClock(id, code=null) {
-    if (code == null) { code = id; }
-    $clocks[id] = Clock({ id, code });
-  }
-
-  function removeClock(id) {
-    delete $clocks[id];
-  }
-
-  function setClockSpeed(speed) {
-    $clockSpeed = speed;
-  }
+  function addClock(clock) { $clocks[clock.getID()] = clock; }
+  function removeClock(id) { delete $clocks[id]; }
+  function setClockSpeed(speed) { $clockSpeed = speed; }
 
   function onTick(time) {
     const ms = time.elapsedMS * $clockSpeed;

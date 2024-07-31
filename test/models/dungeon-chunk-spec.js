@@ -2,7 +2,7 @@ describe("DungeonChunk", function() {
 
   describe("setTileAt()", function() {
     it("sets the tile and the tile's coordinates when set.", function() {
-      let tile = Tile('forest-2');
+      let tile = Tile({ code:'forest-2' });
       let chunk = new DungeonChunk(2,4);
       let coords = Coordinates.fromGlobal(10,8);
 

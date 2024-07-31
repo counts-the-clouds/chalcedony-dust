@@ -40,8 +40,12 @@
   #mocha {
     margin: 0;
     padding-bottom: 20px;
+    font-family: 'roboto-mono';
 
-    h1 { line-height:1.5; }
+    h1, h2 {
+      font-family: 'roboto-mono-bold';
+      line-height: 1.5;
+    }
 
     pre {
       max-width: 330px;

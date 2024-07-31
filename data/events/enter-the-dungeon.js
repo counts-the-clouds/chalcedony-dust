@@ -14,7 +14,7 @@ EventRegistry.register('enter-the-dungeon', {
 
     TileBag.addBaggedTiles(TileBagRegistry.lookup('baseline'));
 
-    GameController.placeTile(Coordinates.fromGlobal(0,0),Tile('dungeon-core'));
+    GameController.placeTile(Coordinates.fromGlobal(0,0),Tile({ code:'dungeon-core' }));
     DungeonViewport.setLocation(0,0);
   },
 

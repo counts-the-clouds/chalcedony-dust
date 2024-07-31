@@ -1,5 +1,7 @@
 TileRegistry.register('dungeon-core', {
 
+  clock: { code:'generate-tile' },
+
   segments:[
     { type:_hall, exits:[_s], forms:{
       incomplete:{ background:'hall-1', angle:180 }

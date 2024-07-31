@@ -36,7 +36,7 @@ global.GameController = (function() {
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
     (stageData.shelvedTiles||[]).forEach(tileData => {
-      TileShelf.addTile(Tile(tileData.code, tileData.options));
+      TileShelf.addTile(Tile(tileData));
     });
 
     // Placed tiles need the code, options, as well as the global (x,y)
@@ -44,7 +44,7 @@ global.GameController = (function() {
     (stageData.placedTiles||[]).forEach(tileData => {
       DungeonGrid.setCell(
         Coordinates.fromGlobal(tileData.x,tileData.y),
-        Tile(tileData.code, tileData.options));
+        Tile(tileData));
     });
   }
 

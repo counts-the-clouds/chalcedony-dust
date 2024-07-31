@@ -30,7 +30,10 @@ global.DungeonView = (function() {
     MainContent.setMainContent('views/dungeon-view.html');
     await createApplication();
 
-    ClockManager.addClock('generate-tile');
+
+    // const tileClock = Clock({ id:'generate-tile' });
+    // tileClock.attachCell
+    // ClockManager.addClock(tileClock);
   }
 
   function isVisible() {

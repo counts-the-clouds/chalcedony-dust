@@ -143,7 +143,7 @@ global.TileBag = (function() {
     const code = Random.fromFrequencyMap($baggedTiles);
     removeBaggedTile(code);
 
-    return Tile(code);
+    return Tile({ code });
   }
 
   // Each time we draw a tile without drawing a weighted tile we make it more
@@ -195,7 +195,7 @@ global.TileBag = (function() {
     $sequenceData = data.sequenceData;
     if ($sequenceData != null) {
       $sequenceData.tiles = data.sequenceData.tiles.map(tileData => {
-        return Tile.unpack(tileData);
+        return Tile(tileData);
       });
     }
 
@@ -203,7 +203,7 @@ global.TileBag = (function() {
     Object.keys(data.weightedTiles).forEach(code => {
       let source = data.weightedTiles[code];
       $weightedTiles[code] = {
-        tile: Tile.unpack(source.tile),
+        tile: Tile(source.tile),
         chance: source.chance,
         heat: source.heat,
       }

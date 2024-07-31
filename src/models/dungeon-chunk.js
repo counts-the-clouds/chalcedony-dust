@@ -39,7 +39,7 @@ global.DungeonChunk = function(cx,cy) {
 
     for (let i=0; i<data.cells.length; i++) {
       if (data.cells[i] !== 0) {
-        chunk.setCell(i,Tile.unpack(data.cells[i]));
+        chunk.setCell(i,Tile(data.cells[i]));
       }
     }
 
