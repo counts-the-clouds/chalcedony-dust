@@ -6,6 +6,7 @@ global.Components = (function() {
     EventView.init();
     MainMenu.init();
     OptionsOverlay.init();
+    SpeedControl.init();
   }
 
   return {

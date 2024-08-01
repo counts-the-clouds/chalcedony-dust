@@ -55,20 +55,21 @@ global.ClockManager = (function() {
   function togglePause() {
     if ($clockSpeed === 0) {
       $clockSpeed = $previousSpeed;
-      return console.log(`Restore Speed: ${$clockSpeed}`);
+      return SpeedControl.activate($clockSpeed);
     }
 
     if ($clockSpeed > 0) {
-      console.log("== Pause ==")
       $previousSpeed = $clockSpeed;
       $clockSpeed = 0
+      SpeedControl.activate(0);
     }
   }
 
   function setClockSpeed(speed) {
+    $previousSpeed = $clockSpeed;
     $clockSpeed = speed
-    console.log(`Set Speed: ${$clockSpeed}`);
-  }c
+    SpeedControl.activate(speed);
+  }
 
   return Object.freeze({
     init,

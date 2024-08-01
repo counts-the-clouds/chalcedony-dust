@@ -4,3 +4,33 @@
   inset: 0;
   z-index: $z-canvas;
 }
+
+#speedControl {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  padding: 5px;
+  background-color: rgba(50,40,40,0.5);
+  border: $border-normal;
+  box-shadow: $shadow-frame;
+  z-index: $z-controls;
+
+  a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    line-height: 25px;
+    width: 50px;
+    height: 30px;
+    margin-left: 5px;
+    overflow: hidden;
+    padding: 0;
+  }
+
+  .nudge-up { position:relative; top:-1px; }
+  .nudge-down { position:relative; top:1px; }
+
+  a:first-child { margin-left:0 }
+  a.pause { font-size:25px; }
+}
