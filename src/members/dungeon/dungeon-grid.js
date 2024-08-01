@@ -45,7 +45,7 @@ global.DungeonGrid = (function() {
   }
 
   function unpack(data) {
-    console.log("TODO: DungeonGrid.unpack()",data);
+    // TODO: Unpack
   }
 
   return Object.freeze({
