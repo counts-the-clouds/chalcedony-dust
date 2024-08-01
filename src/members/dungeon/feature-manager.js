@@ -1,8 +1,9 @@
-global.FeatureGraph = (function() {
+global.FeatureManager = (function() {
 
-  function clear() {
+  let $features = {};
 
-  }
+  function clear() { $features = {}; }
+  function getFeatures() { return $features; }
 
   function tileAdded(tile) {
     if (tile.getCoordinates() == null) { throw 'A placed tile needs coordinates.' }
@@ -18,7 +19,7 @@ global.FeatureGraph = (function() {
     const exits = segment.getExits();
 
     // If a segment has no exits then it can't be a part of a feature. Single
-    // tile featucres will be a thing, but they're not part of the feature
+    // tile features will be a thing, but they're not part of the feature
     // graph.
     if (exits.length === 0) { return false; }
 
@@ -48,11 +49,21 @@ global.FeatureGraph = (function() {
   }
 
   function createFeature(segment) {
-    console.log(`Create Feature From ${segment}`)
+    const feature = Feature({});
+          feature.addSegment(segment);
+
+    $features[feature.getID()] = feature;
+  }
+
+  function featuresForTile(tile) {
+    return Object.values($features).filter(feature => {
+      return feature.getTiles().map(t => t.getID()).includes(tile.getID());
+    });
   }
 
   return Object.freeze({
     clear,
+    featuresForTile,
     tileAdded,
   })
 

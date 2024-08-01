@@ -13,7 +13,7 @@ global.TileSegment = function(tile,data) {
   function getExits() { return getSegmentData().exits; }
 
   function toString() {
-    return `TileSegment[${tile.getID()}:${$index}]`
+    return `Segment[${tile.getID()}:${$index}]`
   }
 
   function pack() {
