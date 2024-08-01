@@ -64,9 +64,21 @@ global.Tile = function(options) {
   function getPlacementRules()   { return $extra.placementRules   || getTileData().placementRules; }
   function getPlacementNote()    { return $extra.placementNote    || getTileData().placementNote; }
 
+  function getClock() { return $clock; }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return { ...$coordinates }; }
-  function getClock() { return $clock; }
+
+  function getNeighbors() {
+    const x = $coordinates.gx;
+    const y = $coordinates.gy;
+
+    return {
+      n: DungeonGrid.getTile(Coordinates.fromGlobal(x,y - 1)),
+      s: DungeonGrid.getTile(Coordinates.fromGlobal(x,y + 1)),
+      e: DungeonGrid.getTile(Coordinates.fromGlobal(x + 1,y)),
+      w: DungeonGrid.getTile(Coordinates.fromGlobal(x - 1,y)),
+    }
+  }
 
   // === Rotation ===
 
@@ -143,9 +155,10 @@ global.Tile = function(options) {
     getPlacementTrigger,
     getPlacementRules,
     getPlacementNote,
+    getClock,
     setCoordinates,
     getCoordinates,
-    getClock,
+    getNeighbors,
 
     rotateClockwise,
     rotateWiddershins,
