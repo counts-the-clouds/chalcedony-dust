@@ -39,8 +39,13 @@ global.FeatureManager = (function() {
     if (allNullValues(connections)) {
       return createFeature(segment);
     }
-c
-    console.log(`${segment} connects to`,connections);
+
+    Object.keys(connections).forEach(direction => {
+      const neighbor = connections[direction];
+      if (neighbor) {
+        connectFeatures(segment, direction, neighbor);
+      }
+    });
 
     // If there is one neighboring tile then we join that feature.
 
@@ -62,6 +67,28 @@ c
     $features[feature.getID()] = feature;
   }
 
+  function connectFeatures(segment, direction, neighbor) {
+    let connectingSegment = neighbor.getSegments().filter(seg => {
+      return seg.getExits(neighbor.getRotation()).includes(reflect(direction))
+    })[0];
+
+    if (connectingSegment.getType() !== segment.getType()) {
+      const a = `${segment}=${segment.getType()}`;
+      const b = `${connectingSegment}=${connectingSegment.getType()}`;
+      throw `Cannot connect segments. Types do not match. ${a} ${b}`
+    }
+
+    const feature = $features[connectingSegment.getFeatureID()];
+    feature.addSegment(segment);
+    feature.connect(connectingSegment, segment);
+  }
+
+  function reflect(direction) {
+    return { n:_s, s:_n, e:_w, w:_e }[direction];
+  }
+
+  // This could be made easier now that the segments are storing the feature ID.
+  // This is only used by a spec though, so it might not actually be needed.
   function featuresForTile(tile) {
     return Object.values($features).filter(feature => {
       return feature.getTiles().map(t => t.getID()).includes(tile.getID());

@@ -5,7 +5,7 @@ global.Feature = function(data) {
   // Each feature is implemented as a graph of segments and edges that connect
   // them.
   const $segments = data.segments || {};
-  const $edges = data.edges || [];
+  const $edges = data.edges || {};
 
   function getID() { return $id; }
   function getSegments() { return $segments; }
@@ -19,11 +19,43 @@ global.Feature = function(data) {
   }
 
   function addSegment(segment) {
+    segment.setFeatureID($id);
     $segments[segment.toString()] = segment;
+    $edges[segment.toString()] = [];
   }
 
   function connect(a,b) {
-    $edges.push([a.toString(), b.toString()]);
+    $edges[a.toString()].push(b.toString());
+  }
+
+  function search(start) {
+    if (start == null) {
+      start = Object.keys($segments)[0];
+    }
+
+    const result = [];
+    const visited = {};
+
+    const dfs = vertex => {
+      if (!vertex) { return null; }
+
+      visited[vertex] = true;
+      result.push(vertex);
+
+      $edges[vertex].forEach(segmentID => {
+        if (!visited[segmentID]) {
+          return dfs(segmentID);
+        }
+      });
+    }
+
+    dfs(start);
+
+    return result;
+  }
+
+  function toString() {
+    return `Feature[${$id}]`;
   }
 
   return Object.freeze({
@@ -33,6 +65,8 @@ global.Feature = function(data) {
     getTiles,
     addSegment,
     connect,
+    search,
+    toString,
   });
 
 }
