@@ -44,6 +44,22 @@ describe("Tile", function() {
     });
   });
 
+  describe('getNeighbors()', function() {
+    it('gets neighboring tiles', function() {
+      let core = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });
+      SpecHelper.placeTile( 0,-1,{ code:'baseline-r1-0', rotation:2 }); // N
+      SpecHelper.placeTile( 0, 1,{ code:'baseline-r2-1', rotation:1 }); // S
+      SpecHelper.placeTile( 1, 0,{ code:'baseline-h1-0', rotation:3 }); // E
+      SpecHelper.placeTile(-1, 0,{ code:'baseline-h2-1', rotation:0 }); // W
+
+      const neighbors = core.getNeighbors();
+      expect(neighbors.n.getCode()).to.equal('baseline-r1-0');
+      expect(neighbors.s.getCode()).to.equal('baseline-r2-1');
+      expect(neighbors.e.getCode()).to.equal('baseline-h1-0');
+      expect(neighbors.w.getCode()).to.equal('baseline-h2-1');
+    });
+  });
+
   describe("getLayers()", function() {
     it('gets the client layers from the segment', function() {
       let tile = Tile({ code:'forest-2' });

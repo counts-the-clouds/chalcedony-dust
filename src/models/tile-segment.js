@@ -10,7 +10,25 @@ global.TileSegment = function(tile,data) {
 
   function getSegmentData() { return TileRegistry.lookup($tile.getCode()).segments[$index] }
   function getType() { return getSegmentData().type; }
-  function getExits() { return getSegmentData().exits; }
+
+  // The exits come from the immutable segment data, so they won't be rotated
+  // like the tile's edges object. We don't want to always rotate these values
+  // because the tile rotates the edges, and if we rotate the exits then the
+  // tile's edges might get rotated twice. This is used by the FeatureManager
+  // though to get the neighboring tiles of a segment, so it needs to fetch a
+  // rotated version of that array then.
+  function getExits(rotation=0) {
+    const exits = getSegmentData().exits;
+    if (rotation === 0) { return exits }
+
+    return exits.map(direction => {
+      return {
+        1:{ n:_e, s:_w, e:_s, w:_n },
+        2:{ n:_s, s:_n, e:_w, w:_e },
+        3:{ n:_w, s:_e, e:_n, w:_s },
+      }[rotation][direction];
+    });
+  }
 
   function toString() {
     return `Segment[${tile.getID()}:${$index}]`
