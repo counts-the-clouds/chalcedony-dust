@@ -11,11 +11,11 @@ global.Main = async function() {
     Components.initAll();
 
     await WorldState.loadState();
-    // await GameState.loadState();
+    await GameState.loadState();
 
     MainMenu.show();
-    TestFramework.load();
     KeyboardMonitor.start();
+    Tests.load();
 
     log("Chalcedony Started",{ system:'Main', data:{
       environment: Environment.name,

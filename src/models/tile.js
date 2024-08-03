@@ -111,6 +111,12 @@ global.Tile = function(data) {
     });
   }
 
+  function getFeatures() {
+    return ArrayHelper.compact(getSegments().map(segment => {
+      return segment.getFeature();
+    }))
+  }
+
   // === Serialization ===
 
   function toString() {
@@ -161,6 +167,7 @@ global.Tile = function(data) {
     getSegmentIDs,
     getSegments,
     getLayers,
+    getFeatures,
 
     toString,
     pack,

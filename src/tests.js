@@ -1,5 +1,4 @@
-
-global.TestFramework = (function() {
+global.Tests = (function() {
 
   // Not a great way to do this. Mocha probably has some events I could hook
   // into instead, but just setting a few timeouts that anticipate how long
@@ -15,7 +14,7 @@ global.TestFramework = (function() {
       loadMocha();
       runTests();
 
-      X.onClick('#mocha li.test',item => {
+      X.onClick('#mocha li.test', () => {
         ScrollingPanel.resize('#testFrame');
       });
     }
@@ -84,7 +83,6 @@ global.TestFramework = (function() {
   return {
     load
   };
-
 
 })();
 

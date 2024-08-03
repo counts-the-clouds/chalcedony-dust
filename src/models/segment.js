@@ -24,6 +24,7 @@ global.Segment = function(data) {
 
   function getFeatureID() { return $featureID; }
   function setFeatureID(featureID) { $featureID = featureID; }
+  function getFeature() { return FeatureDataStore.get($featureID); }
 
   function getConnections() { return $connections }
   function getConnection(direction) { return $connections[direction]; }
@@ -81,6 +82,7 @@ global.Segment = function(data) {
     getForm,
     getFeatureID,
     setFeatureID,
+    getFeature,
     getConnections,
     getConnection,
     setConnection,

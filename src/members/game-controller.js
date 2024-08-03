@@ -8,6 +8,8 @@ global.GameController = (function() {
   async function beginGame() {
     await GameState.clear();
 
+    DungeonGrid.build();
+
     // TEMP: While were testing the baseline tiles...
     // setStage(GameStageRegistry.lookup(WorldState.getChapter()));
     setStage(GameStageRegistry.lookup('baseline'));

@@ -15,7 +15,6 @@ global.GameState = (function() {
   // automatically save the game.
   function reset() {
     Models.reset();
-    FeatureLibrary.reset();
     GameFlags.reset();
     TileBag.reset();
     TileShelf.reset();
@@ -38,10 +37,10 @@ global.GameState = (function() {
   }
 
   async function loadState() {
-    if ($testMode) { return await reset(); }
+    if ($testMode) { return reset(); }
 
     try {
-      loadedState = await $stateRecorder.loadState();
+      const loadedState = await $stateRecorder.loadState();
 
       if (loadedState) {
         GameFlags.unpack(loadedState.gameFlags);
@@ -61,7 +60,7 @@ global.GameState = (function() {
       await saveState();
     }
 
-    localLog("Loaded Game State",$realState);
+    localLog("Loaded Game State");
   }
 
   function enableTestMode() {

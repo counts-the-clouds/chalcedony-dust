@@ -1,9 +1,4 @@
-global.FeatureLibrary = (function() {
-
-  let $features = {};
-
-  function reset() { $features = {}; }
-  function getFeatures() { return $features; }
+global.FeatureManager = (function() {
 
   function tileAdded(tile) {
     if (tile.getCoordinates() == null) { throw 'A placed tile needs coordinates.' }
@@ -63,8 +58,6 @@ global.FeatureLibrary = (function() {
   function createFeature(segment) {
     const feature = Feature({});
           feature.addSegment(segment);
-
-    $features[feature.getID()] = feature;
   }
 
   function connectFeatures(segment, direction, neighbor) {
@@ -78,7 +71,7 @@ global.FeatureLibrary = (function() {
       throw `Cannot connect segments. Types do not match. ${a} ${b}`
     }
 
-    const feature = $features[connectingSegment.getFeatureID()];
+    const feature = FeatureDataStore.get(connectingSegment.getFeatureID());
           feature.addSegment(segment);
 
     // Connections are bidirectional to make graph transversal easier, but the
@@ -95,28 +88,8 @@ global.FeatureLibrary = (function() {
     return { n:_s, s:_n, e:_w, w:_e }[direction];
   }
 
-  // This could be made easier now that the segments are storing the feature ID.
-  // This is only used by a spec though, so it might not actually be needed.
-  function featuresForTile(tile) {
-    return Object.values($features).filter(feature => {
-      return feature.getTiles().map(t => t.getID()).includes(tile.getID());
-    });
-  }
-
-  function pack() {
-
-  }
-
-  function unpack(data) {
-
-  }
-
   return Object.freeze({
-    reset,
-    featuresForTile,
     tileAdded,
-    pack,
-    unpack,
   });
 
 })();
