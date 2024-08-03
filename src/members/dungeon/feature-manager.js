@@ -2,7 +2,7 @@ global.FeatureManager = (function() {
 
   let $features = {};
 
-  function clear() { $features = {}; }
+  function reset() { $features = {}; }
   function getFeatures() { return $features; }
 
   function tileAdded(tile) {
@@ -104,9 +104,9 @@ global.FeatureManager = (function() {
   }
 
   return Object.freeze({
-    clear,
+    reset,
     featuresForTile,
     tileAdded,
-  })
+  });
 
 })();

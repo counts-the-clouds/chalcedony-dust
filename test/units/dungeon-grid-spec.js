@@ -1,7 +1,7 @@
 describe("DungeonGrid", function() {
 
-  beforeEach(DungeonGrid.clear);
-  afterEach(DungeonGrid.clear);
+  beforeEach(DungeonGrid.reset);
+  afterEach(DungeonGrid.reset);
 
   describe("getCell()", function() {
     it("when chunk is empty", function() {

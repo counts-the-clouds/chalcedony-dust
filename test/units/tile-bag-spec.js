@@ -1,18 +1,18 @@
 describe("TileBag", function() {
 
-  beforeEach(TileBag.empty);
-  afterEach(TileBag.empty);
+  beforeEach(TileBag.reset);
+  afterEach(TileBag.reset);
 
   function startSequence() {
     TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });
   }
 
-  it('empty(), isEmpty(), and size()', function() {
+  it('reset(), isEmpty(), and size()', function() {
     startSequence();
     TileBag.addSequentialTiles([ Tile({ code:'forest-1'}) ]);
     TileBag.addBaggedTiles({ 'forest-1':3 });
     TileBag.addWeightedTile( Tile({ code:'forest-3' }), 50, 10);
-    TileBag.empty();
+    TileBag.reset();
 
     expect(TileBag.size()).to.equal(0);
     expect(TileBag.isEmpty()).to.be.true;
@@ -133,7 +133,7 @@ describe("TileBag", function() {
 
     let data = TileBag.pack();
 
-    TileBag.empty();
+    TileBag.reset();
     TileBag.unpack(data);
 
     expect(TileBag.size()).to.equal(5)

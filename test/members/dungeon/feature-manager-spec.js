@@ -1,11 +1,11 @@
 describe('FeatureManager', function() {
 
-  beforeEach(clear);
-  afterEach(clear);
+  beforeEach(reset);
+  afterEach(reset);
 
-  function clear() {
-    DungeonGrid.clear();
-    FeatureManager.clear();
+  function reset() {
+    DungeonGrid.reset();
+    FeatureManager.reset();
   }
 
   describe('tileAdded()', function() {

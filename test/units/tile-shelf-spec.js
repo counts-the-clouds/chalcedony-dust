@@ -1,8 +1,7 @@
 describe("TileShelf", function() {
 
   afterEach(function() {
-    TileShelf.setSize(1);
-    TileShelf.clear();
+    TileShelf.reset();
   });
 
   describe("addTile()", function() {
