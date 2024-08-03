@@ -22,7 +22,7 @@ global.GameController = (function() {
 
     // Flags should be an array of 2 element arrays: [['tile-bag.show',false]]
     (stageData.flags||[]).forEach(flag => {
-      GameState.setFlag(flag[0],flag[1]);
+      GameFlags.set(flag[0],flag[1]);
     });
 
     // TODO: The baseline bagged tiles is a code for a frequency map of bagged

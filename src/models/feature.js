@@ -1,6 +1,6 @@
 global.Feature = function(data) {
 
-  const $id = data.id || GameState.nextFeatureID();
+  const $id = data.id || FeatureDataStore.nextID();
   const $segments = data.segments || {};
 
   function getID() { return $id; }

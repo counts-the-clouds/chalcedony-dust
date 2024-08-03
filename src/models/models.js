@@ -16,6 +16,12 @@ global.Models = (function() {
     ]
   }
 
+  async function clearAll() {
+    await Promise.all($dataStores.map(async store => {
+      await store.clear();
+    }));
+  }
+
   async function saveAll() {
     await Promise.all($dataStores.map(async store => {
       await store.save();
@@ -34,6 +40,7 @@ global.Models = (function() {
 
   return Object.freeze({
     init,
+    clearAll,
     saveAll,
     loadAll,
     reset,

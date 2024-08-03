@@ -111,7 +111,7 @@ global.DungeonView = (function() {
   // or when other dialogs are open. Movement can also be disabled with a game
   // flag in the case of the tutorial game.
   function isMovementEnabled() {
-    if (GameState.hasFlag('dungeon-view.disable-movement')) { return false; }
+    if (GameFlags.has('dungeon-view.disable-movement')) { return false; }
     if (DragonDrop.isDragging()) { return false; }
     if (EventView.isVisible()) { return false; }
     return true;

@@ -4,7 +4,7 @@ global.TileBag = (function() {
   let $sequenceData;
   let $weightedTiles;
 
-  function empty() {
+  function reset() {
     $baggedTiles = {};
     $sequenceData = null;
     $weightedTiles = {};
@@ -211,7 +211,7 @@ global.TileBag = (function() {
   }
 
   return Object.freeze({
-    empty,
+    reset,
     isEmpty,
     isSequence,
     size,

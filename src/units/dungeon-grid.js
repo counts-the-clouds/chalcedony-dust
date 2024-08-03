@@ -4,7 +4,7 @@ global.DungeonGrid = (function() {
 
   // When we clear the DungeonGrid we always add empty chunks around the origin
   // cell.
-  function clear() {
+  function reset() {
     $chunks = {}
     createChunk(Coordinates.fromChunk(0,0,0));
     createChunk(Coordinates.fromChunk(-1,0,0));
@@ -49,7 +49,7 @@ global.DungeonGrid = (function() {
   }
 
   return Object.freeze({
-    clear,
+    reset,
     getChunks,
     getChunk,
     getTile,

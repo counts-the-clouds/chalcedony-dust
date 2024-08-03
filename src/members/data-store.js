@@ -4,32 +4,32 @@ global.DataStore = function(options) {
   const $dataFile = `${DATA}/${$name}.json`;
   const $stateRecorder = new StateRecorder($dataFile);
 
-  let $autoIncrement = 10000;
+  let $autoIncrement;
 
   let $testMode = false;
-  let $testStore = {};
-  let $realStore = {};
+  let $testStore;
+  let $realStore;
 
   async function clear() {
     await fs.unlink($dataFile, error => {});
   }
 
   function reset() {
+    $autoIncrement = 10000;
     if ($testMode) { $testStore = {}; }
     if (!$testMode) { $realStore = {}; }
   }
 
-  function get(id) {
-    return $testMode ? $testStore[id] : $realStore[id];
-  }
-
-  async function set(id,value) {
-    ($testMode ? $testStore : $realStore)[key] = value;
-  }
+  function nextID() { return $autoIncrement++; }
+  function get(id) { return $testMode ? $testStore[id] : $realStore[id]; }
+  function set(id,value) { ($testMode ? $testStore : $realStore)[key] = value; }
 
   async function save() {
     if (!$testMode) {
-      await $stateRecorder.saveState($realStore);
+      await $stateRecorder.saveState({
+        autoIncrement: $autoIncrement,
+        store: $realStore,
+      });
     }
   }
 
@@ -37,10 +37,17 @@ global.DataStore = function(options) {
     if ($testMode) { return reset(); }
 
     try {
-      $realStore = await $stateRecorder.loadState();
+      const state = await $stateRecorder.loadState();
+      $autoIncrement = state.autoIncrement;
+      $realStore = state.store;
     }
     catch(error) {
       logError(`Loading Error`, error, { system:`DataStore:${name}`});
+
+      reset();
+
+      await clear();
+      await save();
     }
   }
 
@@ -50,6 +57,7 @@ global.DataStore = function(options) {
   return Object.freeze({
     clear,
     reset,
+    nextID,
     get,
     set,
     save,

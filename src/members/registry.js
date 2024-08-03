@@ -37,7 +37,6 @@ global.ClockRegistry = Registry('Clock');
 global.EventRegistry = Registry('PagedEvent');
 global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');
-global.PlaygroundRegistry = Registry('Playground');
 global.TileRegistry = Registry('Tile');
 global.TileBagRegistry = Registry('TileBag');
 global.TriggerRegistry = Registry('Trigger');

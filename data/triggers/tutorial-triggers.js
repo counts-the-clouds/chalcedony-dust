@@ -1,5 +1,5 @@
 TriggerRegistry.register('tutorial.enable-movement', {
   triggerFunction: () => {
-    GameState.clearFlag('dungeon-view.disable-movement');
+    GameFlags.clear('dungeon-view.disable-movement');
   }
 });

@@ -20,7 +20,7 @@ global.WorldState = (function() {
     },
   }
 
-  const $stateRecorder = new StateRecorder(`${DATA}/worldState.json`);
+  const $stateRecorder = new StateRecorder(`${DATA}/World.json`);
 
   let $testMode = false;
   let $testState = DefaultState;

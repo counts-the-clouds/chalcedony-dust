@@ -6,14 +6,12 @@ global.Main = async function() {
     MainContent.loadStyles();
     MainContent.loadMainContent();
 
+    Models.init();
     Elements.initAll();
     Components.initAll();
-    Playground.init();
-    Models.init();
 
-    await Models.loadAll();
     await WorldState.loadState();
-    await GameState.loadState();
+    // await GameState.loadState();
 
     MainMenu.show();
     TestFramework.load();

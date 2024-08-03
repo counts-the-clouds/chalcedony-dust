@@ -1,4 +1,15 @@
-describe("Tile", function() {
+describe.only("Tile", function() {
+
+  describe("Constructor", function() {
+    it.only('with clock', function() {
+
+      const core = Tile({ code:'dungeon-core' });
+
+      console.log(core.pack());
+
+    });
+  });
+
 
   describe("Tile Rotation", function() {
 

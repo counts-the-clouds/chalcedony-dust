@@ -1,11 +1,15 @@
 global.TileShelf = (function() {
 
-  let $size = 1;
-  let $shelf = [];
+  let $size;
+  let $shelf;
 
-  function clear() { $shelf = []; }
+  function reset() {
+    $size = 1;
+    $shelf = [];
+  }
+
   function setSize(size) { $size = size; }
-  function getSize(size) { return $size; }
+  function getSize() { return $size; }
 
   function addTile(tile) {
     if ($shelf.length >= $size) { throw `Cannot add tile, there is no room on the shelf.` }
@@ -39,7 +43,7 @@ global.TileShelf = (function() {
   }
 
   return Object.freeze({
-    clear,
+    reset,
     setSize,
     getSize,
     getShelf,

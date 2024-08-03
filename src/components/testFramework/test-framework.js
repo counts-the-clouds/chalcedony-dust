@@ -58,16 +58,13 @@ global.TestFramework = (function() {
   async function rootBefore() {
     WorldState.enableTestMode();
     GameState.enableTestMode();
-    Models.enableTestMode();
     await WorldState.reset();
     await GameState.reset();
-    Models.reset();
   }
 
   function rootAfter() {
     WorldState.disableTestMode();
     GameState.disableTestMode();
-    Models.disableTestMode();
   }
 
   function runTests() {

@@ -1,7 +1,7 @@
 global.Tile = function(options) {
 
   const $code = options.code;
-  const $id = options.id || GameState.nextTileID();
+  const $id = options.id || TileDataStore.nextID();
 
   let $coordinates = options.coordinates;
   let $rotation = options.rotation || 0;

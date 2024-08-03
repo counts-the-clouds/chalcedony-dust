@@ -1,105 +1,56 @@
 global.GameState = (function() {
 
-  const $gameFile = `${DATA}/gameState.json`;
+  const $gameFile = `${DATA}/Game.json`;
   const $stateRecorder = new StateRecorder($gameFile);
 
-  const DefaultState = {
-    tileID: 1000,
-    featureID: 100,
-    flags: {},
-  }
-
   let $testMode = false;
-  let $testState = DefaultState;
-  let $realState;
-
-  function getState() {
-    return $testMode ? { ...$testState } : { ...$realState };
-  }
-
-  function getValue(key) {
-    return $testMode ? $testState[key] : $realState[key];
-  }
-
-  async function setValue(key,value) {
-    ($testMode ? $testState : $realState)[key] = value;
-  }
 
   // Clear removes the saved game file.
   async function clear() {
+    await Models.clearAll();
     await fs.unlink($gameFile, error => {});
   }
 
   // Reset puts the game into it's default empty state but shouldn't
   // automatically save the game.
   function reset() {
-    if ($testMode) {
-      $testState = { ...DefaultState };
-    }
-    else {
-      $realState = { ...DefaultState };
-    }
-    DungeonGrid.clear();
-    TileBag.empty();
-    TileShelf.clear();
+    Models.reset();
+    GameFlags.reset();
+    DungeonGrid.reset();
+    TileBag.reset();
+    TileShelf.reset();
   }
-
-  function nextTileID() {
-    const id = getValue('tileID');
-    setValue('tileID',(id+1));
-    return id;
-  }
-
-  function nextFeatureID() {
-    const id = getValue('featureID');
-    setValue('featureID',(id+1));
-    return id;
-  }
-
-  // === Flags =================================================================
-  // Flags are a dead simple key/value store. Because it's serialized to JSON
-  // it can't store any classes.
-  function setFlag(flag, value) {
-    const state = $testMode ? $testState : $realState
-    state.flags[flag] = value;
-  }
-
-  function clearFlag(flag) {
-    const state = $testMode ? $testState : $realState
-    delete state.flags[flag];
-  }
-
-  function hasFlag(flag) { return getValue('flags')[flag] != null; }
-  function getFlag(flag) { return getValue('flags')[flag]; }
-  function getFlags() { return { ...getValue('flags') }; }
 
   // === Saving and Loading ====================================================
 
   async function saveState() {
     if (!$testMode) {
-      localLog("Saving Game State",$realState);
+      localLog("Saving Game State");
+
       await $stateRecorder.saveState({
-        gameState: $realState,
+        gameFlags: GameFlags.pack(),
         dungeonGrid: DungeonGrid.pack(),
         tileBag: TileBag.pack(),
         tileShelf: TileShelf.pack(),
       });
+
+      await Models.saveAll();
     }
   }
 
   async function loadState() {
     if ($testMode) { return await reset(); }
 
-    let loadedState;
-
     try {
       loadedState = await $stateRecorder.loadState();
-      if (loadedState) {
 
-        $realState = loadedState;
+      if (loadedState) {
+        GameFlags.unpack(loadedState.gameFlags);
         DungeonGrid.unpack(loadedState.dungeonGrid);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);
+
+        await Models.loadAll()
       }
     }
     catch(error) {
@@ -107,45 +58,31 @@ global.GameState = (function() {
         loadedState: loadedState,
       }});
 
-      // TODO: If an exception is thrown reading the game state, for now we can
-      //       assume we've just changed the save game format and should just
-      //       delete the old game. In the future I might look into migrating
-      //       old game formats or at least warning to user this is about to
-      //       happen.
-      fs.unlink($gameFile, error => {});
-
-      $realState = null;
-      DungeonGrid.clear();
-      TileBag.empty();
-      TileShelf.clear();
+      await clear();
+      reset();
+      await saveState();
     }
 
     localLog("Loaded Game State",$realState);
   }
 
-  function enableTestMode() { $testMode = true; }
-  function disableTestMode() { $testMode = false; }
+  function enableTestMode() {
+    Models.enableTestMode();
+    $testMode = true;
+  }
+
+  function disableTestMode() {
+    Models.disableTestMode();
+    $testMode = false;
+  }
 
   function localLog(message, data) {
     log(message, { system:"GameState", data:data });
   }
 
   return Object.freeze({
-    getState,
-    getValue,
-    setValue,
-
     clear,
     reset,
-
-    nextTileID,
-    nextFeatureID,
-
-    setFlag,
-    clearFlag,
-    hasFlag,
-    getFlag,
-    getFlags,
 
     saveState,
     loadState,

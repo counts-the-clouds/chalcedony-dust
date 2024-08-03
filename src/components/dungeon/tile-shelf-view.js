@@ -96,7 +96,7 @@ window.TileShelfView = (function() {
   }
 
   function checkState() {
-    if (GameState.hasFlag('tile-shelf-view.hide-tile-bag')) {
+    if (GameFlags.has('tile-shelf-view.hide-tile-bag')) {
       $tileBag.renderable = false;
     }
   }
