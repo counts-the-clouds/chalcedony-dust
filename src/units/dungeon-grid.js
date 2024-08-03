@@ -26,7 +26,7 @@ global.DungeonGrid = (function() {
 
     $chunks[coords.chunkID].setTileAt(coords, tile);
 
-    FeatureManager.tileAdded(tile);
+    FeatureLibrary.tileAdded(tile);
   }
 
   function createChunk(coords) {

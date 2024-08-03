@@ -1,4 +1,4 @@
-global.FeatureManager = (function() {
+global.FeatureLibrary = (function() {
 
   let $features = {};
 
@@ -103,10 +103,20 @@ global.FeatureManager = (function() {
     });
   }
 
+  function pack() {
+
+  }
+
+  function unpack(data) {
+
+  }
+
   return Object.freeze({
     reset,
     featuresForTile,
     tileAdded,
+    pack,
+    unpack,
   });
 
 })();

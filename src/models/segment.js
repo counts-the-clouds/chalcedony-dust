@@ -27,7 +27,7 @@ global.Segment = function(tile,data) {
   // The exits come from the immutable segment data, so they won't be rotated
   // like the tile's edges object. We don't want to always rotate these values
   // because the tile rotates the edges, and if we rotate the exits then the
-  // tile's edges might get rotated twice. This is used by the FeatureManager
+  // tile's edges might get rotated twice. This is used by the FeatureLibrary
   // though to get the neighboring tiles of a segment, so it needs to fetch a
   // rotated version of that array then.
   function getExits(rotation=0) {
