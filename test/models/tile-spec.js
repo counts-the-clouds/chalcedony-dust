@@ -1,7 +1,7 @@
-describe.only("Tile", function() {
+describe("Tile", function() {
 
   describe("Constructor", function() {
-    it.only('with clock', function() {
+    it('with clock', function() {
 
       const core = Tile({ code:'dungeon-core' });
 
