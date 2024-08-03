@@ -11,16 +11,12 @@ global.Tile = function(data) {
   let $extra = data.extra || {};
 
   let $segments = data.segments;
-  let $clock;
+  let $clock = data.clock ? Clock(data.clock) : null;
 
   // If the tile data specifies that this tile should have a clock we add it
   // to the tile automatically. This clock won't actually do anything until
   // it's added to the ClockManager when the tile is added to the dungeon.
-  function buildClock(options) {
-    if (options.clock) {
-      $clock = Clock(options.clock);
-    }
-
+  function buildClock() {
     if ($clock == null && getTileData().clock) {
       $clock = Clock({ id:$id, code:getTileData().clock.code });
     }
@@ -39,7 +35,6 @@ global.Tile = function(data) {
       $edges = { n:empty, s:empty, e:empty, w:empty };
 
       for (let index=0; index<tileData.segments.length; index++) {
-        const segmentData = tileData.segments[index];
         const segment = Segment({ tileID:$id, tileCode:$code, index:index });
 
         segment.getExits().forEach(exit => {
@@ -171,9 +166,7 @@ global.Tile = function(data) {
     pack,
   });
 
-  // Creating a $self reference because segments should point back to their
-  // parent tile.
-  buildClock(data);
+  buildClock();
   buildSegments();
 
   TileDataStore.store($self);
