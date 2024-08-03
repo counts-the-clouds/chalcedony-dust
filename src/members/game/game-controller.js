@@ -42,7 +42,7 @@ global.GameController = (function() {
     // Placed tiles need the code, options, as well as the global (x,y)
     // coordinates for where the tiles should be placed: [{ x,y,code,options }]
     (stageData.placedTiles||[]).forEach(tileData => {
-      DungeonGrid.setCell(
+      DungeonGrid.setTile(
         Coordinates.fromGlobal(tileData.x,tileData.y),
         Tile(tileData));
     });
@@ -84,7 +84,7 @@ global.GameController = (function() {
       Note.clear();
       InnerCellHighlight.hide();
 
-      DungeonGrid.setCell(coordinates, tile);
+      DungeonGrid.setTile(coordinates, tile);
       DungeonView.placeTile(tile);
 
       // If a tile is placed programmatically (like the core tile) it will not

@@ -11,9 +11,6 @@ global.Tile = function(options) {
   let $clock;
   let $segments;
 
-  buildClock(options);
-  buildSegments(options);
-
   // If the tile data specifies that this tile should have a clock we add it
   // to the tile automatically. This clock won't actually do anything until
   // it's added to the ClockManager when the tile is added to the dungeon.
@@ -31,8 +28,9 @@ global.Tile = function(options) {
   // is coming from a packed Tile it should have segments. If it's from a new
   // tile though they won't be present.
   function buildSegments(options) {
+
     $segments = (options.segments||[]).map(segmentData => {
-      return TileSegment.unpack(segmentData);
+      return TileSegment($self,segmentData);
     });
 
     if ($segments.length === 0) {
@@ -41,7 +39,7 @@ global.Tile = function(options) {
       $edges = { n:empty, s:empty, e:empty, w:empty };
 
       for (let index=0; index<getTileData().segments.length; index++) {
-        const segment = TileSegment($code, index);
+        const segment = TileSegment($self,{ index:index });
 
         segment.getExits().forEach(exit => {
           $edges[exit] = segment.getType();
@@ -64,9 +62,21 @@ global.Tile = function(options) {
   function getPlacementRules()   { return $extra.placementRules   || getTileData().placementRules; }
   function getPlacementNote()    { return $extra.placementNote    || getTileData().placementNote; }
 
+  function getClock() { return $clock; }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return { ...$coordinates }; }
-  function getClock() { return $clock; }
+
+  function getNeighbors() {
+    const x = $coordinates.gx;
+    const y = $coordinates.gy;
+
+    return {
+      n: DungeonGrid.getTile(Coordinates.fromGlobal(x,y - 1)),
+      s: DungeonGrid.getTile(Coordinates.fromGlobal(x,y + 1)),
+      e: DungeonGrid.getTile(Coordinates.fromGlobal(x + 1,y)),
+      w: DungeonGrid.getTile(Coordinates.fromGlobal(x - 1,y)),
+    }
+  }
 
   // === Rotation ===
 
@@ -106,6 +116,10 @@ global.Tile = function(options) {
 
   // === Serialization =========================================================
 
+  function toString() {
+    return `Tile[${$id}|${$code}]`
+  }
+
   function pack() {
     let tileData = {
       code: $code,
@@ -130,11 +144,7 @@ global.Tile = function(options) {
     return tileData;
   }
 
-  function toString() {
-    return `Tile[${$id}|${$code}]`
-  }
-
-  return Object.freeze({
+  const $self = Object.freeze({
     getCode,
     getTileData,
     getID,
@@ -143,9 +153,10 @@ global.Tile = function(options) {
     getPlacementTrigger,
     getPlacementRules,
     getPlacementNote,
+    getClock,
     setCoordinates,
     getCoordinates,
-    getClock,
+    getNeighbors,
 
     rotateClockwise,
     rotateWiddershins,
@@ -156,7 +167,14 @@ global.Tile = function(options) {
     getSegments,
     getLayers,
 
-    pack,
     toString,
+    pack,
   });
+
+  // Creating a $self reference because segments should point back to their
+  // parent tile.
+  buildClock(options);
+  buildSegments(options);
+
+  return $self;
 }

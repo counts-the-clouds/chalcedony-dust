@@ -4,7 +4,8 @@ global.GameState = (function() {
   const $stateRecorder = new StateRecorder($gameFile);
 
   const DefaultState = {
-    tileID: 100,
+    tileID: 1000,
+    featureID: 100,
     flags: {},
   }
 
@@ -44,8 +45,14 @@ global.GameState = (function() {
   }
 
   function nextTileID() {
-    const id = getValue('tileID') + 1;
-    setValue('tileID',id);
+    const id = getValue('tileID');
+    setValue('tileID',(id+1));
+    return id;
+  }
+
+  function nextFeatureID() {
+    const id = getValue('featureID');
+    setValue('featureID',(id+1));
     return id;
   }
 
@@ -132,6 +139,7 @@ global.GameState = (function() {
     reset,
 
     nextTileID,
+    nextFeatureID,
 
     setFlag,
     clearFlag,

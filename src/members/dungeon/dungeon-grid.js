@@ -15,16 +15,18 @@ global.DungeonGrid = (function() {
   function getChunks() { return { ...$chunks }; }
   function getChunk(chunkID) { return $chunks[chunkID]; }
 
-  function getCell(coords) {
+  function getTile(coords) {
     return $chunks[coords.chunkID] ? $chunks[coords.chunkID].getTileAt(coords) : null
   }
 
-  function setCell(coords,tile) {
+  function setTile(coords,tile) {
     if ($chunks[coords.chunkID] == null) {
       createChunk(coords);
     }
 
     $chunks[coords.chunkID].setTileAt(coords, tile);
+
+    FeatureManager.tileAdded(tile);
   }
 
   function createChunk(coords) {
@@ -43,15 +45,15 @@ global.DungeonGrid = (function() {
   }
 
   function unpack(data) {
-    console.log("TODO: DungeonGrid.unpack()",data);
+    // TODO: Unpack
   }
 
   return Object.freeze({
     clear,
     getChunks,
     getChunk,
-    getCell,
-    setCell,
+    getTile,
+    setTile,
     pack,
     unpack,
   });
