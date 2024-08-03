@@ -176,5 +176,7 @@ global.Tile = function(options) {
   buildClock(options);
   buildSegments(options);
 
+  TileDataStore.store($self);
+
   return $self;
 }

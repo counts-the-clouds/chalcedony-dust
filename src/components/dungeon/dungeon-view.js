@@ -77,17 +77,17 @@ global.DungeonView = (function() {
   }
 
   function createTileGrid() {
-    const chunks = DungeonGrid.getChunks();
-    Object.keys(chunks).forEach(chunkID => {
+    ChunkDataStore.all().forEach(chunk => {
+      const id = chunk.getID();
+      const location = chunk.getChunkLocation();
 
-      let location = chunks[chunkID].getChunkLocation();
       if ($chunkExtent.minx > location.x) { $chunkExtent.minx = location.x }
       if ($chunkExtent.maxx < location.x) { $chunkExtent.maxx = location.x }
       if ($chunkExtent.miny > location.y) { $chunkExtent.miny = location.y }
       if ($chunkExtent.maxy < location.y) { $chunkExtent.maxy = location.y }
 
-      $chunkContainers[chunkID] = ChunkContainer(chunkID);
-      DungeonViewport.addChild($chunkContainers[chunkID].getChunkContainer());
+      $chunkContainers[id] = ChunkContainer(id);
+      DungeonViewport.addChild($chunkContainers[id].getChunkContainer());
     });
 
     DungeonViewport.updateLimits();

@@ -5,7 +5,7 @@ global.GameState = (function() {
 
   let $testMode = false;
 
-  // Clear removes the saved game file.
+  // Clear removes the saved game files.
   async function clear() {
     await Models.clearAll();
     await fs.unlink($gameFile, error => {});
@@ -15,8 +15,8 @@ global.GameState = (function() {
   // automatically save the game.
   function reset() {
     Models.reset();
+    FeatureLibrary.reset();
     GameFlags.reset();
-    DungeonGrid.reset();
     TileBag.reset();
     TileShelf.reset();
   }
@@ -29,7 +29,6 @@ global.GameState = (function() {
 
       await $stateRecorder.saveState({
         gameFlags: GameFlags.pack(),
-        dungeonGrid: DungeonGrid.pack(),
         tileBag: TileBag.pack(),
         tileShelf: TileShelf.pack(),
       });
@@ -46,7 +45,6 @@ global.GameState = (function() {
 
       if (loadedState) {
         GameFlags.unpack(loadedState.gameFlags);
-        DungeonGrid.unpack(loadedState.dungeonGrid);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);
 

@@ -1,8 +1,5 @@
 describe("TileBag", function() {
 
-  beforeEach(TileBag.reset);
-  afterEach(TileBag.reset);
-
   function startSequence() {
     TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });
   }

@@ -14,7 +14,7 @@ global.ChunkContainer = function(chunkID) {
   buildCellContainers();
 
   function getChunkID() { return $chunkID; }
-  function getChunk() { return DungeonGrid.getChunk($chunkID) }
+  function getChunk() { return ChunkDataStore.get($chunkID) }
   function getChunkContainer() { return $chunkContainer; }
   function getCellContainer(index) { return $cellContainers[index]; }
 

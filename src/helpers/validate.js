@@ -29,7 +29,7 @@ global.Validate = (function() {
     between,
     // isIn,
     // allIn,
-    // exists,
+    exists,
     // arrayLength,
   });
 

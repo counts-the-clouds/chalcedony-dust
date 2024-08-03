@@ -1,9 +1,6 @@
 describe("DungeonGrid", function() {
 
-  beforeEach(DungeonGrid.reset);
-  afterEach(DungeonGrid.reset);
-
-  describe("getCell()", function() {
+  describe("getTile()", function() {
     it("when chunk is empty", function() {
       const tile = DungeonGrid.getTile(Coordinates.fromGlobal(150,75));
       expect(tile).to.equal(null)
@@ -23,11 +20,11 @@ describe("DungeonGrid", function() {
     });
   });
 
-  describe("setCell()", function() {
+  describe("setTile()", function() {
     it('creates a new chunk if needed', function() {
       const coords = Coordinates.fromGlobal(150,75);
-      DungeonGrid.setTile(coords, Tile({ code:'forest-1' }));
-      expect(DungeonGrid.pack().chunks['[9|4]'].cells[coords.ci].code).to.equal('forest-1');
+      DungeonGrid.setTile(coords, Tile({ code:'baseline-h2-1' }));
+      expect(DungeonGrid.getTile(coords).getCode()).to.equal('baseline-h2-1');
     });
   });
 

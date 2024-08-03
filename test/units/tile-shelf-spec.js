@@ -1,9 +1,5 @@
 describe("TileShelf", function() {
 
-  afterEach(function() {
-    TileShelf.reset();
-  });
-
   describe("addTile()", function() {
     it("Adds a tile to the shelf", function() {
       TileShelf.addTile(Tile({ code:'forest-1' }));

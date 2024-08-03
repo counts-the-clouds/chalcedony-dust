@@ -21,8 +21,12 @@ global.DataStore = function(options) {
   }
 
   function nextID() { return $autoIncrement++; }
-  function get(id) { return $testMode ? $testStore[id] : $realStore[id]; }
-  function set(id,value) { ($testMode ? $testStore : $realStore)[key] = value; }
+
+  function activeStore() { return $testMode ? $testStore : $realStore }
+  function all() { return Object.values(activeStore()); }
+  function exists(id) { return activeStore()[id] != null; }
+  function get(id) { return activeStore()[id]; }
+  function store(model) { activeStore()[model.getID()] = model; }
 
   async function save() {
     if (!$testMode) {
@@ -58,8 +62,10 @@ global.DataStore = function(options) {
     clear,
     reset,
     nextID,
+    all,
+    exists,
     get,
-    set,
+    store,
     save,
     load,
     enableTestMode,

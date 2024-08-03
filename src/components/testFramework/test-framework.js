@@ -46,6 +46,7 @@ global.TestFramework = (function() {
       rootHooks: {
         beforeAll: rootBefore,
         afterAll: rootAfter,
+        beforeEach: GameState.reset,
       }
     });
     mocha.checkLeaks();
@@ -59,7 +60,6 @@ global.TestFramework = (function() {
     WorldState.enableTestMode();
     GameState.enableTestMode();
     await WorldState.reset();
-    await GameState.reset();
   }
 
   function rootAfter() {

@@ -1,59 +1,59 @@
-global.Chunk = function(cx,cy) {
+global.Chunk = function(coordinates, data={}) {
 
-  const $cx = cx;
-  const $cy = cy;
-  const $cells = Array(_chunkLength * _chunkLength).fill(0);
+  const $id = coordinates.chunkID;
+  const $cx = coordinates.cx;
+  const $cy = coordinates.cy;
+
+  const $cells = data.cells || Array(_chunkLength * _chunkLength).fill(0);
+
+  // ===========================================================================
+
+  function getID() { return $id; }
 
   function getChunkLocation() {
-    return { x:cx, y:cy };
+    return { x:$cx, y:$cy };
   }
 
   function getCells() {
     return [...$cells];
   }
 
-  function getTileAt(coords) {
-    let cell = $cells[coords.ci];
-    return cell === 0 ? null : cell;
+  function getTile(coords) {
+    let cellID = $cells[coords.ci];
+    return cellID === 0 ? null : TileDataStore.get(cellID);
   }
 
-  function setTileAt(coords, tile) {
-    $cells[coords.ci] = tile;
+  function setTile(coords, tile) {
+    $cells[coords.ci] = tile.getID();
     tile.setCoordinates(coords);
   }
 
-  function setCell(i,tile) {
-    $cells[i] = tile;
+  function toString() {
+    return `Chunk:${id}`
   }
 
   function pack() {
     return {
       cx: $cx,
       cy: $cy,
-      cells: $cells.map(cell => { return (cell === 0) ? 0 : cell.pack() }),
+      cells: $cells,
     }
   }
 
-  function unpack(data) {
-    const chunk = Chunk(data.cx, data.cy);
+  // ===========================================================================
 
-    for (let i=0; i<data.cells.length; i++) {
-      if (data.cells[i] !== 0) {
-        chunk.setCell(i,Tile(data.cells[i]));
-      }
-    }
-
-    return chunk;
-  }
-
-  return Object.freeze({
+  const $self = Object.freeze({
+    getID,
     getChunkLocation,
     getCells,
-    getTileAt,
-    setTileAt,
-    setCell,
+    getTile,
+    setTile,
+    toString,
     pack,
-    unpack,
   });
+
+  ChunkDataStore.store($self);
+
+  return $self;
 }
 

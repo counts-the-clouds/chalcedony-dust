@@ -1,15 +1,16 @@
 describe("Tile", function() {
 
   describe("Constructor", function() {
-    it('with clock', function() {
+    it('builds segments', function() {
+      const hall = Tile({ code:'baseline-h1-0' });
+      console.log(hall.pack());
+    });
 
+    it('builds clock', function() {
       const core = Tile({ code:'dungeon-core' });
-
       console.log(core.pack());
-
     });
   });
-
 
   describe("Tile Rotation", function() {
 

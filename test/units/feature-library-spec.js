@@ -1,14 +1,8 @@
 describe('FeatureLibrary', function() {
 
-  beforeEach(reset);
-  afterEach(reset);
-
-  function reset() {
-    DungeonGrid.reset();
-    FeatureLibrary.reset();
-  }
-
   describe('tileAdded()', function() {
+
+
 
     it('creates four empty features when the core tile is placed', function() {
       const tile = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });
