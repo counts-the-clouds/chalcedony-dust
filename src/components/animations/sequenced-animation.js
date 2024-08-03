@@ -1,4 +1,4 @@
-global.SequencedAnimation = function (id, target) {
+global.SequencedAnimation = function(id, target) {
 
   const $id = id;
   const $target = target;

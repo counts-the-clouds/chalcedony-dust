@@ -114,7 +114,7 @@ global.Tile = function(data) {
   // === Serialization ===
 
   function toString() {
-    return `Tile[${$id}|${$code}]`
+    return `Tile:${$id}[${$code}]`
   }
 
   function pack() {

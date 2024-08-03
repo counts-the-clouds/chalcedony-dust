@@ -1,4 +1,4 @@
-global.ComplexAnimation = function (id) {
+global.ComplexAnimation = function(id) {
 
   const $id = id;
 

@@ -1,4 +1,4 @@
-global.ResoluteAnimation = function (id, target) {
+global.ResoluteAnimation = function(id, target) {
 
   const $id = id;
   const $target = target;

@@ -43,6 +43,10 @@ global.PagedEvent = function(code) {
     if (typeof finisher === 'function') { finisher(state) }
   }
 
+  function toString() {
+    return `PagedEvent[${$code}]`
+  }
+
   return Object.freeze({
     getCode,
     getPageIndex,
@@ -54,5 +58,6 @@ global.PagedEvent = function(code) {
     getEventData,
     getStages,
     onFinish,
+    toString,
   });
 }
