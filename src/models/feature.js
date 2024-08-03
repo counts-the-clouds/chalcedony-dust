@@ -3,6 +3,8 @@ global.Feature = function(data) {
   const $id = data.id || FeatureDataStore.nextID();
   const $segments = data.segments || {};
 
+  // ===========================================================================
+
   function getID() { return $id; }
   function getSegments() { return $segments; }
 
@@ -15,30 +17,25 @@ global.Feature = function(data) {
 
   function addSegment(segment) {
     segment.setFeatureID($id);
-    $segments[segment.toString()] = segment;
-  }
-
-  function getSegmentByName(name) {
-    return $segments[name];
-  }
-
-  // This key string comes from the Segment.toString() function.
-  function getSegmentByTile(tile, index=0) {
-    return $segments[`Segment[${tile.getID()}:${index}]`];
+    $segments[segment.getID()] = segment;
   }
 
   function toString() {
-    return `Feature[${$id}]`;
+    return `Feature:${$id}`;
   }
 
-  return Object.freeze({
+  // ===========================================================================
+
+  const $self = Object.freeze({
     getID,
     getSegments,
     getTiles,
     addSegment,
-    getSegmentByName,
-    getSegmentByTile,
     toString,
   });
+
+  FeatureDataStore.store($self);
+
+  return $self;
 
 }

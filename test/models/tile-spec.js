@@ -3,12 +3,17 @@ describe("Tile", function() {
   describe("Constructor", function() {
     it('builds segments', function() {
       const hall = Tile({ code:'baseline-h1-0' });
-      console.log(hall.pack());
+      const segments = hall.getSegments();
+      const layers = hall.getLayers();
+
+      expect(hall.getEdges().n).to.equal(_hall);
+      expect(segments[0].getIndex()).to.equal(0);
+      expect(layers[0].background).to.equal('hall-1');
     });
 
     it('builds clock', function() {
       const core = Tile({ code:'dungeon-core' });
-      console.log(core.pack());
+      expect(core.getClock().getCode()).to.equal('generate-tile');
     });
   });
 
@@ -97,16 +102,13 @@ describe("Tile", function() {
 
       let packed = tile.pack();
 
-      let segment = packed.segments[0];
-      expect(segment.index).to.equal(0);
-      expect(segment.form).to.equal(_incomplete);
-
       expect(Object.keys(packed).length).to.equal(7);
       expect(packed.id).to.equal(42);
       expect(packed.code).to.equal('forest-2');
       expect(packed.coordinates.gx).to.equal(5);
       expect(packed.coordinates.gy).to.equal(10);
       expect(packed.edges.s).to.equal('forest-path');
+      expect(packed.segments.length).to.equal(1);
       expect(packed.extra.placementEvent).to.equal('fake-event');
       expect(packed.extra.placementRules[0]).to.equal(_noDiscard);
       expect(packed.rotation).to.equal(0);

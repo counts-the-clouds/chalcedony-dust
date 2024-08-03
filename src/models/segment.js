@@ -1,13 +1,24 @@
-global.Segment = function(tile,data) {
+global.Segment = function(data) {
 
-  const $tile = tile;
+  Validate.exists('tileID',data.tileID);
+  Validate.exists('tileCode',data.tileCode);
+  Validate.exists('index',data.index);
+
+  const $tileID = data.tileID;
+  const $tileCode = data.tileCode;
   const $index = data.index;
+  const $id = data.id || SegmentDataStore.nextID();
   const $form = data.form || (getExits().length === 0 ? _base : _incomplete);
 
   let $featureID = data.featureID;
   let $connections = data.connections || {};
 
-  function getTile() { return $tile; }
+  // ===========================================================================
+
+  function getID() { return $id; }
+  function getTileID() { return $tileID; }
+  function getTileCode() { return $tileCode; }
+  function getTile() { return TileDataStore.get($tileID); }
   function getIndex() { return $index; }
   function getForm() { return $form; }
 
@@ -18,10 +29,10 @@ global.Segment = function(tile,data) {
   function getConnection(direction) { return $connections[direction]; }
 
   function setConnection(direction, segment) {
-    $connections[direction] = { tile:segment.getTile().getID(), index:segment.getIndex() }
+    $connections[direction] = { tileID:segment.getTileID(), index:segment.getIndex() }
   }
 
-  function getSegmentData() { return TileRegistry.lookup($tile.getCode()).segments[$index] }
+  function getSegmentData() { return TileRegistry.lookup($tileCode).segments[$index] }
   function getType() { return getSegmentData().type; }
 
   // The exits come from the immutable segment data, so they won't be rotated
@@ -44,18 +55,27 @@ global.Segment = function(tile,data) {
   }
 
   function toString() {
-    return `Segment[${tile.getID()}:${$index}]`
+    return `Segment:${$id}`
   }
 
   function pack() {
     return {
+      id: $id,
+      tileID: $tileID,
+      tileCode: $tileCode,
       index: $index,
       form: $form,
       featureID: $featureID,
+      connections: $connections,
     };
   }
 
-  return Object.freeze({
+  // ===========================================================================
+
+  const $self = Object.freeze({
+    getID,
+    getTileID,
+    getTileCode,
     getTile,
     getIndex,
     getForm,
@@ -70,4 +90,9 @@ global.Segment = function(tile,data) {
     toString,
     pack,
   });
+
+  SegmentDataStore.store($self);
+
+  return $self;
+
 }

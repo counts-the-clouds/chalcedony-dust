@@ -1,15 +1,17 @@
-global.Tile = function(options) {
+global.Tile = function(data) {
 
-  const $code = options.code;
-  const $id = options.id || TileDataStore.nextID();
+  Validate.exists('code',data.code);
 
-  let $coordinates = options.coordinates;
-  let $rotation = options.rotation || 0;
-  let $edges = options.edges;
-  let $extra = options.extra || {};
+  const $code = data.code;
+  const $id = data.id || TileDataStore.nextID();
 
+  let $coordinates = data.coordinates;
+  let $rotation = data.rotation || 0;
+  let $edges = data.edges;
+  let $extra = data.extra || {};
+
+  let $segments = data.segments;
   let $clock;
-  let $segments;
 
   // If the tile data specifies that this tile should have a clock we add it
   // to the tile automatically. This clock won't actually do anything until
@@ -27,25 +29,24 @@ global.Tile = function(options) {
   // Build the Segments if they weren't passed in the options. If this Tile
   // is coming from a packed Tile it should have segments. If it's from a new
   // tile though they won't be present.
-  function buildSegments(options) {
+  function buildSegments() {
+    if ($segments == null) {
+      $segments = [];
 
-    $segments = (options.segments||[]).map(segmentData => {
-      return Segment($self,segmentData);
-    });
-
-    if ($segments.length === 0) {
-      const empty = getTileData().emptyEdgeType || _stone;
+      const tileData = getTileData();
+      const empty = tileData.emptyEdgeType || _stone;
 
       $edges = { n:empty, s:empty, e:empty, w:empty };
 
-      for (let index=0; index<getTileData().segments.length; index++) {
-        const segment = Segment($self,{ index:index });
+      for (let index=0; index<tileData.segments.length; index++) {
+        const segmentData = tileData.segments[index];
+        const segment = Segment({ tileID:$id, tileCode:$code, index:index });
 
         segment.getExits().forEach(exit => {
           $edges[exit] = segment.getType();
         });
 
-        $segments.push(segment);
+        $segments.push(segment.getID());
       }
     }
   }
@@ -96,15 +97,16 @@ global.Tile = function(options) {
     return { ...$edges };
   }
 
-  // === Layers ===
+  // === Segments ===
 
-  function getSegments() { return $segments; }
+  function getSegmentIDs() { return $segments; }
+  function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
 
   // The getLayers() function should return the current forms of all the segments so that they can
   // be drawn in the user interface. Right now the layers only contain backgrounds. At some point
   // we'll probably need to add icons and shit.
   function getLayers() {
-    return $segments.map(segment => {
+    return getSegments().map(segment => {
       const form = segment.getSegmentData().forms[segment.getForm()]
       const layer = { background: form.background };
 
@@ -114,7 +116,7 @@ global.Tile = function(options) {
     });
   }
 
-  // === Serialization =========================================================
+  // === Serialization ===
 
   function toString() {
     return `Tile[${$id}|${$code}]`
@@ -128,6 +130,7 @@ global.Tile = function(options) {
       coordinates: $coordinates,
       rotation: $rotation,
       edges: $edges,
+      segments: $segments,
       extra: $extra,
     }
 
@@ -135,14 +138,10 @@ global.Tile = function(options) {
       tileData.clock = $clock.pack();
     }
 
-    if ($segments) {
-      tileData.segments = $segments.map(segment => {
-        return segment.pack();
-      });
-    }
-
     return tileData;
   }
+
+  // ===========================================================================
 
   const $self = Object.freeze({
     getCode,
@@ -164,6 +163,7 @@ global.Tile = function(options) {
     getRotation,
 
     getEdges,
+    getSegmentIDs,
     getSegments,
     getLayers,
 
@@ -173,8 +173,8 @@ global.Tile = function(options) {
 
   // Creating a $self reference because segments should point back to their
   // parent tile.
-  buildClock(options);
-  buildSegments(options);
+  buildClock(data);
+  buildSegments();
 
   TileDataStore.store($self);
 
