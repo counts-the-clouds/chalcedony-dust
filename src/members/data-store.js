@@ -2,7 +2,7 @@ global.DataStore = function(options) {
 
   const $name = options.name;
   const $dataFile = `${DATA}/${$name}.json`;
-  const $stateRecorder = new StateRecorder($gameFile);
+  const $stateRecorder = new StateRecorder($dataFile);
 
   let $autoIncrement = 10000;
 
@@ -58,54 +58,3 @@ global.DataStore = function(options) {
     disableTestMode,
   });
 }
-
-/*
-global.ChunkDataStore = DataStore({
-  name: 'Chunk',
-  model: Chunk,
-});
-
-global.FeatureDataStore = DataStore({
-  name: 'Feature',
-  model: Feature,
-});
-
-global.SegmentDataStore = DataStore({
-  name: 'Segment',
-  model: Segment,
-});
-
-global.TileDataStore = DataStore({
-  name: 'Tile',
-  model: Tile,
-});
-
-global.DataStores = (function() {
-  const $stores = [
-    TileDataStore
-  ]
-
-  function saveAll() {
-
-  }
-
-  function loadAll() {
-
-  }
-
-  function enableTestMode() {
-
-  }
-
-  function disableTestMode() {
-
-  }
-
-  return Object.freeze({
-    saveAll,
-    loadAll,
-    enableTestMode,
-    disableTestMode,
-  })
-})();
- */

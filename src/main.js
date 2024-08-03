@@ -9,7 +9,9 @@ global.Main = async function() {
     Elements.initAll();
     Components.initAll();
     Playground.init();
+    Models.init();
 
+    await Models.loadAll();
     await WorldState.loadState();
     await GameState.loadState();
 

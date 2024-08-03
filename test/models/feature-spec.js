@@ -1,6 +1,6 @@
 describe('Feature',function() {
 
-  describe('Stuff', function() {
+  it.only('Stuff',function() {
     expect(true).to.be.true;
   });
 
