@@ -5,6 +5,7 @@ global.TileSegment = function(tile,data) {
   const $form = data.form || (getExits().length === 0 ? _base : _incomplete);
 
   let $featureID = data.featureID;
+  let $connections = data.connections || {};
 
   function getTile() { return $tile; }
   function getIndex() { return $index; }
@@ -12,6 +13,13 @@ global.TileSegment = function(tile,data) {
 
   function getFeatureID() { return $featureID; }
   function setFeatureID(featureID) { $featureID = featureID; }
+
+  function getConnections() { return $connections }
+  function getConnection(direction) { return $connections[direction]; }
+
+  function setConnection(direction, segment) {
+    $connections[direction] = { tile:segment.getTile().getID(), index:segment.getIndex() }
+  }
 
   function getSegmentData() { return TileRegistry.lookup($tile.getCode()).segments[$index] }
   function getType() { return getSegmentData().type; }
@@ -53,6 +61,9 @@ global.TileSegment = function(tile,data) {
     getForm,
     getFeatureID,
     setFeatureID,
+    getConnections,
+    getConnection,
+    setConnection,
     getSegmentData,
     getType,
     getExits,

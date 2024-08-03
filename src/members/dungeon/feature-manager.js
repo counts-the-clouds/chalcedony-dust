@@ -79,10 +79,18 @@ global.FeatureManager = (function() {
     }
 
     const feature = $features[connectingSegment.getFeatureID()];
-    feature.addSegment(segment);
-    feature.connect(connectingSegment, segment);
+          feature.addSegment(segment);
+
+    // Connections are bidirectional to make graph transversal easier, but the
+    // feature is essentially a bidirected graph where each node has two edges
+    // in either direction.
+    segment.setConnection(direction, connectingSegment);
+    connectingSegment.setConnection(reflect(direction), segment);
   }
 
+  // Should this be made into a general helper function? I think rotating a
+  // directional (n,s,e,w) object should be as well. Should directional be a
+  // more robust object?
   function reflect(direction) {
     return { n:_s, s:_n, e:_w, w:_e }[direction];
   }
