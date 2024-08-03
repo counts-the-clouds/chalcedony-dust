@@ -30,8 +30,8 @@ global.DungeonGrid = (function() {
   }
 
   function createChunk(coords) {
-    if ($chunks[coords.chunkID] != null) { throw `DungeonChunk(${coords.chunkID}) already exists.`; }
-    $chunks[coords.chunkID] = new DungeonChunk(coords.cx,coords.cy);
+    if ($chunks[coords.chunkID] != null) { throw `Chunk(${coords.chunkID}) already exists.`; }
+    $chunks[coords.chunkID] = new Chunk(coords.cx,coords.cy);
   }
 
   function pack() {

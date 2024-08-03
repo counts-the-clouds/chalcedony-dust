@@ -1,4 +1,4 @@
-global.DungeonChunk = function(cx,cy) {
+global.Chunk = function(cx,cy) {
 
   const $cx = cx;
   const $cy = cy;
@@ -35,7 +35,7 @@ global.DungeonChunk = function(cx,cy) {
   }
 
   function unpack(data) {
-    const chunk = DungeonChunk(data.cx, data.cy);
+    const chunk = Chunk(data.cx, data.cy);
 
     for (let i=0; i<data.cells.length; i++) {
       if (data.cells[i] !== 0) {

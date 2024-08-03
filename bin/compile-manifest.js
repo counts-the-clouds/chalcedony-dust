@@ -9,8 +9,9 @@ console.log("=== Compiling manifest.json ===");
 
 const fileList = [
   'src/constants.js',
-  'src/models/registry.js',
-  'src/models/state-recorder.js',
+  'src/members/state-recorder.js',
+  'src/members/registry.js',
+  'src/members/data-store.js',
 ];
 
 addFiles(fileList,'src');

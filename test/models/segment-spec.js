@@ -1,4 +1,4 @@
-describe('TileSegment', function() {
+describe('Segment', function() {
 
   describe('getExits()', function() {
     it('gets the raw exit data by default', function() {

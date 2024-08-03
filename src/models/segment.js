@@ -1,4 +1,4 @@
-global.TileSegment = function(tile,data) {
+global.Segment = function(tile,data) {
 
   const $tile = tile;
   const $index = data.index;

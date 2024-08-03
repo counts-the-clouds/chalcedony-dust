@@ -24,13 +24,13 @@ global.Tile = function(options) {
     }
   }
 
-  // Build the TileSegments if they weren't passed in the options. If this Tile
+  // Build the Segments if they weren't passed in the options. If this Tile
   // is coming from a packed Tile it should have segments. If it's from a new
   // tile though they won't be present.
   function buildSegments(options) {
 
     $segments = (options.segments||[]).map(segmentData => {
-      return TileSegment($self,segmentData);
+      return Segment($self,segmentData);
     });
 
     if ($segments.length === 0) {
@@ -39,7 +39,7 @@ global.Tile = function(options) {
       $edges = { n:empty, s:empty, e:empty, w:empty };
 
       for (let index=0; index<getTileData().segments.length; index++) {
-        const segment = TileSegment($self,{ index:index });
+        const segment = Segment($self,{ index:index });
 
         segment.getExits().forEach(exit => {
           $edges[exit] = segment.getType();
