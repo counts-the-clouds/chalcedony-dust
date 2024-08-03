@@ -24,14 +24,14 @@ describe("Tile", function() {
     });
 
     it('throws on invalid rotations',function() {
-      let tile = Tile({ code:'forest-2' });
+      const tile = Tile({ code:'forest-2' });
       expect(() => { tile.setRotation('zomg'); }).to.throw();
       expect(() => { tile.setRotation(-1); }).to.throw();
       expect(() => { tile.setRotation(5); }).to.throw();
     });
 
     it('setting rotation rotates tiles',function() {
-      let tile = Tile({ code:'baseline-h2-r1-0' });
+      const tile = Tile({ code:'baseline-h2-r1-0' });
 
       expect(tile.getEdges().s).to.equal(_stone);
       expect(tile.getEdges().n).to.equal(_room);
@@ -49,13 +49,13 @@ describe("Tile", function() {
     });
 
     it('rotates clockwise', function() {
-      let tile = Tile({ code:'forest-1' });
+      const tile = Tile({ code:'forest-1' });
       tile.rotateClockwise();
       expect(tile.getEdges().w).to.equal('forest-path');
     });
 
     it('rotates widdershins', function() {
-      let tile = Tile({ code:'forest-1' });
+      const tile = Tile({ code:'forest-1' });
       tile.rotateWiddershins();
       expect(tile.getEdges().e).to.equal('forest-path');
     });
@@ -63,7 +63,7 @@ describe("Tile", function() {
 
   describe('getNeighbors()', function() {
     it('gets neighboring tiles', function() {
-      let core = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });
+      const core = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });
       SpecHelper.placeTile( 0,-1,{ code:'baseline-h1-0', rotation:2 }); // N
       SpecHelper.placeTile( 0, 1,{ code:'baseline-h2-1', rotation:1 }); // S
       SpecHelper.placeTile( 1, 0,{ code:'baseline-r1-0', rotation:3 }); // E
@@ -87,22 +87,22 @@ describe("Tile", function() {
   describe("pack()", function() {
 
     it('with default tile', function() {
-      let tile = Tile({ code:'forest-1' });
-      let packed = tile.pack();
+      const tile = Tile({ code:'forest-1' });
+      const packed = tile.pack();
 
       expect(packed.id).to.be.above(100);
       expect(packed.code).to.equal('forest-1');
     })
 
     it('with placement events', function() {
-      let tile = Tile({ code:'forest-2', id:42, extra:{
+      const tile = Tile({ code:'forest-2', id:42, extra:{
         placementEvent:'fake-event',
         placementRules:[_noDiscard] }});
       tile.setCoordinates(Coordinates.fromGlobal(5,10));
 
-      let packed = tile.pack();
+      const packed = tile.pack();
 
-      expect(Object.keys(packed).length).to.equal(7);
+      expect(Object.keys(packed).length).to.equal(8);
       expect(packed.id).to.equal(42);
       expect(packed.code).to.equal('forest-2');
       expect(packed.coordinates.gx).to.equal(5);
@@ -124,14 +124,15 @@ describe("Tile", function() {
 
     it('with clock', function() {
       const packed = Tile({ code:'dungeon-core' }).pack();
-      expect(packed.clock.code).to.equal('generate-tile');
-      expect(packed.clock.elapsedTime).to.equal(0);
+      const clock = ClockDataStore.get(packed.clockID);
+      expect(clock.getCode()).to.equal('generate-tile');
+      expect(clock.getElapsedTime()).to.equal(0);
     });
   });
 
   describe("unpack()", function() {
     it("with id", function() {
-      let tile = Tile({
+      const tile = Tile({
         code:'forest-1',
         id: 42,
         coordinates: Coordinates.fromGlobal(5,10),
@@ -145,9 +146,9 @@ describe("Tile", function() {
     });
 
     it("with segments", function() {
-      let tile = Tile({ code:'forest-2' });
-      let unpacked = Tile(tile.pack());
-      let segment = unpacked.getSegments()[0];
+      const tile = Tile({ code:'forest-2' });
+      const unpacked = Tile(tile.pack());
+      const segment = unpacked.getSegments()[0];
 
       expect(unpacked.getEdges().s).to.equal('forest-path');
       expect(unpacked.getSegments().length).to.equal(1);
@@ -156,16 +157,14 @@ describe("Tile", function() {
     });
 
     it("with clock", function() {
-      const packed = Tile({ code:'dungeon-core' }).pack();
-            packed.clock.elapsedTime = 30;
-
-      const tile = Tile(packed);
+      const tile = Tile({ code:'dungeon-core' });
       const clock = tile.getClock();
+            clock.setElapsedTime(30);
 
-      expect(clock.getCode()).to.equal('generate-tile');
-      expect(clock.getID()).to.equal(tile.getID());
-      expect(clock.getElapsedTime()).to.equal(30);
-    })
+      const anotherTile = Tile(tile.pack());
+
+      expect(anotherTile.getClock().getElapsedTime()).to.equal(30);
+    });
   });
 
 });

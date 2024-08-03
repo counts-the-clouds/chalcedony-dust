@@ -3,12 +3,14 @@ global.Models = (function() {
   let $dataStores;
 
   function init() {
+    global.ClockDataStore = DataStore({ name:'Clock', model:Clock });
     global.ChunkDataStore = DataStore({ name:'Chunk', model:Chunk });
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
     global.SegmentDataStore = DataStore({ name:'Segment', model:Segment });
     global.TileDataStore = DataStore({ name:'Tile', model:Tile });
 
     $dataStores = [
+      ClockDataStore,
       ChunkDataStore,
       FeatureDataStore,
       SegmentDataStore,

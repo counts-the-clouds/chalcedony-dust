@@ -1,14 +1,12 @@
 global.Clock = function(options) {
 
-  // A clock can be built with a code, an id, or usually both. If a clock is
-  // attached to a tile we should use the tile's id as the clock id. If there
-  // should only be one of these clocks in the game at once then the clock code
-  // can be used as the id.
-  const $id = options.id || options.code;
-  const $code = options.code || options.id;
+  const $id = options.id || ClockDataStore.nextID();
+  const $code = options.code;
 
   let $elapsedTime = options.elapsedTime || 0;
   let $tileContainer;
+
+  // ===========================================================================
 
   function getID() { return $id; }
   function getCode() { return $code; }
@@ -30,6 +28,10 @@ global.Clock = function(options) {
   function attachTileContainer(tileContainer) { $tileContainer = tileContainer; }
   function getTileContainer() { return $tileContainer; }
 
+  function toString() {
+    return `Clock:${$id}[${$code}]`
+  }
+
   function pack() {
     return {
       id: $id,
@@ -38,7 +40,9 @@ global.Clock = function(options) {
     }
   }
 
-  return Object.freeze({
+  // ===========================================================================
+
+  const $self = Object.freeze({
     getID,
     getCode,
     getDuration,
@@ -49,6 +53,11 @@ global.Clock = function(options) {
     onComplete,
     attachTileContainer,
     getTileContainer,
+    toString,
     pack,
   });
+
+  ClockDataStore.store($self);
+
+  return $self;
 }

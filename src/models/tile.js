@@ -11,14 +11,14 @@ global.Tile = function(data) {
   let $extra = data.extra || {};
 
   let $segments = data.segments;
-  let $clock = data.clock ? Clock(data.clock) : null;
+  let $clockID = data.clockID;
 
   // If the tile data specifies that this tile should have a clock we add it
   // to the tile automatically. This clock won't actually do anything until
   // it's added to the ClockManager when the tile is added to the dungeon.
   function buildClock() {
-    if ($clock == null && getTileData().clock) {
-      $clock = Clock({ id:$id, code:getTileData().clock.code });
+    if ($clockID == null && getTileData().clock) {
+      $clockID = Clock({ code:getTileData().clock.code }).getID();
     }
   }
 
@@ -58,7 +58,7 @@ global.Tile = function(data) {
   function getPlacementRules()   { return $extra.placementRules   || getTileData().placementRules; }
   function getPlacementNote()    { return $extra.placementNote    || getTileData().placementNote; }
 
-  function getClock() { return $clock; }
+  function getClock() { return ClockDataStore.get($clockID); }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return { ...$coordinates }; }
 
@@ -124,22 +124,17 @@ global.Tile = function(data) {
   }
 
   function pack() {
-    let tileData = {
+    return {
       code: $code,
       id: $id,
 
+      clockID: $clockID,
       coordinates: $coordinates,
       rotation: $rotation,
       edges: $edges,
       segments: $segments,
       extra: $extra,
     }
-
-    if ($clock) {
-      tileData.clock = $clock.pack();
-    }
-
-    return tileData;
   }
 
   // ===========================================================================
