@@ -48,7 +48,11 @@ global.PlacementManager = (function () {
   function isLegal(home,neighbor) {
     // When the neighboring space is empty a tile can be placed there.
     if (neighbor == null) { return 'empty'; }
-    if (neighbor == _stone && home == _stone) { return 'empty'; }
+
+    // Even though stone matches against stone, it counts as an empty match,
+    // meaning that even if the tile fits in the space, it's not a legal
+    // placement because it would allow for disconnected areas.
+    if (neighbor === _stone && home === _stone) { return 'empty'; }
 
     // A forbidden edge can only be placed next to an empty space. Because the
     // neighboring tile is not null, neither tile can have a forbidden edge.
