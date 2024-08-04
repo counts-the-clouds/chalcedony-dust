@@ -57,7 +57,7 @@ global.FeatureManager = (function() {
     }
 
     const parentFeature = segment.getFeature();
-    log(`${segment} added to ${parentFeature}`,{ system:'FeatureManager', data:{
+    log(`${segment} added to ${parentFeature}`,{ system:'FeatureManager', level:3, data:{
       segments: Object.values(parentFeature.getSegments()).map(seg => { return seg.toString() })
     }});
 

@@ -7,7 +7,6 @@ global.DataStore = function(options) {
 
   let $autoIncrement;
 
-  let $testMode = false;
   let $testStore;
   let $realStore;
 
@@ -16,14 +15,14 @@ global.DataStore = function(options) {
   }
 
   function reset() {
-    $autoIncrement = 10000;
-    if ($testMode) { $testStore = {}; }
-    if (!$testMode) { $realStore = {}; }
+    $autoIncrement = 1;
+    if (Tests.running()) { $testStore = {}; }
+    if (!Tests.running()) { $realStore = {} }
   }
 
   function nextID() { return $autoIncrement++; }
 
-  function activeStore() { return $testMode ? $testStore : $realStore }
+  function activeStore() { return Tests.running() ? $testStore : $realStore }
   function all() { return Object.values(activeStore()); }
   function exists(id) { return activeStore()[id] != null; }
   function get(id) { return activeStore()[id]; }
@@ -31,7 +30,7 @@ global.DataStore = function(options) {
   function remove(id) { delete activeStore()[id]; }
 
   async function save() {
-    if (!$testMode) {
+    if (Tests.running() === false) {
       await $stateRecorder.saveState({
         autoIncrement: $autoIncrement,
         store: Object.values($realStore).map(model => {
@@ -42,7 +41,7 @@ global.DataStore = function(options) {
   }
 
   async function load() {
-    if ($testMode) { return reset(); }
+    if (Tests.running()) { return reset(); }
 
     try {
       const state = await $stateRecorder.loadState();
@@ -63,9 +62,6 @@ global.DataStore = function(options) {
     }
   }
 
-  function enableTestMode() { $testMode = true; }
-  function disableTestMode() { $testMode = false; }
-
   return Object.freeze({
     clear,
     reset,
@@ -77,7 +73,5 @@ global.DataStore = function(options) {
     remove,
     save,
     load,
-    enableTestMode,
-    disableTestMode,
   });
 }

@@ -37,8 +37,6 @@ global.Models = (function() {
   }
 
   function reset() { $dataStores.forEach(store => { store.reset(); }); }
-  function enableTestMode() { $dataStores.forEach(store => { store.enableTestMode(); }); }
-  function disableTestMode() { $dataStores.forEach(store => { store.disableTestMode(); }); }
 
   return Object.freeze({
     init,
@@ -46,8 +44,6 @@ global.Models = (function() {
     saveAll,
     loadAll,
     reset,
-    enableTestMode,
-    disableTestMode,
   });
 
 })();

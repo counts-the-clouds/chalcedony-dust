@@ -3,8 +3,6 @@ global.GameState = (function() {
   const $gameFile = `${DATA}/Game.json`;
   const $stateRecorder = new StateRecorder($gameFile);
 
-  let $testMode = false;
-
   // Clear removes the saved game files.
   async function clear() {
     await Models.clearAll();
@@ -23,7 +21,7 @@ global.GameState = (function() {
   // === Saving and Loading ====================================================
 
   async function saveState() {
-    if (!$testMode) {
+    if (Tests.running() === false) {
       localLog("Saving Game State");
 
       await $stateRecorder.saveState({
@@ -37,7 +35,7 @@ global.GameState = (function() {
   }
 
   async function loadState() {
-    if ($testMode) { return reset(); }
+    if (Tests.running()) { return reset(); }
 
     try {
       const loadedState = await $stateRecorder.loadState();
@@ -63,16 +61,6 @@ global.GameState = (function() {
     localLog("Loaded Game State");
   }
 
-  function enableTestMode() {
-    Models.enableTestMode();
-    $testMode = true;
-  }
-
-  function disableTestMode() {
-    Models.disableTestMode();
-    $testMode = false;
-  }
-
   function localLog(message, data) {
     log(message, { system:"GameState", data:data });
   }
@@ -80,12 +68,8 @@ global.GameState = (function() {
   return Object.freeze({
     clear,
     reset,
-
     saveState,
     loadState,
-
-    enableTestMode,
-    disableTestMode,
   });
 
 })();

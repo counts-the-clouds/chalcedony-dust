@@ -22,27 +22,26 @@ global.WorldState = (function() {
 
   const $stateRecorder = new StateRecorder(`${DATA}/World.json`);
 
-  let $testMode = false;
   let $testState = DefaultState;
   let $realState;
 
-  function getValue(key) {
-    return $testMode ? $testState[key] : $realState[key];
-  }
+  function activeState() { return Tests.running() ? $testState : $realState; }
+
+  function getValue(key) { return activeState()[key]; }
 
   async function setValue(key,value) {
-    ($testMode ? $testState : $realState)[key] = value;
+    activeState()[key] = value;
     await saveState();
   }
 
-  // Resetting the world state removes all of the game progression. This is
-  // called when the specs are started in order to baseline the world state,
-  // but would very rarely if ever be called in production. Maybe if the game
-  // version changes, but even then we'd probably want to migrate the state
-  // rather than resetting, so perhaps only if a migration fails, or an error
-  // is thrown by loadState().
+  // Resetting the world state removes all the game progression. This is called
+  // when the specs are started in order to baseline the world state, but would
+  // very rarely if ever be called in production. Maybe if the game version
+  // changes, but even then we'd probably want to migrate the state rather than
+  // resetting, so perhaps only if a migration fails, or an error is thrown by
+  // loadState().
   async function reset() {
-    if ($testMode) {
+    if (Tests.running()) {
       $testState = { ...DefaultState };
     }
     else {
@@ -60,14 +59,14 @@ global.WorldState = (function() {
   async function setOptions(options) { await setValue('options',options); }
 
   async function saveState() {
-    if (!$testMode) {
+    if (Tests.running() === false) {
       localLog("Saving World State",$realState);
       await $stateRecorder.saveState($realState);
     }
   }
 
   async function loadState() {
-    if ($testMode) { return await reset(); }
+    if (Tests.running()) { return await reset(); }
 
     try {
       const loadedState = await $stateRecorder.loadState();
@@ -87,9 +86,6 @@ global.WorldState = (function() {
     });
   }
 
-  function enableTestMode() { $testMode = true; }
-  function disableTestMode() { $testMode = false; }
-
   function localLog(message, data) {
     log(message, { system:"WorldState", data:data });
   }
@@ -103,8 +99,6 @@ global.WorldState = (function() {
     setOptions,
     saveState,
     loadState,
-    enableTestMode,
-    disableTestMode,
   });
 
 })();

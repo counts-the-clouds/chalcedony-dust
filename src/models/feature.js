@@ -28,8 +28,8 @@ global.Feature = function(data) {
     });
 
     if (isComplete) {
-      Switchboard.emit('feature.complete', $id);
-      log(`${toString()} Completed`,{ system:'Feature' });
+      Switchboard.emit(_featureComplete, { featureID:$id });
+      log(`${toString()} Completed`,{ system:'Feature', level:1 });
     }
   }
 

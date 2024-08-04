@@ -8,6 +8,8 @@ global.Tests = (function() {
   const $mochaLoadTime = 500;
   const $mochaTestTime = 100;
 
+  let $running = false;
+
   function load() {
     if (Environment.isDevelopment) {
       addTestFrame();
@@ -56,15 +58,13 @@ global.Tests = (function() {
   }
 
   async function rootBefore() {
+    $running = true;
     Switchboard.reset();
-    WorldState.enableTestMode();
-    GameState.enableTestMode();
     await WorldState.reset();
   }
 
   function rootAfter() {
-    WorldState.disableTestMode();
-    GameState.disableTestMode();
+    $running = false;
   }
 
   function runTests() {
@@ -81,8 +81,11 @@ global.Tests = (function() {
     ScrollingPanel.resize('#testFrame');
   }
 
+  function running() { return $running; }
+
   return {
-    load
+    running,
+    load,
   };
 
 })();

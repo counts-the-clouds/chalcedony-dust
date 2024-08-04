@@ -33,8 +33,8 @@ describe('FeatureManager', function() {
 
       // A little risky, but because we're resetting the data stores each time
       // a spec runs the IDs should always be consistent.
-      Switchboard.once('feature.complete', id => {
-        expect(id).to.equal(10004);
+      Switchboard.once(_featureComplete, data => {
+        expect(data.featureID).to.equal(5);
         done();
       });
 

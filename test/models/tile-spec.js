@@ -90,7 +90,7 @@ describe("Tile", function() {
       const tile = Tile({ code:'forest-1' });
       const packed = tile.pack();
 
-      expect(packed.id).to.be.above(100);
+      expect(packed.id).to.equal(1);
       expect(packed.code).to.equal('forest-1');
     })
 

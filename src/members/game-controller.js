@@ -69,7 +69,7 @@ global.GameController = (function() {
     await TileShelfView.addTile(tile);
     TileShelfView.positionTiles();
 
-    localLog("Drew Tile",{ code:tile.getCode(), id:tile.getID() });
+    log("Drew Tile",{ system:'GameController', code:tile.getCode(), id:tile.getID(), level:3 });
   }
 
   function placeTile(coordinates,tile) {
@@ -80,7 +80,7 @@ global.GameController = (function() {
       id: tile.getID() };
 
     try {
-      localLog("Place Tile",placementData);
+      log("Place Tile",{ system:'GameController', data:placementData , level:2 });
 
       Note.clear();
       InnerCellHighlight.hide();
@@ -108,6 +108,7 @@ global.GameController = (function() {
       //       consideration
       // if (TileBag.isSequence()) { GameController.drawTile(); }
 
+      Switchboard.emit(_tilePlaced,{ tileID:tile.getID() })
     }
     catch (error) {
       logError(`Error Placing Tile`, error, {
@@ -115,10 +116,6 @@ global.GameController = (function() {
         data:placementData
       });
     }
-  }
-
-  function localLog(message,data) {
-    log(message,{ system:'GameController', data:data });
   }
 
   return Object.freeze({

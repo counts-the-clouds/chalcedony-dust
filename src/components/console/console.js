@@ -27,14 +27,24 @@ global.Console = (function() {
   // but delegate to the append() function so that log messages from the client
   // and the server and handled in the same way.
   function log(message, options={}) {
-    options.time = TimeHelper.getTimeString();
-    options.message = message;
-    options.type = options.type || _info;
-    append(options);
+    if (Tests.running() === false) {
+      options.time = TimeHelper.getTimeString();
+      options.message = message;
+      options.type = options.type || _info;
+      append(options);
+    }
   }
 
   function logError(message, error, options={}) {
     if (options.data == null) { options.data = {};}
+
+    if (Tests.running()) {
+      console.error('=== Test Error ===');
+      console.error(message);
+      console.error(error);
+      console.error(options);
+      return;
+    }
 
     options.level = 1;
     options.type = _error;
