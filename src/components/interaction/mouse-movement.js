@@ -20,6 +20,8 @@ global.MouseMovement = (function() {
 
   function onMove(event) {
     if (isDragging()) {
+      if (event.buttons === 0) { return stopDrag(); }
+
       const locationX = $dragContext.initialViewportLocation.x + event.global.x - $dragContext.origin.x;
       const locationY = $dragContext.initialViewportLocation.y + event.global.y - $dragContext.origin.y;
       DungeonViewport.setLocation(locationX, locationY);

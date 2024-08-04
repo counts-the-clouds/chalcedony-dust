@@ -72,7 +72,7 @@ global.PlacementManager = (function () {
   // match.
   function allLegal() {
     const matches = Object.values($placementStatus)
-    if (matches.indexOf('yes') == -1) { return false; }
+    if (matches.indexOf('yes') === -1) { return false; }
     return matches.indexOf('no') === -1
   }
 
