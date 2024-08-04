@@ -25,14 +25,20 @@ describe('FeatureManager', function() {
       expect(tiles).to.have.members([core.getID(), h1.getID(), h2.getID()]);
     });
 
-    it('merges four features when a tile is placed in the middle', function() {
+    it('merges four features when a tile is placed in the middle', function(done) {
       SpecHelper.placeTile(0,-1,{ code:'baseline-h1-0', rotation:2 });
       SpecHelper.placeTile(0,1,{ code:'baseline-h1-0' });
       SpecHelper.placeTile(1,0,{ code:'baseline-h1-0', rotation:3 });
       SpecHelper.placeTile(-1,0,{ code:'baseline-h1-0', rotation:1 });
 
-      const m = SpecHelper.placeTile(0,0,{ code:'baseline-h4-0' });
+      // A little risky, but because we're resetting the data stores each time
+      // a spec runs the IDs should always be consistent.
+      Switchboard.once('feature.complete', id => {
+        expect(id).to.equal(10004);
+        done();
+      });
 
+      const m = SpecHelper.placeTile(0,0,{ code:'baseline-h4-0' });
       expect(Object.values(m.getSegments()[0].getFeature().getSegments()).length).to.equal(5);
       expect(FeatureDataStore.all().length).to.equal(1);
     });

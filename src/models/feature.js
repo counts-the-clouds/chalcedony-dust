@@ -21,7 +21,16 @@ global.Feature = function(data) {
   }
 
   function checkStatus() {
-    // TODO: Check Status
+    let isComplete = true;
+
+    Object.values($segments).forEach(segment => {
+      if (segment.isComplete() === false) { isComplete = false; }
+    });
+
+    if (isComplete) {
+      Switchboard.emit('feature.complete', $id);
+      log(`${toString()} Completed`,{ system:'Feature' });
+    }
   }
 
   function toString() {

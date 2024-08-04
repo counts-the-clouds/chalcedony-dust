@@ -55,6 +55,13 @@ global.Segment = function(data) {
     });
   }
 
+  function isComplete() {
+    for (const exit of getExits(getTile().getRotation())) {
+      if (getConnection(exit) == null) { return false; }
+    }
+    return true;
+  }
+
   function toString() {
     return `Segment:${$id}`
   }
@@ -89,6 +96,7 @@ global.Segment = function(data) {
     getSegmentData,
     getType,
     getExits,
+    isComplete,
     toString,
     pack,
   });

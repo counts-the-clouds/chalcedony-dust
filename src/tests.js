@@ -56,6 +56,7 @@ global.Tests = (function() {
   }
 
   async function rootBefore() {
+    Switchboard.reset();
     WorldState.enableTestMode();
     GameState.enableTestMode();
     await WorldState.reset();

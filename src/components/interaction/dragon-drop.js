@@ -36,6 +36,7 @@ window.DragonDrop = (function() {
   // === Drag & Drop ===========================================================
 
   function startDrag(context) {
+    MouseMovement.stopDrag();
     $dragContext = context;
     OuterCellHighlight.dragStarted(getDragTile());
   }

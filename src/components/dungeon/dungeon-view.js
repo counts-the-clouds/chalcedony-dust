@@ -22,6 +22,7 @@ global.DungeonView = (function() {
     $chunkContainers = {};
     $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 };
 
+    Switchboard.reset();
     ClockManager.reset();
     createTileGrid();
   }
