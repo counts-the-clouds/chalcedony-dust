@@ -97,6 +97,12 @@ global.Tile = function(data) {
   function getSegmentIDs() { return $segments; }
   function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
 
+  function getSegmentWithExit(direction) {
+    return getSegments().filter(segment => {
+      return segment.getExits(getRotation()).includes(direction)
+    })[0];
+  }
+
   // The getLayers() function should return the current forms of all the segments so that they can
   // be drawn in the user interface. Right now the layers only contain backgrounds. At some point
   // we'll probably need to add icons and shit.
@@ -161,6 +167,7 @@ global.Tile = function(data) {
     getEdges,
     getSegmentIDs,
     getSegments,
+    getSegmentWithExit,
     getLayers,
     getFeatures,
 

@@ -20,6 +20,10 @@ global.Feature = function(data) {
     $segments[segment.getID()] = segment;
   }
 
+  function checkStatus() {
+    // TODO: Check Status
+  }
+
   function toString() {
     return `Feature:${$id}`;
   }
@@ -38,6 +42,7 @@ global.Feature = function(data) {
     getSegments,
     getTiles,
     addSegment,
+    checkStatus,
     toString,
     pack,
   });

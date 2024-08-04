@@ -28,6 +28,7 @@ global.DataStore = function(options) {
   function exists(id) { return activeStore()[id] != null; }
   function get(id) { return activeStore()[id]; }
   function store(model) { activeStore()[model.getID()] = model; }
+  function remove(id) { delete activeStore()[id]; }
 
   async function save() {
     if (!$testMode) {
@@ -73,6 +74,7 @@ global.DataStore = function(options) {
     exists,
     get,
     store,
+    remove,
     save,
     load,
     enableTestMode,

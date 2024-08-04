@@ -27,8 +27,6 @@ global.FeatureManager = (function() {
       connections[exitDirection] = neighbors[exitDirection];
     });
 
-    // console.log("   Connections:",connections);
-
     // If all neighbors are null then we know this is a new feature because it
     // doesn't connect to anything.
     if (allNullValues(connections)) {
@@ -38,17 +36,35 @@ global.FeatureManager = (function() {
     Object.keys(connections).forEach(direction => {
       const neighbor = connections[direction];
       if (neighbor) {
-        connectFeatures(segment, direction, neighbor);
+        connectSegments(segment, direction, neighbor);
       }
     });
 
-    // If there is one neighboring tile then we join that feature.
+    // If this segment connects to more than one neighboring tile we need to
+    // see if they are part of different feature. If so we need to merge the
+    // features together.
+    if (ArrayHelper.compact(Object.values(connections)).length > 1) {
+      const features = new Set();
 
-    // If there is more than one neighboring tile we need to see if they are
-    // part of the same feature. If so we add this tile. If they are different
-    // features then the features are getting joined together.
+      Object.keys(connections).forEach(direction => {
+        const neighbor = connections[direction];
+        if (neighbor) {
+          features.add(neighbor.getSegmentWithExit(reflect(direction)).getFeatureID());
+        }
+      });
+
+      mergeFeatures([...features]);
+    }
+
+    const parentFeature = segment.getFeature();
+    log(`${segment} added to ${parentFeature}`,{ system:'FeatureManager', data:{
+      segments: Object.values(parentFeature.getSegments()).map(seg => { return seg.toString() })
+    }});
+
+    // Every time a segment is added to a feature we check to see if it's been
+    // completed.
+    parentFeature.checkStatus()
   }
-
 
   function allNullValues(object) {
     const values = [...new Set(Object.values(object))];
@@ -60,15 +76,25 @@ global.FeatureManager = (function() {
           feature.addSegment(segment);
   }
 
-  function connectFeatures(segment, direction, neighbor) {
-    let connectingSegment = neighbor.getSegments().filter(seg => {
-      return seg.getExits(neighbor.getRotation()).includes(reflect(direction))
-    })[0];
+  // In order to connect segments we get the matching segment from the
+  // neighboring tile. The neighboring tile should always have a matching
+  // connecting type or should have the 'any' type.
+  function connectSegments(segment, direction, neighbor) {
+    const connectingSegment = neighbor.getSegmentWithExit(reflect(direction));
+    if (connectingSegment == null) {
+      throw `Cannot connect segments. There is no matching exit.`
+    }
 
-    if (connectingSegment.getType() !== segment.getType()) {
+    // TODO: It might be possible for a tile with an 'any' edge to appear as a
+    //       neighbor. I don't think that these tiles are part of the feature,
+    //       but they need to 'close' the exit so that the feature can be
+    //       completed. I need some of these 'any' tiles though before I can
+    //       test and implement this.
+    //
+    if (segment.getType() !== connectingSegment.getType()) {
       const a = `${segment}=${segment.getType()}`;
       const b = `${connectingSegment}=${connectingSegment.getType()}`;
-      throw `Cannot connect segments. Types do not match. ${a} ${b}`
+      throw `Connecting segments must be the same type ${a} ${b}`
     }
 
     const feature = FeatureDataStore.get(connectingSegment.getFeatureID());
@@ -79,6 +105,29 @@ global.FeatureManager = (function() {
     // in either direction.
     segment.setConnection(direction, connectingSegment);
     connectingSegment.setConnection(reflect(direction), segment);
+  }
+
+  // Currently a feature is just an array of segments. The connections between
+  // segments are stored on the segments themselves, so connecting them is
+  // just a matter of joining the arrays together. We create a new feature and
+  // call addSegment() in a loop like this so that the segments all assign
+  // themselves to the new feature.
+  function mergeFeatures(featureIDs) {
+    const features = featureIDs.map(id => { return FeatureDataStore.get(id) });
+    const joined = Feature({});
+
+    features.forEach(feature => {
+      Object.values(feature.getSegments()).forEach(segment => {
+        joined.addSegment(segment);
+      });
+
+      FeatureDataStore.remove(feature.getID());
+    });
+
+    log(`Features merged into ${joined}`,{ system:'FeatureManager', data:{
+      previous: featureIDs,
+      segments: Object.values(joined.getSegments()).map(seg => { return seg.toString() })
+    }});
   }
 
   // Should this be made into a general helper function? I think rotating a

@@ -14,6 +14,28 @@ describe('FeatureManager', function() {
       const tiles = Object.values(feature.getSegments()).map(segment => { return segment.getTile().getID() });
       expect(tiles).to.have.members([core.getID(), hall.getID()]);
     });
+
+    it('merges two features when a tile is placed in the middle', function() {
+      const core = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });
+      const h1 = SpecHelper.placeTile(0,2,{ code:'baseline-h2-1', rotation:1 });
+      const h2 = SpecHelper.placeTile(0,1,{ code:'baseline-h2-1', rotation:1 });
+      const feature = Object.values(h1.getSegments())[0].getFeature();
+      const tiles = feature.getTiles().map(tile => { return tile.getID() });
+
+      expect(tiles).to.have.members([core.getID(), h1.getID(), h2.getID()]);
+    });
+
+    it('merges four features when a tile is placed in the middle', function() {
+      SpecHelper.placeTile(0,-1,{ code:'baseline-h1-0', rotation:2 });
+      SpecHelper.placeTile(0,1,{ code:'baseline-h1-0' });
+      SpecHelper.placeTile(1,0,{ code:'baseline-h1-0', rotation:3 });
+      SpecHelper.placeTile(-1,0,{ code:'baseline-h1-0', rotation:1 });
+
+      const m = SpecHelper.placeTile(0,0,{ code:'baseline-h4-0' });
+
+      expect(Object.values(m.getSegments()[0].getFeature().getSegments()).length).to.equal(5);
+      expect(FeatureDataStore.all().length).to.equal(1);
+    });
   });
 
 });
