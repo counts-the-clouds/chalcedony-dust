@@ -1,4 +1,4 @@
-window.EventView = (function() {
+global.EventView = (function() {
 
   let $event;
   let $returnState;
