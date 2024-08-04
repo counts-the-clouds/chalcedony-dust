@@ -7,9 +7,6 @@ global.GameController = (function() {
   // the state of all the stateful game components.
   async function beginGame() {
     await GameState.clear();
-    GameState.reset();
-
-    DungeonGrid.build();
 
     // TEMP: While were testing the baseline tiles...
     // setStage(GameStageRegistry.lookup(WorldState.getChapter()));
@@ -20,6 +17,7 @@ global.GameController = (function() {
 
   function setStage(stageData) {
     GameState.reset();
+    DungeonGrid.build();
 
     if (stageData.note) { Note.show(stageData.note); }
 

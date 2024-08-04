@@ -4,7 +4,7 @@ ClockRegistry.register('generate-tile', {
   repeat: true,
 
   onComplete: clock => {
-    console.log(`On Complete (${clock.getID()})`);
+    console.log(`On Complete (${clock.getCode()})`);
     GameController.drawTile();
   }
 

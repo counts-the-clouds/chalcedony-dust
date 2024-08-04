@@ -9,6 +9,7 @@ global.DungeonGrid = (function() {
 
   function createChunk(coords) {
     if (ChunkDataStore.exists(coords.chunkID)) { throw `Chunk:${coords.chunkID} already exists.`; }
+
     return Chunk(coords);
   }
 
