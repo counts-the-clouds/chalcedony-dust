@@ -47,12 +47,12 @@ global.ChunkContainer = function(chunkID) {
     let x = 0;
     let y = 0;
 
-    getChunk().getCells().forEach((tile,i) => {
+    getChunk().getCells().forEach((tileID,i) => {
       const coordinates = Coordinates.fromChunk($location.x, $location.y, i);
       const cellContainer = CellContainer(x,y,coordinates);
 
-      if (tile !== 0) {
-        cellContainer.setTile(tile);
+      if (tileID !== 0) {
+        cellContainer.setTile(TileDataStore.get(tileID));
       }
 
       $chunkContainer.addChild(cellContainer.getCellContainer());
