@@ -1,6 +1,7 @@
 global.DataStore = function(options) {
 
   const $name = options.name;
+  const $model = options.model;
   const $dataFile = `${DATA}/${$name}.json`;
   const $stateRecorder = new StateRecorder($dataFile);
 
@@ -32,7 +33,9 @@ global.DataStore = function(options) {
     if (!$testMode) {
       await $stateRecorder.saveState({
         autoIncrement: $autoIncrement,
-        store: $realStore,
+        store: Object.values($realStore).map(model => {
+          return model.pack();
+        }),
       });
     }
   }
@@ -43,7 +46,11 @@ global.DataStore = function(options) {
     try {
       const state = await $stateRecorder.loadState();
       $autoIncrement = state.autoIncrement;
-      $realStore = state.store;
+      $realStore = {}
+
+      state.store.forEach(data => {
+        store($model(data));
+      })
     }
     catch(error) {
       logError(`Loading Error`, error, { system:`DataStore:${name}`});

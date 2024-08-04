@@ -7,6 +7,7 @@ global.GameController = (function() {
   // the state of all the stateful game components.
   async function beginGame() {
     await GameState.clear();
+    GameState.reset();
 
     DungeonGrid.build();
 
@@ -22,9 +23,9 @@ global.GameController = (function() {
 
     if (stageData.note) { Note.show(stageData.note); }
 
-    // Flags should be an array of 2 element arrays: [['tile-bag.show',false]]
-    (stageData.flags||[]).forEach(flag => {
-      GameFlags.set(flag[0],flag[1]);
+    // The flags are a normal map of flag keys and values.
+    Object.keys(stageData.flags||{}).forEach(flag => {
+      GameFlags.set(flag,stageData.flags[flag]);
     });
 
     // TODO: The baseline bagged tiles is a code for a frequency map of bagged

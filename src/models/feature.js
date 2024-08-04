@@ -24,6 +24,13 @@ global.Feature = function(data) {
     return `Feature:${$id}`;
   }
 
+  function pack() {
+    return {
+      id: $id,
+      segments: $segments,
+    }
+  }
+
   // ===========================================================================
 
   const $self = Object.freeze({
@@ -32,6 +39,7 @@ global.Feature = function(data) {
     getTiles,
     addSegment,
     toString,
+    pack,
   });
 
   FeatureDataStore.store($self);
