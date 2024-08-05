@@ -39,7 +39,7 @@ global.Console = (function() {
     if (options.data == null) { options.data = {};}
 
     if (Tests.running()) {
-      console.error('=== Test Error ===');
+      console.error('=== Error ===');
       console.error(message);
       console.error(error);
       console.error(options);

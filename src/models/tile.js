@@ -104,12 +104,41 @@ global.Tile = function(data) {
   }
 
   // The getLayers() function gets current forms of all the segments so that
-  // they can be drawn in the user interface.
+  // they can be drawn in the user interface. Should Layer be a model? It's
+  // getting a little complex.
 
   function getLayers() {
     return getSegments().map(segment => {
       const form = segment.getSegmentData().forms[segment.getForm()]
-      const layer = { background: form.background };
+
+      const layer = {
+        segmentID: segment.getID(),
+        background: form.background
+      };
+
+      if (segment.getForm() === _base) {
+        if (segment.getType() === 'core') {
+          layer.groundColor = 'rgb(110,130,150)';
+          layer.wallColor = 'rgb(210,230,250)';
+        }
+
+        if (segment.getType() === 'temp') {
+          layer.groundColor = 'rgb(60,60,60)';
+          layer.wallColor = 'rgb(80,80,80)';
+        }
+      }
+
+      if (segment.getForm() === _incomplete) {
+        if (segment.getType() === _hall) {
+          layer.groundColor = 'rgb(80,80,80)';
+          layer.wallColor = 'rgb(100,100,100)';
+        }
+
+        if (segment.getType() === _room) {
+          layer.groundColor = 'rgb(120,120,120)';
+          layer.wallColor = 'rgb(120,120,120)';
+        }
+      }
 
       if (form.angle) { layer.angle = form.angle; }
 

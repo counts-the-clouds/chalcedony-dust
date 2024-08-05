@@ -11,7 +11,7 @@ TileRegistry.register('baseline-r3-3', {
       incomplete:{ background:'room-1e', angle:270 }
     }},
     { type:'temp', exits:[], forms:{
-      base:{ background:'room-0a' }
+      base:{ background:'room-0b' }
     }},
   ],
 

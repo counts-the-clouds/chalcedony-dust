@@ -5,33 +5,25 @@ global.TileContainer = async function(tile) {
 
   let $clockContainer;
 
+  let $background;
+  let $layers;
+
   function getID() { return $tile.getID(); }
   function getTile() { return $tile; }
   function getTileContainer() { return $tileContainer; }
 
   async function buildContainer() {
-    const layers = $tile.getLayers();
-    const textures = await Promise.all(layers.map(async layer => {
-      return await Pixi.Assets.load(layer.background);
+    $layers = {};
+
+    $tile.getLayers().forEach(layer => {
+      $layers[layer.segmentID] = layer;
+    })
+
+    addBackground()
+
+    await Promise.all(Object.values($layers).map(async layer => {
+      await addLayer(layer);
     }));
-
-    const background = new Pixi.Graphics;
-    background.rect(0,0,_tileSize,_tileSize);
-    background.fill('rgb(20,20,20)');
-
-    $tileContainer.addChild(background);
-
-    layers.forEach((layer,i) => {
-      // console.log("Layer:",layer);
-
-      const sprite = new Pixi.Sprite(textures[i]);
-      // sprite.tint = 'rgb(200,100,100)'
-      sprite.anchor = 0.5;
-      sprite.x = _tileSize / 2;
-      sprite.y = _tileSize / 2;
-      sprite.angle = layer.angle ? layer.angle : 0;
-      $tileContainer.addChild(sprite);
-    });
 
     $tileContainer.label = 'TileContainer';
     $tileContainer.accessibleHint = tile.getID();
@@ -40,6 +32,56 @@ global.TileContainer = async function(tile) {
     $tileContainer.width = _tileSize;
     $tileContainer.pivot.x = _tileSize/2;
     $tileContainer.pivot.y = _tileSize/2;
+  }
+
+  function addBackground() {
+    $background = new Pixi.Graphics;
+    $background.rect(0,0,_tileSize,_tileSize);
+    $background.fill('rgb(0,0,0)');
+
+    $tileContainer.addChild($background);
+  }
+
+  // TODO: I don't think every tile will follow this pattern of having a ground
+  //       and wall sprite like this. The segment layers probably need to have
+  //       some kind of "graphics type" to let me know what kind of sprites the
+  //       layer should have. Then we'll need a separate addLayer() function
+  //       for each layer type.
+  //
+  async function addLayer(layer) {
+    try {
+      const groundSprite = await buildLayerSprite(layer, `${layer.background}-g`, layer.groundColor);
+      const wallSprite = await buildLayerSprite(layer, `${layer.background}-w`, layer.wallColor);
+
+      $layers[layer.segmentID].groundSprite = groundSprite;
+      $layers[layer.segmentID].wallSprite = wallSprite;
+
+      $tileContainer.addChild(groundSprite);
+      $tileContainer.addChild(wallSprite);
+    }
+    catch(error) {
+      const segment = SegmentDataStore.get(layer.segmentID);
+      logError(`Error building layer for ${segment} (${segment.getTile().getID()}:${segment.getTile().getCode()})`,error,{
+        system:'TileContainer',
+        data:{ layer }
+      });
+    }
+  }
+
+  async function buildLayerSprite(layer, textureName, color) {
+    const texture = await Pixi.Assets.load(textureName);
+
+    const sprite = new Pixi.Sprite(texture);
+    sprite.anchor = 0.5;
+    sprite.x = _tileSize / 2;
+    sprite.y = _tileSize / 2;
+    sprite.angle = layer.angle ? layer.angle : 0;
+
+    if (color) {
+      sprite.tint = color || 0xFFFFFF;
+    }
+
+    return sprite;
   }
 
   function setSize(size) {
