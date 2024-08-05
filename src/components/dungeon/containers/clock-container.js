@@ -3,7 +3,8 @@ global.ClockContainer = async function() {
   const $shadow = new Pixi.Graphics();
   $shadow.height = _tileSize;
   $shadow.width = _tileSize;
-  $shadow.filters = [new Pixi.BlurFilter({ strength:5 })]
+  $shadow.filters = [new Pixi.BlurFilter({ strength:5, quality:1 })]
+
 
   const $arc = new Pixi.Graphics();
   $arc.height = _tileSize;
@@ -25,12 +26,13 @@ global.ClockContainer = async function() {
     max -= Math.PI/2;
 
     $shadow.clear()
-    $shadow.arc(_tileSize/2, _tileSize/2, 34.5, min, max);
-    $shadow.stroke({ width:18, color:'rgba(0,0,0,0.5)' });
+    $shadow.arc(_tileSize/2, _tileSize/2, 30, min, max);
+    $shadow.stroke({ width:14, color:'rgba(0,0,0,0.75)' });
 
     $arc.clear()
-    $arc.arc(_tileSize/2, _tileSize/2, 35, min, max);
+    $arc.arc(_tileSize/2, _tileSize/2, 30, min, max);
     $arc.stroke({ width:10, color:'rgb(255,255,255)' });
+
   }
 
   return Object.freeze({
