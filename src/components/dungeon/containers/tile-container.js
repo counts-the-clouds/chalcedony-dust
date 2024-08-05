@@ -22,7 +22,10 @@ global.TileContainer = async function(tile) {
     $tileContainer.addChild(background);
 
     layers.forEach((layer,i) => {
+      // console.log("Layer:",layer);
+
       const sprite = new Pixi.Sprite(textures[i]);
+      // sprite.tint = 'rgb(200,100,100)'
       sprite.anchor = 0.5;
       sprite.x = _tileSize / 2;
       sprite.y = _tileSize / 2;

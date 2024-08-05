@@ -5,7 +5,6 @@ global.ClockContainer = async function() {
   $shadow.width = _tileSize;
   $shadow.filters = [new Pixi.BlurFilter({ strength:5, quality:1 })]
 
-
   const $arc = new Pixi.Graphics();
   $arc.height = _tileSize;
   $arc.width = _tileSize;
@@ -32,7 +31,6 @@ global.ClockContainer = async function() {
     $arc.clear()
     $arc.arc(_tileSize/2, _tileSize/2, 30, min, max);
     $arc.stroke({ width:10, color:'rgb(255,255,255)' });
-
   }
 
   return Object.freeze({

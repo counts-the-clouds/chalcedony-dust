@@ -103,9 +103,9 @@ global.Tile = function(data) {
     })[0];
   }
 
-  // The getLayers() function should return the current forms of all the segments so that they can
-  // be drawn in the user interface. Right now the layers only contain backgrounds. At some point
-  // we'll probably need to add icons and shit.
+  // The getLayers() function gets current forms of all the segments so that
+  // they can be drawn in the user interface.
+
   function getLayers() {
     return getSegments().map(segment => {
       const form = segment.getSegmentData().forms[segment.getForm()]
