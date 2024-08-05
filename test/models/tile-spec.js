@@ -8,7 +8,7 @@ describe("Tile", function() {
 
       expect(hall.getEdges().n).to.equal(_hall);
       expect(segments[0].getIndex()).to.equal(0);
-      expect(layers[0].background).to.equal('hall-1');
+      expect(layers[0].background).to.equal('hall-1a');
     });
 
     it('builds clock', function() {

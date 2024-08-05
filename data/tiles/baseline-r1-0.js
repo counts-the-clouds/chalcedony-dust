@@ -2,7 +2,7 @@ TileRegistry.register('baseline-r1-0', {
 
   segments:[
     { type:_room, exits:[_n], forms:{
-      incomplete:{ background:'room-1' }
+      incomplete:{ background:'room-1a' }
     }},
   ],
 
