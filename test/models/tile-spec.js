@@ -8,7 +8,7 @@ describe("Tile", function() {
 
       expect(hall.getEdges().n).to.equal(_hall);
       expect(segments[0].getIndex()).to.equal(0);
-      expect(layers[0].background).to.equal('hall-1a');
+      expect(layers[0].texture).to.equal('rough-hall-1a');
     });
 
     it('builds clock', function() {
@@ -79,8 +79,8 @@ describe("Tile", function() {
 
   describe("getLayers()", function() {
     it('gets the client layers from the segment', function() {
-      let tile = Tile({ code:'forest-2' });
-      expect(tile.getLayers()[0].background).to.equal('f-2');
+      let tile = Tile({ code:'baseline-h2-0' });
+      expect(tile.getLayers()[0].texture).to.equal('rough-hall-2a');
     });
   })
 
@@ -153,7 +153,7 @@ describe("Tile", function() {
       expect(unpacked.getEdges().s).to.equal('forest-path');
       expect(unpacked.getSegments().length).to.equal(1);
       expect(segment.getIndex()).to.equal(0);
-      expect(segment.getForm()).to.equal(_incomplete);
+      expect(segment.getState()).to.equal(_incomplete);
     });
 
     it("with clock", function() {

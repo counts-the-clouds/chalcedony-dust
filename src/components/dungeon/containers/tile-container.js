@@ -38,22 +38,25 @@ global.TileContainer = async function(tile) {
     $tileContainer.addChild($background);
   }
 
-  // TODO: I don't think every tile will follow this pattern of having a ground
-  //       and wall sprite like this. The segment layers probably need to have
-  //       some kind of "graphics type" to let me know what kind of sprites the
-  //       layer should have. Then we'll need a separate addLayer() function
-  //       for each layer type.
-  //
   async function addLayer(layer) {
     try {
-      const groundSprite = await buildLayerSprite(layer, `${layer.background}-g`, layer.groundColor);
-      const wallSprite = await buildLayerSprite(layer, `${layer.background}-w`, layer.wallColor);
 
-      $layers[layer.segmentID].groundSprite = groundSprite;
-      $layers[layer.segmentID].wallSprite = wallSprite;
+      if (layer.style === _singleTexture) {
+        const sprite = await buildLayerSprite(layer, layer.texture, layer.color);
+        $layers[layer.segmentID].sprite = sprite;
+        $tileContainer.addChild(sprite);
+      }
 
-      $tileContainer.addChild(groundSprite);
-      $tileContainer.addChild(wallSprite);
+      if (layer.style === _wallAndGround) {
+        const groundSprite = await buildLayerSprite(layer, `${layer.texture}-g`, layer.groundColor);
+        const wallSprite = await buildLayerSprite(layer, `${layer.texture}-w`, layer.wallColor);
+
+        $layers[layer.segmentID].groundSprite = groundSprite;
+        $layers[layer.segmentID].wallSprite = wallSprite;
+
+        $tileContainer.addChild(groundSprite);
+        $tileContainer.addChild(wallSprite);
+      }
     }
     catch(error) {
       const segment = SegmentDataStore.get(layer.segmentID);

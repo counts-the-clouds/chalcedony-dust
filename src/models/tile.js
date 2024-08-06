@@ -109,38 +109,40 @@ global.Tile = function(data) {
 
   function getLayers() {
     return getSegments().map(segment => {
-      const form = segment.getSegmentData().forms[segment.getForm()]
+      const state = segment.getState();
+      const type = segment.getType();
+      const graphics = segment.getSegmentData().graphics[state];
 
       const layer = {
         segmentID: segment.getID(),
-        background: form.background
+        texture: graphics.texture,
+        style: graphics.style || _singleTexture,
       };
 
-      if (segment.getForm() === _base) {
-        if (segment.getType() === 'core') {
+      if (state === _incomplete) {
+        if (type === _hall) {
+          layer.color = 'rgb(120,110,100)';
+        }
+
+        if (type === _room) {
+          layer.color = 'rgb(140,130,120)';
+        }
+      }
+
+      if (state === _complete) {
+        if (type === _core) {
           layer.groundColor = 'rgb(110,130,150)';
           layer.wallColor = 'rgb(210,230,250)';
         }
 
-        if (segment.getType() === 'temp') {
+        if (type === _node) {
           layer.groundColor = 'rgb(60,60,60)';
           layer.wallColor = 'rgb(80,80,80)';
         }
       }
 
-      if (segment.getForm() === _incomplete) {
-        if (segment.getType() === _hall) {
-          layer.groundColor = 'rgb(80,80,80)';
-          layer.wallColor = 'rgb(100,100,100)';
-        }
 
-        if (segment.getType() === _room) {
-          layer.groundColor = 'rgb(120,120,120)';
-          layer.wallColor = 'rgb(120,120,120)';
-        }
-      }
-
-      if (form.angle) { layer.angle = form.angle; }
+      if (graphics.angle) { layer.angle = graphics.angle; }
 
       return layer;
     });

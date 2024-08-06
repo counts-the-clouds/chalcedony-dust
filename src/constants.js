@@ -72,8 +72,8 @@ global._s = 's';
 global._e = 'e';
 global._w = 'w';
 
-// Forms
-global._base = 'base';
+// Tile States
+global._complete = 'complete';
 global._incomplete = 'incomplete';
 
 // Edge Types
@@ -86,6 +86,14 @@ global._room = 'room'
 global._hall = 'hall'
 global._river = 'river'
 global._lake = 'lake'
+
+// Non-Edge Segment Types
+global._core = 'core';
+global._node = 'node';
+
+// Segment Graphics Styles
+global._singleTexture = 'single-texture';
+global._wallAndGround = 'wall-and-ground';
 
 // Tile Placement Rules
 global._placeOnOrigin = 'place-on-origin';

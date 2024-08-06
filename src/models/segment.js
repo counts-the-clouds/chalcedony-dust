@@ -8,7 +8,9 @@ global.Segment = function(data) {
   const $tileCode = data.tileCode;
   const $index = data.index;
   const $id = data.id || SegmentDataStore.nextID();
-  const $form = data.form || (getExits().length === 0 ? _base : _incomplete);
+
+  // If a segment doesn't have any exits it's in a completed state when placed.
+  let $state = data.state || (getExits().length === 0 ? _complete : _incomplete);
 
   let $featureID = data.featureID;
   let $connections = data.connections || {};
@@ -20,7 +22,8 @@ global.Segment = function(data) {
   function getTileCode() { return $tileCode; }
   function getTile() { return TileDataStore.get($tileID); }
   function getIndex() { return $index; }
-  function getForm() { return $form; }
+  function getState() { return $state; }
+  function setState(state) { $state = state; }
 
   function getFeatureID() { return $featureID; }
   function setFeatureID(featureID) { $featureID = featureID; }
@@ -72,7 +75,7 @@ global.Segment = function(data) {
       tileID: $tileID,
       tileCode: $tileCode,
       index: $index,
-      form: $form,
+      state: $state,
       featureID: $featureID,
       connections: $connections,
     };
@@ -86,7 +89,8 @@ global.Segment = function(data) {
     getTileCode,
     getTile,
     getIndex,
-    getForm,
+    getState,
+    setState,
     getFeatureID,
     setFeatureID,
     getFeature,

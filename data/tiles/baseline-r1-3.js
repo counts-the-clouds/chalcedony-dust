@@ -1,11 +1,12 @@
 TileRegistry.register('baseline-r1-3', {
 
   segments:[
-    { type:_room, exits:[_n], forms:{
-      incomplete:{ background:'room-1d' }
+    { type:_room, exits:[_n], graphics:{
+      incomplete:{ texture:'rough-room-1d' },
+      complete:{ texture:'room-1d', style:_wallAndGround }
     }},
-    { type:'temp', exits:[], forms:{
-      base:{ background:'room-0a' }
+    { type:_node, exits:[], graphics:{
+      complete:{ texture:'room-0a', style:_wallAndGround }
     }},
   ],
 
