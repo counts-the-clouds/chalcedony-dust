@@ -137,5 +137,4 @@ global.Segment = function(data) {
   SegmentDataStore.store($self);
 
   return $self;
-
 }
