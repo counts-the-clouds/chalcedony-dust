@@ -4,11 +4,6 @@ global.TileContainer = async function(tile) {
   const $tileContainer = new Pixi.Container();
   const $background = new Pixi.Graphics;
 
-  const $segmentGraphics = {};
-  $tile.getSegments().forEach(segment => {
-    $segmentGraphics[segment.getID()] = segment.getGraphics();
-  });
-
   let $clockContainer;
 
   function getID() { return $tile.getID(); }
@@ -18,8 +13,8 @@ global.TileContainer = async function(tile) {
   async function buildContainer() {
     addBackground()
 
-    await Promise.all(Object.values($segmentGraphics).map(async graphics => {
-      await addSegment(graphics);
+    await Promise.all(tile.getSegments().map(async segment => {
+      await addSegment(segment.getGraphics());
     }));
 
     $tileContainer.label = 'TileContainer';
@@ -40,22 +35,11 @@ global.TileContainer = async function(tile) {
 
   async function addSegment(graphics) {
     try {
-
       if (graphics.style === _singleTexture) {
-        const sprite = await buildSegmentSprite(graphics, graphics.texture, graphics.color);
-        $segmentGraphics[graphics.segmentID].sprite = sprite;
-        $tileContainer.addChild(sprite);
+        $tileContainer.addChild(await buildSingleTextureLayer(graphics))
       }
-
       if (graphics.style === _wallAndGround) {
-        const groundSprite = await buildSegmentSprite(graphics, `${graphics.texture}-g`, graphics.groundColor);
-        const wallSprite = await buildSegmentSprite(graphics, `${graphics.texture}-w`, graphics.wallColor);
-
-        $segmentGraphics[graphics.segmentID].groundSprite = groundSprite;
-        $segmentGraphics[graphics.segmentID].wallSprite = wallSprite;
-
-        $tileContainer.addChild(groundSprite);
-        $tileContainer.addChild(wallSprite);
+        $tileContainer.addChild(await buildWallAndGroundLayer(graphics))
       }
     }
     catch(error) {
@@ -65,6 +49,21 @@ global.TileContainer = async function(tile) {
         data:{ graphics }
       });
     }
+  }
+
+  async function buildSingleTextureLayer(graphics) {
+    return await buildSegmentSprite(graphics, graphics.texture, graphics.color);
+  }
+
+  async function buildWallAndGroundLayer(graphics) {
+    const groundSprite = await buildSegmentSprite(graphics, `${graphics.texture}-g`, graphics.groundColor);
+    const wallSprite = await buildSegmentSprite(graphics, `${graphics.texture}-w`, graphics.wallColor);
+    const container = new Pixi.Container();
+
+    container.addChild(groundSprite);
+    container.addChild(wallSprite);
+
+    return container;
   }
 
   async function buildSegmentSprite(graphics, textureName, color) {
@@ -147,8 +146,19 @@ global.TileContainer = async function(tile) {
     }
   }
 
-  function segmentComplete(segment) {
-    console.log(`WIP: TileContainer.segmentComplete() - ${segment}`);
+  async function segmentComplete(segment) {
+    const graphics = segment.getGraphics();
+
+    let newLayer;
+    if (graphics.style === _singleTexture) {
+      newLayer = await buildSingleTextureLayer(graphics);
+    }
+    if (graphics.style === _wallAndGround) {
+      newLayer = await buildWallAndGroundLayer(graphics);
+    }
+
+    $tileContainer.removeChildAt(graphics.layerIndex).destroy({ children:true });
+    $tileContainer.addChildAt(newLayer, graphics.layerIndex);
   }
 
   await buildContainer();

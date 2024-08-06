@@ -72,6 +72,7 @@ global.Segment = function(data) {
 
     const graphics = {
       segmentID: $id,
+      layerIndex: $index + 1,
       texture: graphicsData.texture,
       style: graphicsData.style || _singleTexture,
     };
