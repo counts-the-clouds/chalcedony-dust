@@ -58,7 +58,7 @@ global.FeatureManager = (function() {
 
     const parentFeature = segment.getFeature();
     log(`${segment} added to ${parentFeature}`,{ system:'FeatureManager', level:3, data:{
-      segments: Object.values(parentFeature.getSegments()).map(seg => { return seg.toString() })
+      segments: parentFeature.getSegments().map(seg => { return seg.toString() })
     }});
 
     // Every time a segment is added to a feature we check to see if it's been
@@ -117,7 +117,7 @@ global.FeatureManager = (function() {
     const joined = Feature({});
 
     features.forEach(feature => {
-      Object.values(feature.getSegments()).forEach(segment => {
+      feature.getSegments().forEach(segment => {
         joined.addSegment(segment);
       });
 
@@ -126,7 +126,7 @@ global.FeatureManager = (function() {
 
     log(`Features merged into ${joined}`,{ system:'FeatureManager', data:{
       previous: featureIDs,
-      segments: Object.values(joined.getSegments()).map(seg => { return seg.toString() })
+      segments: joined.getSegments().map(seg => { return seg.toString() })
     }});
   }
 

@@ -4,11 +4,6 @@ global.TileContainer = async function(tile) {
   const $tileContainer = new Pixi.Container();
   const $background = new Pixi.Graphics;
 
-  const $layers = {};
-  $tile.getLayers().forEach(layer => {
-    $layers[layer.segmentID] = layer;
-  });
-
   let $clockContainer;
 
   function getID() { return $tile.getID(); }
@@ -18,8 +13,8 @@ global.TileContainer = async function(tile) {
   async function buildContainer() {
     addBackground()
 
-    await Promise.all(Object.values($layers).map(async layer => {
-      await addLayer(layer);
+    await Promise.all(tile.getSegments().map(async segment => {
+      await addSegment(segment.getGraphics());
     }));
 
     $tileContainer.label = 'TileContainer';
@@ -38,40 +33,47 @@ global.TileContainer = async function(tile) {
     $tileContainer.addChild($background);
   }
 
-  // TODO: I don't think every tile will follow this pattern of having a ground
-  //       and wall sprite like this. The segment layers probably need to have
-  //       some kind of "graphics type" to let me know what kind of sprites the
-  //       layer should have. Then we'll need a separate addLayer() function
-  //       for each layer type.
-  //
-  async function addLayer(layer) {
+  async function addSegment(graphics) {
     try {
-      const groundSprite = await buildLayerSprite(layer, `${layer.background}-g`, layer.groundColor);
-      const wallSprite = await buildLayerSprite(layer, `${layer.background}-w`, layer.wallColor);
-
-      $layers[layer.segmentID].groundSprite = groundSprite;
-      $layers[layer.segmentID].wallSprite = wallSprite;
-
-      $tileContainer.addChild(groundSprite);
-      $tileContainer.addChild(wallSprite);
+      if (graphics.style === _singleTexture) {
+        $tileContainer.addChild(await buildSingleTextureLayer(graphics))
+      }
+      if (graphics.style === _wallAndGround) {
+        $tileContainer.addChild(await buildWallAndGroundLayer(graphics))
+      }
     }
     catch(error) {
-      const segment = SegmentDataStore.get(layer.segmentID);
-      logError(`Error building layer for ${segment} (${segment.getTile().getID()}:${segment.getTile().getCode()})`,error,{
+      const segment = SegmentDataStore.get(graphics.segmentID);
+      logError(`Error building graphics for ${segment} (${segment.getTile().getID()}:${segment.getTile().getCode()})`,error,{
         system:'TileContainer',
-        data:{ layer }
+        data:{ graphics }
       });
     }
   }
 
-  async function buildLayerSprite(layer, textureName, color) {
+  async function buildSingleTextureLayer(graphics) {
+    return await buildSegmentSprite(graphics, graphics.texture, graphics.color);
+  }
+
+  async function buildWallAndGroundLayer(graphics) {
+    const groundSprite = await buildSegmentSprite(graphics, `${graphics.texture}-g`, graphics.groundColor);
+    const wallSprite = await buildSegmentSprite(graphics, `${graphics.texture}-w`, graphics.wallColor);
+    const container = new Pixi.Container();
+
+    container.addChild(groundSprite);
+    container.addChild(wallSprite);
+
+    return container;
+  }
+
+  async function buildSegmentSprite(graphics, textureName, color) {
     const texture = await Pixi.Assets.load(textureName);
 
     const sprite = new Pixi.Sprite(texture);
     sprite.anchor = 0.5;
     sprite.x = _tileSize / 2;
     sprite.y = _tileSize / 2;
-    sprite.angle = layer.angle ? layer.angle : 0;
+    sprite.angle = graphics.angle ? graphics.angle : 0;
 
     if (color) {
       sprite.tint = color || 0xFFFFFF;
@@ -144,8 +146,19 @@ global.TileContainer = async function(tile) {
     }
   }
 
-  function segmentComplete(segment) {
-    console.log(`WIP: TileContainer.segmentComplete() - ${segment}`);
+  async function segmentComplete(segment) {
+    const graphics = segment.getGraphics();
+
+    let newLayer;
+    if (graphics.style === _singleTexture) {
+      newLayer = await buildSingleTextureLayer(graphics);
+    }
+    if (graphics.style === _wallAndGround) {
+      newLayer = await buildWallAndGroundLayer(graphics);
+    }
+
+    $tileContainer.removeChildAt(graphics.layerIndex).destroy({ children:true });
+    $tileContainer.addChildAt(newLayer, graphics.layerIndex);
   }
 
   await buildContainer();

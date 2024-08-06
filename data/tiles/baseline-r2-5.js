@@ -1,14 +1,16 @@
 TileRegistry.register('baseline-r2-5', {
 
   segments:[
-    { type:_room, exits:[_e], forms:{
-      incomplete:{ background:'room-1d', angle:90 }
+    { type:_room, exits:[_e], graphics:{
+      incomplete:{ texture:'rough-room-1d', angle:90 },
+      complete:{ texture:'room-1d', angle:90, style:_wallAndGround }
     }},
-    { type:_room, exits:[_w], forms:{
-      incomplete:{ background:'room-1d', angle:270 }
+    { type:_room, exits:[_w], graphics:{
+      incomplete:{ texture:'rough-room-1d', angle:270 },
+      complete:{ texture:'room-1d', angle:270, style:_wallAndGround }
     }},
-    { type:'temp', exits:[], forms:{
-      base:{ background:'room-0a' }
+    { type:_node, exits:[], graphics:{
+      complete:{ texture:'room-0a', style:_wallAndGround }
     }},
   ],
 

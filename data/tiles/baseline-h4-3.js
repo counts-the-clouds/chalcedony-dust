@@ -1,20 +1,24 @@
 TileRegistry.register('baseline-h4-3', {
 
   segments:[
-    { type:_hall, exits:[_n], forms:{
-      incomplete:{ background:'hall-1b' }
+    { type:_hall, exits:[_n], graphics:{
+      incomplete:{ texture:'rough-hall-1b' },
+      complete:{ texture:'hall-1b', style:_wallAndGround }
     }},
-    { type:_hall, exits:[_e], forms:{
-      incomplete:{ background:'hall-1b', angle:90 }
+    { type:_hall, exits:[_e], graphics:{
+      incomplete:{ texture:'rough-hall-1b', angle:90 },
+      complete:{ texture:'hall-1b', angle:90, style:_wallAndGround }
     }},
-    { type:_hall, exits:[_s], forms:{
-      incomplete:{ background:'hall-1b', angle:180 }
+    { type:_hall, exits:[_s], graphics:{
+      incomplete:{ texture:'rough-hall-1b', angle:180 },
+      complete:{ texture:'hall-1b', angle:180, style:_wallAndGround }
     }},
-    { type:_hall, exits:[_w], forms:{
-      incomplete:{ background:'hall-1b', angle:270 }
+    { type:_hall, exits:[_w], graphics:{
+      incomplete:{ texture:'rough-hall-1b', angle:270 },
+      complete:{ texture:'hall-1b', angle:270, style:_wallAndGround }
     }},
-    { type:'temp', exits:[], forms:{
-      base:{ background:'room-0a' }
+    { type:_node, exits:[], graphics:{
+      complete:{ texture:'room-0a', style:_wallAndGround }
     }},
   ],
 

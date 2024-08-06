@@ -4,11 +4,9 @@ describe("Tile", function() {
     it('builds segments', function() {
       const hall = Tile({ code:'baseline-h1-0' });
       const segments = hall.getSegments();
-      const layers = hall.getLayers();
 
       expect(hall.getEdges().n).to.equal(_hall);
       expect(segments[0].getIndex()).to.equal(0);
-      expect(layers[0].background).to.equal('hall-1a');
     });
 
     it('builds clock', function() {
@@ -76,13 +74,6 @@ describe("Tile", function() {
       expect(neighbors.w.getCode()).to.equal('baseline-r2-1');
     });
   });
-
-  describe("getLayers()", function() {
-    it('gets the client layers from the segment', function() {
-      let tile = Tile({ code:'forest-2' });
-      expect(tile.getLayers()[0].background).to.equal('f-2');
-    });
-  })
 
   describe("pack()", function() {
 
@@ -153,7 +144,7 @@ describe("Tile", function() {
       expect(unpacked.getEdges().s).to.equal('forest-path');
       expect(unpacked.getSegments().length).to.equal(1);
       expect(segment.getIndex()).to.equal(0);
-      expect(segment.getForm()).to.equal(_incomplete);
+      expect(segment.getState()).to.equal(_incomplete);
     });
 
     it("with clock", function() {

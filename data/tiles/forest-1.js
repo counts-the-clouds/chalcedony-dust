@@ -4,8 +4,8 @@ TileRegistry.register('forest-1', {
   clock: { code:'generate-tile' },
 
   segments:[
-    { type:_forestPath, exits:[_s], forms:{
-      incomplete:{ background:'f-1' }
+    { type:_forestPath, exits:[_s], graphics:{
+      incomplete:{ texture:'f-1' }
     }}
   ],
 
