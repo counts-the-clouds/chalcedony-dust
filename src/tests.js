@@ -59,7 +59,6 @@ global.Tests = (function() {
 
   async function rootBefore() {
     $running = true;
-    Switchboard.reset();
     await WorldState.reset();
   }
 

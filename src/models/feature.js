@@ -28,9 +28,13 @@ global.Feature = function(data) {
     });
 
     if (isComplete) {
-      Switchboard.emit(_featureComplete, { featureID:$id });
       log(`${toString()} Completed`,{ system:'Feature', level:1 });
+      complete();
     }
+  }
+
+  function complete() {
+    console.log(`Complete: ${toString()}`)
   }
 
   function toString() {

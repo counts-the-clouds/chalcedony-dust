@@ -107,8 +107,6 @@ global.GameController = (function() {
       //       always running, but it will need to take the tile bag state into
       //       consideration
       // if (TileBag.isSequence()) { GameController.drawTile(); }
-
-      Switchboard.emit(_tilePlaced,{ tileID:tile.getID() })
     }
     catch (error) {
       logError(`Error Placing Tile`, error, {

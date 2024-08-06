@@ -47,8 +47,6 @@ global.DungeonView = (function() {
   }
 
   async function createApplication() {
-    prepareEvents();
-
     $application = new Pixi.Application();
     await $application.init({
       antialias: true,
@@ -64,12 +62,6 @@ global.DungeonView = (function() {
     await createEffectsContainer();
     await TileShelfView.create($application);
     createTileGrid();
-  }
-
-  function prepareEvents() {
-    Switchboard.reset();
-    Switchboard.on(_tilePlaced,data => { console.log(`Tile[${data.tileID}] placed.`) });
-    Switchboard.on(_featureComplete,data => { console.log(`Feature[${data.featureID}] complete.`) });
   }
 
   async function createEffectsContainer() {

@@ -2,23 +2,20 @@ global.TileContainer = async function(tile) {
 
   const $tile = tile;
   const $tileContainer = new Pixi.Container();
+  const $background = new Pixi.Graphics;
+
+  const $layers = {};
+  $tile.getLayers().forEach(layer => {
+    $layers[layer.segmentID] = layer;
+  });
 
   let $clockContainer;
-
-  let $background;
-  let $layers;
 
   function getID() { return $tile.getID(); }
   function getTile() { return $tile; }
   function getTileContainer() { return $tileContainer; }
 
   async function buildContainer() {
-    $layers = {};
-
-    $tile.getLayers().forEach(layer => {
-      $layers[layer.segmentID] = layer;
-    })
-
     addBackground()
 
     await Promise.all(Object.values($layers).map(async layer => {
@@ -35,7 +32,6 @@ global.TileContainer = async function(tile) {
   }
 
   function addBackground() {
-    $background = new Pixi.Graphics;
     $background.rect(0,0,_tileSize,_tileSize);
     $background.fill('rgb(0,0,0)');
 
