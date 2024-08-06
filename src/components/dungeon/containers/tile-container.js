@@ -27,8 +27,10 @@ global.TileContainer = async function(tile) {
   }
 
   function addBackground() {
+    const palette = ExtraRegistry.lookup('ColorPalette').tile;
+
     $background.rect(0,0,_tileSize,_tileSize);
-    $background.fill('rgb(0,0,0)');
+    $background.fill(palette.background);
 
     $tileContainer.addChild($background);
   }

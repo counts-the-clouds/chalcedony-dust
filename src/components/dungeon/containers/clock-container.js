@@ -13,6 +13,8 @@ global.ClockContainer = async function() {
   $container.addChild($shadow);
   $container.addChild($arc);
 
+  const palette = ExtraRegistry.lookup('ColorPalette').clock;
+
   updateClock(0);
 
   function getContainer() { return $container }
@@ -26,11 +28,11 @@ global.ClockContainer = async function() {
 
     $shadow.clear()
     $shadow.arc(_tileSize/2, _tileSize/2, 30, min, max);
-    $shadow.stroke({ width:14, color:'rgba(0,0,0,0.75)' });
+    $shadow.stroke({ width:14, color:palette.shadow });
 
     $arc.clear()
     $arc.arc(_tileSize/2, _tileSize/2, 30, min, max);
-    $arc.stroke({ width:10, color:'rgb(255,255,255)' });
+    $arc.stroke({ width:10, color:palette.arc });
   }
 
   return Object.freeze({

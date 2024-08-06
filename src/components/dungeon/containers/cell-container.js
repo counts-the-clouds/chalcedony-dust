@@ -14,10 +14,11 @@ global.CellContainer = function(x,y,coordinates) {
   function getPosition() { return $cellContainer.getGlobalPosition(); }
 
   function buildContainer() {
+    const palette = ExtraRegistry.lookup('ColorPalette').cell;
     const background = new Pixi.Graphics();
     background.label = 'background';
     background.rect(0,0,TS,TS);
-    background.fill('rgba(50,60,70,0.05)');
+    background.fill(palette.background);
 
     $cellContainer.eventMode = 'dynamic';
     $cellContainer.label = 'CellContainer';
@@ -34,18 +35,20 @@ global.CellContainer = function(x,y,coordinates) {
   }
 
   function buildDevelopmentGuides() {
-    if (false && Environment.isDevelopment) {
+    if (Environment.isDevelopment) {
+      const palette = ExtraRegistry.lookup('ColorPalette').cell;
+
       const border = new Pixi.Graphics();
       border.rect(0, 0, TS, TS);
-      border.stroke({color: 'rgb(60,80,100,0.3)'});
-      border.fill({color: 'rgb(60,80,100,0.01)'});
+      border.stroke({ color:palette.guides.stroke });
+      border.fill({color:palette.guides.fill });
 
       const text = new Pixi.Text({
         text: `(${$coordinates.gx},${$coordinates.gy})`, style: {
           fontFamily: 'roboto',
           align: 'center',
           fontSize: 20,
-          fill: 'rgba(110,130,150,0.3)'
+          fill: palette.guides.text,
         }
       });
 

@@ -179,16 +179,20 @@ global.DungeonViewport = (function() {
 
   // === Guides ================================================================
 
+  // When working on the viewport it's helpful to have the center of the
+  // viewport under a crosshair. This center should be directly under the
+  // $currentLocation
   function drawGuides() {
     if (false && Environment.isDevelopment) {
+      const palette = ExtraRegistry.lookup('ColorPalette').viewport;
       const screen = DungeonView.getDimensions();
       const guides = new Pixi.Graphics();
 
       guides.clear();
       guides.rect((screen.width/2)-1,0,2,screen.height);
-      guides.fill('rgba(200,50,50,0.1)');
+      guides.fill(palette.guides);
       guides.rect(0,(screen.height/2)-1,screen.width,2);
-      guides.fill('rgba(200,50,50,0.1)');
+      guides.fill(palette.guides);
 
       $application.stage.addChild(guides);
     }

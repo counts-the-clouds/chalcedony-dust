@@ -26,14 +26,15 @@ global.ChunkContainer = function(chunkID) {
 
   function buildDevelopmentGuides() {
     if (false && Environment.isDevelopment) {
+      const palette = ExtraRegistry.lookup('ColorPalette').chunk;
       const border = new Pixi.Graphics();
       border.rect(0,0,_chunkSize,_chunkSize);
-      border.stroke({ width:3, color:'rgb(100,80,60,0.4)' });
+      border.stroke({ width:3, color:palette.guides.stroke });
 
       const text = new Pixi.Text({ text:`Chunk${$chunkID}`, style: {
         fontFamily:'roboto',
         fontSize:200,
-        fill:'rgba(150,140,130,0.4)',
+        fill:palette.guides.text,
       }});
       text.x = (_chunkSize/2) - (text.width/2);
       text.y = (_chunkSize/2) - (text.height/2);
