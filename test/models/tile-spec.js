@@ -4,11 +4,9 @@ describe("Tile", function() {
     it('builds segments', function() {
       const hall = Tile({ code:'baseline-h1-0' });
       const segments = hall.getSegments();
-      const layers = hall.getLayers();
 
       expect(hall.getEdges().n).to.equal(_hall);
       expect(segments[0].getIndex()).to.equal(0);
-      expect(layers[0].texture).to.equal('rough-hall-1a');
     });
 
     it('builds clock', function() {
@@ -76,13 +74,6 @@ describe("Tile", function() {
       expect(neighbors.w.getCode()).to.equal('baseline-r2-1');
     });
   });
-
-  describe("getLayers()", function() {
-    it('gets the client layers from the segment', function() {
-      let tile = Tile({ code:'baseline-h2-0' });
-      expect(tile.getLayers()[0].texture).to.equal('rough-hall-2a');
-    });
-  })
 
   describe("pack()", function() {
 

@@ -65,6 +65,34 @@ global.Segment = function(data) {
     return true;
   }
 
+  function getGraphics() {
+    const palette = ExtraRegistry.lookup('ColorPalette');
+    const graphicsData = getSegmentData().graphics[$state];
+    const type = getType();
+
+    const graphics = {
+      segmentID: $id,
+      texture: graphicsData.texture,
+      style: graphicsData.style || _singleTexture,
+    };
+
+    if ($state === _incomplete) {
+      const colors = palette.segments[_incomplete];
+      graphics.color = colors[type];
+    }
+    if ($state === _complete) {
+      const colors = palette.segments[_complete];
+      graphics.groundColor = colors[type].ground;
+      graphics.wallColor = colors[type].wall;
+    }
+
+    if (graphicsData.angle) {
+      graphics.angle = graphicsData.angle;
+    }
+
+    return graphics
+  }
+
   function toString() {
     return `Segment:${$id}`
   }
@@ -101,6 +129,7 @@ global.Segment = function(data) {
     getType,
     getExits,
     isComplete,
+    getGraphics,
     toString,
     pack,
   });

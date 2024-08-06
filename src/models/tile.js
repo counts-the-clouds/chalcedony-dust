@@ -103,51 +103,6 @@ global.Tile = function(data) {
     })[0];
   }
 
-  // The getLayers() function gets current forms of all the segments so that
-  // they can be drawn in the user interface. Should Layer be a model? It's
-  // getting a little complex.
-
-  function getLayers() {
-    return getSegments().map(segment => {
-      const state = segment.getState();
-      const type = segment.getType();
-      const graphics = segment.getSegmentData().graphics[state];
-
-      const layer = {
-        segmentID: segment.getID(),
-        texture: graphics.texture,
-        style: graphics.style || _singleTexture,
-      };
-
-      if (state === _incomplete) {
-        if (type === _hall) {
-          layer.color = 'rgb(120,110,100)';
-        }
-
-        if (type === _room) {
-          layer.color = 'rgb(140,130,120)';
-        }
-      }
-
-      if (state === _complete) {
-        if (type === _core) {
-          layer.groundColor = 'rgb(110,130,150)';
-          layer.wallColor = 'rgb(210,230,250)';
-        }
-
-        if (type === _node) {
-          layer.groundColor = 'rgb(60,60,60)';
-          layer.wallColor = 'rgb(80,80,80)';
-        }
-      }
-
-
-      if (graphics.angle) { layer.angle = graphics.angle; }
-
-      return layer;
-    });
-  }
-
   function getFeatures() {
     return ArrayHelper.compact(getSegments().map(segment => {
       return segment.getFeature();
@@ -199,7 +154,6 @@ global.Tile = function(data) {
     getSegmentIDs,
     getSegments,
     getSegmentWithExit,
-    getLayers,
     getFeatures,
 
     toString,

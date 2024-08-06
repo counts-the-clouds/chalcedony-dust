@@ -4,9 +4,9 @@ global.TileContainer = async function(tile) {
   const $tileContainer = new Pixi.Container();
   const $background = new Pixi.Graphics;
 
-  const $layers = {};
-  $tile.getLayers().forEach(layer => {
-    $layers[layer.segmentID] = layer;
+  const $segmentGraphics = {};
+  $tile.getSegments().forEach(segment => {
+    $segmentGraphics[segment.getID()] = segment.getGraphics();
   });
 
   let $clockContainer;
@@ -18,8 +18,8 @@ global.TileContainer = async function(tile) {
   async function buildContainer() {
     addBackground()
 
-    await Promise.all(Object.values($layers).map(async layer => {
-      await addLayer(layer);
+    await Promise.all(Object.values($segmentGraphics).map(async graphics => {
+      await addSegment(graphics);
     }));
 
     $tileContainer.label = 'TileContainer';
@@ -38,43 +38,43 @@ global.TileContainer = async function(tile) {
     $tileContainer.addChild($background);
   }
 
-  async function addLayer(layer) {
+  async function addSegment(graphics) {
     try {
 
-      if (layer.style === _singleTexture) {
-        const sprite = await buildLayerSprite(layer, layer.texture, layer.color);
-        $layers[layer.segmentID].sprite = sprite;
+      if (graphics.style === _singleTexture) {
+        const sprite = await buildSegmentSprite(graphics, graphics.texture, graphics.color);
+        $segmentGraphics[graphics.segmentID].sprite = sprite;
         $tileContainer.addChild(sprite);
       }
 
-      if (layer.style === _wallAndGround) {
-        const groundSprite = await buildLayerSprite(layer, `${layer.texture}-g`, layer.groundColor);
-        const wallSprite = await buildLayerSprite(layer, `${layer.texture}-w`, layer.wallColor);
+      if (graphics.style === _wallAndGround) {
+        const groundSprite = await buildSegmentSprite(graphics, `${graphics.texture}-g`, graphics.groundColor);
+        const wallSprite = await buildSegmentSprite(graphics, `${graphics.texture}-w`, graphics.wallColor);
 
-        $layers[layer.segmentID].groundSprite = groundSprite;
-        $layers[layer.segmentID].wallSprite = wallSprite;
+        $segmentGraphics[graphics.segmentID].groundSprite = groundSprite;
+        $segmentGraphics[graphics.segmentID].wallSprite = wallSprite;
 
         $tileContainer.addChild(groundSprite);
         $tileContainer.addChild(wallSprite);
       }
     }
     catch(error) {
-      const segment = SegmentDataStore.get(layer.segmentID);
-      logError(`Error building layer for ${segment} (${segment.getTile().getID()}:${segment.getTile().getCode()})`,error,{
+      const segment = SegmentDataStore.get(graphics.segmentID);
+      logError(`Error building graphics for ${segment} (${segment.getTile().getID()}:${segment.getTile().getCode()})`,error,{
         system:'TileContainer',
-        data:{ layer }
+        data:{ graphics }
       });
     }
   }
 
-  async function buildLayerSprite(layer, textureName, color) {
+  async function buildSegmentSprite(graphics, textureName, color) {
     const texture = await Pixi.Assets.load(textureName);
 
     const sprite = new Pixi.Sprite(texture);
     sprite.anchor = 0.5;
     sprite.x = _tileSize / 2;
     sprite.y = _tileSize / 2;
-    sprite.angle = layer.angle ? layer.angle : 0;
+    sprite.angle = graphics.angle ? graphics.angle : 0;
 
     if (color) {
       sprite.tint = color || 0xFFFFFF;
