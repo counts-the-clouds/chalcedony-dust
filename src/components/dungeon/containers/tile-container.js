@@ -62,6 +62,9 @@ global.TileContainer = async function(tile) {
     const wallSprite = await buildSegmentSprite(graphics, `${graphics.texture}-w`, graphics.wallColor);
     const container = new Pixi.Container();
 
+    groundSprite.label = 'Ground'
+    wallSprite.label = 'Wall'
+
     container.addChild(groundSprite);
     container.addChild(wallSprite);
 
@@ -157,6 +160,30 @@ global.TileContainer = async function(tile) {
     }
     if (graphics.style === _wallAndGround) {
       newLayer = await buildWallAndGroundLayer(graphics);
+
+      const ground = newLayer.getChildAt(0);
+      const wall = newLayer.getChildAt(1);
+      const groundColor = ColorHelper.hexValueToColors(ground.tint);
+      const wallColor = ColorHelper.hexValueToColors(wall.tint);
+
+      ground.tint = 0xFFFFFF;
+      wall.tint = 0xFFFFFF;
+
+      AnimationController.addAnimation('flash',`${segment}:ground`,{
+        target: ground,
+        r: groundColor.r,
+        g: groundColor.g,
+        b: groundColor.b,
+        duration:1000,
+      });
+
+      AnimationController.addAnimation('flash',`${segment}:wall`,{
+        target: wall,
+        r: wallColor.r,
+        g: wallColor.g,
+        b: wallColor.b,
+        duration:2000,
+      });
     }
 
     $tileContainer.removeChildAt(graphics.layerIndex).destroy({ children:true });
