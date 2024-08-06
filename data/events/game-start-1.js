@@ -20,8 +20,6 @@ EventRegistry.register('game-start-1', {
 
     TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });
     TileBag.addSequentialTiles(tiles.map(data => { return Tile(data); }));
-
-    TileShelfView.showTileBag();
   },
 
 });

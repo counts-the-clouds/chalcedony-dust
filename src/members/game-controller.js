@@ -49,13 +49,23 @@ global.GameController = (function() {
     });
   }
 
-  // TODO: If we try and draw a tile, and there are no tiles in the bag
-  //       this should trigger a game over event, for now we can just throw
-  //       an exception reminding us to do this.
   async function drawTile() {
 
+    // TODO: If we try and draw a tile, and there are no tiles in the bag
+    //       this should trigger a game over event, for now we can just throw
+    //       an exception reminding us to do this.
     if (TileBag.size() === 0) {
       throw `There are no more tiles left in the bag. Game over.`
+    }
+
+    // TODO: If the shelf is full and we're forced to discard a tile the tile
+    //       just disappears off of the shelf or out of your hand (if dragging)
+    //       This should be more dramatic, something like an animation of the
+    //       tile crumbling away or going up in flames.
+    if (TileShelf.getEmptySpaceCount() === 0) {
+      if (DragonDrop.isDragging()) { DragonDrop.stopDrag('cancel'); }
+      const lastTile = TileShelf.discardLastTile();
+      TileShelfView.removeTile(lastTile);
     }
 
     const tile = TileBag.drawTile();

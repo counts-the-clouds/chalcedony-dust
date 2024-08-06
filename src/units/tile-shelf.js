@@ -12,7 +12,7 @@ global.TileShelf = (function() {
   function getSize() { return $size; }
 
   function addTile(tile) {
-    if ($shelf.length >= $size) { throw `Cannot add tile, there is no room on the shelf.` }
+    if (getEmptySpaceCount() === 0) { throw `Cannot add tile, there is no room on the shelf.` }
     $shelf.unshift(tile);
   }
 
@@ -20,6 +20,7 @@ global.TileShelf = (function() {
   function hasTile(id) { return getTileIndex(id) >= 0; }
   function getTile(id) { return $shelf[getTileIndex(id)]; }
   function removeTile(id) { $shelf.splice(getTileIndex(id), 1); }
+  function getEmptySpaceCount() { return $size - $shelf.length }
 
   function getTileIndex(id) {
     let index = ArrayHelper.find($shelf, tile => {
@@ -27,6 +28,14 @@ global.TileShelf = (function() {
     });
 
     return (index == null) ? -1 : index;
+  }
+
+  function discardLastTile() {
+    if ($shelf.length > 0) {
+      const lastTile = $shelf[$shelf.length-1];
+      $shelf.splice($shelf.length-1, 1);
+      return lastTile;
+    }
   }
 
   // We pack the tile shelf when saving and loading the game.
@@ -51,6 +60,8 @@ global.TileShelf = (function() {
     hasTile,
     getTile,
     removeTile,
+    getEmptySpaceCount,
+    discardLastTile,
     pack,
     unpack
   });

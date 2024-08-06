@@ -7,8 +7,8 @@ window.DragonDrop = (function() {
   // screen we stop the event, but we only attempt to place the tile on a mouse
   // up event.
   function init() {
-    window.addEventListener('mouseup', event => { stopDrag(event); });
-    window.addEventListener('mouseout', event => { stopDrag(event, 'cancel'); });
+    window.addEventListener('mouseup', () => { stopDrag(); });
+    window.addEventListener('mouseout', () => { stopDrag('cancel'); });
 
     X.registerKeyAction("action.rotate-clockwise", isDragging, () => { rotateTile(1) });
     X.registerKeyAction("action.rotate-widdershins", isDragging, () => { rotateTile(-1) });
@@ -64,7 +64,7 @@ window.DragonDrop = (function() {
     }
   }
 
-  function stopDrag(event, command) {
+  function stopDrag(command) {
     if (!isDragging()) { return false; }
 
     if (command !== 'cancel') {
@@ -78,6 +78,7 @@ window.DragonDrop = (function() {
     $dragContext.tileContainer.setCursor('grab');
     $dragContext = null;
   }
+
 
   // === Rotate ================================================================
 
