@@ -144,6 +144,10 @@ global.TileContainer = async function(tile) {
     }
   }
 
+  function segmentComplete(segment) {
+    console.log(`WIP: TileContainer.segmentComplete() - ${segment}`);
+  }
+
   await buildContainer();
 
   return {
@@ -156,6 +160,7 @@ global.TileContainer = async function(tile) {
     enableClock,
     updateClock,
     setOnShelf,
+    segmentComplete,
   };
 };
 

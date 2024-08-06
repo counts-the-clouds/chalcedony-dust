@@ -34,7 +34,27 @@ global.Feature = function(data) {
   }
 
   function complete() {
-    console.log(`Complete: ${toString()}`)
+    if (DungeonView.isVisible()) {
+      Object.values($segments).forEach(segment => {
+        // TODO: The segment needs to be set to complete. I think it's time to
+        //       rework how segments were stored in the tile. The whole form
+        //       thing made more sense when I thought I would have different
+        //       sprites at different levels of completeness. I still might,
+        //       but I don't think 'form' makes a lot of sense.
+
+        const coordinates = segment.getTile().getCoordinates();
+        const cellContainer = DungeonView.getCellContainerAt(coordinates.gx, coordinates.gy);
+        const tileContainer = cellContainer.getTileContainer();
+
+        // TODO: Tile container will be null for the tile being placed. We need
+        //       to wait for the tile containers to all exist before we mark
+        //       call the segmentComplete() function for each segment. We need
+        //       to set up some polling I think.
+
+        console.log("Tile Container? ",tileContainer);
+        // tileContainer.segmentComplete(segment);
+      });
+    }
   }
 
   function toString() {
