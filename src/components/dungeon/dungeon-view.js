@@ -24,17 +24,13 @@ global.DungeonView = (function() {
 
     ClockManager.reset();
     createTileGrid();
+    TileShelfView.refresh();
   }
 
   async function open() {
     await DungeonAssets.loadAssets();
     MainContent.setMainContent('views/dungeon-view.html');
     await createApplication();
-
-
-    // const tileClock = Clock({ id:'generate-tile' });
-    // tileClock.attachCell
-    // ClockManager.addClock(tileClock);
   }
 
   function isVisible() {
@@ -78,20 +74,21 @@ global.DungeonView = (function() {
 
   function createTileGrid() {
     ChunkDataStore.all().forEach(chunk => {
-      const id = chunk.getID();
-      const location = chunk.getChunkLocation();
-
-      if ($chunkExtent.minx > location.x) { $chunkExtent.minx = location.x }
-      if ($chunkExtent.maxx < location.x) { $chunkExtent.maxx = location.x }
-      if ($chunkExtent.miny > location.y) { $chunkExtent.miny = location.y }
-      if ($chunkExtent.maxy < location.y) { $chunkExtent.maxy = location.y }
-
-      $chunkContainers[id] = ChunkContainer(id);
-      DungeonViewport.addChild($chunkContainers[id].getChunkContainer());
+      addChunk(chunk);
     });
+  }
 
-    DungeonViewport.updateLimits();
-    TileShelfView.refresh();
+  function addChunk(chunk) {
+    const id = chunk.getID();
+    const location = chunk.getChunkLocation();
+
+    if ($chunkExtent.minx > location.x) { $chunkExtent.minx = location.x }
+    if ($chunkExtent.maxx < location.x) { $chunkExtent.maxx = location.x }
+    if ($chunkExtent.miny > location.y) { $chunkExtent.miny = location.y }
+    if ($chunkExtent.maxy < location.y) { $chunkExtent.maxy = location.y }
+
+    $chunkContainers[id] = ChunkContainer(id);
+    DungeonViewport.addChild($chunkContainers[id].getChunkContainer());
   }
 
   function resize() { $application.resize(); }
@@ -172,6 +169,7 @@ global.DungeonView = (function() {
     isVisible,
     close,
     getTileSize,
+    addChunk,
     resize,
     getChunkExtent,
     getDimensions,

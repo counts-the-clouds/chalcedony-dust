@@ -45,9 +45,18 @@ global.Coordinates = (function() {
     }
   }
 
+  function translate(coords, direction) {
+    if (direction === _n) { return fromGlobal(coords.gx, coords.gy - 1); }
+    if (direction === _s) { return fromGlobal(coords.gx, coords.gy + 1); }
+    if (direction === _e) { return fromGlobal(coords.gx + 1, coords.gy); }
+    if (direction === _w) { return fromGlobal(coords.gx - 1, coords.gy); }
+    throw `Unvalid Direction ${direction}`;
+  }
+
   return Object.freeze({
     fromGlobal,
     fromChunk,
+    translate,
   });
 
 })();

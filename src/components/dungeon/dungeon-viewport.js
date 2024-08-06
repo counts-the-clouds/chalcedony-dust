@@ -84,6 +84,7 @@ global.DungeonViewport = (function() {
 
   function addChild(child) {
     $viewport.addChild(child);
+    updateLimits();
   }
 
   // === Application Events ====================================================
