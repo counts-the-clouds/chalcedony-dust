@@ -21,7 +21,7 @@ global.TileContainer = async function(tile) {
     $tileContainer.pivot.y = _tileSize/2;
 
     tile.getSegments().forEach(segment => {
-      $tileContainer.addChild(TileLayer.build(segment));
+      $tileContainer.addChild(TileLayer(segment).getShapeContainer());
     });
   }
 
