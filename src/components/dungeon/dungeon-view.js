@@ -28,7 +28,6 @@ global.DungeonView = (function() {
   }
 
   async function open() {
-    await DungeonAssets.loadAssets();
     MainContent.setMainContent('views/dungeon-view.html');
     await createApplication();
   }
@@ -66,7 +65,6 @@ global.DungeonView = (function() {
     $effectsContainer.y = 0;
     $effectsContainer.width = $application.screen.width
     $effectsContainer.height = $application.screen.height
-    $effectsContainer.addChild(await OuterCellHighlight.build());
     $effectsContainer.addChild(await InnerCellHighlight.build());
 
     $application.stage.addChild($effectsContainer);

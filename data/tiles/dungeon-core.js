@@ -10,5 +10,4 @@ TileRegistry.register('dungeon-core', {
     { type:_core, exits:[], graphics:{ shape:'core' }},
   ]
 
-
 });

@@ -30,8 +30,8 @@ global.TileLayer = (function() {
       drawing.tint = palette.complete[type].ground;
 
       drawing.eventMode = 'dynamic';
-      drawing.onmouseenter = () => { drawing.tint = 'rgb(140,180,220)'; }
-      drawing.onmouseleave = () => { drawing.tint = 'rgb(120,100,80)'; }
+      // drawing.onmouseenter = () => { drawing.tint = 'rgb(140,180,220)'; }
+      // drawing.onmouseleave = () => { drawing.tint = 'rgb(120,100,80)'; }
       drawing.onmousedown = () => { console.log(`Click:${segment}`) }
 
       // TODO: Draw walls.

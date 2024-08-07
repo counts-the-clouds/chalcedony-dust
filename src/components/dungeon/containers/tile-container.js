@@ -20,13 +20,9 @@ global.TileContainer = async function(tile) {
     $tileContainer.pivot.x = _tileSize/2;
     $tileContainer.pivot.y = _tileSize/2;
 
-    await Promise.all(tile.getSegments().map(async segment => {
-      const layer = await TileLayer.build(segment)
-      if (layer) {
-        console.log("Add Layer:",layer)
-        $tileContainer.addChild(layer);
-      }
-    }));
+    tile.getSegments().forEach(segment => {
+      $tileContainer.addChild(TileLayer.build(segment));
+    });
   }
 
   function addBackground() {
