@@ -100,6 +100,25 @@ global.TileContainer = async function(tile) {
     }
   }
 
+  function segmentComplete(segment) {
+    const index = segment.getIndex() + 1;
+    const newLayer = TileLayer(segment).getShapeContainer();
+
+    const shape = newLayer.getChildAt(0);
+    const color = ColorHelper.hexValueToColors(shape.tint);
+
+    $tileContainer.removeChildAt(index).destroy({ children:true });
+    $tileContainer.addChildAt(newLayer, index);
+
+    AnimationController.addAnimation('flash',`${segment}(Flash)`,{
+      target: shape,
+      r: color.r,
+      g: color.g,
+      b: color.b,
+      duration:1000,
+    });
+  }
+
   await buildContainer();
 
   return {
@@ -112,6 +131,7 @@ global.TileContainer = async function(tile) {
     enableClock,
     updateClock,
     setOnShelf,
+    segmentComplete,
   };
 };
 
