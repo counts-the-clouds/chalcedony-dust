@@ -1,5 +1,8 @@
 ShapeRegistry.register('hall-short', {
 
-  square: { x:52, y:0, w:24, h:24 }
+  drawBase: graphics => {
+    graphics.rect(52,0,24,24);
+  },
+
 
 });

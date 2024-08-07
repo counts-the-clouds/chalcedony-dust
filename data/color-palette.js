@@ -29,8 +29,8 @@ ExtraRegistry.register('ColorPalette',{
 
   segments:{
     incomplete: {
-      hall: 'rgb(120,120,120)',
-      room: 'rgb(140,140,140)',
+      hall: 'rgb(80,80,80)',
+      room: 'rgb(100,100,100)',
     },
     complete: {
       hall: {
