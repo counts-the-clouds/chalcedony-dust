@@ -1,0 +1,26 @@
+ShapeRegistry.register('hall-long', {
+
+  draw: (drawing,segment) => {
+    const state = segment.getState()
+    const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
+
+    if (state === _incomplete) {
+      drawing.rect(52,0,24,62);
+      drawing.fill(0xCCCCCC);
+      drawing.rect(54,0,20,60);
+      drawing.fill(0xFFFFFF);
+      drawing.tint = palette.base;
+    }
+
+    if (state === _complete) {
+      drawing.rect(48,0,32,68);
+      drawing.fill(0xFFFFFF);
+      drawing.rect(52,0,24,64);
+      drawing.fill(0xCCCCCC);
+      drawing.tint = palette.base;
+    }
+
+    return drawing;
+  },
+
+});
