@@ -13,78 +13,28 @@ global.TileContainer = async function(tile) {
   async function buildContainer() {
     addBackground()
 
-    await Promise.all(tile.getSegments().map(async segment => {
-      await addSegment(segment.getGraphics());
-    }));
-
     $tileContainer.label = 'TileContainer';
     $tileContainer.accessibleHint = tile.getID();
-    $tileContainer.eventMode = 'dynamic';
     $tileContainer.height = _tileSize;
     $tileContainer.width = _tileSize;
     $tileContainer.pivot.x = _tileSize/2;
     $tileContainer.pivot.y = _tileSize/2;
+
+    await Promise.all(tile.getSegments().map(async segment => {
+      const layer = await TileLayer.build(segment)
+      if (layer) {
+        console.log("Add Layer:",layer)
+        $tileContainer.addChild(layer);
+      }
+    }));
   }
 
   function addBackground() {
     const palette = ExtraRegistry.lookup('ColorPalette').tile;
-
     $background.rect(0,0,_tileSize,_tileSize);
     $background.fill(palette.background);
 
     $tileContainer.addChild($background);
-  }
-
-  async function addSegment(graphics) {
-    try {
-      if (graphics.style === _singleTexture) {
-        $tileContainer.addChild(await buildSingleTextureLayer(graphics))
-      }
-      if (graphics.style === _wallAndGround) {
-        $tileContainer.addChild(await buildWallAndGroundLayer(graphics))
-      }
-    }
-    catch(error) {
-      const segment = SegmentDataStore.get(graphics.segmentID);
-      logError(`Error building graphics for ${segment} (${segment.getTile().getID()}:${segment.getTile().getCode()})`,error,{
-        system:'TileContainer',
-        data:{ graphics }
-      });
-    }
-  }
-
-  async function buildSingleTextureLayer(graphics) {
-    return await buildSegmentSprite(graphics, graphics.texture, graphics.color);
-  }
-
-  async function buildWallAndGroundLayer(graphics) {
-    const groundSprite = await buildSegmentSprite(graphics, `${graphics.texture}-g`, graphics.groundColor);
-    const wallSprite = await buildSegmentSprite(graphics, `${graphics.texture}-w`, graphics.wallColor);
-    const container = new Pixi.Container();
-
-    groundSprite.label = 'Ground'
-    wallSprite.label = 'Wall'
-
-    container.addChild(groundSprite);
-    container.addChild(wallSprite);
-
-    return container;
-  }
-
-  async function buildSegmentSprite(graphics, textureName, color) {
-    const texture = await Pixi.Assets.load(textureName);
-
-    const sprite = new Pixi.Sprite(texture);
-    sprite.anchor = 0.5;
-    sprite.x = _tileSize / 2;
-    sprite.y = _tileSize / 2;
-    sprite.angle = graphics.angle ? graphics.angle : 0;
-
-    if (color) {
-      sprite.tint = color || 0xFFFFFF;
-    }
-
-    return sprite;
   }
 
   function setSize(size) {
@@ -125,6 +75,7 @@ global.TileContainer = async function(tile) {
   // we don't lose a handle onto this tile container. We also need to remove
   // the listeners when the drag is finished.
   function setOnShelf(isOnShelf) {
+
     const startDrag = event => {
       $tileContainer.cursor = 'grabbing'
 
@@ -138,56 +89,19 @@ global.TileContainer = async function(tile) {
     }
 
     if (isOnShelf) {
+      $tileContainer.eventMode = 'dynamic';
       $tileContainer.cursor = 'grab'
       $tileContainer.on('mousemove',DragonDrop.onMove);
       $tileContainer.on('mouseup',DragonDrop.stopDrag);
       $tileContainer.on('mousedown',startDrag);
     }
     if (!isOnShelf) {
+      $tileContainer.eventMode = 'none';
       tileContainer.cursor = 'pointer';
       $tileContainer.off('mousemove',DragonDrop.onMove);
       $tileContainer.off('mouseup',DragonDrop.stopDrag);
       $tileContainer.off('mousedown',startDrag);
     }
-  }
-
-  async function segmentComplete(segment) {
-    const graphics = segment.getGraphics();
-
-    let newLayer;
-    if (graphics.style === _singleTexture) {
-      newLayer = await buildSingleTextureLayer(graphics);
-    }
-    if (graphics.style === _wallAndGround) {
-      newLayer = await buildWallAndGroundLayer(graphics);
-
-      const ground = newLayer.getChildAt(0);
-      const wall = newLayer.getChildAt(1);
-      const groundColor = ColorHelper.hexValueToColors(ground.tint);
-      const wallColor = ColorHelper.hexValueToColors(wall.tint);
-
-      ground.tint = 0xFFFFFF;
-      wall.tint = 0xFFFFFF;
-
-      AnimationController.addAnimation('flash',`${segment}:ground`,{
-        target: ground,
-        r: groundColor.r,
-        g: groundColor.g,
-        b: groundColor.b,
-        duration:1000,
-      });
-
-      AnimationController.addAnimation('flash',`${segment}:wall`,{
-        target: wall,
-        r: wallColor.r,
-        g: wallColor.g,
-        b: wallColor.b,
-        duration:2000,
-      });
-    }
-
-    $tileContainer.removeChildAt(graphics.layerIndex).destroy({ children:true });
-    $tileContainer.addChildAt(newLayer, graphics.layerIndex);
   }
 
   await buildContainer();
@@ -202,7 +116,6 @@ global.TileContainer = async function(tile) {
     enableClock,
     updateClock,
     setOnShelf,
-    segmentComplete,
   };
 };
 

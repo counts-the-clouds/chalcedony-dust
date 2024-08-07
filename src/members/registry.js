@@ -38,6 +38,7 @@ global.EventRegistry = Registry('PagedEvent');
 global.ExtraRegistry = Registry('Extra');
 global.GameStageRegistry = Registry('GameStage');
 global.NoteRegistry = Registry('Note');
+global.ShapeRegistry = Registry('Shape');
 global.TileRegistry = Registry('Tile');
 global.TileBagRegistry = Registry('TileBag');
 global.TriggerRegistry = Registry('Trigger');

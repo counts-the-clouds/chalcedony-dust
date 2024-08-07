@@ -35,7 +35,7 @@ global.CellContainer = function(x,y,coordinates) {
   }
 
   function buildDevelopmentGuides() {
-    if (false && Environment.isDevelopment) {
+    if (Environment.isDevelopment) {
       const palette = ExtraRegistry.lookup('ColorPalette').cell;
 
       const border = new Pixi.Graphics();
