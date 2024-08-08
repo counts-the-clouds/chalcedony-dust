@@ -15,7 +15,7 @@ TileBagRegistry.register('baseline',{
   'baseline-r1-1': 1,
   'baseline-r1-2': 2,
   'baseline-r2-0': 4,
-  // 'baseline-r2-1': 4,
+  'baseline-r2-1': 4,
   // 'baseline-r2-2': 2,
   // 'baseline-r2-3': 6,
   // 'baseline-r2-4': 4,
