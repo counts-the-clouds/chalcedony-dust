@@ -1,7 +1,7 @@
 TileRegistry.register('baseline-r2-1', {
 
   segments:[
-    { type:_room, exits:[_e,_w], graphics:{ shape:'room-across' }},
+    { type:_room, exits:[_n,_w], graphics:{ shape:'room-corner-notch' }},
   ],
 
 });

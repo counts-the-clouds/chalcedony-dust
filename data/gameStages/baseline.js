@@ -41,6 +41,9 @@ GameStageRegistry.register(_baseline,{
     { x:6, y:6, code:'baseline-h1-r1-n1-0' },
     { x:8, y:6, code:'baseline-r2-1' },
 
+    { x:1, y:7, code:'baseline-r2-2' },
+    { x:3, y:7, code:'baseline-r2-3' },
+
 
   ],
 
