@@ -2,11 +2,21 @@ global.TileLayer = function(segment) {
 
   const $segment = segment;
   const $graphics = $segment.getSegmentData().graphics;
-  const $drawing = ShapeRegistry.lookup($graphics.shape).draw(buildDrawing(), $segment);
-  const $shapeContainer = buildContainer();
+  let $drawing;
+  let $shapeContainer;
 
-  if ($segment.getState() === _complete) {
-    wireEvents()
+  try {
+    $drawing = ShapeRegistry.lookup($graphics.shape).draw(buildDrawing(), $segment);
+    $shapeContainer = buildContainer();
+
+    if ($segment.getState() === _complete) {
+      wireEvents()
+    }
+  }
+  catch(error) {
+    logError(`Cannot Build Layer for ${segment}:${segment.getTileCode()}`,error,{
+      system:'TileLayer'
+    });
   }
 
   function buildDrawing() {
