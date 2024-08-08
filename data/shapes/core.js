@@ -1,5 +1,4 @@
 ShapeRegistry.register('core', {
-
   draw: drawing => {
     const palette = ExtraRegistry.lookup('ColorPalette').segments.core.complete;
 
@@ -11,5 +10,4 @@ ShapeRegistry.register('core', {
 
     return drawing;
   },
-
 });

@@ -1,5 +1,4 @@
 ShapeRegistry.register('hall-long', {
-
   draw: (drawing,segment) => {
     const state = segment.getState()
     const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
@@ -22,5 +21,4 @@ ShapeRegistry.register('hall-long', {
 
     return drawing;
   },
-
 });
