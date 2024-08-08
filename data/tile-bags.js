@@ -7,7 +7,7 @@ TileBagRegistry.register('baseline',{
   'baseline-h2-2': 4,
   // 'baseline-h2-3': 2,
   // 'baseline-h2-4': 2,
-  // 'baseline-h3-0': 2,
+  'baseline-h3-0': 2,
   // 'baseline-h3-1': 2,
   // 'baseline-h3-2': 4,
   // 'baseline-h4-0': 1,
