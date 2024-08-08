@@ -1,7 +1,7 @@
 ShapeRegistry.register('node-small', {
   draw: (drawing,segment) => {
     const state = segment.getState()
-    const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
+    const palette = ExtraRegistry.lookup('ColorPalette').segments.node[state];
 
     if (state === _incomplete) {
       drawing.rect(38,38,52,52);
