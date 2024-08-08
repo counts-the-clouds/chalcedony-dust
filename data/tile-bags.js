@@ -11,11 +11,9 @@ TileBagRegistry.register('baseline',{
   'baseline-h4-0': 1,
   'baseline-h4-1': 1,
   'baseline-h4-2': 1,
-  // 'baseline-h4-3': 2,
   'baseline-r1-0': 1,
   'baseline-r1-1': 1,
   'baseline-r1-2': 2,
-  // 'baseline-r1-3': 1,
   'baseline-r2-0': 4,
   // 'baseline-r2-1': 4,
   // 'baseline-r2-2': 2,
@@ -46,8 +44,17 @@ TileBagRegistry.register('baseline',{
   // 'baseline-h3-r1-0': 2,
 
   'baseline-h1-n1-0': 1,
-  'baseline-h2-n1-0': 2,
-  'baseline-h2-n1-1': 2,
+  'baseline-h2-n1-0': 1,
+  'baseline-h2-n1-1': 1,
+  'baseline-h3-n1-0': 1,
+  'baseline-h3-n1-1': 1,
+  'baseline-h4-n1-0': 1,
+  'baseline-h4-n1-1': 1,
+
+  'baseline-r1-n1-0': 1,
+
+  'baseline-h1-r1-n1-0': 1,
+
 
 
 });
