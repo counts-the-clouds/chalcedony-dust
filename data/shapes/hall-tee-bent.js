@@ -1,32 +1,40 @@
-ShapeRegistry.register('hall-elbow-1', {
+
+const points1 = [
+  { x:54, y:0 },
+  { x:73, y:0 },
+]
+
+const points2 = [
+  { x:52, y:0 },
+  { x:75, y:0 },
+]
+
+const points3 = [
+  { x:48, y:0 },
+  { x:79, y:0 },
+]
+
+ShapeRegistry.register('hall-tee-bent', {
   draw: (drawing,segment) => {
-    const state = segment.getState()
+    const state = segment.getState();
     const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
 
     if (state === _incomplete) {
-      drawing.rect(52,0,24,76);
-      drawing.rect(0,52,76,24);
+      drawing.poly(points2);
       drawing.fill(0xCCCCCC);
-
-      drawing.rect(54,0,20,74);
-      drawing.rect(0,54,74,20);
+      drawing.poly(points1);
       drawing.fill(0xFFFFFF);
-
       drawing.tint = palette.base;
     }
 
     if (state === _complete) {
-      drawing.rect(48,0,32,80);
-      drawing.rect(0,48,80,32);
+      drawing.poly(points3);
       drawing.fill(0xFFFFFF);
-
-      drawing.rect(52,0,24,76);
-      drawing.rect(0,52,76,24);
+      drawing.poly(points2);
       drawing.fill(0xCCCCCC);
-
       drawing.tint = palette.base;
     }
 
     return drawing;
-  }
+  },
 });

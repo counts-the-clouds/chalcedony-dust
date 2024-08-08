@@ -29,7 +29,7 @@ const points3 = [
   { x:5, y:5 },
 ]
 
-ShapeRegistry.register('room-corner-1', {
+ShapeRegistry.register('room-corner-bent', {
   draw: (drawing,segment) => {
     const state = segment.getState();
     const palette = ExtraRegistry.lookup('ColorPalette').segments.room[state];

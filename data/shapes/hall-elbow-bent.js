@@ -32,7 +32,7 @@ const points3 = [
   { x:48, y:11 },
 ]
 
-ShapeRegistry.register('hall-elbow-2', {
+ShapeRegistry.register('hall-elbow-bent', {
   draw: (drawing,segment) => {
     const state = segment.getState()
     const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
