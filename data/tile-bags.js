@@ -23,8 +23,6 @@ TileBagRegistry.register('baseline',{
   'baseline-r2-1': 3,
   'baseline-r2-2': 3,
   'baseline-r2-3': 3,
-  // 'baseline-r2-4': 4,
-  // 'baseline-r2-5': 4,
 
   // 'baseline-r3-0': 2,
   // 'baseline-r3-1': 2,
@@ -58,9 +56,8 @@ TileBagRegistry.register('baseline',{
   'baseline-h4-n1-1': 1,
 
   'baseline-r1-n1-0': 1,
+  'baseline-r2-n1-0': 1,
 
   'baseline-h1-r1-n1-0': 1,
-
-
 
 });
