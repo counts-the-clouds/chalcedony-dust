@@ -22,6 +22,7 @@ GameStageRegistry.register(_baseline,{
     { x:9, y:3, code:'baseline-h1-r1-2' },
 
     { x:1, y:4, code:'baseline-r2-0' },
+    { x:2, y:5, code:'baseline-h2-r2-1' },
 
 
   ],
