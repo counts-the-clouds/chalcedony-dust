@@ -21,8 +21,9 @@ global.MainMenu = (function() {
   }
 
   async function startGame() {
-    await GameController.beginGame();
+    await GameController.prepareGame();
     await DungeonView.open();
+    await GameController.openGame();
   }
 
   return {

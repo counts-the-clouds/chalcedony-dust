@@ -10,6 +10,8 @@ global.EventView = (function() {
   }
 
   function show(event) {
+    ClockManager.pause();
+
     $event = event;
     $returnState = { };
 
@@ -24,6 +26,8 @@ global.EventView = (function() {
   }
 
   function completeEvent() {
+    ClockManager.togglePause();
+
     X.addClass('#eventView','hide');
     X.empty('#eventView #textArea');
     X.addClass('#clickAdvance','hide');

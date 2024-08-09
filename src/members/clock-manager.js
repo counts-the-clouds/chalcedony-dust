@@ -45,12 +45,11 @@ global.ClockManager = (function() {
   }
 
   // === Clock Speed ==========================================================
-  //
-  // TODO: Certain actions like showing an event will force pause the game.
-  //       If that happens we shouldn't allow speed changes using the keyboard
-  //       shortcuts.
-  //
-  function canChangeSpeed() { return DungeonView.isVisible() }
+
+  function canChangeSpeed() {
+    if (EventView.isVisible()) { return false }
+    return DungeonView.isVisible()
+  }
 
   function togglePause() {
     if ($clockSpeed === 0) {
@@ -65,6 +64,13 @@ global.ClockManager = (function() {
     }
   }
 
+  function pause() {
+    setClockSpeed(0);
+    SpeedControl.activate(0);
+  }
+c
+  function getClockSpeed() { return $clockSpeed; }
+
   function setClockSpeed(speed) {
     $previousSpeed = $clockSpeed;
     $clockSpeed = speed
@@ -76,6 +82,9 @@ global.ClockManager = (function() {
     reset,
     addClock,
     removeClock,
+    pause,
+    togglePause,
+    getClockSpeed,
     setClockSpeed,
     onTick,
   })

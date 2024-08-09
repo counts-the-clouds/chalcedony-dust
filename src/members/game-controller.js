@@ -1,53 +1,61 @@
 global.GameController = (function() {
 
+  let $stageData;
+
   // The beginGame() first gets the current chapter from the world state. This
   // chapter information will probably have other flags and things set,
   // representing features that the player has unlocked. For now a chapter only
   // includes the name of the game stage to load. The stageData is used to set
   // the state of all the stateful game components.
-  async function beginGame() {
+  async function prepareGame() {
     await GameState.clear();
-
-    // TEMP: While were testing the baseline tiles...
-    // setStage(GameStageRegistry.lookup(WorldState.getChapter()));
-    setStage(GameStageRegistry.lookup('baseline'));
-
-    await GameState.saveState();
-  }
-
-  function setStage(stageData) {
     GameState.reset();
     DungeonGrid.build();
 
-    if (stageData.note) { Note.show(stageData.note); }
+    $stageData = GameStageRegistry.lookup(WorldState.getChapter())
 
     // The flags are a normal map of flag keys and values.
-    Object.keys(stageData.flags||{}).forEach(flag => {
-      GameFlags.set(flag,stageData.flags[flag]);
+    Object.keys($stageData.flags||{}).forEach(flag => {
+      GameFlags.set(flag,$stageData.flags[flag]);
     });
 
     // TODO: The baseline bagged tiles is a code for a frequency map of bagged
     //       tiles. We might want to make this accept an array of codes as well
     //       to handle more complex games. We might also want to loop through
     //       the game flags to see what tiles have been enabled.
-    if (stageData.baggedTiles) {
-      TileBag.addBaggedTiles(TileBagRegistry.lookup(stageData.baggedTiles));
+    if ($stageData.baggedTiles) {
+      TileBag.addBaggedTiles(TileBagRegistry.lookup($stageData.baggedTiles));
     }
 
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
-    (stageData.shelvedTiles||[]).forEach(tileData => {
+    ($stageData.shelvedTiles||[]).forEach(tileData => {
       TileShelf.addTile(Tile(tileData));
     });
 
     // Placed tiles need the code, options, as well as the global (x,y)
     // coordinates for where the tiles should be placed: [{ x,y,code,options }]
-    (stageData.placedTiles||[]).forEach(tileData => {
+    ($stageData.placedTiles||[]).forEach(tileData => {
       DungeonGrid.setTile(
         Coordinates.fromGlobal(tileData.x,tileData.y),
         Tile(tileData));
     });
+
+    await GameState.saveState();
   }
+
+  // The openGame() function is called once the DungeonView has finished
+  // loading. The game load needed to be split into prepare and open functions
+  // because the TileBag, TileShelf, and DungeonGrid should all be initialized
+  // before the DungeonView is opened, but tasks like showing an event requires
+  // the DungeonView to be open already.
+  async function openGame() {
+    if ($stageData.startingEvent) {
+      EventView.show(PagedEvent($stageData.startingEvent));
+    }
+  }
+
+  // ===========================================================================
 
   async function drawTile() {
 
@@ -127,8 +135,8 @@ global.GameController = (function() {
   }
 
   return Object.freeze({
-    beginGame,
-    setStage,
+    prepareGame,
+    openGame,
     drawTile,
     placeTile,
   });
