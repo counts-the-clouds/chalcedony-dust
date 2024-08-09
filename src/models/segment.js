@@ -9,7 +9,6 @@ global.Segment = function(data) {
   const $index = data.index;
   const $id = data.id || SegmentDataStore.nextID();
 
-  let $state = data.state || _incomplete;
   let $featureID = data.featureID;
   let $connections = data.connections || {};
 
@@ -20,12 +19,11 @@ global.Segment = function(data) {
   function getTileCode() { return $tileCode; }
   function getTile() { return TileDataStore.get($tileID); }
   function getIndex() { return $index; }
-  function getState() { return $state; }
-  function setState(state) { $state = state; }
 
   function getFeatureID() { return $featureID; }
   function setFeatureID(featureID) { $featureID = featureID; }
   function getFeature() { return FeatureDataStore.get($featureID); }
+  function getState() { return $featureID ? getFeature().getState() : _incomplete }
 
   function getConnections() { return $connections }
   function getConnection(direction) { return $connections[direction]; }
@@ -55,8 +53,6 @@ global.Segment = function(data) {
       }[rotation][direction];
     });
   }
-
-
 
   function shouldBeComplete() {
     // The core is always complete.
@@ -88,7 +84,6 @@ global.Segment = function(data) {
       tileID: $tileID,
       tileCode: $tileCode,
       index: $index,
-      state: $state,
       featureID: $featureID,
       connections: $connections,
     };
@@ -102,11 +97,10 @@ global.Segment = function(data) {
     getTileCode,
     getTile,
     getIndex,
-    getState,
-    setState,
     getFeatureID,
     setFeatureID,
     getFeature,
+    getState,
     getConnections,
     getConnection,
     setConnection,

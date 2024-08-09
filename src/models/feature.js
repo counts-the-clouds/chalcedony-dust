@@ -3,10 +3,13 @@ global.Feature = function(data) {
   const $id = data.id || FeatureDataStore.nextID();
   const $segments = data.segments || [];
 
+  let $state = data.state || _incomplete;
+
   // ===========================================================================
 
   function getID() { return $id; }
   function getSegments() { return $segments; }
+  function getState() { return $state; }
   function getType() { return $segments.length > 0 ? $segments[0].getType() : null; }
 
   // It's possible for a tile to appear more than once in the same feature.
@@ -54,8 +57,12 @@ global.Feature = function(data) {
     });
   }
 
+  // Because this function depends on the cell and tile containers it does
+  // nothing in test or when the Dungeon isn't visible for whatever reason.
   function complete() {
     if (DungeonView.isVisible()) {
+      $state = _complete;
+
       const cellContainers = $segments.map(segment => {
         const coordinates = segment.getTile().getCoordinates();
         return DungeonView.getCellContainerAt(coordinates.gx, coordinates.gy);
@@ -63,7 +70,6 @@ global.Feature = function(data) {
 
       waitForTileContainers(cellContainers).then(tileContainers => {
         $segments.forEach((segment,i) => {
-          segment.setState(_complete);
           tileContainers[i].segmentComplete(segment);
         });
 
@@ -99,6 +105,7 @@ global.Feature = function(data) {
   function pack() {
     return {
       id: $id,
+      state: $state,
       segments: $segments,
     }
   }
@@ -108,6 +115,7 @@ global.Feature = function(data) {
   const $self = Object.freeze({
     getID,
     getSegments,
+    getState,
     getType,
     getTiles,
     addSegment,

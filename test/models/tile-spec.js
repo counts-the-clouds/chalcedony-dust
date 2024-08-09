@@ -144,7 +144,6 @@ describe("Tile", function() {
       expect(unpacked.getEdges().n).to.equal(_hall);
       expect(unpacked.getSegments().length).to.equal(4);
       expect(segment.getIndex()).to.equal(0);
-      expect(segment.getState()).to.equal(_incomplete);
     });
 
     it("with clock", function() {
