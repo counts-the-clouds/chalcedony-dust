@@ -18,11 +18,11 @@ describe("Tile", function() {
   describe("Tile Rotation", function() {
 
     it('is not rotated by default', function() {
-      expect(Tile({ code:'forest-1' }).getRotation()).to.equal(0);
+      expect(Tile({ code:'baseline-h1-2' }).getRotation()).to.equal(0);
     });
 
     it('throws on invalid rotations',function() {
-      const tile = Tile({ code:'forest-2' });
+      const tile = Tile({ code:'baseline-h1-n1-0' });
       expect(() => { tile.setRotation('zomg'); }).to.throw();
       expect(() => { tile.setRotation(-1); }).to.throw();
       expect(() => { tile.setRotation(5); }).to.throw();
@@ -47,15 +47,15 @@ describe("Tile", function() {
     });
 
     it('rotates clockwise', function() {
-      const tile = Tile({ code:'forest-1' });
+      const tile = Tile({ code:'baseline-h1-0' });
       tile.rotateClockwise();
-      expect(tile.getEdges().w).to.equal('forest-path');
+      expect(tile.getEdges().e).to.equal(_hall);
     });
 
     it('rotates widdershins', function() {
-      const tile = Tile({ code:'forest-1' });
+      const tile = Tile({ code:'baseline-r1-0' });
       tile.rotateWiddershins();
-      expect(tile.getEdges().e).to.equal('forest-path');
+      expect(tile.getEdges().w).to.equal(_room);
     });
   });
 
@@ -78,15 +78,15 @@ describe("Tile", function() {
   describe("pack()", function() {
 
     it('with default tile', function() {
-      const tile = Tile({ code:'forest-1' });
+      const tile = Tile({ code:'baseline-r2-1' });
       const packed = tile.pack();
 
       expect(packed.id).to.equal(1);
-      expect(packed.code).to.equal('forest-1');
+      expect(packed.code).to.equal('baseline-r2-1');
     })
 
     it('with placement events', function() {
-      const tile = Tile({ code:'forest-2', id:42, extra:{
+      const tile = Tile({ code:'baseline-r2-2', id:42, extra:{
         placementEvent:'fake-event',
         placementRules:[_noDiscard] }});
       tile.setCoordinates(Coordinates.fromGlobal(5,10));
@@ -95,10 +95,10 @@ describe("Tile", function() {
 
       expect(Object.keys(packed).length).to.equal(8);
       expect(packed.id).to.equal(42);
-      expect(packed.code).to.equal('forest-2');
+      expect(packed.code).to.equal('baseline-r2-2');
       expect(packed.coordinates.gx).to.equal(5);
       expect(packed.coordinates.gy).to.equal(10);
-      expect(packed.edges.s).to.equal('forest-path');
+      expect(packed.edges.e).to.equal(_room);
       expect(packed.segments.length).to.equal(1);
       expect(packed.extra.placementEvent).to.equal('fake-event');
       expect(packed.extra.placementRules[0]).to.equal(_noDiscard);
@@ -106,7 +106,7 @@ describe("Tile", function() {
     });
 
     it('with note', function() {
-      const packed = Tile({ code:'forest-2',
+      const packed = Tile({ code:'baseline-r3-0',
         extra: { drawNote:'tutorial.rotate-tile' }
       }).pack();
 
@@ -124,25 +124,25 @@ describe("Tile", function() {
   describe("unpack()", function() {
     it("with id", function() {
       const tile = Tile({
-        code:'forest-1',
+        code:'baseline-h2-r2-1',
         id: 42,
         coordinates: Coordinates.fromGlobal(5,10),
         rotation: 3,
       });
 
-      expect(tile.getCode()).to.equal('forest-1');
+      expect(tile.getCode()).to.equal('baseline-h2-r2-1');
       expect(tile.getID()).to.equal(42);
       expect(tile.getCoordinates().ci).to.equal(165);
       expect(tile.getRotation()).to.equal(3);
     });
 
     it("with segments", function() {
-      const tile = Tile({ code:'forest-2' });
+      const tile = Tile({ code:'baseline-h3-n1-0' });
       const unpacked = Tile(tile.pack());
       const segment = unpacked.getSegments()[0];
 
-      expect(unpacked.getEdges().s).to.equal('forest-path');
-      expect(unpacked.getSegments().length).to.equal(1);
+      expect(unpacked.getEdges().n).to.equal(_hall);
+      expect(unpacked.getSegments().length).to.equal(4);
       expect(segment.getIndex()).to.equal(0);
       expect(segment.getState()).to.equal(_incomplete);
     });

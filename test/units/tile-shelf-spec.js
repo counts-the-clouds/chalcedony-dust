@@ -17,9 +17,9 @@ describe("TileShelf", function() {
 
     it("Adds tile to the front of the array", function() {
       TileShelf.setSize(3);
-      TileShelf.addTile(Tile({ code:'baseline-r1-1', id:11 }));
-      TileShelf.addTile(Tile({ code:'baseline-r1-2', id:12 }));
-      TileShelf.addTile(Tile({ code:'baseline-r1-3', id:13 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-0', id:11 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-1', id:12 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-2', id:13 }));
 
       const ids = TileShelf.getShelf().map(tile => tile.getID());
       expect(ids).to.have.ordered.members([13,12,11]);
@@ -29,9 +29,9 @@ describe("TileShelf", function() {
   describe("removeTile()", function() {
     it("Removes a tile given its ID.", function() {
       TileShelf.setSize(3);
-      TileShelf.addTile(Tile({ code:'baseline-r1-1', id:11 }));
-      TileShelf.addTile(Tile({ code:'baseline-r1-2', id:12 }));
-      TileShelf.addTile(Tile({ code:'baseline-r1-3', id:13 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-0', id:11 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-1', id:12 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-2', id:13 }));
       TileShelf.removeTile(12);
 
       const ids = TileShelf.getShelf().map(tile => tile.getID());
@@ -47,9 +47,9 @@ describe("TileShelf", function() {
 
     it("discards the last tile on the shelf", function() {
       TileShelf.setSize(3);
-      TileShelf.addTile(Tile({ code:'baseline-h1-1', id:101 }));
-      TileShelf.addTile(Tile({ code:'baseline-h1-2', id:102 }));
-      TileShelf.addTile(Tile({ code:'baseline-h1-3', id:103 }));
+      TileShelf.addTile(Tile({ code:'baseline-h1-0', id:101 }));
+      TileShelf.addTile(Tile({ code:'baseline-h1-1', id:102 }));
+      TileShelf.addTile(Tile({ code:'baseline-h1-2', id:103 }));
 
       const lastTile = TileShelf.discardLastTile();
       const ids = TileShelf.getShelf().map(tile => tile.getID());
