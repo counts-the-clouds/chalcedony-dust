@@ -34,7 +34,5 @@ ShapeRegistry.register('room-corner-notch', {
       { x:0,   y:5   },
       { x:5,   y:5   },
     ]]);
-
-    return drawing;
   },
 });

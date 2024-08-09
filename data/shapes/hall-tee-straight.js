@@ -22,7 +22,5 @@ ShapeRegistry.register('hall-tee-straight', {
       drawing.fill(0xCCCCCC);
       drawing.tint = palette.base;
     }
-
-    return drawing;
   }
 });

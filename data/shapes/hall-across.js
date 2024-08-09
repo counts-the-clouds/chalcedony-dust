@@ -18,7 +18,5 @@ ShapeRegistry.register('hall-across', {
       drawing.fill(0xCCCCCC);
       drawing.tint = palette.base;
     }
-
-    return drawing;
   }
 });

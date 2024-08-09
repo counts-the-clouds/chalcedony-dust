@@ -103,7 +103,5 @@ ShapeRegistry.register('hall-cross-steps', {
       { x:111, y:111 },
       { x:79,  y:111 },
     ]]);
-
-    return drawing;
   },
 });

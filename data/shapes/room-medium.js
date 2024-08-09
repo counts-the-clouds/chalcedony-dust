@@ -22,7 +22,5 @@ ShapeRegistry.register('room-medium', {
       { x:18,  y:78 },
       { x:5,   y:65 },
     ]]);
-
-    return drawing;
   },
 });

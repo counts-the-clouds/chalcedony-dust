@@ -18,7 +18,5 @@ ShapeRegistry.register('hall-medium', {
       drawing.fill(0xCCCCCC);
       drawing.tint = palette.base;
     }
-
-    return drawing;
   },
 });

@@ -7,7 +7,5 @@ ShapeRegistry.register('core', {
     drawing.regularPoly(_tileSize/2, _tileSize/2, 50, 8, 0.3926991);
     drawing.fill(0xCCCCCC);
     drawing.tint = palette.base;
-
-    return drawing;
   },
 });

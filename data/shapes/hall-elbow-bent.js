@@ -28,7 +28,5 @@ ShapeRegistry.register('hall-elbow-bent', {
       { x:11, y:48 },
       { x:48, y:11 },
     ]]);
-
-    return drawing;
   }
 });

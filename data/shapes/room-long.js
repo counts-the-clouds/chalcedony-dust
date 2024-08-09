@@ -34,7 +34,5 @@ ShapeRegistry.register('room-long', {
       { x:13,  y:22  },
       { x:5,   y:22  },
     ]]);
-
-    return drawing;
   },
 });

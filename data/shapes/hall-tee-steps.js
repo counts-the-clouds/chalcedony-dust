@@ -52,7 +52,5 @@ ShapeRegistry.register('hall-tee-steps', {
       { x:16,  y:16 },
       { x:48,  y:16 },
     ]]);
-
-    return drawing;
   },
 });

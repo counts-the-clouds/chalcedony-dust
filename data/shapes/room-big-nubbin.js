@@ -54,7 +54,5 @@ ShapeRegistry.register('room-big-nubbin', {
       { x:10,  y:19  },
       { x:5,   y:14  },
     ]]);
-
-    return drawing;
   },
 });

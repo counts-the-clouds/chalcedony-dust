@@ -91,7 +91,5 @@ ShapeRegistry.register('room-cross-hole', {
       { x:5,   y:122 },
       { x:0,   y:122 },
     ]]);
-
-    return drawing;
   },
 });

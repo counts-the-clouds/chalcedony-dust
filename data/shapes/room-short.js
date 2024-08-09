@@ -20,7 +20,5 @@ ShapeRegistry.register('room-short', {
       { x:29,  y:26 },
       { x:5,   y:2  },
     ]]);
-
-    return drawing;
   },
 });

@@ -26,7 +26,5 @@ ShapeRegistry.register('hall-elbow-straight', {
 
       drawing.tint = palette.base;
     }
-
-    return drawing;
   }
 });

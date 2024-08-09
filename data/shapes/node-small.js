@@ -18,7 +18,5 @@ ShapeRegistry.register('node-small', {
       drawing.fill(0xCCCCCC);
       drawing.tint = palette.base;
     }
-
-    return drawing;
   }
 });

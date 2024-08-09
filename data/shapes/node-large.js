@@ -28,7 +28,5 @@ ShapeRegistry.register('node-large', {
       { x:24,  y:94  },
       { x:24,  y:33  },
     ]]);
-
-    return drawing;
   },
 });

@@ -91,7 +91,5 @@ ShapeRegistry.register('hall-cross-bent', {
       { x:116, y:79  },
       { x:79,  y:116 },
     ]]);
-
-    return drawing;
   },
 });

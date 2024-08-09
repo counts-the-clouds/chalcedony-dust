@@ -40,7 +40,5 @@ ShapeRegistry.register('room-across-narrow', {
       { x:22,  y:122 },
       { x:0,   y:122 },
     ]]);
-
-    return drawing;
   },
 });
