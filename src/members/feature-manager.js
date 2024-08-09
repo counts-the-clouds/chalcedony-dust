@@ -17,10 +17,10 @@ global.FeatureManager = (function() {
     // console.log('   Exits',exits);
     // console.log(`   Neighbors`,neighbors);
 
-    // If a segment has no exits then it can't be a part of a feature. Single
-    // tile features will be a thing, but they're not part of the feature
-    // graph.
-    if (exits.length === 0) { return false; }
+    // If the segment has no exits then we know it hasn't connected to anything
+    // else, so it must be a new feature. The nodes and the dungeon core are
+    // given features to unify the way we interact with tiles.
+    if (exits.length === 0) { return createFeature(segment); }
 
     const connections = {}
     exits.forEach(exitDirection => {

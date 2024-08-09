@@ -9,9 +9,7 @@ global.Segment = function(data) {
   const $index = data.index;
   const $id = data.id || SegmentDataStore.nextID();
 
-  // If a segment doesn't have any exits it's in a completed state when placed.
-  let $state = data.state || (getExits().length === 0 ? _complete : _incomplete);
-
+  let $state = data.state || _incomplete;
   let $featureID = data.featureID;
   let $connections = data.connections || {};
 
@@ -58,16 +56,27 @@ global.Segment = function(data) {
     });
   }
 
-  function isComplete() {
+
+
+  function shouldBeComplete() {
+    // The core is always complete.
+    if (getType() === _core) { return true; }
+
+    // A node segment is complete when all the other segments on this tile are
+    // complete.
+    if (getType() === _node) {
+      for (const feature of getTile().getFeatures()) {
+        if (feature.getID() !== $featureID && feature.isNotIncomplete() === false) { return false; }
+      }
+      return true;
+    }
+
+    // Otherwise the segment is complete when all the exits are connected.
     for (const exit of getExits(getTile().getRotation())) {
       if (getConnection(exit) == null) { return false; }
     }
     return true;
   }
-
-
-
-
 
   function toString() {
     return `Segment:${$id}`
@@ -104,7 +113,7 @@ global.Segment = function(data) {
     getSegmentData,
     getType,
     getExits,
-    isComplete,
+    shouldBeComplete,
     toString,
     pack,
   });

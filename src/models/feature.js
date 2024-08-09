@@ -7,6 +7,7 @@ global.Feature = function(data) {
 
   function getID() { return $id; }
   function getSegments() { return $segments; }
+  function getType() { return $segments.length > 0 ? $segments[0].getType() : null; }
 
   // It's possible for a tile to appear more than once in the same feature.
   // Consider two unconnected rooms on a single tile that get connected by
@@ -23,17 +24,34 @@ global.Feature = function(data) {
     }
   }
 
+  // Check the status of all multi tile features. The status of the node
+  // features are checked separately because their status is determined by the
+  // completeness of the features it shares a tile with, so they need to be
+  // done first.
   function checkStatus() {
-    let isComplete = true;
+    if ([_core,_node].includes(getType())) { return false; }
 
-    $segments.forEach(segment => {
-      if (segment.isComplete() === false) { isComplete = false; }
-    });
-
-    if (isComplete) {
-      log(`${toString()} Completed`,{ system:'Feature', level:1 });
-      complete();
+    for (const segment of $segments) {
+      if (segment.shouldBeComplete() === false) { return false; }
     }
+
+    log(`${toString()} Completed`,{ system:'Feature', level:1 });
+    complete();
+  }
+
+  // After this feature has been completed, and after a short delay, we check
+  // to see if any node features connected to this one should be completed.
+  function checkNodeStatus() {
+    getTiles().forEach(tile => {
+      tile.getFeatures().forEach(feature => {
+        if (feature.getType() === _node) {
+          const segment = feature.getSegments()[0];
+          if (feature.isNotIncomplete() === false && segment.shouldBeComplete()) {
+            feature.complete();
+          }
+        }
+      })
+    });
   }
 
   function complete() {
@@ -48,6 +66,8 @@ global.Feature = function(data) {
           segment.setState(_complete);
           tileContainers[i].segmentComplete(segment);
         });
+
+        setTimeout(checkNodeStatus,500)
       });
     }
   }
@@ -68,6 +88,10 @@ global.Feature = function(data) {
     });
   }
 
+  function isNotIncomplete() {
+    return $segments[0].getState() !== _incomplete;
+  }
+
   function toString() {
     return `Feature:${$id}`;
   }
@@ -84,9 +108,12 @@ global.Feature = function(data) {
   const $self = Object.freeze({
     getID,
     getSegments,
+    getType,
     getTiles,
     addSegment,
     checkStatus,
+    complete,
+    isNotIncomplete,
     toString,
     pack,
   });

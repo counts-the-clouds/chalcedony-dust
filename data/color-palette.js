@@ -63,6 +63,11 @@ ExtraRegistry.register('ColorPalette',{
       }
     },
     node:{
+      incomplete: {
+        dark: '#303030',
+        base: '#404040',
+        light: '#505050',
+      },
       complete: {
         dark: '#331f20',
         base: '#523536',
