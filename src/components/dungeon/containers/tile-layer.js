@@ -45,14 +45,13 @@ global.TileLayer = function(segment) {
   }
 
   function wireEvents() {
-    const palette = ExtraRegistry.lookup('ColorPalette').segments[$segment.getType()].complete;
-
-    const normalTint = $drawing.tint;
+    const feature = $segment.getFeature();
+    feature.addSegmentDrawing($drawing);
 
     $drawing.eventMode = 'dynamic';
-    $drawing.onmouseenter = () => { $drawing.tint = palette.select; }
-    $drawing.onmouseleave = () => { $drawing.tint = normalTint; }
-    $drawing.onmousedown = () => { console.log(`Click:${$segment}`) }
+    $drawing.onmouseenter = feature.onMouseEnter;
+    $drawing.onmouseleave = feature.onMouseLeave;
+    $drawing.onmousedown = feature.onMouseDown;
   }
 
   function getShapeContainer() {

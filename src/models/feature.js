@@ -2,6 +2,7 @@ global.Feature = function(data) {
 
   const $id = data.id || FeatureDataStore.nextID();
   const $segments = data.segments || [];
+  const $segmentDrawings = [];
 
   let $state = data.state || _incomplete;
 
@@ -98,6 +99,24 @@ global.Feature = function(data) {
     return $segments[0].getState() !== _incomplete;
   }
 
+  // ===========================================================================
+
+  function addSegmentDrawing(drawing) { $segmentDrawings.push(drawing); }
+
+  function applyTint(code) {
+    const tint = ExtraRegistry.lookup('ColorPalette').segments[getType()].complete[code];
+    $segmentDrawings.forEach(drawing => { drawing.tint = tint; })
+  }
+
+  function onMouseEnter() { applyTint('select'); }
+  function onMouseLeave() { applyTint('base'); }
+
+  function onMouseDown() {
+    console.log(`Click ${toString()}`);
+  }
+
+  // ===========================================================================
+
   function toString() {
     return `Feature:${$id}`;
   }
@@ -122,6 +141,10 @@ global.Feature = function(data) {
     checkStatus,
     complete,
     isNotIncomplete,
+    addSegmentDrawing,
+    onMouseEnter,
+    onMouseLeave,
+    onMouseDown,
     toString,
     pack,
   });
