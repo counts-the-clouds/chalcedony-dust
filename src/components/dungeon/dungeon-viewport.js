@@ -240,7 +240,6 @@ global.DungeonViewport = (function() {
 
     updateLimits();
     clampCurrentLocation();
-    OuterCellHighlight.updatePosition();
   }
 
   function positionViewport() {
@@ -252,7 +251,6 @@ global.DungeonViewport = (function() {
 
     drawGuides();
     updateTileVisibility();
-    OuterCellHighlight.updatePosition();
   }
 
   // === Culling ==============================================================

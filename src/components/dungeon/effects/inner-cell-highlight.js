@@ -5,11 +5,11 @@ global.InnerCellHighlight = (function () {
 
   async function build() {
     $highlights = {
-      h_1: new Pixi.Sprite(await Pixi.Assets.load('cell-inner-highlight-1')),
-      h_2c: new Pixi.Sprite(await Pixi.Assets.load('cell-inner-highlight-2c')),
-      h_2s: new Pixi.Sprite(await Pixi.Assets.load('cell-inner-highlight-2s')),
-      h_3: new Pixi.Sprite(await Pixi.Assets.load('cell-inner-highlight-3')),
-      h_4: new Pixi.Sprite(await Pixi.Assets.load('cell-inner-highlight-4')),
+      h_1: new Pixi.Sprite(AssetLibrary.fetch('cell-inner-highlight-1')),
+      h_2c: new Pixi.Sprite(AssetLibrary.fetch('cell-inner-highlight-2c')),
+      h_2s: new Pixi.Sprite(AssetLibrary.fetch('cell-inner-highlight-2s')),
+      h_3: new Pixi.Sprite(AssetLibrary.fetch('cell-inner-highlight-3')),
+      h_4: new Pixi.Sprite(AssetLibrary.fetch('cell-inner-highlight-4')),
     }
 
     $container = new Pixi.Container();

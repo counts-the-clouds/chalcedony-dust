@@ -1,5 +1,5 @@
 
-describe("Coordinates", function() {
+describe.only("Coordinates", function() {
 
   describe('fromGlobal', function() {
     it("at the origin", function() {

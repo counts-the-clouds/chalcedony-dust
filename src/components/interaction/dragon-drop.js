@@ -38,7 +38,6 @@ window.DragonDrop = (function() {
   function startDrag(context) {
     MouseMovement.stopDrag();
     $dragContext = context;
-    OuterCellHighlight.dragStarted(getDragTile());
   }
 
   function onMove(event) {
@@ -72,7 +71,6 @@ window.DragonDrop = (function() {
     }
 
     TileShelfView.positionTiles();
-    OuterCellHighlight.hide();
     InnerCellHighlight.hide();
 
     $dragContext.tileContainer.setCursor('grab');

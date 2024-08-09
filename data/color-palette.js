@@ -28,28 +28,48 @@ ExtraRegistry.register('ColorPalette',{
   },
 
   segments:{
-    incomplete: {
-      hall: 'rgb(120,120,120)',
-      room: 'rgb(140,140,140)',
-    },
-    complete: {
-      hall: {
-        ground: 'rgb(200,180,160)',
-        wall: 'rgb(200,180,160)',
+    hall:{
+      incomplete:{
+        dark: '#272727',
+        base: '#373737',
+        light: '#474747',
       },
-      room: {
-        ground: 'rgb(160,180,200)',
-        wall: 'rgb(160,180,200)',
-      },
-      core: {
-        ground: 'rgb(110,130,150)',
-        wall: 'rgb(210,230,250)',
-      },
-      node: {
-        ground: 'rgb(60,60,60)',
-        wall: 'rgb(80,80,80)',
+      complete:{
+        dark: '#493e36',
+        base: '#726156',
+        light: '#a28b7b',
+        select: '#7b6e8a',
       }
-    }
+    },
+    room:{
+      incomplete:{
+        dark: '#303030',
+        base: '#474747',
+        light: '#656565',
+      },
+      complete:{
+        dark: '#303142',
+        base: '#4d4f68',
+        light: '#6e7094',
+        select: '#5a5e95',
+      }
+    },
+    core:{
+      complete: {
+        dark: '#331f2f',
+        base: '#4e364c',
+        light: '#6f4d6c',
+        select: '#5e4784',
+      }
+    },
+    node:{
+      complete: {
+        dark: '#331f20',
+        base: '#523536',
+        light: '#754b4d',
+        select: '#5e4777',
+      }
+    },
   },
 
   viewport: {
