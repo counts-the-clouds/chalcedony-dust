@@ -1,11 +1,6 @@
 describe("TileBag", function() {
 
-  function startSequence() {
-    TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });
-  }
-
   it('reset(), isEmpty(), and size()', function() {
-    startSequence();
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-0'}) ]);
     TileBag.addBaggedTiles({ 'baseline-h2-1':3 });
     TileBag.addWeightedTile( Tile({ code:'baseline-h2-2' }), 50, 10);
@@ -16,11 +11,10 @@ describe("TileBag", function() {
   });
 
   it('addSequentialTiles()', function() {
-    startSequence();
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-n1-0' }), Tile({ code:'baseline-h2-n1-1' }) ]);
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-r1-0' }), Tile({ code:'baseline-h2-r1-1' }) ]);
 
-    let codes = TileBag.pack().sequenceData.tiles.map(tile => { return tile.code });
+    let codes = TileBag.pack().sequentialTiles.map(tile => { return tile.code });
 
     expect(codes).to.have.ordered.members([
       'baseline-h2-n1-0',
@@ -86,7 +80,6 @@ describe("TileBag", function() {
     });
 
     it('draws with sequential tiles', function() {
-      startSequence();
       TileBag.addBaggedTiles({ 'baseline-r1-0':30, 'baseline-r1-1':50 });
       TileBag.addSequentialTiles([ Tile({ code:'baseline-r1-2' }) ]);
       expect(TileBag.drawTile().getCode()).to.equal('baseline-r1-2');
@@ -120,7 +113,6 @@ describe("TileBag", function() {
   });
 
   it('unpack()', function() {
-    startSequence();
     TileBag.addBaggedTiles({ 'baseline-r3-0':30, 'baseline-r3-1':50 });
     TileBag.addWeightedTile(Tile({ code:'baseline-r3-n1-0' }), 50, 10);
     TileBag.addSequentialTiles([

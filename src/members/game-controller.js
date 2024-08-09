@@ -27,6 +27,15 @@ global.GameController = (function() {
       TileBag.addBaggedTiles(TileBagRegistry.lookup($stageData.baggedTiles));
     }
 
+    if ($stageData.sequentialTiles) {
+      console.log("Adding Tile Sequence...")
+
+      TileBag.addSequentialTiles($stageData.sequentialTiles.map(tileData => {
+        console.log("Added:",tileData)
+        return Tile(tileData)
+      }));
+    }
+
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
     ($stageData.shelvedTiles||[]).forEach(tileData => {

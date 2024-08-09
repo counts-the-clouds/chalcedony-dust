@@ -37,8 +37,10 @@ global.GameState = (function() {
   async function loadState() {
     if (Tests.running()) { return reset(); }
 
+    let loadedState;
+
     try {
-      const loadedState = await $stateRecorder.loadState();
+      loadedState = await $stateRecorder.loadState();
 
       if (loadedState) {
         GameFlags.unpack(loadedState.gameFlags);
@@ -49,9 +51,13 @@ global.GameState = (function() {
       }
     }
     catch(error) {
-      logError("Error Loading Game State", error, { system:'GameState', data:{
-        loadedState: loadedState,
-      }});
+
+      console.log("PROBREM")
+      console.log(loadedState)
+      console.error(error);
+      // logError("Error Loading Game State", error, { system:'GameState', data:{
+      //   loadedState: loadedState,
+      // }});
 
       await clear();
       reset();

@@ -1,70 +1,44 @@
 global.TileBag = (function() {
 
   let $baggedTiles;
-  let $sequenceData;
+  let $sequentialTiles;
   let $weightedTiles;
 
   function reset() {
     $baggedTiles = {};
-    $sequenceData = null;
+    $sequentialTiles = [];
     $weightedTiles = {};
   }
 
   function isEmpty() { return size() === 0; }
-  function isSequence() { return $sequenceData !== null; }
+  function isSequence() { return $sequentialTiles.length > 0; }
 
   function size() {
-    return (getSequentialTileCount() +
+    return ($sequentialTiles.length +
            Object.keys($baggedTiles).length +
            Object.keys($weightedTiles).length);
   }
 
-  // TODO: When a sequence is started we need to show an image representing
-  //       that sequence on the tile bag ui component. It makes sense that this
-  //       value should come from the tile bag object. Right now we're just
-  //       setting the raw data from whatever starts the sequence. We might
-  //       eventually want a data object for this, but at the moment I have no
-  //       idea how frequent tile sequences are going to be.
-  //
-  //       Calling startSequence() should be what starts the animation that
-  //       shows the tile bag state changing to sequence mode. Because the only
-  //       example of this is the tutorial game's "enable tile bag" animation,
-  //       which should only be seen once, we don't have a need to implement an
-  //       actual version of this yet.
-  //
-  //       { background:'/tile-bag/forest-path-sequence.png' }
-
-  function startSequence(sequenceData) {
-    $sequenceData = { ...sequenceData };
-    $sequenceData.tiles = [];
-  }
-
-  // TODO: When a sequence ends we need to inform the client so it can change
-  //       the look of the tile bag.
-  function endSequence() {
-    $sequenceData = null;
-  }
-
-  function getSequenceData() { return $sequenceData }
-  function getSequentialTiles() { return $sequenceData == null ? null : $sequenceData.tiles; }
-  function getSequentialTileCount() { return getSequentialTiles() == null ? 0 : getSequentialTiles().length; }
+  function getSequentialTiles() { return [...$sequentialTiles]; }
+  function getSequentialTileCount() { return $sequentialTiles.length; }
 
   // Because events will be attached to the sequential tile, this array and the
   // weighted tiles are composed of actual tiles. The bagged tiles are only
   // tile codes and will need to be turned into real tiles when drawn.
   function addSequentialTiles(tiles) {
-    if ($sequenceData == null) {
-      throw 'A sequence has not been started. Call startSequence() first.'
-    }
-    $sequenceData.tiles = $sequenceData.tiles.concat(tiles);
+    tiles.forEach(tile => {
+      if (tile.toString().indexOf('Tile') < 0) {
+        throw `This ain't no Tile.`
+      }
+    });
+
+    $sequentialTiles = $sequentialTiles.concat(tiles);
   }
 
   // The shift() function modifies the sequentialTiles array, removing the
   // first element. Not very functional of you javascript.
   function nextSequentialTile() {
-    let tile = $sequenceData.tiles.shift();
-    if (getSequentialTileCount() === 0) { endSequence(); }
-    return tile;
+    return $sequentialTiles.shift();
   }
 
   // Add the given frequency map of tile codes to the tile bag.
@@ -163,17 +137,13 @@ global.TileBag = (function() {
 
   function pack() {
 
-    let packedSequenceData = null;
-    if ($sequenceData != null) {
-      packedSequenceData = { ...$sequenceData };
-      packedSequenceData.tiles = $sequenceData.tiles.map(tile => {
-        return tile.pack()
-      });
-    }
+    const packedSequentialTiles = $sequentialTiles.map(tile => {
+      return tile.pack();
+    });
 
-    let packedWeightedTiles = {};
+    const packedWeightedTiles = {};
     Object.keys($weightedTiles).forEach(code => {
-      let source = $weightedTiles[code];
+      const source = $weightedTiles[code];
       packedWeightedTiles[code] = {
         tile: source.tile.pack(),
         chance: source.chance,
@@ -183,25 +153,21 @@ global.TileBag = (function() {
 
     return {
       baggedTiles: $baggedTiles,
-      sequenceData: packedSequenceData,
+      sequentialTiles: packedSequentialTiles,
       weightedTiles: packedWeightedTiles,
     }
   }
 
   function unpack(data) {
-
     $baggedTiles = data.baggedTiles;
 
-    $sequenceData = data.sequenceData;
-    if ($sequenceData != null) {
-      $sequenceData.tiles = data.sequenceData.tiles.map(tileData => {
-        return Tile(tileData);
-      });
-    }
+    $sequentialTiles = data.sequentialTiles.map(tileData => {
+      return Tile(tileData);
+    });
 
     $weightedTiles = {};
     Object.keys(data.weightedTiles).forEach(code => {
-      let source = data.weightedTiles[code];
+      const source = data.weightedTiles[code];
       $weightedTiles[code] = {
         tile: Tile(source.tile),
         chance: source.chance,
@@ -215,8 +181,6 @@ global.TileBag = (function() {
     isEmpty,
     isSequence,
     size,
-    startSequence,
-    getSequenceData,
     addSequentialTiles,
     addBaggedTiles,
     removeBaggedTile,

@@ -68,7 +68,7 @@ global.ClockManager = (function() {
     setClockSpeed(0);
     SpeedControl.activate(0);
   }
-c
+
   function getClockSpeed() { return $clockSpeed; }
 
   function setClockSpeed(speed) {
