@@ -103,12 +103,41 @@ global.PagedEvent = function(code) {
   }
 
   function shouldIncludeStage(stage) {
-    console.log("Should Include Stage? ", stage);
+    if (generalInclude(stage) === false) { return false; }
     return true;
   }
 
   function shouldIncludePage(page) {
-    console.log("Should Include Page? ", page);
+    if (generalInclude(page) === false) { return false; }
+    return true;
+  }
+
+  // Attributes that apply to both stages and pages.
+  //
+  //     showWhen         | Show when key in context is present.
+  //     hideWhen         | Hide when key in context is present.
+  //     showWhenTrue     | Show when key in context is exactly true
+  //     hideWhenTrue     | Hide when key in context is exactly true
+  //     showWhenFalse    | Show when key in context is exactly false
+  //     hideWhenFalse    | Hide when key in context is exactly false
+  //     showWhenEqual    | Given an array [key,value] show when context.key === value
+  //     showWhenNotEqual | Given an array [key,value] show when context.key !== value
+  //     hideWhenEqual    | Given an array [key,value] hide when context.key === value
+  //     hideWhenNotEqual | Given an array [key,value] hide when context.key !== value
+  //
+  function generalInclude(part) {
+    if (part.showWhen) { return $context[part.showWhen] != null; }
+    if (part.hideWhen) { return $context[part.hideWhen] == null; }
+    if (part.showWhenTrue) { return $context[part.showWhenTrue] === true; }
+    if (part.hideWhenTrue) { return !($context[part.hideWhenTrue] === true); }
+    if (part.showWhenFalse) { return $context[part.showWhenFalse] === false; }
+    if (part.hideWhenFalse) { return !($context[part.hideWhenFalse] === false); }
+
+    if (part.showWhenEqual)    { return $context[part.showWhenEqual[0]]      === part.showWhenEqual[1] }
+    if (part.showWhenNotEqual) { return $context[part.showWhenNotEqual[0]]   !== part.showWhenNotEqual[1] }
+    if (part.hideWhenEqual)    { return !($context[part.hideWhenEqual[0]]    === part.hideWhenEqual[1]) }
+    if (part.hideWhenNotEqual) { return !($context[part.hideWhenNotEqual[0]] !== part.hideWhenNotEqual[1]) }
+
     return true;
   }
 
