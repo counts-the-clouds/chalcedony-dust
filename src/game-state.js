@@ -22,8 +22,6 @@ global.GameState = (function() {
 
   async function saveState() {
     if (Tests.running() === false) {
-      localLog("Saving Game State");
-
       await $stateRecorder.saveState({
         gameFlags: GameFlags.pack(),
         tileBag: TileBag.pack(),
@@ -44,25 +42,18 @@ global.GameState = (function() {
         GameFlags.unpack(loadedState.gameFlags);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);
-
-        await Models.loadAll()
+        await Models.loadAll();
       }
     }
     catch(error) {
-      logError("Error Loading Game State", error, { system:'GameState', data:{
-        loadedState: loadedState,
-      }});
+      logError("Error Loading Game State", error, { system:'GameState' });
 
       await clear();
       reset();
       await saveState();
     }
 
-    localLog("Loaded Game State");
-  }
-
-  function localLog(message, data) {
-    log(message, { system:"GameState", data:data });
+    log("Loaded Game State", { system:"GameState" });
   }
 
   return Object.freeze({

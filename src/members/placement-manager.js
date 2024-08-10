@@ -104,13 +104,8 @@ global.PlacementManager = (function () {
   }
 
   function canPlaceTile(coordinates) {
-    if (isPlaceOnOrigin()) { return coordinates.gx === 0 && coordinates.gy === 0; }
     if ($placementStatus) { return $placementStatus.canPlace; }
     return false;
-  }
-
-  function isPlaceOnOrigin() {
-    return (DragonDrop.getDragTile().getPlacementRules()||[]).includes(_placeOnOrigin);
   }
 
   return Object.freeze({

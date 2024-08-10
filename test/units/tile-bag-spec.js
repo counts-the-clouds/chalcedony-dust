@@ -1,11 +1,6 @@
 describe("TileBag", function() {
 
-  function startSequence() {
-    TileBag.startSequence({ background:'/tile-bag/forest-path-sequence.png' });
-  }
-
   it('reset(), isEmpty(), and size()', function() {
-    startSequence();
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-0'}) ]);
     TileBag.addBaggedTiles({ 'baseline-h2-1':3 });
     TileBag.addWeightedTile( Tile({ code:'baseline-h2-2' }), 50, 10);
@@ -16,11 +11,10 @@ describe("TileBag", function() {
   });
 
   it('addSequentialTiles()', function() {
-    startSequence();
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-n1-0' }), Tile({ code:'baseline-h2-n1-1' }) ]);
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-r1-0' }), Tile({ code:'baseline-h2-r1-1' }) ]);
 
-    let codes = TileBag.pack().sequenceData.tiles.map(tile => { return tile.code });
+    let codes = TileBag.pack().sequentialTiles.map(id => { return TileDataStore.get(id).getCode() });
 
     expect(codes).to.have.ordered.members([
       'baseline-h2-n1-0',
@@ -65,10 +59,12 @@ describe("TileBag", function() {
   });
 
   it('addWeightedTile()', function() {
-    TileBag.addWeightedTile(Tile({ code:'baseline-h4-1' }),50,10);
+    const tile = Tile({ code:'baseline-h4-1' })
 
-    let entry = TileBag.pack().weightedTiles['baseline-h4-1'];
-    expect(entry.tile.code).to.equal('baseline-h4-1');
+    TileBag.addWeightedTile(tile,50,10);
+
+    const entry = TileBag.pack().weightedTiles['baseline-h4-1'];
+    expect(entry.tileID).to.equal(tile.getID());
     expect(entry.chance).to.equal(50);
     expect(entry.heat).to.equal(10);
   });
@@ -86,7 +82,6 @@ describe("TileBag", function() {
     });
 
     it('draws with sequential tiles', function() {
-      startSequence();
       TileBag.addBaggedTiles({ 'baseline-r1-0':30, 'baseline-r1-1':50 });
       TileBag.addSequentialTiles([ Tile({ code:'baseline-r1-2' }) ]);
       expect(TileBag.drawTile().getCode()).to.equal('baseline-r1-2');
@@ -120,7 +115,6 @@ describe("TileBag", function() {
   });
 
   it('unpack()', function() {
-    startSequence();
     TileBag.addBaggedTiles({ 'baseline-r3-0':30, 'baseline-r3-1':50 });
     TileBag.addWeightedTile(Tile({ code:'baseline-r3-n1-0' }), 50, 10);
     TileBag.addSequentialTiles([

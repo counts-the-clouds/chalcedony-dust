@@ -13,7 +13,6 @@ X.first = function(query) {
 X.body = function() { return document.getElementsByTagName('body')[0]; }
 X.each = function(query, callback) { X(query).forEach(callback); }
 
-
 // === Create and Modify Elements -=============================================
 
 // Either remove all elements that match the query string. There's no need for
@@ -66,20 +65,6 @@ X.registerKeyAction = function(action, when, callback) {
   });
 }
 
-// X.onInput = function(selector, callback) {
-//   window.addEventListener('keydown', event => {
-//     if (event.target.matches(".disabled") === false && event.target.closest(selector)) {
-//       callback(event);
-//     }
-//   });
-// }
-
-// X.onKeyDown = function(key, when, callback) {
-//   window.addEventListener('keydown', event => {
-//     if (event.key === key && when(event)) { callback(event); }
-//   });
-// }
-
 X.onCodeDown = function(code, when, callback) {
   window.addEventListener('keydown', event => {
     // console.log("Code:",event.code);
@@ -87,44 +72,11 @@ X.onCodeDown = function(code, when, callback) {
   });
 }
 
-// X.onCodesDown = function(codes, when, callback) {
-//   window.addEventListener('keydown', event => {
-//     // console.log("Code:",event.code);
-//     if (codes.includes(event.code) && when(event)) { callback(event); }
-//   });
-// }
-
-// X.onCodesUp = function(codes, when, callback) {
-//   window.addEventListener('keyup', event => {
-//     if (codes.includes(event.keyCode) && when(event)) { callback(event); }
-//   });
-// }
-
-// X.onWheelUp = function(when, callback) {
-//   window.addEventListener('wheel', event => {
-//     if (event.deltaY < 0 && when(event)) { callback(event); }
-//   });
-// }
-
-// X.onWheelDown = function(when, callback) {
-//   window.addEventListener('wheel', event => {
-//     if (event.deltaY > 0 && when(event)) { callback(event); }
-//   });
-// }
-
-// X.onResize = function(when, callback) {
-//   window.addEventListener('resize', (event) => {
-//     if (when(event)) { callback(event); }
-//   });
-// }
-
-// X.onEscape = function(when, callback)     { X.onCodeDown(_keyCodeEscape, when, callback); }
-// X.onPageUp = function(when, callback)     { X.onCodeDown(_keyCodePageUp, when, callback); }
-// X.onPageDown = function(when, callback)   { X.onCodeDown(_keyCodePageDown, when, callback); }
-// X.onArrowUp = function(when, callback)    { X.onCodeDown(_keyCodeArrowUp, when, callback); }
-// X.onArrowDown = function(when, callback)  { X.onCodeDown(_keyCodeArrowDown, when, callback); }
-// X.onArrowLeft = function(when, callback)  { X.onCodeDown(_keyCodeArrowLeft, when, callback); }
-// X.onArrowRight = function(when, callback) { X.onCodeDown(_keyCodeArrowRight, when, callback); }
+X.onResize = function(when, callback) {
+  window.addEventListener('resize', (event) => {
+    if (when(event)) { callback(event); }
+  });
+}
 
 // === Classes =================================================================
 
@@ -154,14 +106,6 @@ X.removeClass = function(arg, classname) {
 X.removeClassWithin = function(element, classname) {
   element.querySelectorAll(`.${classname}`)[0].classList.remove(classname);
 }
-
-// X.classesExcept = function(element, classList) {
-//   let list = [];
-//   element.classList.forEach(classname => {
-//     if (!classList.includes(classname)) { list.push(classname); }
-//   });
-//   return list;
-// }
 
 // === Style ===================================================================
 

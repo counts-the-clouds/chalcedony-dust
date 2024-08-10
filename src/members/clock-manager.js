@@ -1,6 +1,6 @@
 global.ClockManager = (function() {
 
-  const SPEED_FACTORS = { 0:0, 1:1, 2:3.33, 3:10 };
+  const SPEED_FACTORS = { 0:0, 1:1, 2:3.33, 3:10, 4:30 };
 
   let $clocks = {};
   let $clockSpeed = 1;
@@ -16,6 +16,15 @@ global.ClockManager = (function() {
   function reset() { $clocks = {}; }
   function addClock(clock) { $clocks[clock.getID()] = clock; }
   function removeClock(id) { delete $clocks[id]; }
+
+  function zeroClock(code) {
+    Object.values($clocks).forEach(clock => {
+      if (clock.getCode() === code) {
+        clock.setElapsedTime(0);
+        clock.onUpdate();
+      }
+    });
+  }
 
   function onTick(time) {
     const ms = time.elapsedMS * SPEED_FACTORS[$clockSpeed];
@@ -48,6 +57,7 @@ global.ClockManager = (function() {
 
   function canChangeSpeed() {
     if (EventView.isVisible()) { return false }
+    if (!SpeedControl.isVisible()) { return false }
     return DungeonView.isVisible()
   }
 
@@ -68,7 +78,7 @@ global.ClockManager = (function() {
     setClockSpeed(0);
     SpeedControl.activate(0);
   }
-c
+
   function getClockSpeed() { return $clockSpeed; }
 
   function setClockSpeed(speed) {
@@ -82,6 +92,7 @@ c
     reset,
     addClock,
     removeClock,
+    zeroClock,
     pause,
     togglePause,
     getClockSpeed,

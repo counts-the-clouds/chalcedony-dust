@@ -2,10 +2,8 @@ describe("TileShelf", function() {
 
   describe("addTile()", function() {
     it("Adds a tile to the shelf", function() {
-      TileShelf.addTile(Tile({ code:'baseline-r1-0' }));
-
-      const tile = TileShelf.getShelf()[0];
-      expect(tile.getCode()).to.equal('baseline-r1-0');
+      TileShelf.addTile(Tile({ code:'baseline-r1-0', id:666 }));
+      expect(TileShelf.getShelf()[0]).to.equal(666);
     });
 
     it("Throws an error if there is no room for the tile", function() {
@@ -21,7 +19,7 @@ describe("TileShelf", function() {
       TileShelf.addTile(Tile({ code:'baseline-r1-1', id:12 }));
       TileShelf.addTile(Tile({ code:'baseline-r1-2', id:13 }));
 
-      const ids = TileShelf.getShelf().map(tile => tile.getID());
+      const ids = TileShelf.getShelf();
       expect(ids).to.have.ordered.members([13,12,11]);
     })
   });
@@ -34,7 +32,7 @@ describe("TileShelf", function() {
       TileShelf.addTile(Tile({ code:'baseline-r1-2', id:13 }));
       TileShelf.removeTile(12);
 
-      const ids = TileShelf.getShelf().map(tile => tile.getID());
+      const ids = TileShelf.getShelf();
       expect(ids).to.have.ordered.members([13,11])
     });
   });
@@ -52,9 +50,9 @@ describe("TileShelf", function() {
       TileShelf.addTile(Tile({ code:'baseline-h1-2', id:103 }));
 
       const lastTile = TileShelf.discardLastTile();
-      const ids = TileShelf.getShelf().map(tile => tile.getID());
+      const ids = TileShelf.getShelf();
 
-      expect(lastTile.getID()).to.equal(101);
+      expect(lastTile).to.equal(101);
       expect(ids).to.have.ordered.members([103,102]);
     });
   });

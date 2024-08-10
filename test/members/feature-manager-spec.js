@@ -17,8 +17,8 @@ describe('FeatureManager', function() {
 
     it('merges two features when a tile is placed in the middle', function() {
       const core = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });
-      const h1 = SpecHelper.placeTile(0,2,{ code:'baseline-h2-0', rotation:1 });
-      const h2 = SpecHelper.placeTile(0,1,{ code:'baseline-h2-0', rotation:1 });
+      const h1 = SpecHelper.placeTile(0,2,{ code:'baseline-h2-0' });
+      const h2 = SpecHelper.placeTile(0,1,{ code:'baseline-h2-0' });
       const feature = h1.getSegments()[0].getFeature();
       const tiles = feature.getTiles().map(tile => { return tile.getID() });
 

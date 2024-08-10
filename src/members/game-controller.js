@@ -27,6 +27,12 @@ global.GameController = (function() {
       TileBag.addBaggedTiles(TileBagRegistry.lookup($stageData.baggedTiles));
     }
 
+    if ($stageData.sequentialTiles) {
+      TileBag.addSequentialTiles($stageData.sequentialTiles.map(tileData => {
+        return Tile(tileData);
+      }));
+    }
+
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
     ($stageData.shelvedTiles||[]).forEach(tileData => {
@@ -80,6 +86,10 @@ global.GameController = (function() {
 
     if (tile.getDrawNote()) {
       Note.show(tile.getDrawNote());
+    }
+
+    if (tile.getDrawTrigger()) {
+      TriggerRegistry.lookup(tile.getDrawTrigger()).triggerFunction();
     }
 
     TileBag.raiseHeat();

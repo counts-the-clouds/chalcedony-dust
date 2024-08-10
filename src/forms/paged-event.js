@@ -36,6 +36,8 @@ global.PagedEvent = function(code) {
   }
 
   function getEventData() { return EventRegistry.lookup($code); }
+  function getLayout() { return getEventData().layout || _defaultLayout; }
+  function getImage() { return getEventData().image; }
   function getStages() { return getEventData().stages; }
 
   function onFinish(state) {
@@ -56,6 +58,8 @@ global.PagedEvent = function(code) {
     getCurrentPage,
     advancePage,
     getEventData,
+    getLayout,
+    getImage,
     getStages,
     onFinish,
     toString,

@@ -1,13 +1,27 @@
 EventRegistry.register('tutorial-start-1', {
 
+  layout: _leftSquareImageLayout,
+  image: 'events/dungeon-core.png',
+
   stages:[{
     pages: [
-      { text:`You are the core of this dungeon, and as such you will generate a new tile with which to expand yourself 
-              every minute.` },
-      { text:`If that seems like a long time to wait you can change the game speed with the buttons above, or press 
-              the 1, 2, or 3 keys. You can also press the g key to immediately draw a tile.` },
-      { text:`Be cautious though. Every tile you create costs a small portion of your life force.` },
+      { text:`
+          <p>"What's happening?"</p>
+          <p>"Where am I?"</p>
+          <p>I try and blink away the fog clouding my mind only to find that I have no eyes.</p>
+          <p>Ahh yes. That's right. I'm the core of this dungeon. I'm not sure how I know that. Perhaps it's just
+             instinctual. The dungeon core not knowing it was the core of the dungeon? Absurd.</p>` },
+      { text:`
+          <p>I reach out with what senses I have to the stone surrounding me.</p>
+          <p>I'm... tiny.</p>
+          <p>Well, tiny for a dungeon at least. For a six ton faceted slab of pure onyx I'm rather on the large side.</p>
+          <p>However, this meager core room of rough hewn stone seems to be the extent of my being for now.</p>
+          <p>I must expand.</p>`},
     ]
   }],
+
+  onFinish: () => {
+    ClockManager.setClockSpeed(4);
+  }
 
 });

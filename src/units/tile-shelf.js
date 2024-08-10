@@ -13,22 +13,13 @@ global.TileShelf = (function() {
 
   function addTile(tile) {
     if (getEmptySpaceCount() === 0) { throw `Cannot add tile, there is no room on the shelf.` }
-    $shelf.unshift(tile);
+    $shelf.unshift(tile.getID());
   }
 
   function getShelf() { return [...$shelf]; }
-  function hasTile(id) { return getTileIndex(id) >= 0; }
-  function getTile(id) { return $shelf[getTileIndex(id)]; }
-  function removeTile(id) { $shelf.splice(getTileIndex(id), 1); }
+  function hasTile(id) { return $shelf.includes(id); }
+  function removeTile(id) { $shelf.splice($shelf.indexOf(id), 1); }
   function getEmptySpaceCount() { return $size - $shelf.length }
-
-  function getTileIndex(id) {
-    let index = ArrayHelper.find($shelf, tile => {
-      return tile.getID() === id;
-    });
-
-    return (index == null) ? -1 : index;
-  }
 
   function discardLastTile() {
     if ($shelf.length > 0) {
@@ -42,7 +33,7 @@ global.TileShelf = (function() {
   function pack() {
     return {
       size: $size,
-      shelf: $shelf.map(tile => { return tile.pack(); }),
+      shelf: $shelf,
     };
   }
 
@@ -58,7 +49,6 @@ global.TileShelf = (function() {
     getShelf,
     addTile,
     hasTile,
-    getTile,
     removeTile,
     getEmptySpaceCount,
     discardLastTile,
