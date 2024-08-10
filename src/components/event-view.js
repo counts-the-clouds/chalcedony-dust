@@ -14,6 +14,7 @@ global.EventView = (function() {
 
     $event = event;
     $event.onBefore();
+    $event.compile();
 
     // We should render the event here, going through the pages and performing
     // any necessary text replacement.

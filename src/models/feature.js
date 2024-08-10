@@ -95,9 +95,8 @@ global.Feature = function(data) {
     });
   }
 
-  function isNotIncomplete() {
-    return $segments[0].getState() !== _incomplete;
-  }
+  function isComplete() { return $segments[0].getState() === _complete; }
+  function isNotIncomplete() { return $segments[0].getState() !== _incomplete; }
 
   // ===========================================================================
 
@@ -140,6 +139,7 @@ global.Feature = function(data) {
     addSegment,
     checkStatus,
     complete,
+    isComplete,
     isNotIncomplete,
     addSegmentDrawing,
     onMouseEnter,

@@ -4,7 +4,9 @@ global.PagedEvent = function(code) {
 
   let $pageIndex = 0;
   let $stageIndex = 0;
+
   let $context = {};
+  let $stages;
 
   function getCode() { return $code; }
 
@@ -39,18 +41,78 @@ global.PagedEvent = function(code) {
   function getEventData() { return EventRegistry.lookup($code); }
   function getLayout() { return getEventData().layout || _defaultLayout; }
   function getImage() { return getEventData().image; }
-  function getStages() { return getEventData().stages; }
+
+  function getStages() {
+    if ($stages) { return [...$stages]; }
+    throw `The compile() function should be called before accessing event content.`
+  }
 
   function onBefore() {
     if (typeof getEventData().onBefore === 'function') {
-      $context = getEventData().onBefore($context);
+      try {
+        $context = getEventData().onBefore($context);
+      }
+      catch(error) {
+        logError(`Error in ${toString()}.onBefore()`,error,{ system:'PagedEvent' });
+      }
+
+      if ($context == null) {
+        log('Context should not be null here. Did you forget to return the context object I just gave you?', {
+          level: 1,
+          type: _warning,
+          system: 'PagedEvent',
+          data: { code:$code },
+        });
+      }
     }
   }
 
   function onFinish(state) {
-    let finisher = getEventData().onFinish;
-    if (typeof finisher === 'function') { finisher(state) }
+    if (typeof getEventData().onFinish === 'function') {
+      try {
+        getEventData().onFinish(state)
+      }
+      catch(error) {
+        logError(`Error in ${toString()}.onFinish()`,error,{ system:'PagedEvent' });
+      }
+    }
   }
+
+  // === Compilation ===========================================================
+
+  function compile() {
+    $stages = [];
+
+    const weaver = Weaver($context);
+
+    getEventData().stages.forEach(stage => {
+      if (shouldIncludeStage(stage)) {
+        const compiledStage = { ...stage };
+        compiledStage.pages = [];
+
+        stage.pages.forEach(page => {
+          if (shouldIncludePage(page)) {
+            page.text = weaver.weave(page.text)
+            compiledStage.pages.push(page);
+          }
+        });
+
+        $stages.push(compiledStage);
+      }
+    });
+  }
+
+  function shouldIncludeStage(stage) {
+    console.log("Should Include Stage? ", stage);
+    return true;
+  }
+
+  function shouldIncludePage(page) {
+    console.log("Should Include Page? ", page);
+    return true;
+  }
+
+  // ===========================================================================
 
   function toString() {
     return `PagedEvent[${$code}]`
@@ -70,6 +132,7 @@ global.PagedEvent = function(code) {
     getStages,
     onBefore,
     onFinish,
+    compile,
     toString,
   });
 }

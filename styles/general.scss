@@ -94,10 +94,8 @@
 .border-bottom { border-bottom: $border-normal; }
 .border-top { border-top: $border-normal; }
 
-.weaver-error {
-  color: $fg-button-danger;
-  font-family: roboto-mono;
-}
+.weaver-error { font-family:roboto-mono; color:$fg-error; }
+.weaver-warning { font-family:roboto-mono; color:$fg-warning; }
 
 .drag-active {
   cursor: grabbing;
