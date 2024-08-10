@@ -2,9 +2,6 @@ global.Tile = function(data) {
 
   Validate.exists('code',data.code);
 
-  console.log("=== Building Tile ===")
-  console.log(data)
-
   const $code = data.code;
   const $id = data.id || TileDataStore.nextID();
 

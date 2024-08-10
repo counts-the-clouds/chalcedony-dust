@@ -14,7 +14,7 @@ describe("TileBag", function() {
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-n1-0' }), Tile({ code:'baseline-h2-n1-1' }) ]);
     TileBag.addSequentialTiles([ Tile({ code:'baseline-h2-r1-0' }), Tile({ code:'baseline-h2-r1-1' }) ]);
 
-    let codes = TileBag.pack().sequentialTiles.map(tile => { return tile.code });
+    let codes = TileBag.pack().sequentialTiles.map(id => { return TileDataStore.get(id).getCode() });
 
     expect(codes).to.have.ordered.members([
       'baseline-h2-n1-0',
@@ -59,10 +59,12 @@ describe("TileBag", function() {
   });
 
   it('addWeightedTile()', function() {
-    TileBag.addWeightedTile(Tile({ code:'baseline-h4-1' }),50,10);
+    const tile = Tile({ code:'baseline-h4-1' })
 
-    let entry = TileBag.pack().weightedTiles['baseline-h4-1'];
-    expect(entry.tile.code).to.equal('baseline-h4-1');
+    TileBag.addWeightedTile(tile,50,10);
+
+    const entry = TileBag.pack().weightedTiles['baseline-h4-1'];
+    expect(entry.tileID).to.equal(tile.getID());
     expect(entry.chance).to.equal(50);
     expect(entry.heat).to.equal(10);
   });

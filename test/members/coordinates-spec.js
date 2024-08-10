@@ -1,4 +1,3 @@
-
 describe("Coordinates", function() {
 
   describe('fromGlobal', function() {

@@ -28,11 +28,8 @@ global.GameController = (function() {
     }
 
     if ($stageData.sequentialTiles) {
-      console.log("Adding Tile Sequence...")
-
       TileBag.addSequentialTiles($stageData.sequentialTiles.map(tileData => {
-        console.log("Added:",tileData)
-        return Tile(tileData)
+        return Tile(tileData);
       }));
     }
 

@@ -10,7 +10,7 @@ GameStageRegistry.register(_tutorial,{
 
   baggedTiles: 'baseline',
   sequentialTiles:[
-    { code:'baseline-h2-0', rotation:1, extra:{ drawNote:'tutorial.connecting-tiles' }},
+    { code:'baseline-h2-0', extra:{ drawNote:'tutorial.connecting-tiles' }},
     { code:'baseline-h1-r1-0', extra:{ placementEvent:'tutorial-start-2' }},
       // extra:{ drawNote:'tutorial.rotate-tile', placementTrigger:'tutorial.enable-movement' }},
   ],

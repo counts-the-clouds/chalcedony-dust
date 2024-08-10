@@ -46,18 +46,13 @@ global.GameState = (function() {
         GameFlags.unpack(loadedState.gameFlags);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);
-
-        await Models.loadAll()
+        await Models.loadAll();
       }
     }
     catch(error) {
-
-      console.log("PROBREM")
-      console.log(loadedState)
-      console.error(error);
-      // logError("Error Loading Game State", error, { system:'GameState', data:{
-      //   loadedState: loadedState,
-      // }});
+      logError("Error Loading Game State", error, { system:'GameState', data:{
+        loadedState: loadedState,
+      }});
 
       await clear();
       reset();

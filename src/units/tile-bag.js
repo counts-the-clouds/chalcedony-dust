@@ -19,29 +19,21 @@ global.TileBag = (function() {
            Object.keys($weightedTiles).length);
   }
 
-  function getSequentialTiles() { return [...$sequentialTiles]; }
   function getSequentialTileCount() { return $sequentialTiles.length; }
 
-  // Because events will be attached to the sequential tile, this array and the
-  // weighted tiles are composed of actual tiles. The bagged tiles are only
-  // tile codes and will need to be turned into real tiles when drawn.
+  // The sequentialTiles array should be an array of actual tiles.
   function addSequentialTiles(tiles) {
-    tiles.forEach(tile => {
-      if (tile.toString().indexOf('Tile') < 0) {
-        throw `This ain't no Tile.`
-      }
-    });
-
-    $sequentialTiles = $sequentialTiles.concat(tiles);
+    $sequentialTiles = $sequentialTiles.concat(tiles.map(tile => tile.getID()));
   }
 
   // The shift() function modifies the sequentialTiles array, removing the
   // first element. Not very functional of you javascript.
   function nextSequentialTile() {
-    return $sequentialTiles.shift();
+    return TileDataStore.get($sequentialTiles.shift());
   }
 
-  // Add the given frequency map of tile codes to the tile bag.
+  // Add the given frequency map of tile codes to the tile bag. We fetch the
+  // tile from the registry here just to make sure it's an actual tile.
   function addBaggedTiles(tileMap) {
     Object.keys(tileMap).forEach(code => {
       TileRegistry.lookup(code);
@@ -82,7 +74,7 @@ global.TileBag = (function() {
       throw `This weighted tile is already present. They should be unique in bag.`
     }
 
-    $weightedTiles[tile.getCode()] = { tile, chance, heat };
+    $weightedTiles[tile.getCode()] = { tileID:tile.getID(), chance, heat };
   }
 
   function deleteWeightedTile(code) {
@@ -107,7 +99,7 @@ global.TileBag = (function() {
     if (weightedCodes.length > 0) {
       for (const code of weightedCodes) {
         if (Random.upTo(100) < $weightedTiles[code].chance) {
-          let tile = $weightedTiles[code].tile;
+          let tile = TileDataStore.get($weightedTiles[code].tileID);
           deleteWeightedTile(code);
           return tile;
         }
@@ -131,49 +123,19 @@ global.TileBag = (function() {
   }
 
   // === Serialization =========================================================
-  // It's a bit of a pain in the ass here. As part of the game state the tile
-  // bag will need to be serialized and deserialized to JSON. We're not
-  // sending the entire bag to the client, but it will be saved with the game.
 
   function pack() {
-
-    const packedSequentialTiles = $sequentialTiles.map(tile => {
-      return tile.pack();
-    });
-
-    const packedWeightedTiles = {};
-    Object.keys($weightedTiles).forEach(code => {
-      const source = $weightedTiles[code];
-      packedWeightedTiles[code] = {
-        tile: source.tile.pack(),
-        chance: source.chance,
-        heat: source.heat,
-      }
-    })
-
     return {
       baggedTiles: $baggedTiles,
-      sequentialTiles: packedSequentialTiles,
-      weightedTiles: packedWeightedTiles,
+      sequentialTiles: $sequentialTiles,
+      weightedTiles: $weightedTiles,
     }
   }
 
   function unpack(data) {
     $baggedTiles = data.baggedTiles;
-
-    $sequentialTiles = data.sequentialTiles.map(tileData => {
-      return Tile(tileData);
-    });
-
-    $weightedTiles = {};
-    Object.keys(data.weightedTiles).forEach(code => {
-      const source = data.weightedTiles[code];
-      $weightedTiles[code] = {
-        tile: Tile(source.tile),
-        chance: source.chance,
-        heat: source.heat,
-      }
-    });
+    $sequentialTiles = data.sequentialTiles;
+    $weightedTiles = data.weightedTiles;
   }
 
   return Object.freeze({
