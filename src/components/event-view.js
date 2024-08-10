@@ -4,7 +4,7 @@ global.EventView = (function() {
   let $returnState;
 
   function init() {
-    X.onClick('#clickAdvance', nextPage);
+    X.onClick('#eventView .next-button', nextPage);
     X.onClick('#eventView .continue-button', nextStage);
     X.loadDocument('#eventArea','/views/event-view.html');
   }
@@ -29,16 +29,26 @@ global.EventView = (function() {
     ClockManager.togglePause();
 
     X.addClass('#eventView','hide');
-    X.empty('#eventView #textArea');
-    X.addClass('#clickAdvance','hide');
     X.addClass('#eventView .continue-button','hide');
     X.removeClass('#eventView .continue-button','show');
+
+    X.empty('#eventView #textArea');
+    X.removeAttribute('#eventView #layoutContainer','class');
+    X.removeAttribute('#eventView #layoutContainer','class');
+    X.removeAttribute('#eventView #imageArea','style');
 
     $event.onFinish($returnState);
     $event = null;
   }
 
   function setLayout() {
+    X.addClass('#layoutContainer',$event.getLayout());
+
+    if ($event.getImage()) {
+      X.removeClass('#eventView #imageArea','hide');
+      X.first('#eventView #imageArea').style['background-image'] = X.assetURL($event.getImage());
+    }
+
     X.removeClass('#eventView','hide');
   }
 
@@ -53,12 +63,12 @@ global.EventView = (function() {
     let page = $event.getCurrentPage();
 
     if (shouldShowContinue()) { enableContinueButton(); }
-    if (shouldClickAdvance()) { enableClickAdvance(); }
+    if (shouldShowNext()) { enableNextButton(); }
 
     let container = X.first('#eventView #textArea');
     X.empty(container);
 
-    container.appendChild(X.createElement(`<p class='event-text'>${page.text}</p>`));
+    container.appendChild(X.createElement(`<div class='event-text'>${page.text}</div>`));
   }
 
   // // We should show the continue button when we are on the last page of the
@@ -74,16 +84,16 @@ global.EventView = (function() {
 
   // // We should enable the click advance when we are not at the last page of the
   // // stage or when the next stage has pages.
-  function shouldClickAdvance() {
+  function shouldShowNext() {
     if ($event.getPageIndex() < $event.getCurrentStage().pages.length - 1) { return true; }
     if ($event.getNextStage() && $event.getNextStage().pages != null) { return true; }
     return false;
   }
 
-  function enableClickAdvance() {
-    if (X.hasClass('#clickAdvance','hide')) {
-      X.removeClass('#clickAdvance','hide');
-      X.addClass('#eventView .continue-button','hide');
+  function enableNextButton() {
+    if (X.hasClass('#eventView .next-button','hide')) {
+      X.addClass('#eventView .button','hide');
+      X.removeClass('#eventView .next-button','hide');
     }
   }
 
@@ -91,12 +101,8 @@ global.EventView = (function() {
   // timeout so that the transition works.
   function enableContinueButton() {
     if (X.hasClass('#eventView .continue-button','hide')) {
+      X.addClass('#eventView .button','hide');
       X.removeClass('#eventView .continue-button','hide');
-      X.addClass('#clickAdvance','hide');
-
-      window.setTimeout(() => {
-        X.addClass('#eventView .continue-button','show');
-      },10);
     }
   }
 

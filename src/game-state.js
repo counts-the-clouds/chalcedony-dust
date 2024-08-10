@@ -53,7 +53,7 @@ global.GameState = (function() {
       await saveState();
     }
 
-    log("Loaded Game State", { system:"GameState", data:data });
+    log("Loaded Game State", { system:"GameState" });
   }
 
   return Object.freeze({

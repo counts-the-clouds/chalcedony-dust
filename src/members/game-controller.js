@@ -88,6 +88,10 @@ global.GameController = (function() {
       Note.show(tile.getDrawNote());
     }
 
+    if (tile.getDrawTrigger()) {
+      TriggerRegistry.lookup(tile.getDrawTrigger()).triggerFunction();
+    }
+
     TileBag.raiseHeat();
     TileShelf.addTile(tile);
     await TileShelfView.addTile(tile);

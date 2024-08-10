@@ -9,6 +9,7 @@ global.SpeedControl = (function() {
 
   function show() { X.removeClass('#speedControl','hide'); }
   function hide() { X.addClass('#speedControl','hide'); }
+  function isVisible() { return !X.hasClass('#speedControl','hide'); }
   function onClick(speed) { ClockManager.setClockSpeed(speed); }
 
   function activate(speed) {
@@ -22,6 +23,7 @@ global.SpeedControl = (function() {
     init,
     show,
     hide,
+    isVisible,
     activate,
   })
 

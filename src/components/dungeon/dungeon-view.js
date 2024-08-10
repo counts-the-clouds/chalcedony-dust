@@ -29,7 +29,12 @@ global.DungeonView = (function() {
 
   async function open() {
     MainContent.setMainContent('views/dungeon-view.html');
+
     await createApplication();
+
+    if (GameFlags.has('dungeon-view.hide-speed-control')) {
+      SpeedControl.hide();
+    }
   }
 
   function isVisible() {

@@ -53,6 +53,7 @@ global.Tile = function(data) {
 
   function getTileData() { return TileRegistry.lookup($code); }
   function getDrawNote()         { return $extra.drawNote         || getTileData().drawNote; }
+  function getDrawTrigger()      { return $extra.drawTrigger      || getTileData().drawTrigger; }
   function getPlacementEvent()   { return $extra.placementEvent   || getTileData().placementEvent; }
   function getPlacementTrigger() { return $extra.placementTrigger || getTileData().placementTrigger; }
   function getPlacementRules()   { return $extra.placementRules   || getTileData().placementRules; }
@@ -136,6 +137,7 @@ global.Tile = function(data) {
     getTileData,
     getID,
     getDrawNote,
+    getDrawTrigger,
     getPlacementEvent,
     getPlacementTrigger,
     getPlacementRules,
