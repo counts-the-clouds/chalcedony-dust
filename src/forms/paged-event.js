@@ -4,6 +4,7 @@ global.PagedEvent = function(code) {
 
   let $pageIndex = 0;
   let $stageIndex = 0;
+  let $context = {};
 
   function getCode() { return $code; }
 
@@ -40,6 +41,12 @@ global.PagedEvent = function(code) {
   function getImage() { return getEventData().image; }
   function getStages() { return getEventData().stages; }
 
+  function onBefore() {
+    if (typeof getEventData().onBefore === 'function') {
+      $context = getEventData().onBefore($context);
+    }
+  }
+
   function onFinish(state) {
     let finisher = getEventData().onFinish;
     if (typeof finisher === 'function') { finisher(state) }
@@ -61,6 +68,7 @@ global.PagedEvent = function(code) {
     getLayout,
     getImage,
     getStages,
+    onBefore,
     onFinish,
     toString,
   });

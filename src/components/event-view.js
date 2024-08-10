@@ -13,6 +13,11 @@ global.EventView = (function() {
     ClockManager.pause();
 
     $event = event;
+    $event.onBefore();
+
+    // We should render the event here, going through the pages and performing
+    // any necessary text replacement.
+
     $returnState = { };
 
     log("Show",{ system:"EventView", data:{ code:$event.getCode() }});
