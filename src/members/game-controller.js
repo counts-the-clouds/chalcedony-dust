@@ -58,12 +58,7 @@ global.GameController = (function() {
   // loading. This needs to perform any tasks needed to put the recently
   // loaded game into the proper state.
   async function openGame() {
-    console.log('Open game')
-    console.log(GameFlags.pack())
-
     if (GameFlags.has(_currentEvent)) {
-    console.log('Game has flag...')
-
       EventView.show(PagedEvent(GameFlags.get(_currentEvent)));
     }
   }
