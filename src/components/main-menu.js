@@ -1,8 +1,10 @@
 global.MainMenu = (function() {
 
   function init() {
-    X.onClick('#mainMenu a.start-button', startGame);
+    X.onClick('#mainMenu a.start-button', confirmStartGame);
+    X.onClick('#mainMenu a.continue-button', continueGame);
     X.onClick('#mainMenu a.options-button', OptionsOverlay.show);
+
   }
 
   function show() {
@@ -15,13 +17,30 @@ global.MainMenu = (function() {
   }
 
   function adjustMenu() {
-    // We need to show a continue button if there's currently an active game.
-    // Clicking the new game should make give us a warning about overwriting a
-    // current game or some such.
+    if (WorldState.hasCurrentGame()) {
+      X.removeClass('#mainMenu a.continue-button','hide');
+    }
+  }
+
+  function confirmStartGame() {
+    if (WorldState.hasCurrentGame() === false) {
+      return startGame();
+    }
+
+    Confirmation.show({
+      text: `Start a new game? This will overwrite your previous game.`,
+      onConfirm: startGame,
+    });
   }
 
   async function startGame() {
-    await GameController.prepareGame();
+    await GameController.startNewGame();
+    await DungeonView.open();
+    await GameController.openGame();
+  }
+
+  async function continueGame() {
+    await GameState.loadState();
     await DungeonView.open();
     await GameController.openGame();
   }

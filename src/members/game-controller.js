@@ -1,63 +1,70 @@
 global.GameController = (function() {
 
-  let $stageData;
-
-  // The beginGame() first gets the current chapter from the world state. This
-  // chapter information will probably have other flags and things set,
+  // The startNewGame() first gets the current chapter from the world state.
+  // This chapter information will probably have other flags and things set,
   // representing features that the player has unlocked. For now a chapter only
   // includes the name of the game stage to load. The stageData is used to set
   // the state of all the stateful game components.
-  async function prepareGame() {
+  async function startNewGame() {
+    await WorldState.startNewGame()
+
     await GameState.clear();
     GameState.reset();
     DungeonGrid.build();
 
-    $stageData = GameStageRegistry.lookup(WorldState.getChapter())
+    const stageData = GameStageRegistry.lookup(WorldState.getChapter())
 
     // The flags are a normal map of flag keys and values.
-    Object.keys($stageData.flags||{}).forEach(flag => {
-      GameFlags.set(flag,$stageData.flags[flag]);
+    Object.keys(stageData.flags||{}).forEach(flag => {
+      GameFlags.set(flag,stageData.flags[flag]);
     });
 
     // TODO: The baseline bagged tiles is a code for a frequency map of bagged
     //       tiles. We might want to make this accept an array of codes as well
     //       to handle more complex games. We might also want to loop through
     //       the game flags to see what tiles have been enabled.
-    if ($stageData.baggedTiles) {
-      TileBag.addBaggedTiles(TileBagRegistry.lookup($stageData.baggedTiles));
+    if (stageData.baggedTiles) {
+      TileBag.addBaggedTiles(TileBagRegistry.lookup(stageData.baggedTiles));
     }
 
-    if ($stageData.sequentialTiles) {
-      TileBag.addSequentialTiles($stageData.sequentialTiles.map(tileData => {
+    if (stageData.sequentialTiles) {
+      TileBag.addSequentialTiles(stageData.sequentialTiles.map(tileData => {
         return Tile(tileData);
       }));
     }
 
     // Shelved tiles just need the code and optional options for the normal
     // Tile constructor: [{ code,options }]
-    ($stageData.shelvedTiles||[]).forEach(tileData => {
+    (stageData.shelvedTiles||[]).forEach(tileData => {
       TileShelf.addTile(Tile(tileData));
     });
 
     // Placed tiles need the code, options, as well as the global (x,y)
     // coordinates for where the tiles should be placed: [{ x,y,code,options }]
-    ($stageData.placedTiles||[]).forEach(tileData => {
+    (stageData.placedTiles||[]).forEach(tileData => {
       DungeonGrid.setTile(
         Coordinates.fromGlobal(tileData.x,tileData.y),
         Tile(tileData));
     });
 
+    if (stageData.startingEvent) {
+      GameFlags.set(_currentEvent,stageData.startingEvent);
+    }
+
     await GameState.saveState();
   }
 
   // The openGame() function is called once the DungeonView has finished
-  // loading. The game load needed to be split into prepare and open functions
-  // because the TileBag, TileShelf, and DungeonGrid should all be initialized
-  // before the DungeonView is opened, but tasks like showing an event requires
-  // the DungeonView to be open already.
+  // loading. This needs to perform any tasks needed to put the recently
+  // loaded game into the proper state.
   async function openGame() {
-    if ($stageData.startingEvent) {
-      EventView.show(PagedEvent($stageData.startingEvent));
+    console.log('Open game')
+    console.log(GameFlags.pack())
+
+    if (GameFlags.has(_currentEvent)) {
+    console.log('Game has flag...')
+
+      EventView.show(PagedEvent(GameFlags.get(_currentEvent)));
     }
   }
 
@@ -152,7 +159,7 @@ global.GameController = (function() {
   }
 
   return Object.freeze({
-    prepareGame,
+    startNewGame,
     openGame,
     drawTile,
     placeTile,

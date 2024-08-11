@@ -14,6 +14,7 @@ global.WorldState = (function() {
   ];
 
   const DefaultState = {
+    gameCount: 0,
     chapter: _tutorial,
     options: {
       keyBindings: DefaultBindings,
@@ -26,7 +27,7 @@ global.WorldState = (function() {
   let $realState;
 
   function activeState() { return Tests.running() ? $testState : $realState; }
-
+  function hasValue(key) { return activeState()[key] != null; }
   function getValue(key) { return activeState()[key]; }
 
   async function setValue(key,value) {
@@ -52,11 +53,25 @@ global.WorldState = (function() {
     await saveState();
   }
 
-  function getKeyBindings() { return getValue('options').keyBindings; }
-  function getOptions() { return getValue('options'); }
-  function getChapter() { return getValue('chapter'); }
+  async function startNewGame() {
+    const count = getValue('gameCount') + 1;
+    const state = activeState();
+
+    state.gameCount = count;
+    state.currentGame = { gameNumber:count };
+
+    await saveState();
+  }
+
+  function getCurrentGame() { return getValue('currentGame'); }
+  function hasCurrentGame() { return hasValue('currentGame'); }
 
   async function setOptions(options) { await setValue('options',options); }
+  function getOptions() { return getValue('options'); }
+  function getKeyBindings() { return getValue('options').keyBindings; }
+
+  async function setChapter(chapter) { await setValue('chapter', chapter); }
+  function getChapter() { return getValue('chapter'); }
 
   async function saveState() {
     if (Tests.running() === false) {
@@ -93,10 +108,14 @@ global.WorldState = (function() {
   return Object.freeze({
     DefaultBindings,
     reset,
-    getKeyBindings,
-    getOptions,
-    getChapter,
+    startNewGame,
+    getCurrentGame,
+    hasCurrentGame,
     setOptions,
+    getOptions,
+    getKeyBindings,
+    setChapter,
+    getChapter,
     saveState,
     loadState,
   });

@@ -11,7 +11,6 @@ global.Main = async function() {
     Components.initAll();
 
     await WorldState.loadState();
-    await GameState.loadState();
 
     MainMenu.show();
     KeyboardMonitor.start();

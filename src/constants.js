@@ -64,6 +64,9 @@ global._keyCodeF11 = 'F11';
 global._tutorial = 'tutorial';
 global._baseline = 'baseline';
 
+// System Flags
+global._currentEvent = 'game.current-event';
+
 // === Tiles ===================================================================
 
 // Directions
