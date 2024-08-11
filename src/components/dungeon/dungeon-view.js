@@ -115,6 +115,7 @@ global.DungeonView = (function() {
     if (GameFlags.has('dungeon-view.disable-movement')) { return false; }
     if (DragonDrop.isDragging()) { return false; }
     if (EventView.isVisible()) { return false; }
+    if (MainMenu.isVisible()) { return false; }
     return true;
   }
 

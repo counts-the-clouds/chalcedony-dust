@@ -23,8 +23,9 @@
   }
 }
 
-#escapeCover {
+#menuCover {
   @include full-screen;
   z-index: $z-menu-cover;
   background-color: rgba(20,15,10,0.666);
+  box-shadow: 0 0 100px 25px rgb(0,0,0) inset;
 }

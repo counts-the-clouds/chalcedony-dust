@@ -14,6 +14,8 @@ global.MainMenu = (function() {
     MainContent.hideCover({ fadeTime:1000 });
   }
 
+  // We should only use the show() and hide() functions in sub menus of the
+  // main menu, like the options overlay.
   function show() { X.removeClass('#mainMenu','hide'); }
   function hide() { X.addClass('#mainMenu','hide'); }
 
@@ -22,6 +24,7 @@ global.MainMenu = (function() {
     show();
 
     if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      X.removeClass('#menuCover','hide');
       ClockManager.setClockSpeed(0)
     }
   }
@@ -30,6 +33,7 @@ global.MainMenu = (function() {
     hide();
 
     if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      X.addClass('#menuCover','hide');
       ClockManager.togglePause()
     }
   }
