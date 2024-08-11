@@ -5,6 +5,9 @@ global.MainMenu = (function() {
     X.onClick('#mainMenu a.continue-button', continueGame);
     X.onClick('#mainMenu a.options-button', showOptions);
     X.onClick('#mainMenu a.quit-button', window.close);
+    X.onClick('#mainMenu a.close-menu-button', close);
+
+    X.first('#mainMenu a.close-menu-button').style['background-image'] = X.assetURL('ui/x-icon.png');
   }
 
   function openFully() {
@@ -24,6 +27,7 @@ global.MainMenu = (function() {
     show();
 
     if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      X.removeClass('#mainMenu .close-menu-button','hide');
       X.removeClass('#menuCover','hide');
       ClockManager.setClockSpeed(0)
     }
@@ -33,6 +37,7 @@ global.MainMenu = (function() {
     hide();
 
     if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      X.addClass('#mainMenu .close-menu-button','hide');
       X.addClass('#menuCover','hide');
       ClockManager.togglePause()
     }

@@ -29,3 +29,18 @@
   background-color: rgba(20,15,10,0.666);
   box-shadow: 0 0 100px 25px rgb(0,0,0) inset;
 }
+
+.close-menu-button {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  height: 12px;
+  width: 12px;
+  background-size: contain;
+  opacity: 0.33;
+  border: none;
+}
+.close-menu-button:hover {
+  border: none;
+  opacity: 0.66;
+}
