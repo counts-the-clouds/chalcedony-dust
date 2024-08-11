@@ -24,10 +24,16 @@ global.OptionsOverlay = (function() {
   let $isBuilt = false;
 
   function init() {
-    X.onCodeDown(_keyCodeEscape, () => { return isOpen() && !isRecording() }, close);
-    X.onClick('#optionsOverlay a.close-button', close);
-    X.onClick('#optionsOverlay a.save-button', save);
     X.onClick('#keyBindingList .binding-input', startRecording);
+
+    X.onClick('#optionsOverlay a.close-button', () => {
+      WindowManager.pop();
+    });
+
+    X.onClick('#optionsOverlay a.save-button', () => {
+      save();
+      WindowManager.pop();
+    });
 
     window.addEventListener('keydown', onKeyDown);
   }
@@ -38,44 +44,33 @@ global.OptionsOverlay = (function() {
     buildKeyBindings();
   }
 
-  function show() {
+  function open() {
     if ($isBuilt === false) { OptionsOverlay.build(); }
 
     MainMenu.hide();
-    X.addClass('#mainContent','hide');
     X.removeClass('#optionsOverlay','hide');
     ScrollingPanel.resize('#optionsOverlay .scrolling-panel');
   }
 
   function close() {
-    X.addClass('#optionsOverlay','hide');
-    X.removeClass('#mainContent','hide');
     TabController.setActiveByName(X.first('#optionsOverlay .tab-control'),'stuff');
+    X.addClass('#optionsOverlay','hide');
     MainMenu.show();
-  }
-
-  function isOpen() {
-    return !X.hasClass('#optionsOverlay','hide');
   }
 
   function save() {
     if ($isDirty) {
       WorldState.setOptions(pack()).then(saveSuccessful);
     }
-
-    close();
   }
 
-  function saveSuccessful(options) {
-    console.log("Save Successful!");
-
-    // TODO: Add Alerts back in.
-    // new Alert({
-    //   message: 'Options Saved',
-    //   position: 'side',
-    //   classname: 'success',
-    //   fadeTime: 1000,
-    // }).display();
+  function saveSuccessful() {
+    Alert.show({
+      message: 'Options Saved',
+      position: _sideAlert,
+      type: _success,
+      fadeTime: 1000,
+    });
   }
 
   // === Key Bindings =========================================================
@@ -158,6 +153,7 @@ global.OptionsOverlay = (function() {
   function onKeyDown(event) {
     if (isRecording()) {
       event.preventDefault();
+      event.stopImmediatePropagation();
       setKeybinding(event.code);
       stopRecording();
     }
@@ -174,11 +170,14 @@ global.OptionsOverlay = (function() {
     }
   }
 
+  function toString() { return `OptionsOverlay` }
+
   return {
     init,
     build,
-    show,
-    isOpen,
+    open,
+    close,
+    toString,
   };
 
 })();

@@ -8,6 +8,7 @@ global.Components = (function() {
     MainMenu.init();
     OptionsOverlay.init();
     SpeedControl.init();
+    WindowManager.init();
   }
 
   return {

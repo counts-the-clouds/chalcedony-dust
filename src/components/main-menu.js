@@ -3,25 +3,46 @@ global.MainMenu = (function() {
   function init() {
     X.onClick('#mainMenu a.start-button', confirmStartGame);
     X.onClick('#mainMenu a.continue-button', continueGame);
-    X.onClick('#mainMenu a.options-button', OptionsOverlay.show);
+    X.onClick('#mainMenu a.options-button', showOptions);
     X.onClick('#mainMenu a.quit-button', window.close);
   }
 
-  function fullOpen() {
-    show();
+  function openFully() {
+    open();
     MainContent.showCover();
     MainContent.setBackground('backgrounds/main-menu.jpg');
-    adjustMenu();
     MainContent.hideCover({ fadeTime:1000 });
   }
 
   function show() { X.removeClass('#mainMenu','hide'); }
   function hide() { X.addClass('#mainMenu','hide'); }
-  function isVisible() { return X.hasClass('#mainMenu','hide'); }
+
+  function open() {
+    adjustMenu();
+    show();
+
+    if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      ClockManager.setClockSpeed(0)
+    }
+  }
+
+  function close() {
+    hide();
+
+    if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      ClockManager.togglePause()
+    }
+  }
+
+  function isVisible() { return X.hasClass('#mainMenu','hide') === false; }
 
   function adjustMenu() {
     if (WorldState.hasCurrentGame()) {
       X.removeClass('#mainMenu a.continue-button','hide');
+    }
+    if (DungeonView.isVisible()) {
+      X.addClass('#mainMenu a.start-button','hide');
+      X.addClass('#mainMenu a.continue-button','hide');
     }
   }
 
@@ -37,25 +58,35 @@ global.MainMenu = (function() {
   }
 
   async function startGame() {
-    hide();
+    close();
     await GameController.startNewGame();
     await DungeonView.open();
     await GameController.openGame();
   }
 
   async function continueGame() {
-    hide();
+    close();
     await GameState.loadState();
     await DungeonView.open();
     await GameController.openGame();
   }
 
+  function showOptions() {
+    OptionsOverlay.open();
+    WindowManager.push(OptionsOverlay)
+  }
+
+  function toString() { return `MainMenu` }
+
   return {
     init,
-    fullOpen,
+    openFully,
     show,
     hide,
-    isVisible
+    open,
+    close,
+    isVisible,
+    toString,
   };
 
 })();
