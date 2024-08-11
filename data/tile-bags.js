@@ -1,9 +1,7 @@
 TileBagRegistry.register('baseline',{
 
   // Halls
-  'baseline-h1-0': 2,
-  'baseline-h1-1': 2,
-  'baseline-h1-2': 2,
+  'baseline-h1-0': 6,
   'baseline-h2-0': 12,
   'baseline-h2-1': 6,
   'baseline-h2-2': 6,

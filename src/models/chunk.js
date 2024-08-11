@@ -1,8 +1,11 @@
-global.Chunk = function(coordinates, data={}) {
+global.Chunk = function(data) {
 
-  const $id = coordinates.chunkID;
-  const $cx = coordinates.cx;
-  const $cy = coordinates.cy;
+  // This is a little different from how the other models are built. A chunk
+  // is built from the packed chunk data when it's loaded, but new chunks are
+  // built from a coordinates object. Duck typing at its finest.
+  const $id = data.chunkID
+  const $cx = data.cx
+  const $cy = data.cy
 
   const $cells = data.cells || Array(_chunkLength * _chunkLength).fill(0);
 
@@ -29,11 +32,12 @@ global.Chunk = function(coordinates, data={}) {
   }
 
   function toString() {
-    return `Chunk:${id}`
+    return `Chunk:${$id}`
   }
 
   function pack() {
     return {
+      chunkID: $id,
       cx: $cx,
       cy: $cy,
       cells: $cells,

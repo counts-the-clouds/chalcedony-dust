@@ -1,6 +1,6 @@
 global.Elements = {
   initAll: function() {
-    // Confirmation.init();
+    Confirmation.init();
     ScrollingPanel.init();
     // Slider.init();
     TabController.init();

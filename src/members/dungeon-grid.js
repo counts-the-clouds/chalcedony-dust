@@ -7,9 +7,9 @@ global.DungeonGrid = (function() {
     ensureChunk(Coordinates.fromChunk(-1,-1,0));
   }
 
-  function ensureChunk(coords) {
-    if (ChunkDataStore.exists(coords.chunkID) === false) {
-      const chunk = Chunk(coords);
+  function ensureChunk(coordinates) {
+    if (ChunkDataStore.exists(coordinates.chunkID) === false) {
+      const chunk = Chunk(coordinates);
       if (DungeonView.isVisible()) {
         DungeonView.addChunk(chunk);
       }

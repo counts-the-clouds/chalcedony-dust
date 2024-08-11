@@ -63,17 +63,15 @@ window.DragonDrop = (function() {
     }
   }
 
-  function stopDrag(command) {
+  async function stopDrag(command) {
     if (!isDragging()) { return false; }
 
     if (command !== 'cancel') {
-      PlacementManager.placeTile();
+      await PlacementManager.placeTile();
     }
 
     TileShelfView.positionTiles();
     InnerCellHighlight.hide();
-
-    $dragContext.tileContainer.setCursor('grab');
     $dragContext = null;
   }
 

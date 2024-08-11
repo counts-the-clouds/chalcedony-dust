@@ -1,34 +1,101 @@
 global.MainMenu = (function() {
 
   function init() {
-    X.onClick('#mainMenu a.start-button', startGame);
-    X.onClick('#mainMenu a.options-button', OptionsOverlay.show);
+    X.onClick('#mainMenu a.start-button', confirmStartGame);
+    X.onClick('#mainMenu a.continue-button', continueGame);
+    X.onClick('#mainMenu a.options-button', showOptions);
+    X.onClick('#mainMenu a.quit-button', window.close);
+    X.onClick('#mainMenu a.close-menu-button', close);
+
+    X.first('#mainMenu a.close-menu-button').style['background-image'] = X.assetURL('ui/x-icon.png');
   }
 
-  function show() {
+  function openFully() {
+    open();
     MainContent.showCover();
-    MainContent.setMainContent('views/main-menu.html');
     MainContent.setBackground('backgrounds/main-menu.jpg');
-
-    adjustMenu();
     MainContent.hideCover({ fadeTime:1000 });
   }
 
+  // We should only use the show() and hide() functions in sub menus of the
+  // main menu, like the options overlay.
+  function show() { X.removeClass('#mainMenu','hide'); }
+  function hide() { X.addClass('#mainMenu','hide'); }
+
+  function open() {
+    adjustMenu();
+    show();
+
+    if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      X.removeClass('#mainMenu .close-menu-button','hide');
+      X.removeClass('#menuCover','hide');
+      ClockManager.setClockSpeed(0)
+    }
+  }
+
+  function close() {
+    hide();
+
+    if (DungeonView.isVisible() && ClockManager.canChangeSpeed()) {
+      X.addClass('#mainMenu .close-menu-button','hide');
+      X.addClass('#menuCover','hide');
+      ClockManager.togglePause()
+    }
+  }
+
+  function isVisible() { return X.hasClass('#mainMenu','hide') === false; }
+
   function adjustMenu() {
-    // We need to show a continue button if there's currently an active game.
-    // Clicking the new game should make give us a warning about overwriting a
-    // current game or some such.
+    if (WorldState.hasCurrentGame()) {
+      X.removeClass('#mainMenu a.continue-button','hide');
+    }
+    if (DungeonView.isVisible()) {
+      X.addClass('#mainMenu a.start-button','hide');
+      X.addClass('#mainMenu a.continue-button','hide');
+    }
+  }
+
+  function confirmStartGame() {
+    if (WorldState.hasCurrentGame() === false) {
+      return startGame();
+    }
+
+    Confirmation.show({
+      text: `Start a new game? This will overwrite your previous game.`,
+      onConfirm: startGame,
+    });
   }
 
   async function startGame() {
-    await GameController.prepareGame();
+    close();
+    await GameController.startNewGame();
     await DungeonView.open();
     await GameController.openGame();
   }
 
+  async function continueGame() {
+    close();
+    await GameState.loadState();
+    await DungeonView.open();
+    await GameController.openGame();
+  }
+
+  function showOptions() {
+    OptionsOverlay.open();
+    WindowManager.push(OptionsOverlay)
+  }
+
+  function toString() { return `MainMenu` }
+
   return {
-    init: init,
-    show: show,
+    init,
+    openFully,
+    show,
+    hide,
+    open,
+    close,
+    isVisible,
+    toString,
   };
 
 })();

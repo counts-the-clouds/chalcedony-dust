@@ -76,6 +76,8 @@ global.PagedEvent = function(code) {
         logError(`Error in ${toString()}.onFinish()`,error,{ system:'PagedEvent' });
       }
     }
+
+    GameController.endEvent();
   }
 
   // === Compilation ===========================================================

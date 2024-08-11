@@ -61,8 +61,8 @@ window.TileShelfView = (function() {
 
   // We should call this to rebuild the shelf if the tile shelf state changes.
   async function refresh() {
-    await Promise.all(TileShelf.getShelf().map(async tile => {
-      await addTile(tile)
+    await Promise.all(TileShelf.getShelf().map(async id => {
+      await addTile(TileDataStore.get(id))
     }));
 
     positionTiles();

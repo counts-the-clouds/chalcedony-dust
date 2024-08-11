@@ -9,22 +9,22 @@ global.Feature = function(data) {
   // ===========================================================================
 
   function getID() { return $id; }
-  function getSegments() { return $segments; }
+  function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
   function getState() { return $state; }
-  function getType() { return $segments.length > 0 ? $segments[0].getType() : null; }
+  function getType() { return $segments.length > 0 ? SegmentDataStore.get($segments[0]).getType() : null; }
 
   // It's possible for a tile to appear more than once in the same feature.
   // Consider two unconnected rooms on a single tile that get connected by
   // tiles placed around them.
   function getTiles() {
-    return ArrayHelper.unique($segments.map(segment => segment.getTile()));
+    return ArrayHelper.unique(getSegments().map(segment => segment.getTile()));
   }
 
   function addSegment(segment) {
     segment.setFeatureID($id);
 
-    if ($segments.map(s => s.getID()).includes(segment.getID()) === false) {
-      $segments.push(segment);
+    if ($segments.includes(segment.getID()) === false) {
+      $segments.push(segment.getID());
     }
   }
 
@@ -35,7 +35,7 @@ global.Feature = function(data) {
   function checkStatus() {
     if ([_core,_node].includes(getType())) { return false; }
 
-    for (const segment of $segments) {
+    for (const segment of getSegments()) {
       if (segment.shouldBeComplete() === false) { return false; }
     }
 
@@ -64,13 +64,15 @@ global.Feature = function(data) {
     if (DungeonView.isVisible()) {
       $state = _complete;
 
-      const cellContainers = $segments.map(segment => {
+      const segments = getSegments();
+
+      const cellContainers = segments.map(segment => {
         const coordinates = segment.getTile().getCoordinates();
         return DungeonView.getCellContainerAt(coordinates.gx, coordinates.gy);
       });
 
       waitForTileContainers(cellContainers).then(tileContainers => {
-        $segments.forEach((segment,i) => {
+        segments.forEach((segment,i) => {
           tileContainers[i].segmentComplete(segment);
         });
 
@@ -95,8 +97,22 @@ global.Feature = function(data) {
     });
   }
 
-  function isComplete() { return $segments[0].getState() === _complete; }
-  function isNotIncomplete() { return $segments[0].getState() !== _incomplete; }
+
+  function isComplete() {
+    if ($segments.length > 0) {
+      return SegmentDataStore.get($segments[0]).getState() === _complete;
+    }
+    throw `Don't call this function when there are no segments. If there are no
+           segments there is no feature.`
+  }
+
+  function isNotIncomplete() {
+    if ($segments.length > 0) {
+      return SegmentDataStore.get($segments[0]).getState() !== _incomplete;
+    }
+    throw `Don't call isNotIncomplete() when there are no segments. The feature 
+           would not be incomplete, but not in the way you're probably thinking.`
+  }
 
   // ===========================================================================
 

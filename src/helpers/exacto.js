@@ -59,22 +59,23 @@ X.onClick = function(selector, callback) {
 
 X.registerKeyAction = function(action, when, callback) {
   window.addEventListener('keydown', event => {
-    if (when(event) && lookupActionCodes(action).includes(event.code)) {
-      callback(event);
+    if (lookupActionCodes(action).includes(event.code)) {
+      if (when === true || when(event)) { callback(event); }
     }
   });
 }
 
 X.onCodeDown = function(code, when, callback) {
   window.addEventListener('keydown', event => {
-    // console.log("Code:",event.code);
-    if (event.code === code && when(event)) { callback(event); }
+    if (event.code === code) {
+      if (when === true || when(event)) { callback(event); }
+    }
   });
 }
 
 X.onResize = function(when, callback) {
   window.addEventListener('resize', (event) => {
-    if (when(event)) { callback(event); }
+    if (when === true || when(event)) { callback(event); }
   });
 }
 

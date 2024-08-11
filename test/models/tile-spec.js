@@ -18,7 +18,7 @@ describe("Tile", function() {
   describe("Tile Rotation", function() {
 
     it('is not rotated by default', function() {
-      expect(Tile({ code:'baseline-h1-2' }).getRotation()).to.equal(0);
+      expect(Tile({ code:'baseline-h1-0' }).getRotation()).to.equal(0);
     });
 
     it('throws on invalid rotations',function() {
