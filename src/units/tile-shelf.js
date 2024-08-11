@@ -20,6 +20,7 @@ global.TileShelf = (function() {
   function hasTile(id) { return $shelf.includes(id); }
   function removeTile(id) { $shelf.splice($shelf.indexOf(id), 1); }
   function getEmptySpaceCount() { return $size - $shelf.length }
+  function isFull() { return getEmptySpaceCount() === 0 }
 
   function discardLastTile() {
     if ($shelf.length > 0) {
@@ -51,6 +52,7 @@ global.TileShelf = (function() {
     hasTile,
     removeTile,
     getEmptySpaceCount,
+    isFull,
     discardLastTile,
     pack,
     unpack

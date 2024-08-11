@@ -23,7 +23,7 @@ global.Clock = function(options) {
     }
   }
 
-  function onComplete() { getClockData().onComplete(this); }
+  function onComplete() { getClockData().onComplete($self); }
 
   function attachTileContainer(tileContainer) { $tileContainer = tileContainer; }
   function getTileContainer() { return $tileContainer; }

@@ -10,7 +10,12 @@ global.SpeedControl = (function() {
   function show() { X.removeClass('#speedControl','hide'); }
   function hide() { X.addClass('#speedControl','hide'); }
   function isVisible() { return !X.hasClass('#speedControl','hide'); }
-  function onClick(speed) { ClockManager.setClockSpeed(speed); }
+
+  function onClick(speed) {
+    if (ClockManager.canChangeSpeed()) {
+      ClockManager.setClockSpeed(speed);
+    }
+  }
 
   function activate(speed) {
     X.removeClass('#speedControl .button','button-primary');

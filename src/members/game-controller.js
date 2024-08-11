@@ -63,23 +63,16 @@ global.GameController = (function() {
 
   // ===========================================================================
 
+  // TODO: If we try and draw a tile, and there are no tiles in the bag
+  //       this should trigger a game over event, for now we can just throw
+  //       an exception reminding us to do this.
   async function drawTile() {
-
-    // TODO: If we try and draw a tile, and there are no tiles in the bag
-    //       this should trigger a game over event, for now we can just throw
-    //       an exception reminding us to do this.
     if (TileBag.size() === 0) {
       throw `There are no more tiles left in the bag. Game over.`
     }
 
-    // TODO: If the shelf is full and we're forced to discard a tile the tile
-    //       just disappears off of the shelf or out of your hand (if dragging)
-    //       This should be more dramatic, something like an animation of the
-    //       tile crumbling away or going up in flames.
-    if (TileShelf.getEmptySpaceCount() === 0) {
-      if (DragonDrop.isDragging()) { DragonDrop.stopDrag('cancel'); }
-      const lastTile = TileShelf.discardLastTile();
-      TileShelfView.removeTile(lastTile);
+    if (TileShelf.isFull()) {
+      forceDiscard();
     }
 
     const tile = TileBag.drawTile();
@@ -98,6 +91,20 @@ global.GameController = (function() {
     TileShelfView.positionTiles();
 
     log("Drew Tile",{ system:'GameController', code:tile.getCode(), id:tile.getID(), level:3 });
+  }
+
+  // TODO: If the shelf is full and we're forced to discard a tile the tile
+  //       just disappears off of the shelf or out of your hand (if dragging)
+  //       This should be more dramatic, something like an animation of the
+  //       tile crumbling away or going up in flames.
+  //
+  // TODO: We also need to handle tiles that the player are forbidden from
+  //       discarding, once we have something like that.
+  function forceDiscard() {
+    if (DragonDrop.isDragging()) { DragonDrop.stopDrag('cancel'); }
+    if (TileBag.isSequence()) { throw `We cannot force discard when the tile bag has a tile sequence to play.` }
+
+    TileShelfView.removeTile(TileShelf.discardLastTile());
   }
 
   function placeTile(coordinates,tile) {
@@ -120,7 +127,7 @@ global.GameController = (function() {
       // be on the shelf.
       if (TileShelf.hasTile(tile.getID())) {
         TileShelf.removeTile(tile.getID());
-        TileShelfView.removeTile(tile);
+        TileShelfView.removeTile(tile.getID());
       }
 
       if (tile.getPlacementEvent()) {

@@ -5,6 +5,7 @@ global.ClockManager = (function() {
   let $clocks = {};
   let $clockSpeed = 1;
   let $previousSpeed = 1;
+  let $forcePaused = false;
 
   function init() {
     X.registerKeyAction('action.pause',canChangeSpeed,togglePause)
@@ -13,17 +14,42 @@ global.ClockManager = (function() {
     X.registerKeyAction('action.set-speed-3',canChangeSpeed,() => { setClockSpeed(3); });
   }
 
-  function reset() { $clocks = {}; }
+  function reset() {
+    $clocks = {};
+    $clockSpeed = 1;
+    $previousSpeed = 1;
+    $forcePaused = false;
+  }
+
   function addClock(clock) { $clocks[clock.getID()] = clock; }
+  function getClock(id) { return $clocks[id]; }
   function removeClock(id) { delete $clocks[id]; }
 
-  function zeroClock(code) {
-    Object.values($clocks).forEach(clock => {
-      if (clock.getCode() === code) {
-        clock.setElapsedTime(0);
-        clock.onUpdate();
+  function findByCode(code) {
+    return Object.values($clocks).filter(clock => clock.getCode() === code);
+  }
+
+  function zeroClock(id) {
+    const clock = getClock(id)
+          clock.setElapsedTime(0);
+          clock.onUpdate();
+  }
+
+  // Pausing like this should be done sparingly. The only reason I'm including
+  // this is for the situation where we're in a tile sequence, and we can't
+  // force discard a tile. This will stop the clock (and all other clocks)
+  // from generating new tiles until the shelf has room.
+  function pauseUntil(condition) {
+    $forcePaused = true;
+    setClockSpeed(0);
+
+    const interval = setInterval(() => {
+      if (condition()) {
+        clearInterval(interval);
+        $forcePaused = false;
+        togglePause();
       }
-    });
+    },100);
   }
 
   function onTick(time) {
@@ -56,6 +82,7 @@ global.ClockManager = (function() {
   // === Clock Speed ==========================================================
 
   function canChangeSpeed() {
+    if ($forcePaused) { return false }
     if (EventView.isVisible()) { return false }
     if (!SpeedControl.isVisible()) { return false }
     return DungeonView.isVisible()
@@ -91,10 +118,14 @@ global.ClockManager = (function() {
     init,
     reset,
     addClock,
+    getClock,
+    findByCode,
     removeClock,
+    pauseUntil,
     zeroClock,
-    pause,
+    canChangeSpeed,
     togglePause,
+    pause,
     getClockSpeed,
     setClockSpeed,
     onTick,

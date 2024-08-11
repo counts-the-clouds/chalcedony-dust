@@ -94,9 +94,9 @@ window.TileShelfView = (function() {
     $dragArea.addChild(tileContainer.getTileContainer());
   }
 
-  function removeTile(tile) {
-    $tileState[tile.getID()].getTileContainer().destroy({ children:true });
-    delete $tileState[tile.getID()];
+  function removeTile(tileID) {
+    $tileState[tileID].getTileContainer().destroy({ children:true });
+    delete $tileState[tileID];
     positionTiles();
   }
 
