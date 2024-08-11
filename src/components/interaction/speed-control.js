@@ -7,7 +7,11 @@ global.SpeedControl = (function() {
     X.onClick('#speedControl .speed-3', () => { onClick(3); })
   }
 
-  function show() { X.removeClass('#speedControl','hide'); }
+  function show() {
+    X.removeClass('#speedControl','hide');
+    Effects.flashSquare('#speedControl');
+  }
+
   function hide() { X.addClass('#speedControl','hide'); }
   function isVisible() { return !X.hasClass('#speedControl','hide'); }
 

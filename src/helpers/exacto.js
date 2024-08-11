@@ -86,7 +86,8 @@ X.onResize = function(when, callback) {
 // for use with element IDs.
 
 X.hasClass = function(arg, classname) {
-  return (typeof arg == "string" ? X.first(arg) : arg).classList.contains(classname);
+  const element = typeof arg == "string" ? X.first(arg) : arg;
+  return element ? element.classList.contains(classname) : false;
 }
 
 X.addClass = function(arg, classname) {
