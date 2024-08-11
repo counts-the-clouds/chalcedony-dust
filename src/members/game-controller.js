@@ -92,6 +92,8 @@ global.GameController = (function() {
     await TileShelfView.addTile(tile);
     TileShelfView.positionTiles();
 
+    await GameState.saveState();
+
     log("Drew Tile",{ system:'GameController', code:tile.getCode(), id:tile.getID(), level:3 });
   }
 
@@ -109,7 +111,7 @@ global.GameController = (function() {
     TileShelfView.removeTile(TileShelf.discardLastTile());
   }
 
-  function placeTile(coordinates,tile) {
+  async function placeTile(coordinates,tile) {
     const placementData = {
       x: coordinates.gx,
       y: coordinates.gy,
@@ -139,11 +141,7 @@ global.GameController = (function() {
         TriggerRegistry.lookup(tile.getPlacementTrigger()).triggerFunction(tile);
       }
 
-      // TODO: We have the timer now, but we need to readdress how drawing
-      //       tiles in a tile sequence is handled. The generate tile timer is
-      //       always running, but it will need to take the tile bag state into
-      //       consideration
-      // if (TileBag.isSequence()) { GameController.drawTile(); }
+      await GameState.saveState();
     }
     catch (error) {
       logError(`Error Placing Tile`, error, {
@@ -153,11 +151,17 @@ global.GameController = (function() {
     }
   }
 
+  async function endEvent() {
+    GameFlags.clear(_currentEvent);
+    await GameState.saveState();
+  }
+
   return Object.freeze({
     startNewGame,
     openGame,
     drawTile,
     placeTile,
+    endEvent,
   });
 
 })();

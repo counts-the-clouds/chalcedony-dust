@@ -13,10 +13,10 @@ describe("DungeonGrid", function() {
 
     it("when cell has a value", function() {
       const coords = Coordinates.fromGlobal(5,15);
-      DungeonGrid.setTile(coords, Tile({ code:'baseline-h1-1'}));
+      DungeonGrid.setTile(coords, Tile({ code:'baseline-h1-0'}));
 
       const tile = DungeonGrid.getTile(coords);
-      expect(tile.getCode()).to.equal('baseline-h1-1');
+      expect(tile.getCode()).to.equal('baseline-h1-0');
     });
   });
 

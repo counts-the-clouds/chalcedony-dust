@@ -45,9 +45,9 @@ describe("TileShelf", function() {
 
     it("discards the last tile on the shelf", function() {
       TileShelf.setSize(3);
-      TileShelf.addTile(Tile({ code:'baseline-h1-0', id:101 }));
-      TileShelf.addTile(Tile({ code:'baseline-h1-1', id:102 }));
-      TileShelf.addTile(Tile({ code:'baseline-h1-2', id:103 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-0', id:101 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-1', id:102 }));
+      TileShelf.addTile(Tile({ code:'baseline-r1-2', id:103 }));
 
       const lastTile = TileShelf.discardLastTile();
       const ids = TileShelf.getShelf();

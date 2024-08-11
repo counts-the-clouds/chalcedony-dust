@@ -31,6 +31,7 @@ global.DungeonView = (function() {
     MainContent.setMainContent('views/dungeon-view.html');
 
     await createApplication();
+    await TileShelfView.refresh();
 
     if (GameFlags.has('dungeon-view.hide-speed-control')) {
       SpeedControl.hide();

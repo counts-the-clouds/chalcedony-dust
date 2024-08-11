@@ -88,7 +88,7 @@ global.PlacementManager = (function () {
   //       edge of a chunk. We'll need to handle this earlier and build a new
   //       chunk when a tile is placed at the edge of the chunk extent.
   //
-  function placeTile() {
+  async function placeTile() {
     const hoverCell = DragonDrop.getHoverCell();
     const coordinates = DragonDrop.getHoverCoordinates();
     const tile = DragonDrop.getDragTile();
@@ -99,7 +99,7 @@ global.PlacementManager = (function () {
     if (hoverCell.getTile() != null) { return false; }
 
     if (canPlaceTile(coordinates)) {
-      GameController.placeTile(coordinates, tile)
+      await GameController.placeTile(coordinates, tile)
     }
   }
 
