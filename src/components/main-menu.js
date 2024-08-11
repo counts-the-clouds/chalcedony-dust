@@ -4,17 +4,20 @@ global.MainMenu = (function() {
     X.onClick('#mainMenu a.start-button', confirmStartGame);
     X.onClick('#mainMenu a.continue-button', continueGame);
     X.onClick('#mainMenu a.options-button', OptionsOverlay.show);
-
+    X.onClick('#mainMenu a.quit-button', window.close);
   }
 
-  function show() {
+  function fullOpen() {
+    show();
     MainContent.showCover();
-    MainContent.setMainContent('views/main-menu.html');
     MainContent.setBackground('backgrounds/main-menu.jpg');
-
     adjustMenu();
     MainContent.hideCover({ fadeTime:1000 });
   }
+
+  function show() { X.removeClass('#mainMenu','hide'); }
+  function hide() { X.addClass('#mainMenu','hide'); }
+  function isVisible() { return X.hasClass('#mainMenu','hide'); }
 
   function adjustMenu() {
     if (WorldState.hasCurrentGame()) {
@@ -34,20 +37,25 @@ global.MainMenu = (function() {
   }
 
   async function startGame() {
+    hide();
     await GameController.startNewGame();
     await DungeonView.open();
     await GameController.openGame();
   }
 
   async function continueGame() {
+    hide();
     await GameState.loadState();
     await DungeonView.open();
     await GameController.openGame();
   }
 
   return {
-    init: init,
-    show: show,
+    init,
+    fullOpen,
+    show,
+    hide,
+    isVisible
   };
 
 })();

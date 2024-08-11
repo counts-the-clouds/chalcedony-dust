@@ -1,6 +1,13 @@
 
 #mainMenu {
-  .base-frame { width: 300px; }
+  position: absolute;
+  top: calc(50vh - 100px);
+  left: calc((100% - 300px)/2);
+  z-index: $z-main-menu;
+
+  .base-frame {
+    width: 290px;
+  }
 
   h1 {
     font-family: baskerville;
@@ -8,8 +15,16 @@
 
   ul {
     a.button {
-      display: block;
+      position: relative;
+      left: -20px;
       margin-bottom: 5px;
+      width: 300px;
     }
   }
+}
+
+#escapeCover {
+  @include full-screen;
+  z-index: $z-menu-cover;
+  background-color: rgba(20,15,10,0.666);
 }

@@ -12,7 +12,7 @@ global.Main = async function() {
 
     await WorldState.loadState();
 
-    MainMenu.show();
+    MainMenu.fullOpen();
     KeyboardMonitor.start();
     Tests.load();
 

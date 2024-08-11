@@ -41,6 +41,7 @@ global.OptionsOverlay = (function() {
   function show() {
     if ($isBuilt === false) { OptionsOverlay.build(); }
 
+    MainMenu.hide();
     X.addClass('#mainContent','hide');
     X.removeClass('#optionsOverlay','hide');
     ScrollingPanel.resize('#optionsOverlay .scrolling-panel');
@@ -50,6 +51,7 @@ global.OptionsOverlay = (function() {
     X.addClass('#optionsOverlay','hide');
     X.removeClass('#mainContent','hide');
     TabController.setActiveByName(X.first('#optionsOverlay .tab-control'),'stuff');
+    MainMenu.show();
   }
 
   function isOpen() {
