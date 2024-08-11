@@ -4,6 +4,7 @@ global.WindowManager = (function() {
 
   function init() {
     X.onCodeDown(_keyCodeEscape,true,() => {
+      if (Console.isVisible()) { return Console.hide(); }
       if ($windowStack.length > 0) { return pop() }
 
       if (!MainMenu.isVisible()) {

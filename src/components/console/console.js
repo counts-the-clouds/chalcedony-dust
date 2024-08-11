@@ -9,17 +9,15 @@ global.Console = (function() {
   }
 
   function toggleConsole() {
-    if (isVisible()) {
-      return X.addClass('#console','hide');
-    }
+    if (isVisible()) { return hide(); }
 
     X.removeClass('#console','hide');
-
     setTimeout(() => {
       ScrollingPanel.resize('#console .scrolling-panel');
     },1);
   }
 
+  function hide() { X.addClass('#console','hide'); }
   function isVisible() { return !X.hasClass('#console','hide'); }
 
   // === Entry Elements ========================================================
@@ -98,6 +96,8 @@ global.Console = (function() {
 
   return Object.freeze({
     init,
+    hide,
+    isVisible,
     append,
     log,
     logError,
