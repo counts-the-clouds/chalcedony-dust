@@ -11,8 +11,8 @@ EventRegistry.register('tutorial-start-3', {
     showWhenEqual:['type',_room],
     pages: [
       { text:`The rough stone walls of the room seem to straighten and expand as it opens into the newly formed
-              space. The room that was little more than a roughly hollowed out cavern cave now looks more complete,
-              though still empty, waiting to be filled with minions and the machinery of a working dungeon.` },
+              space. The room that was little more than a roughly hollowed out cavern now looks more complete, though
+              still empty, waiting to be filled with minions and the machinery of a working dungeon.` },
 
     ],
   }],
