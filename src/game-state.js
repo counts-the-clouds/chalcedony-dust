@@ -13,6 +13,7 @@ global.GameState = (function() {
   // automatically save the game.
   function reset() {
     Models.reset();
+    BuriedTreasure.reset();
     GameFlags.reset();
     TileBag.reset();
     TileShelf.reset();
@@ -23,6 +24,7 @@ global.GameState = (function() {
   async function saveState() {
     if (Tests.running() === false) {
       await $stateRecorder.saveState({
+        buriedTreasure: BuriedTreasure.pack(),
         gameFlags: GameFlags.pack(),
         tileBag: TileBag.pack(),
         tileShelf: TileShelf.pack(),
@@ -39,6 +41,7 @@ global.GameState = (function() {
       const loadedState = await $stateRecorder.loadState();
 
       if (loadedState) {
+        BuriedTreasure.unpack(loadedState.buriedTreasure);
         GameFlags.unpack(loadedState.gameFlags);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);

@@ -1,4 +1,4 @@
-TileBagRegistry.register('baseline',{
+ExtraRegistry.register('baseline-tiles',{
 
   // Halls
   'baseline-h1-0': 6,

@@ -61,8 +61,8 @@ global._keyCodeF11 = 'F11';
 // === Game ====================================================================
 
 // Stages
-global._tutorial = 'tutorial';
-global._baseline = 'baseline';
+global._tutorialStage = 'tutorial-stage';
+global._baselineStage = 'baseline-stage';
 
 // System Flags
 global._currentEvent = 'game.current-event';

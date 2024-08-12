@@ -12,7 +12,7 @@ global.GameController = (function() {
     GameState.reset();
     DungeonGrid.build();
 
-    const stageData = GameStageRegistry.lookup(WorldState.getChapter())
+    const stageData = ExtraRegistry.lookup(WorldState.getChapter())
 
     // The flags are a normal map of flag keys and values.
     Object.keys(stageData.flags||{}).forEach(flag => {
@@ -24,7 +24,7 @@ global.GameController = (function() {
     //       to handle more complex games. We might also want to loop through
     //       the game flags to see what tiles have been enabled.
     if (stageData.baggedTiles) {
-      TileBag.addBaggedTiles(TileBagRegistry.lookup(stageData.baggedTiles));
+      TileBag.addBaggedTiles(ExtraRegistry.lookup(stageData.baggedTiles));
     }
 
     if (stageData.sequentialTiles) {

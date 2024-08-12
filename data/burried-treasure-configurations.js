@@ -1,0 +1,3 @@
+ExtraRegistry.register('baseline-treasure',{
+
+});
