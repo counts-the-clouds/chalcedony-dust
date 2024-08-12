@@ -13,6 +13,14 @@ describe("Tile", function() {
       const core = Tile({ code:'dungeon-core' });
       expect(core.getClock().getCode()).to.equal('generate-tile');
     });
+
+    it('builds tile from segment data', function() {
+      const tile = Tile({ segments:[
+        { type:_hall, exits:[_n], graphics:{ shape:'hall-medium' }},
+      ]});
+
+      expect(tile.getEdges()).to.equal({});
+    })
   });
 
   describe("Tile Rotation", function() {
