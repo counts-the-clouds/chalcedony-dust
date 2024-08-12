@@ -19,7 +19,7 @@ describe("Tile", function() {
         { type:_hall, exits:[_n], graphics:{ shape:'hall-medium' }},
       ]});
 
-      expect(tile.getEdges()).to.equal({});
+      expect(tile.getEdges().n).to.equal(_hall);
     })
   });
 
