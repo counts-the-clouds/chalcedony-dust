@@ -1,13 +1,18 @@
 global.Segment = function(data) {
 
-  Validate.exists('tileID',data.tileID);
-  Validate.exists('tileCode',data.tileCode);
-  Validate.exists('index',data.index);
-
   const $tileID = data.tileID;
-  const $tileCode = data.tileCode;
   const $index = data.index;
   const $id = data.id || SegmentDataStore.nextID();
+
+  const $type = data.segmentData ? data.segmentData.type : data.type;
+  const $staticExits = data.segmentData ? data.segmentData.exits : data.exits;
+  const $graphics = data.segmentData ? data.segmentData.graphics : data.graphics;
+
+  Validate.exists('tileID',$tileID);
+  Validate.exists('index',$index);
+  Validate.exists('type',$type);
+  Validate.exists('exits',$staticExits);
+  Validate.exists('graphics',$graphics);
 
   let $featureID = data.featureID;
   let $connections = data.connections || {};
@@ -16,7 +21,8 @@ global.Segment = function(data) {
 
   function getID() { return $id; }
   function getTileID() { return $tileID; }
-  function getTileCode() { return $tileCode; }
+  function getType() { return $type }
+  function getGraphics() { return $graphics; }
   function getTile() { return TileDataStore.get($tileID); }
   function getIndex() { return $index; }
 
@@ -32,20 +38,13 @@ global.Segment = function(data) {
     $connections[direction] = { tileID:segment.getTileID(), index:segment.getIndex() }
   }
 
-  function getSegmentData() { return TileRegistry.lookup($tileCode).segments[$index] }
-  function getType() { return getSegmentData().type; }
-
-  // The exits come from the immutable segment data, so they won't be rotated
-  // like the tile's edges object. We don't want to always rotate these values
-  // because the tile rotates the edges, and if we rotate the exits then the
-  // tile's edges might get rotated twice. This is used by the FeatureLibrary
-  // though to get the neighboring tiles of a segment, so it needs to fetch a
-  // rotated version of that array then.
+  // We only store a tile's rotation value on the tile, and keep the rotation
+  // of the segment's exits static. We only apply the tile's rotation when we
+  // need to access the segment's exits.
   function getExits(rotation=0) {
-    const exits = getSegmentData().exits;
-    if (rotation === 0) { return exits }
+    if (rotation === 0) { return $staticExits }
 
-    return exits.map(direction => {
+    return $staticExits.map(direction => {
       return {
         1:{ n:_e, s:_w, e:_s, w:_n },
         2:{ n:_s, s:_n, e:_w, w:_e },
@@ -82,7 +81,9 @@ global.Segment = function(data) {
     return {
       id: $id,
       tileID: $tileID,
-      tileCode: $tileCode,
+      type: $type,
+      exits: $staticExits,
+      graphics: $graphics,
       index: $index,
       featureID: $featureID,
       connections: $connections,
@@ -94,7 +95,8 @@ global.Segment = function(data) {
   const $self = Object.freeze({
     getID,
     getTileID,
-    getTileCode,
+    getType,
+    getGraphics,
     getTile,
     getIndex,
     getFeatureID,
@@ -104,8 +106,6 @@ global.Segment = function(data) {
     getConnections,
     getConnection,
     setConnection,
-    getSegmentData,
-    getType,
     getExits,
     shouldBeComplete,
     toString,

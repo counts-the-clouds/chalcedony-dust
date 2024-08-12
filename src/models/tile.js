@@ -1,7 +1,5 @@
 global.Tile = function(data) {
 
-  Validate.exists('code',data.code);
-
   const $code = data.code;
   const $id = data.id || TileDataStore.nextID();
 
@@ -10,6 +8,8 @@ global.Tile = function(data) {
   let $edges = data.edges;
   let $extra = data.extra || {};
 
+  // When built, segments will either be an array of segment indices or an
+  // array of objects that can be used to build the segments.
   let $segments = data.segments;
   let $clockID = data.clockID;
 
@@ -17,33 +17,51 @@ global.Tile = function(data) {
   // to the tile automatically. This clock won't actually do anything until
   // it's added to the ClockManager when the tile is added to the dungeon.
   function buildClock() {
-    if ($clockID == null && getTileData().clock) {
-      $clockID = Clock({ code:getTileData().clock.code }).getID();
+    if ($clockID == null && $code) {
+      const tileData = TileRegistry.lookup($code);
+      if (tileData.clock) {
+        $clockID = Clock({ code:tileData.clock.code }).getID();
+      }
     }
   }
 
-  // Build the Segments if they weren't passed in the options. If this Tile
-  // is coming from a packed Tile it should have segments. If it's from a new
-  // tile though they won't be present.
   function buildSegments() {
-    if ($segments == null) {
-      $segments = [];
-
-      const tileData = getTileData();
-      const empty = tileData.emptyEdgeType || _stone;
-
-      $edges = { n:empty, s:empty, e:empty, w:empty };
-
-      for (let index=0; index<tileData.segments.length; index++) {
-        const segment = Segment({ tileID:$id, tileCode:$code, index:index });
-
-        segment.getExits().forEach(exit => {
-          $edges[exit] = segment.getType();
-        });
-
-        $segments.push(segment.getID());
-      }
+    // If $segments is already an array of number we don't need to do anything.
+    if ($segments && $segments.length > 0 && typeof $segments[0] === 'number') {
+      return true
     }
+
+    // Segments should only be null when building a standard tile (that is a
+    // tile with a code that we get from the TileRegistry)
+    if ($segments == null) {
+      if ($code == null) { throw `A tile needs a code or segments.` }
+      return actuallyBuildSegments(TileRegistry.lookup($code).segments);
+    }
+
+    // Otherwise the Tile() constructor should have been given an array of
+    // segment data objects in the same format that the standard tiles use.
+    if ($segments[0].type) {
+      return actuallyBuildSegments($segments);
+    }
+
+    throw `Bad format for segments: ${JSON.stringify($segments)}`
+  }
+
+  function actuallyBuildSegments(segmentData) {
+    $segments = [];
+    segmentData.forEach((seg,index) => {
+      $segments.push(Segment({ tileID:$id, index:index, segmentData:seg }).getID());
+    });
+  }
+
+  function determineEdges() {
+    $edges = { n:_stone, s:_stone, e:_stone, w:_stone };
+    $segments.forEach(id => {
+      const segment = SegmentDataStore.get(id);
+      segment.getExits().forEach(exit => {
+        $edges[exit] = segment.getType();
+      });
+    });
   }
 
   // ===========================================================================
@@ -51,13 +69,12 @@ global.Tile = function(data) {
   function getCode() { return $code; }
   function getID() { return $id; }
 
-  function getTileData() { return TileRegistry.lookup($code); }
-  function getDrawNote()         { return $extra.drawNote         || getTileData().drawNote; }
-  function getDrawTrigger()      { return $extra.drawTrigger      || getTileData().drawTrigger; }
-  function getPlacementEvent()   { return $extra.placementEvent   || getTileData().placementEvent; }
-  function getPlacementTrigger() { return $extra.placementTrigger || getTileData().placementTrigger; }
-  function getPlacementRules()   { return $extra.placementRules   || getTileData().placementRules; }
-  function getPlacementNote()    { return $extra.placementNote    || getTileData().placementNote; }
+  function getDrawNote()         { return $extra.drawNote         }
+  function getDrawTrigger()      { return $extra.drawTrigger      }
+  function getPlacementEvent()   { return $extra.placementEvent   }
+  function getPlacementTrigger() { return $extra.placementTrigger }
+  function getPlacementRules()   { return $extra.placementRules   }
+  function getPlacementNote()    { return $extra.placementNote    }
 
   function getClock() { return ClockDataStore.get($clockID); }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
@@ -134,7 +151,6 @@ global.Tile = function(data) {
 
   const $self = Object.freeze({
     getCode,
-    getTileData,
     getID,
     getDrawNote,
     getDrawTrigger,
@@ -164,6 +180,7 @@ global.Tile = function(data) {
 
   buildClock();
   buildSegments();
+  determineEdges();
 
   TileDataStore.store($self);
 
