@@ -66,6 +66,7 @@ global._baselineStage = 'baseline-stage';
 
 // System Flags
 global._currentEvent = 'game.current-event';
+global._forceDiscovery = 'buried-treasure.force-discovery';
 
 // === Tiles ===================================================================
 
