@@ -5,13 +5,12 @@ global.Segment = function(data) {
   const $id = data.id || SegmentDataStore.nextID();
 
   const $type = data.segmentData ? data.segmentData.type : data.type;
-  const $staticExits = data.segmentData ? data.segmentData.exits : data.exits;
+  const $staticExits = data.segmentData ? data.segmentData.exits : (data.exits || []);
   const $graphics = data.segmentData ? data.segmentData.graphics : data.graphics;
 
   Validate.exists('tileID',$tileID);
   Validate.exists('index',$index);
   Validate.exists('type',$type);
-  Validate.exists('exits',$staticExits);
   Validate.exists('graphics',$graphics);
 
   let $featureID = data.featureID;

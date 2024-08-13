@@ -161,12 +161,17 @@ global.BuriedTreasure = (function() {
     const forcedCode = GameFlags.get(_forceDiscovery);
     const discoverable = getDiscoverableTreasures(tile);
 
+    if (discoverable.length === 0) {
+      return undefined
+    }
+
     // If forced code is a string, we can assume it's the code of the discovery
     // we want to make. If that discovery is valid (and thus in the discoverable
     // array) we can remove and return it.
     if (typeof forcedCode === 'string') {
       const index = ArrayHelper.find(discoverable, d => d.code === forcedCode);
       if (index >= 0) {
+        GameFlags.clear(_forceDiscovery);
         const discovery = discoverable[index];
         removeTreasure(discovery.code);
         return discovery;
@@ -178,6 +183,7 @@ global.BuriedTreasure = (function() {
     // return anything that's currently discoverable. (SelectDiscovery handles
     // the removal for us here)
     if (forcedCode === true) {
+      GameFlags.clear(_forceDiscovery);
       const totalWeight = sumAllWeights(discoverable);
       return selectDiscovery(discoverable, totalWeight, Random.roll(totalWeight))
     }

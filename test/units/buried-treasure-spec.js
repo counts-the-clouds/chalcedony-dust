@@ -77,7 +77,7 @@ describe('BuriedTreasure', function() {
       BuriedTreasure.addTreasures([
         { code:'coal-mine', type:_discoverResource },
         { code:'cave-in', type:_discoverEvent },
-      ]);c
+      ]);
 
       const discoverable = BuriedTreasure.getDiscoverableTreasures(nodeTile());
       expect(discoverable.length).to.equal(1);

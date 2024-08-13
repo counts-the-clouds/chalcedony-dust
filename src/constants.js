@@ -97,6 +97,7 @@ global._lake = 'lake'
 // Non-Edge Segment Types
 global._core = 'core';
 global._node = 'node';
+global._resource = 'resource';
 
 // Tile Placement Rules
 global._noRotate = 'no-rotate';

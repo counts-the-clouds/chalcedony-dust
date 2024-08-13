@@ -75,6 +75,14 @@ ExtraRegistry.register('ColorPalette',{
         select: '#5e4777',
       }
     },
+    resource:{
+      complete: {
+        dark: '#2a3020',
+        base: '#454e36',
+        light: '#626f4d',
+        select: '#525c76',
+      }
+    }
   },
 
   viewport: {
