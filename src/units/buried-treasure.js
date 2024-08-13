@@ -5,7 +5,7 @@ global.BuriedTreasure = (function() {
 
   function reset() {
     $heat = 0;
-    $treasures = {};
+    $treasures = [];
   }
 
   // TODO: Eventually the different discoveries that can be included in the
@@ -16,19 +16,37 @@ global.BuriedTreasure = (function() {
   //       game, so we can just set the map directly. Pretty sure all of this
   //       will change though.
   //
-  function addTreasures(code) {
-    $treasures = ExtraRegistry.lookup(code);
+  // Add treasures either from a standard package or as map of discoveries.
+  // Expected format is 'currently'
+  //       'coal-mine':{ type:_resource, total:2, distance:[0,null], weight:100 },
+  function addTreasures(argument) {
+    $treasures = (typeof argument === 'string') ? ExtraRegistry.lookup(argument).treasures : argument;
+  }
+
+  function removeTreasure(index) {
+    if ($treasures[index] == null) { throw `No treasure at index ${index}`; }
+
+    $treasures[index].total -= 1;
+    if ($treasures[index].total < 1) {
+      $treasures.splice(index,1);
+    }
   }
 
   function getTreasure(code) {
-    return { ...$treasures[code] };
+    for (const treasure of $treasures) {
+      if (treasure.code === code) { return { ...treasure }; }
+    }
   }
 
   function rollForTreasure(tile) {
     return lookForTreasure(tile,Random.roll(100));
   }
 
-  // We pass in roll into this function so that it can easily be tested.
+
+  // We pass in roll into this function so that it can more easily be tested.
+  // There's still some randomness in this function because when we decide that
+  // a discovery has been made we still randomly pick a discovery based on its
+  // weight and validity.
   function lookForTreasure(tile,roll) {
     raiseHeat();
 
@@ -36,16 +54,30 @@ global.BuriedTreasure = (function() {
       $heat = 0;
 
       const discoverableTreasure = getDiscoverableTreasures(tile);
-      console.log("Discoverable:",discoverableTreasure);
+      const totalWeight = sumAllWeights(discoverableTreasure);
+      const weightRoll = Random.roll(totalWeight);
+
+      let index = 0;
+      let accumulator = 0;
+
+      while (accumulator < totalWeight) {
+        const discovery = $treasures[index++];
+
+        accumulator += discovery.weight;
+        if (weightRoll < accumulator) {
+          removeTreasure(index);
+          return discovery;
+        }
+      }
     }
   }
 
+  // We're just considering the min and max distances from the origin for now.
+  // We'll probably add some other conditions in the future though.
   function getDiscoverableTreasures(tile) {
     const distance = distanceToOrigin(tile.getCoordinates())
 
-    return Object.keys($treasures).filter((key) => {
-      const treasureData = $treasures[key];
-
+    return $treasures.filter(treasureData => {
       if (treasureData.distance) {
         let min = treasureData.distance[0];
         let max = treasureData.distance[1];
@@ -55,6 +87,10 @@ global.BuriedTreasure = (function() {
 
       return true;
     });
+  }
+
+  function sumAllWeights(discoveries) {
+    return discoveries.reduce((sum, discovery) => sum + discovery.weight, 0);
   }
 
   function distanceToOrigin(coordinates) {
@@ -88,8 +124,11 @@ global.BuriedTreasure = (function() {
   return Object.freeze({
     reset,
     addTreasures,
+    removeTreasure,
     getTreasure,
     rollForTreasure,
+    getDiscoverableTreasures,
+    sumAllWeights,
     lookForTreasure,
     getHeat,
     pack,

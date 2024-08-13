@@ -5,7 +5,7 @@ ExtraRegistry.register(_tutorialStage,{
     'dungeon-view.hide-speed-control': true,
   },
 
-  buriedTreasure: 'baseline-treasure',
+  buriedTreasure: 'baseline-treasures',
   baggedTiles: 'baseline-tiles',
   sequentialTiles:[
     { code:'baseline-h2-0', extra:{ drawTrigger:'tutorial.pause-and-zero', drawNote:'tutorial.connecting-tiles', placementEvent:'tutorial-start-2' }},
