@@ -5,6 +5,25 @@ describe('BuriedTreasure', function() {
     expect(BuriedTreasure.getTreasure('coal-mine').type).to.equal(_resource);
   });
 
+  describe('removeTreasure()', function() {
+    beforeEach(function() {
+      BuriedTreasure.addTreasures('baseline-treasures');
+    });
+
+    it('reduces the count of a buried treasure', function() {
+      let i = BuriedTreasure.indexOfTreasure('coal-mine')
+      BuriedTreasure.removeTreasure(i);
+      expect(BuriedTreasure.getTreasure('coal-mine').count).to.equal(1);
+    });
+
+    it('removes a buried treasure when count reaches 0', function () {
+      let i = BuriedTreasure.indexOfTreasure('coal-mine')
+      BuriedTreasure.removeTreasure(i);
+      BuriedTreasure.removeTreasure(i);
+      expect(BuriedTreasure.getTreasure('coal-mine')).to.be.undefined;
+    });
+  });
+
   describe('lookForTreasure()', function() {
 
     beforeEach(function() {

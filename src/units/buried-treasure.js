@@ -18,7 +18,7 @@ global.BuriedTreasure = (function() {
   //
   // Add treasures either from a standard package or as map of discoveries.
   // Expected format is 'currently'
-  //       'coal-mine':{ type:_resource, total:2, distance:[0,null], weight:100 },
+  //       'coal-mine':{ type:_resource, count:2, distance:[0,null], weight:100 },
   function addTreasures(argument) {
     $treasures = (typeof argument === 'string') ? ExtraRegistry.lookup(argument).treasures : argument;
   }
@@ -26,8 +26,8 @@ global.BuriedTreasure = (function() {
   function removeTreasure(index) {
     if ($treasures[index] == null) { throw `No treasure at index ${index}`; }
 
-    $treasures[index].total -= 1;
-    if ($treasures[index].total < 1) {
+    $treasures[index].count -= 1;
+    if ($treasures[index].count < 1) {
       $treasures.splice(index,1);
     }
   }
@@ -35,6 +35,12 @@ global.BuriedTreasure = (function() {
   function getTreasure(code) {
     for (const treasure of $treasures) {
       if (treasure.code === code) { return { ...treasure }; }
+    }
+  }
+
+  function indexOfTreasure(code) {
+    for (let i=0; i<$treasures.length; i++) {
+      if ($treasures[i].code === code) { return i; }
     }
   }
 
@@ -62,10 +68,10 @@ global.BuriedTreasure = (function() {
 
       while (accumulator < totalWeight) {
         const discovery = $treasures[index++];
-
         accumulator += discovery.weight;
+
         if (weightRoll < accumulator) {
-          removeTreasure(index);
+          removeTreasure(index - 1);
           return discovery;
         }
       }
@@ -126,6 +132,7 @@ global.BuriedTreasure = (function() {
     addTreasures,
     removeTreasure,
     getTreasure,
+    indexOfTreasure,
     rollForTreasure,
     getDiscoverableTreasures,
     sumAllWeights,
