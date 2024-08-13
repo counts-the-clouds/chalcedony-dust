@@ -1,7 +1,7 @@
 global.TileLayer = function(segment) {
 
   const $segment = segment;
-  const $graphics = $segment.getSegmentData().graphics;
+  const $graphics = $segment.getGraphics()
   const $shapeContainer = buildContainer();
   const $drawing = buildDrawing();
 

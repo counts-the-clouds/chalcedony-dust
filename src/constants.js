@@ -61,8 +61,8 @@ global._keyCodeF11 = 'F11';
 // === Game ====================================================================
 
 // Stages
-global._tutorial = 'tutorial';
-global._baseline = 'baseline';
+global._tutorialStage = 'tutorial-stage';
+global._baselineStage = 'baseline-stage';
 
 // System Flags
 global._currentEvent = 'game.current-event';
@@ -98,6 +98,11 @@ global._node = 'node';
 global._noRotate = 'no-rotate';
 global._noDiscard = 'no-discard';
 global._placeNext = 'place-next';
+
+// === Buried Treasure =========================================================
+
+// Type
+global._resource = 'resource'
 
 // === Dungeon =================================================================
 global._chunkLength = 16;
