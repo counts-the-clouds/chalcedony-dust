@@ -38,7 +38,7 @@ global.TileLayer = function(segment) {
       return drawing;
     }
     catch(error) {
-      logError(`Cannot Build Layer for ${segment}:${segment.getTileCode()}`,error,{
+      logError(`Cannot Build Layer for ${segment}:${segment.getTile().getCode()||'custom'}`,error,{
         system:'TileLayer'
       });
     }

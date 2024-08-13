@@ -12,14 +12,16 @@ global.DiscoveryAdjuster = (function() {
   //       make the resource node fit.
   function addResourceNode(tile, discovery) {
     const index = tile.getSegments().length;
-    const graphics = { shape:'node-small' };
+    const graphics = { shape:'node-large' };
 
     const segment = Segment({ tileID:tile.getID(), type:_resource, index:index, graphics:graphics });
     const feature = Feature({ state:_complete });
     feature.addSegment(segment);
     tile.addSegment(segment);
+
+    console.log(`Discover Made on ${tile}`,discovery)
   }
-c
+
   return Object.freeze({
     adjustTile,
   });

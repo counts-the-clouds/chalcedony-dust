@@ -160,6 +160,7 @@ global.GameController = (function() {
   function attemptDiscovery(tile) {
     const discovery = BuriedTreasure.rollForTreasure(tile);
     if (discovery) {
+      log(`A Discovery was made`, { system:'GameController', level:1, data:{ discovery }});
       DiscoveryAdjuster.adjustTile(tile,discovery);
     }
   }
