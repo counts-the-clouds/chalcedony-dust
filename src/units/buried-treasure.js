@@ -55,6 +55,7 @@ global.BuriedTreasure = (function() {
   // === Rolling For Treasure ==================================================
 
   function rollForTreasure(tile) {
+    if (GameFlags.has(_forbidDiscovery)) { return undefined; }
     if (GameFlags.has(_forceDiscovery)) {
       const forcedDiscovery = getForcedDiscovery(tile);
 
@@ -129,11 +130,27 @@ global.BuriedTreasure = (function() {
   //       of treasure hunting buff that increases the rate. I think raising
   //       the heat by 3% each tile sounds like a reasonable rate to start with.
   function raiseHeat() { $heat += 3; }
+  function setHeat(heat) { $heat = heat; }
   function getHeat() { return $heat; }
 
   // === Forced Discovery ======================================================
 
-  function forceDiscovery(code) { GameFlags.set(_forceDiscovery,code); }
+  // Force and forbid are mutually exclusive, setting one should clear the
+  // other. GameFlags won't enforce this, so these functions should usually be
+  // used to set these flags..
+  function forbidDiscovery() {
+    GameFlags.set(_forbidDiscovery, true);
+    if (GameFlags.has(_forceDiscovery)) {
+      GameFlags.clear(_forceDiscovery);
+    }
+  }
+
+  function forceDiscovery(code) {
+    GameFlags.set(_forceDiscovery, code);
+    if (GameFlags.has(_forbidDiscovery)) {
+      GameFlags.clear(_forbidDiscovery);
+    }
+  }
 
   function getForcedDiscovery(tile) {
     const forcedCode = GameFlags.get(_forceDiscovery);
@@ -188,7 +205,9 @@ global.BuriedTreasure = (function() {
     getDiscoverableTreasures,
     sumAllWeights,
     lookForTreasure,
+    setHeat,
     getHeat,
+    forbidDiscovery,
     forceDiscovery,
     pack,
     unpack,

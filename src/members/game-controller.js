@@ -128,6 +128,11 @@ global.GameController = (function() {
       Note.clear();
       InnerCellHighlight.hide();
 
+      const discovery = BuriedTreasure.rollForTreasure(tile);
+      if (discovery) {
+        console.log("Discovered Something at Tile",discovery);
+      }
+
       DungeonGrid.setTile(coordinates, tile);
       DungeonView.placeTile(tile);
 

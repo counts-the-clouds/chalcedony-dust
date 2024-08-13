@@ -78,6 +78,14 @@ describe('BuriedTreasure', function() {
     expect(BuriedTreasure.sumAllWeights(treasures)).to.equal(666);
   });
 
+  it('Forbids Discovery', function() {
+    BuriedTreasure.addTreasures('baseline-treasures');
+    BuriedTreasure.setHeat(100);
+    BuriedTreasure.forbidDiscovery();
+
+    expect(BuriedTreasure.rollForTreasure(distantTile())).to.be.undefined;
+  });
+
   describe('Forced Discovery', function() {
     it('when a discovery is invalid it reverts to standard (random) discovery', function() {
       BuriedTreasure.addTreasures([

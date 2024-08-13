@@ -65,8 +65,11 @@ global._tutorialStage = 'tutorial-stage';
 global._baselineStage = 'baseline-stage';
 
 // System Flags
-global._currentEvent = 'game.current-event';
+global._forbidDiscovery = 'buried-treasure.forbid-discovery';
 global._forceDiscovery = 'buried-treasure.force-discovery';
+global._currentEvent = 'event.current-event';
+global._disableMovement = 'dungeon-view.disable-movement';
+global._hideSpeedControl = 'dungeon-view.hide-speed-control';
 
 // === Tiles ===================================================================
 

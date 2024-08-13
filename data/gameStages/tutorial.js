@@ -1,6 +1,7 @@
 ExtraRegistry.register(_tutorialStage,{
 
   flags: {
+    'buried-treasure.forbid-discovery': true,
     'dungeon-view.disable-movement': true,
     'dungeon-view.hide-speed-control': true,
   },
