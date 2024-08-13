@@ -1,9 +1,6 @@
 global.DiscoveryAdjuster = (function() {
 
   function adjustTile(tile,discovery) {
-    console.log("=== Discovery Made ===")
-    console.log(tile.toString(),'->',discovery)
-
     if (discovery.type === _discoverResource) {
       addResourceNode(tile, discovery);
     }
@@ -21,10 +18,8 @@ global.DiscoveryAdjuster = (function() {
     const feature = Feature({ state:_complete });
     feature.addSegment(segment);
     tile.addSegment(segment);
-
-    console.log(`TODO: Make feature a ResourceNode of type ${discovery.code}`)
   }
-
+c
   return Object.freeze({
     adjustTile,
   });
