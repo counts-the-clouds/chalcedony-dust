@@ -106,7 +106,8 @@ global._placeNext = 'place-next';
 // === Buried Treasure =========================================================
 
 // Type
-global._resource = 'resource'
+global._discoverResource = 'discover-resource'
+global._discoverEvent = 'discover-event'
 
 // === Dungeon =================================================================
 global._chunkLength = 16;

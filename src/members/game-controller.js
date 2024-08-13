@@ -128,10 +128,7 @@ global.GameController = (function() {
       Note.clear();
       InnerCellHighlight.hide();
 
-      const discovery = BuriedTreasure.rollForTreasure(tile);
-      if (discovery) {
-        console.log("Discovered Something at Tile",discovery);
-      }
+      attemptDiscovery(tile);
 
       DungeonGrid.setTile(coordinates, tile);
       DungeonView.placeTile(tile);
@@ -157,6 +154,13 @@ global.GameController = (function() {
         system:'GameController',
         data:placementData
       });
+    }
+  }
+
+  function attemptDiscovery(tile) {
+    const discovery = BuriedTreasure.rollForTreasure(tile);
+    if (discovery) {
+      DiscoveryAdjuster.adjustTile(tile,discovery);
     }
   }
 

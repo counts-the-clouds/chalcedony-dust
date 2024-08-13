@@ -18,7 +18,7 @@ global.BuriedTreasure = (function() {
   //
   // Add treasures either from a standard package or as map of discoveries.
   // Expected format is 'currently'
-  //       'coal-mine':{ type:_resource, count:2, distance:[0,null], weight:100 },
+  //       'coal-mine':{ type:_discoverResource, count:2, distance:[0,null], weight:100 },
   function addTreasures(argument) {
     $treasures = (typeof argument === 'string') ? ExtraRegistry.lookup(argument).treasures : argument;
   }
@@ -97,12 +97,17 @@ global.BuriedTreasure = (function() {
     }
   }
 
-  // We're just considering the min and max distances from the origin for now.
-  // We'll probably add some other conditions in the future though.
+  // Certain discoveries make adjustments to the placed tile. A resource node
+  // will display that node on the tile. If this tile is already a node type it
+  // can't hold another resource node. We also consider the the min and max
+  // distances from the origin.
   function getDiscoverableTreasures(tile) {
     const distance = distanceToOrigin(tile.getCoordinates())
+    const isNode = tile.getSegments().map(segment => segment.getType()).includes(_node);
 
     return $treasures.filter(treasureData => {
+      if (isNode && treasureData.type === _discoverResource) { return false; }
+
       if (treasureData.distance) {
         let min = treasureData.distance[0];
         let max = treasureData.distance[1];
