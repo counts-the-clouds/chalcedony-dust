@@ -47,6 +47,10 @@ global.GameController = (function() {
         Tile(tileData));
     });
 
+    if (stageData.buriedTreasure) {
+      BuriedTreasure.addTreasures(stageData.buriedTreasure);
+    }
+
     if (stageData.startingEvent) {
       GameFlags.set(_currentEvent,stageData.startingEvent);
     }

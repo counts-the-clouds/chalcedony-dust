@@ -99,6 +99,11 @@ global._noRotate = 'no-rotate';
 global._noDiscard = 'no-discard';
 global._placeNext = 'place-next';
 
+// === Buried Treasure =========================================================
+
+// Type
+global._resource = 'resource'
+
 // === Dungeon =================================================================
 global._chunkLength = 16;
 global._tileSize = 128;
