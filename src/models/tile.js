@@ -112,6 +112,7 @@ global.Tile = function(data) {
 
   // === Segments ===
 
+  function addSegment(segment) { $segments.push(segment.getID()); }
   function getSegmentIDs() { return $segments; }
   function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
 
@@ -169,6 +170,7 @@ global.Tile = function(data) {
     getRotation,
 
     getEdges,
+    addSegment,
     getSegmentIDs,
     getSegments,
     getSegmentWithExit,

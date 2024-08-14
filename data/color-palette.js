@@ -75,6 +75,20 @@ ExtraRegistry.register('ColorPalette',{
         select: '#5e4777',
       }
     },
+    resource:{
+      incomplete: {
+        dark: '#FF0000', // Should never be incomplete, but is.
+        base: '#FF0000',
+        light: '#FF0000',
+        select: '#FF0000',
+      },
+      complete: {
+        dark: '#2a3020',
+        base: '#454e36',
+        light: '#626f4d',
+        select: '#525c76',
+      }
+    }
   },
 
   viewport: {

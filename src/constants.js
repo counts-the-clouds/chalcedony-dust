@@ -65,7 +65,11 @@ global._tutorialStage = 'tutorial-stage';
 global._baselineStage = 'baseline-stage';
 
 // System Flags
-global._currentEvent = 'game.current-event';
+global._forbidDiscovery = 'buried-treasure.forbid-discovery';
+global._forceDiscovery = 'buried-treasure.force-discovery';
+global._currentEvent = 'event.current-event';
+global._disableMovement = 'dungeon-view.disable-movement';
+global._hideSpeedControl = 'dungeon-view.hide-speed-control';
 
 // === Tiles ===================================================================
 
@@ -93,6 +97,7 @@ global._lake = 'lake'
 // Non-Edge Segment Types
 global._core = 'core';
 global._node = 'node';
+global._resource = 'resource';
 
 // Tile Placement Rules
 global._noRotate = 'no-rotate';
@@ -102,7 +107,8 @@ global._placeNext = 'place-next';
 // === Buried Treasure =========================================================
 
 // Type
-global._resource = 'resource'
+global._discoverResource = 'discover-resource'
+global._discoverEvent = 'discover-event'
 
 // === Dungeon =================================================================
 global._chunkLength = 16;

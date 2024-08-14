@@ -18,13 +18,15 @@ global.BuriedTreasure = (function() {
   //
   // Add treasures either from a standard package or as map of discoveries.
   // Expected format is 'currently'
-  //       'coal-mine':{ type:_resource, count:2, distance:[0,null], weight:100 },
+  //       'coal-mine':{ type:_discoverResource, count:2, distance:[0,null], weight:100 },
   function addTreasures(argument) {
-    $treasures = (typeof argument === 'string') ? ExtraRegistry.lookup(argument).treasures : argument;
+    $treasures = (typeof argument === 'string') ?  [...ExtraRegistry.lookup(argument).treasures] : argument;
   }
 
-  function removeTreasure(index) {
-    if ($treasures[index] == null) { throw `No treasure at index ${index}`; }
+  function removeTreasure(code) {
+    const index = indexOfTreasure(code);
+
+    if (index == null) { throw `No such treasure ${code}`; }
 
     $treasures[index].count -= 1;
     if ($treasures[index].count < 1) {
@@ -38,52 +40,74 @@ global.BuriedTreasure = (function() {
     }
   }
 
+  function setCount(code,count) {
+    const index = indexOfTreasure(code);
+    if (index == null) { throw `No such treasure ${code}`; }
+    $treasures[index].count = count;
+  }
+
   function indexOfTreasure(code) {
     for (let i=0; i<$treasures.length; i++) {
       if ($treasures[i].code === code) { return i; }
     }
   }
 
+  // === Rolling For Treasure ==================================================
+
   function rollForTreasure(tile) {
+    if (GameFlags.has(_forbidDiscovery)) { return undefined; }
+    if (GameFlags.has(_forceDiscovery)) {
+      const forcedDiscovery = getForcedDiscovery(tile);
+
+      // If we're forcing the discovery to happen we still need to make sure
+      // that the discovery is valid for the tile being placed. If the forced
+      // discovery can't happen we want to roll as normal otherwise a forced
+      // discovery that isn't possible could block any other discoveries from
+      // happening.
+      if (forcedDiscovery) { return forcedDiscovery; }
+    }
+
     return lookForTreasure(tile,Random.roll(100));
   }
 
-
-  // We pass in roll into this function so that it can more easily be tested.
-  // There's still some randomness in this function because when we decide that
-  // a discovery has been made we still randomly pick a discovery based on its
-  // weight and validity.
   function lookForTreasure(tile,roll) {
     raiseHeat();
-
     if (roll < $heat) {
       $heat = 0;
 
-      const discoverableTreasure = getDiscoverableTreasures(tile);
-      const totalWeight = sumAllWeights(discoverableTreasure);
-      const weightRoll = Random.roll(totalWeight);
+      const discoverableTreasures = getDiscoverableTreasures(tile);
+      const totalWeight = sumAllWeights(discoverableTreasures);
 
-      let index = 0;
-      let accumulator = 0;
+      return selectDiscovery(discoverableTreasures, totalWeight, Random.roll(totalWeight))
+    }
+  }
 
-      while (accumulator < totalWeight) {
-        const discovery = $treasures[index++];
-        accumulator += discovery.weight;
+  function selectDiscovery(discoverableTreasures, totalWeight, roll) {
+    let index = 0;
+    let accumulator = 0;
 
-        if (weightRoll < accumulator) {
-          removeTreasure(index - 1);
-          return discovery;
-        }
+    while (accumulator < totalWeight) {
+      const discovery = discoverableTreasures[index++];
+      accumulator += discovery.weight;
+
+      if (roll < accumulator) {
+        removeTreasure(discovery.code);
+        return discovery;
       }
     }
   }
 
-  // We're just considering the min and max distances from the origin for now.
-  // We'll probably add some other conditions in the future though.
+  // Certain discoveries make adjustments to the placed tile. A resource node
+  // will display that node on the tile. If this tile is already a node type it
+  // can't hold another resource node. We also consider the the min and max
+  // distances from the origin.
   function getDiscoverableTreasures(tile) {
     const distance = distanceToOrigin(tile.getCoordinates())
+    const isNode = tile.getSegments().map(segment => segment.getType()).includes(_node);
 
     return $treasures.filter(treasureData => {
+      if (isNode && treasureData.type === _discoverResource) { return false; }
+
       if (treasureData.distance) {
         let min = treasureData.distance[0];
         let max = treasureData.distance[1];
@@ -111,7 +135,61 @@ global.BuriedTreasure = (function() {
   //       of treasure hunting buff that increases the rate. I think raising
   //       the heat by 3% each tile sounds like a reasonable rate to start with.
   function raiseHeat() { $heat += 3; }
+  function setHeat(heat) { $heat = heat; }
   function getHeat() { return $heat; }
+
+  // === Forced Discovery ======================================================
+
+  // Force and forbid are mutually exclusive, setting one should clear the
+  // other. GameFlags won't enforce this, so these functions should usually be
+  // used to set these flags..
+  function forbidDiscovery() {
+    GameFlags.set(_forbidDiscovery, true);
+    if (GameFlags.has(_forceDiscovery)) {
+      GameFlags.clear(_forceDiscovery);
+    }
+  }
+
+  function forceDiscovery(code) {
+    GameFlags.set(_forceDiscovery, code);
+    if (GameFlags.has(_forbidDiscovery)) {
+      GameFlags.clear(_forbidDiscovery);
+    }
+  }
+
+  function getForcedDiscovery(tile) {
+    const forcedCode = GameFlags.get(_forceDiscovery);
+    const discoverable = getDiscoverableTreasures(tile);
+
+    if (discoverable.length === 0) {
+      return undefined
+    }
+
+    // If forced code is a string, we can assume it's the code of the discovery
+    // we want to make. If that discovery is valid (and thus in the discoverable
+    // array) we can remove and return it.
+    if (typeof forcedCode === 'string') {
+      const index = ArrayHelper.find(discoverable, d => d.code === forcedCode);
+      if (index >= 0) {
+        GameFlags.clear(_forceDiscovery);
+        const discovery = discoverable[index];
+        removeTreasure(discovery.code);
+        return discovery;
+      }
+      return undefined;
+    }
+
+    // Otherwise, when the forcedCode is set to true, we want to randomly
+    // return anything that's currently discoverable. (SelectDiscovery handles
+    // the removal for us here)
+    if (forcedCode === true) {
+      GameFlags.clear(_forceDiscovery);
+      const totalWeight = sumAllWeights(discoverable);
+      return selectDiscovery(discoverable, totalWeight, Random.roll(totalWeight))
+    }
+
+    throw `Improper forced discovery value: ${forcedCode}`;
+  }
 
   // === Serialization =========================================================
 
@@ -132,12 +210,16 @@ global.BuriedTreasure = (function() {
     addTreasures,
     removeTreasure,
     getTreasure,
+    setCount,
     indexOfTreasure,
     rollForTreasure,
     getDiscoverableTreasures,
     sumAllWeights,
     lookForTreasure,
+    setHeat,
     getHeat,
+    forbidDiscovery,
+    forceDiscovery,
     pack,
     unpack,
   });

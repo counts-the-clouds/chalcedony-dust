@@ -9,6 +9,10 @@ global.Registry = function(typeName) {
     $registry[code] = data;
   }
 
+  // I'd like to return something actually immutable by using structuredClone(),
+  // but some of the data objects contain functions which can't be serialized.
+  // I just need to be careful to make copies of arrays and objects when using
+  // data pulled from a registry.
   function lookup(code) {
     if ($registry[code] == null) {
       throw `Unknown ${$typeName}[${code}]`

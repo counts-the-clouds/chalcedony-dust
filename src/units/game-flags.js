@@ -6,6 +6,7 @@
       $flags = {}
     }
 
+    function all() { return {...$flags}; }
     function has(key) { return $flags[key] != null; }
     function get(key) { return $flags[key]; }
     function set(key,value) { return $flags[key] = value; }
@@ -21,6 +22,7 @@
 
     return Object.freeze({
       reset,
+      all,
       has,
       get,
       set,

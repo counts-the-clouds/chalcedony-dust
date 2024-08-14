@@ -23,6 +23,11 @@ EventRegistry.register('tutorial-start-3', {
     });
 
     return context;
+  },
+
+  onFinish: () => {
+    GameFlags.clear(_forbidDiscovery);
   }
+
 
 });
