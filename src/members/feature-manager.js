@@ -17,6 +17,10 @@ global.FeatureManager = (function() {
     // console.log('   Exits',exits);
     // console.log(`   Neighbors`,neighbors);
 
+    // If a feature has already been created for this segment (as with the
+    // resource nodes) we don't need to do anything.
+    if (segment.getFeatureID() != null) { return; }
+
     // If the segment has no exits then we know it hasn't connected to anything
     // else, so it must be a new feature. The nodes and the dungeon core are
     // given features to unify the way we interact with tiles.

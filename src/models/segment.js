@@ -53,8 +53,10 @@ global.Segment = function(data) {
   }
 
   function shouldBeComplete() {
-    // The core is always complete.
+
+    // The core and resource nodes are always complete.
     if (getType() === _core) { return true; }
+    if (getType() === _resource) { return true; }
 
     // A node segment is complete when all the other segments on this tile are
     // complete.

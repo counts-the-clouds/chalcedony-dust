@@ -16,7 +16,8 @@ global.DiscoveryAdjuster = (function() {
 
     const segment = Segment({ tileID:tile.getID(), type:_resource, index:index, graphics:graphics });
     const feature = Feature({ state:_complete });
-    feature.addSegment(segment);
+          feature.addSegment(segment);
+
     tile.addSegment(segment);
 
     console.log(`Discover Made on ${tile}`,discovery)
