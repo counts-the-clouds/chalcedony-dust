@@ -118,6 +118,7 @@ global.Tile = function(data) {
   function addSegment(segment) { $segments.push(segment.getID()); }
   function getSegmentIDs() { return $segments; }
   function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
+  function resetSegments() { $segments = []; }
 
   function getSegmentWithExit(direction) {
     return getSegments().filter(segment => {
@@ -177,6 +178,7 @@ global.Tile = function(data) {
     getSegmentIDs,
     getSegments,
     getSegmentWithExit,
+    resetSegments,
     getFeatures,
 
     toString,
