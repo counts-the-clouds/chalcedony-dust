@@ -24,7 +24,7 @@ global.GameController = (function() {
     //       to handle more complex games. We might also want to loop through
     //       the game flags to see what tiles have been enabled.
     if (stageData.baggedTiles) {
-      TileBag.addBaggedTiles(ExtraRegistry.lookup(stageData.baggedTiles));
+      TileBag.addBaggedTiles(structuredClone(ExtraRegistry.lookup(stageData.baggedTiles)));
     }
 
     if (stageData.sequentialTiles) {
@@ -128,8 +128,12 @@ global.GameController = (function() {
       Note.clear();
       InnerCellHighlight.hide();
 
-      attemptDiscovery(tile);
+      // Placing the tile will also set the coordinates, but I need to have
+      // them set before attemptDiscovery() is called. I don't think there's
+      // any harm in setting them twice though.
+      tile.setCoordinates(coordinates);
 
+      BuriedTreasure.attemptDiscovery(tile);
       DungeonGrid.setTile(coordinates, tile);
       DungeonView.placeTile(tile);
 
@@ -157,13 +161,6 @@ global.GameController = (function() {
     }
   }
 
-  function attemptDiscovery(tile) {
-    const discovery = BuriedTreasure.rollForTreasure(tile);
-    if (discovery) {
-      log(`A Discovery was made`, { system:'GameController', level:1, data:{ discovery }});
-      DiscoveryAdjuster.adjustTile(tile,discovery);
-    }
-  }
 
   async function endEvent() {
     GameFlags.clear(_currentEvent);

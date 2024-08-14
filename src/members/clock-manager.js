@@ -109,9 +109,11 @@ global.ClockManager = (function() {
   function getClockSpeed() { return $clockSpeed; }
 
   function setClockSpeed(speed) {
-    $previousSpeed = $clockSpeed;
-    $clockSpeed = speed
-    SpeedControl.activate(speed);
+    if ($clockSpeed !== speed) {
+      $previousSpeed = $clockSpeed;
+      $clockSpeed = speed
+      SpeedControl.activate(speed);
+    }
   }
 
   return Object.freeze({

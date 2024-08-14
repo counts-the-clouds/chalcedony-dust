@@ -1,6 +1,5 @@
 ExtraRegistry.register('ColorPalette',{
 
-
   cell:{
     background: 'rgba(50,60,70,0.05)',
 
@@ -76,12 +75,6 @@ ExtraRegistry.register('ColorPalette',{
       }
     },
     resource:{
-      incomplete: {
-        dark: '#FF0000', // Should never be incomplete, but is.
-        base: '#FF0000',
-        light: '#FF0000',
-        select: '#FF0000',
-      },
       complete: {
         dark: '#2a3020',
         base: '#454e36',

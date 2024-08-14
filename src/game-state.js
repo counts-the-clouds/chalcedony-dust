@@ -50,10 +50,6 @@ global.GameState = (function() {
     }
     catch(error) {
       logError("Error Loading Game State", error, { system:'GameState' });
-
-      await clear();
-      reset();
-      await saveState();
     }
 
     log("Loaded Game State", { system:"GameState" });

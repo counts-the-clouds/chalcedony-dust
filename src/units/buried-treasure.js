@@ -20,7 +20,7 @@ global.BuriedTreasure = (function() {
   // Expected format is 'currently'
   //       'coal-mine':{ type:_discoverResource, count:2, distance:[0,null], weight:100 },
   function addTreasures(argument) {
-    $treasures = (typeof argument === 'string') ?  [...ExtraRegistry.lookup(argument).treasures] : argument;
+    $treasures = (typeof argument === 'string') ? structuredClone(ExtraRegistry.lookup(argument).treasures) : argument;
   }
 
   function removeTreasure(code) {
@@ -54,6 +54,18 @@ global.BuriedTreasure = (function() {
 
   // === Rolling For Treasure ==================================================
 
+  // Called by the GameController when a tile is placed. This will make the
+  // adjustments to the tile being placed if a discovery was made.
+  function attemptDiscovery(tile) {
+    if (tile.getCoordinates() == null) { throw `The tile must have coordinates` }
+
+    const discovery = rollForTreasure(tile);
+    if (discovery) {
+      log(`A Discovery was made`, { system:'BuriedTreasure', level:1, data:{ discovery }});
+      DiscoveryAdjuster.adjustTile(tile,discovery);
+    }
+  }
+
   function rollForTreasure(tile) {
     if (GameFlags.has(_forbidDiscovery)) { return undefined; }
     if (GameFlags.has(_forceDiscovery)) {
@@ -71,7 +83,7 @@ global.BuriedTreasure = (function() {
   }
 
   function lookForTreasure(tile,roll) {
-    raiseHeat();
+    raiseHeat(tile);
     if (roll < $heat) {
       $heat = 0;
 
@@ -124,17 +136,35 @@ global.BuriedTreasure = (function() {
   }
 
   function distanceToOrigin(coordinates) {
-    if (coordinates == null) { throw `The tile must have coordinates` }
     const x = coordinates.gx * coordinates.gx;
     const y = coordinates.gy * coordinates.gy;
     return Math.floor(Math.sqrt(x+y));
   }
 
-  // TODO: Making this its own function for now because there may be factors
-  //       that adjust how much we raise the heat by. There could be some kind
-  //       of treasure hunting buff that increases the rate. I think raising
-  //       the heat by 3% each tile sounds like a reasonable rate to start with.
-  function raiseHeat() { $heat += 3; }
+  // TODO: There may be other factors that adjust how much we raise the heat
+  //       by. There could be some kind of treasure hunting buff that increases
+  //       the rate. I think a default value if 3% each tile sounds like a
+  //       reasonable rate to start with.
+  //
+  // When raising the heat we need to consider the tile being placed and the
+  // tile's distance from the origin. We don't want to make discoveries early
+  // on, so we require a distance of at least 5 before raising the heat. It's
+  // possible to place distant tiles to raise the heat, then place a close tile
+  // and make a discovery. That's fine, heat is more of a time gate. The
+  // individual discoveries have their own distance requirements. We should
+  // also only raise the heat if there are things that can be discovered when a
+  // tile is placed.
+  function raiseHeat(tile) {
+    const distance = distanceToOrigin(tile.getCoordinates())
+    const discoverable = getDiscoverableTreasures(tile);
+
+    console.log(`Distance:${distance}  Discoverables:${discoverable.length}`);
+    if (distance >= 5 && discoverable.length > 0) {
+      console.log(`   Raising Heat: ${$heat}`)
+      $heat += 3;
+    }
+  }
+
   function setHeat(heat) { $heat = heat; }
   function getHeat() { return $heat; }
 
@@ -212,6 +242,7 @@ global.BuriedTreasure = (function() {
     getTreasure,
     setCount,
     indexOfTreasure,
+    attemptDiscovery,
     rollForTreasure,
     getDiscoverableTreasures,
     sumAllWeights,

@@ -1,5 +1,8 @@
 global.Tile = function(data) {
 
+  // console.log("=== Building Tile ===")
+  // console.log(data);
+
   const $code = data.code;
   const $id = data.id || TileDataStore.nextID();
 
@@ -78,7 +81,7 @@ global.Tile = function(data) {
 
   function getClock() { return ClockDataStore.get($clockID); }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
-  function getCoordinates() { return { ...$coordinates }; }
+  function getCoordinates() { return $coordinates ? { ...$coordinates } : null; }
 
   function getNeighbors() {
     const x = $coordinates.gx;

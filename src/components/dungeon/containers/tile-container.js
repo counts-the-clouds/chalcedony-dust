@@ -1,5 +1,7 @@
 global.TileContainer = async function(tile) {
 
+  Validate.exists('Tile', tile);
+
   const $tile = tile;
   const $tileContainer = new Pixi.Container();
   const $background = new Pixi.Graphics;
