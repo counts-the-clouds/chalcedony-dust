@@ -31,9 +31,9 @@ global.Models = (function() {
   }
 
   async function loadAll() {
-    await Promise.all($dataStores.map(async store => {
+    for (const store of $dataStores) {
       await store.load();
-    }));
+    }
   }
 
   function reset() { $dataStores.forEach(store => { store.reset(); }); }

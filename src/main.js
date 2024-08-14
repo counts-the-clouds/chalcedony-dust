@@ -15,9 +15,9 @@ global.Main = async function() {
     MainMenu.openFully();
     KeyboardMonitor.start();
 
-    // if (Environment.isDevelopment) {
-    //   Tests.load();
-    // }
+    if (Environment.isDevelopment) {
+      Tests.load();
+    }
 
     log("Chalcedony Started",{ system:'Main', data:{
       environment: Environment.name,

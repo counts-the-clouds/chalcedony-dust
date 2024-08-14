@@ -22,7 +22,13 @@ global.DataStore = function(options) {
 
   function nextID() { return $autoIncrement++; }
 
-  function activeStore() { return Tests.running() ? $testStore : $realStore }
+  function activeStore() {
+    const store = Tests.running() ? $testStore : $realStore
+    if (store == null) { throw `${$name} DataStore has not been initialized.` }
+    return store;
+  }
+
+  function getName() { return $name; }
   function all() { return Object.values(activeStore()); }
   function exists(id) { return activeStore()[id] != null; }
   function get(id) { return activeStore()[id]; }
@@ -54,11 +60,6 @@ global.DataStore = function(options) {
     }
     catch(error) {
       logError(`Loading Error`, error, { system:`DataStore:${name}`});
-
-      reset();
-
-      await clear();
-      await save();
     }
   }
 
@@ -66,6 +67,7 @@ global.DataStore = function(options) {
     clear,
     reset,
     nextID,
+    getName,
     all,
     exists,
     get,
