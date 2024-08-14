@@ -96,6 +96,7 @@ global.GameController = (function() {
     await TileShelfView.addTile(tile);
     TileShelfView.positionTiles();
 
+    await Panopticon.induce(EventType.tileDrawn,{ tile });
     await GameState.saveState();
 
     log("Drew Tile",{ system:'GameController', code:tile.getCode(), id:tile.getID(), level:3 });
@@ -113,6 +114,7 @@ global.GameController = (function() {
     if (TileBag.isSequence()) { throw `We cannot force discard when the tile bag has a tile sequence to play.` }
 
     TileShelfView.removeTile(TileShelf.discardLastTile());
+    Panopticon.induce(EventType.tileDiscarded);
   }
 
   async function placeTile(coordinates,tile) {
@@ -151,6 +153,7 @@ global.GameController = (function() {
         TriggerRegistry.lookup(tile.getPlacementTrigger()).triggerFunction(tile);
       }
 
+      await Panopticon.induce(EventType.tilePlaced,{ tile, placementData });
       await GameState.saveState();
     }
     catch (error) {
@@ -160,7 +163,6 @@ global.GameController = (function() {
       });
     }
   }
-
 
   async function endEvent() {
     GameFlags.clear(_currentEvent);

@@ -1,4 +1,4 @@
-describe.only('DiscoveryAdjuster', function() {
+describe('DiscoveryAdjuster', function() {
 
   it('adds a resource node to a tile', function() {
     const tile = Tile({ code:'baseline-h2-0' });

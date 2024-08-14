@@ -63,6 +63,7 @@ global.BuriedTreasure = (function() {
     if (discovery) {
       log(`A Discovery was made`, { system:'BuriedTreasure', level:1, data:{ discovery }});
       DiscoveryAdjuster.adjustTile(tile,discovery);
+      Panopticon.induce(EventType.resourceDiscovered,{ tile, discovery });
     }
   }
 
