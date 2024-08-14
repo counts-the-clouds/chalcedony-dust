@@ -158,11 +158,7 @@ global.BuriedTreasure = (function() {
     const distance = distanceToOrigin(tile.getCoordinates())
     const discoverable = getDiscoverableTreasures(tile);
 
-    console.log(`Distance:${distance}  Discoverables:${discoverable.length}`);
-    if (distance >= 5 && discoverable.length > 0) {
-      console.log(`   Raising Heat: ${$heat}`)
-      $heat += 3;
-    }
+    if (distance >= 5 && discoverable.length > 0) { $heat += 3; }
   }
 
   function setHeat(heat) { $heat = heat; }
