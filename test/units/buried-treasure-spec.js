@@ -140,4 +140,15 @@ describe('BuriedTreasure', function() {
     });
   });
 
+  describe('pack()', function() {
+    it('serializes to JSON', function() {
+      BuriedTreasure.addTreasures('baseline-treasures');
+      BuriedTreasure.setHeat(69);
+
+      const packed = BuriedTreasure.pack();
+      expect(packed.heat).to.equal(69);
+      expect(packed.treasures[0].code).to.equal('coal-mine');
+    });
+  });
+
 });

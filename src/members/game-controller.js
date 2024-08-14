@@ -51,6 +51,9 @@ global.GameController = (function() {
       BuriedTreasure.addTreasures(stageData.buriedTreasure);
     }
 
+    // ===TEMP===
+    BuriedTreasure.forceDiscovery(true);
+
     if (stageData.startingEvent) {
       GameFlags.set(_currentEvent,stageData.startingEvent);
     }

@@ -20,7 +20,7 @@ global.BuriedTreasure = (function() {
   // Expected format is 'currently'
   //       'coal-mine':{ type:_discoverResource, count:2, distance:[0,null], weight:100 },
   function addTreasures(argument) {
-    $treasures = (typeof argument === 'string') ? ExtraRegistry.lookup(argument).treasures : argument;
+    $treasures = (typeof argument === 'string') ?  [...ExtraRegistry.lookup(argument).treasures] : argument;
   }
 
   function removeTreasure(code) {
