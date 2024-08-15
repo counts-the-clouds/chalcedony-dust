@@ -153,7 +153,7 @@ global.GameController = (function() {
         TriggerRegistry.lookup(tile.getPlacementTrigger()).triggerFunction(tile);
       }
 
-      await Panopticon.induce(EventType.tilePlaced,{ tile, placementData });
+      await Panopticon.induce(EventType.tilePlaced,{ tile });
       await GameState.saveState();
     }
     catch (error) {
