@@ -63,9 +63,20 @@ X.onClick = function(selector, callback) {
 // KeyboardMonitor
 
 X.registerKeyAction = function(action, when, callback) {
+  let active = false;
+
+  window.addEventListener('keyup', event => {
+    if (active && lookupActionCodes(action).includes(event.code)) {
+      active = false;
+    }
+  });
+
   window.addEventListener('keydown', event => {
-    if (lookupActionCodes(action).includes(event.code)) {
-      if (when === true || when(event)) { callback(event); }
+    if (!active && lookupActionCodes(action).includes(event.code)) {
+      if (when === true || when(event)) {
+        active = true;
+        callback(event);
+      }
     }
   });
 }
