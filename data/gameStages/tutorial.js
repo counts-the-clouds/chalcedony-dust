@@ -1,4 +1,4 @@
-ExtraRegistry.register(_tutorialStage,{
+ExtraRegistry.register(GameStages.tutorial,{
 
   flags: {
     'buried-treasure.forbid-discovery': true,

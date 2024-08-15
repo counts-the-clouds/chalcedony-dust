@@ -57,6 +57,11 @@ global.SystemFlags = Object.freeze({
   hideSpeedControl: 'dungeon-view.hide-speed-control',
 });
 
+global.GameStages = Object.freeze({
+  tutorial: 'tutorial',
+  baseline: 'baseline',
+});
+
 // There is a bit of overlap between the edge types and feature types but
 // there's no reason they can't share the same enum.
 global.TileType = Object.freeze({

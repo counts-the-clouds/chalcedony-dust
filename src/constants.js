@@ -3,12 +3,6 @@
 // global object they're not actually immutable. Prefix them with an underscore
 // to indicate that they shouldn't be set.
 
-// === Game ====================================================================
-
-// Stages
-global._tutorialStage = 'tutorial-stage';
-global._baselineStage = 'baseline-stage';
-
 // === Tiles ===================================================================
 
 // Directions

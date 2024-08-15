@@ -15,7 +15,7 @@ global.WorldState = (function() {
 
   const DefaultState = {
     gameCount: 0,
-    chapter: _tutorialStage,
+    chapter: GameStages.tutorial,
     options: {
       keyBindings: DefaultBindings,
     },

@@ -1,4 +1,4 @@
-ExtraRegistry.register(_baselineStage,{
+ExtraRegistry.register(GameStages.baseline,{
 
   baggedTiles: 'baseline-tiles',
   buriedTreasure: 'baseline-treasures',
