@@ -3,7 +3,7 @@ ShapeRegistry.register('hall-elbow-straight', {
     const state = segment.getState()
     const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
 
-    if (state === _incomplete) {
+    if (state === FeatureState.incomplete) {
       drawing.rect(52,0,24,76);
       drawing.rect(0,52,76,24);
       drawing.fill(0xCCCCCC);
@@ -15,7 +15,7 @@ ShapeRegistry.register('hall-elbow-straight', {
       drawing.tint = palette.base;
     }
 
-    if (state === _complete) {
+    if (state === FeatureState.complete) {
       drawing.rect(48,0,32,80);
       drawing.rect(0,48,80,32);
       drawing.fill(0xFFFFFF);

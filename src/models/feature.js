@@ -4,7 +4,7 @@ global.Feature = function(data) {
   const $segments = data.segments || [];
   const $segmentDrawings = [];
 
-  let $state = data.state || _incomplete;
+  let $state = data.state || FeatureState.incomplete;
 
   // ===========================================================================
 
@@ -62,7 +62,7 @@ global.Feature = function(data) {
   // nothing in test or when the Dungeon isn't visible for whatever reason.
   function complete() {
     if (DungeonView.isVisible()) {
-      $state = _complete;
+      $state = FeatureState.complete;
 
       const segments = getSegments();
 
@@ -101,7 +101,7 @@ global.Feature = function(data) {
 
   function isComplete() {
     if ($segments.length > 0) {
-      return SegmentDataStore.get($segments[0]).getState() === _complete;
+      return SegmentDataStore.get($segments[0]).getState() === FeatureState.complete;
     }
     throw `Don't call this function when there are no segments. If there are no
            segments there is no feature.`
@@ -109,7 +109,7 @@ global.Feature = function(data) {
 
   function isNotIncomplete() {
     if ($segments.length > 0) {
-      return SegmentDataStore.get($segments[0]).getState() !== _incomplete;
+      return SegmentDataStore.get($segments[0]).getState() !== FeatureState.incomplete;
     }
     throw `Don't call isNotIncomplete() when there are no segments. The feature 
            would not be incomplete, but not in the way you're probably thinking.`

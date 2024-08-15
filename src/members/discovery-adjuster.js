@@ -1,7 +1,7 @@
 global.DiscoveryAdjuster = (function() {
 
   function adjustTile(tile,discovery) {
-    if (discovery.type === _discoverResource) {
+    if (discovery.type === DiscoveryType.resource) {
       addResourceNode(tile, discovery);
     }
   }
@@ -47,7 +47,7 @@ global.DiscoveryAdjuster = (function() {
 
     const resourceSegment = Segment({ tileID:tile.getID(), type:TileType.resource, index:index, graphics:{ shape:'resource-node' } });
 
-    const feature = Feature({ state:_complete });
+    const feature = Feature({ state:FeatureState.complete });
           feature.addSegment(resourceSegment);
 
     tile.addSegment(resourceSegment);

@@ -6,7 +6,7 @@ global.TileLayer = function(segment) {
   const $drawing = buildDrawing();
 
   $shapeContainer.addChild($drawing);
-  if ($segment.getState() === _complete) {
+  if ($segment.getState() === FeatureState.complete) {
     wireEvents()
   }
 

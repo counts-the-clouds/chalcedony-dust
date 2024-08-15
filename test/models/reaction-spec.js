@@ -20,7 +20,7 @@ describe('Reaction', function() {
     it('triggers when conditions are met', function() {
       const tile = Tile({ code:'baseline-h1-n1-0' });
       const segment = tile.getSegments()[1];
-      const feature = Feature({ state:_complete });
+      const feature = Feature({ state:FeatureState.complete });
             feature.addSegment(segment);
 
       Reaction({ eventType:EventType.featureCompleted, triggerCode:'test.trigger', conditions:[Condition.featureTypeIs(TileType.node)] });

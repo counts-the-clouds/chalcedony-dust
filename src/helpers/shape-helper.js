@@ -10,7 +10,7 @@ global.ShapeHelper = {
     const type = segment.getType();
     const tint = ExtraRegistry.lookup('ColorPalette').segments[type][state].base;
 
-    if (state === _incomplete) {
+    if (state === FeatureState.incomplete) {
       drawing.poly(pointArrays[1]); // Middle
       drawing.fill(0xCCCCCC);
       drawing.poly(pointArrays[0]); // Inner
@@ -18,7 +18,7 @@ global.ShapeHelper = {
       drawing.tint = tint;
     }
 
-    if (state === _complete) {
+    if (state === FeatureState.complete) {
       drawing.poly(pointArrays[2]); // Outer
       drawing.fill(0xFFFFFF);
       drawing.poly(pointArrays[1]); // Middle
@@ -38,7 +38,7 @@ global.ShapeHelper = {
     const type = segment.getType();
     const tint = ExtraRegistry.lookup('ColorPalette').segments[type][state].base;
 
-    if (state === _incomplete) {
+    if (state === FeatureState.incomplete) {
       drawing.poly(pointArrays[2]); // Middle
       drawing.poly(pointArrays[3]);
       drawing.fill(0xCCCCCC);
@@ -48,7 +48,7 @@ global.ShapeHelper = {
       drawing.tint = tint;
     }
 
-    if (state === _complete) {
+    if (state === FeatureState.complete) {
       drawing.poly(pointArrays[4]); // Outer
       drawing.poly(pointArrays[5]);
       drawing.fill(0xFFFFFF);

@@ -3,11 +3,6 @@
 // global object they're not actually immutable. Prefix them with an underscore
 // to indicate that they shouldn't be set.
 
-// === Logging Codes ===
-global._info = "info";
-global._success = "success";
-global._warning = "warning";
-global._error = "error";
 
 // === Alert Positions ===
 global._sideAlert = 'side';
@@ -27,21 +22,6 @@ global._n = 'n';
 global._s = 's';
 global._e = 'e';
 global._w = 'w';
-
-// Tile States
-global._complete = 'complete';
-global._incomplete = 'incomplete';
-
-// Tile Placement Rules
-global._noRotate = 'no-rotate';
-global._noDiscard = 'no-discard';
-global._placeNext = 'place-next';
-
-// === Buried Treasure =========================================================
-
-// Type
-global._discoverResource = 'discover-resource'
-global._discoverEvent = 'discover-event'
 
 // === Dungeon =================================================================
 global._chunkLength = 16;

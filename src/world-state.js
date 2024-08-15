@@ -46,7 +46,7 @@ global.WorldState = (function() {
       $testState = { ...DefaultState };
     }
     else {
-      log("Resetting World State",{ system:'WorldState', level:1, type:_warning });
+      log("Resetting World State",{ system:'WorldState', level:1, type:LogType.warning });
       $realState = { ...DefaultState };
     }
 

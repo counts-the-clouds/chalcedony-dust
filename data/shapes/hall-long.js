@@ -3,7 +3,7 @@ ShapeRegistry.register('hall-long', {
     const state = segment.getState()
     const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
 
-    if (state === _incomplete) {
+    if (state === FeatureState.incomplete) {
       drawing.rect(52,0,24,102);
       drawing.fill(0xCCCCCC);
       drawing.rect(54,0,20,100);
@@ -11,7 +11,7 @@ ShapeRegistry.register('hall-long', {
       drawing.tint = palette.base;
     }
 
-    if (state === _complete) {
+    if (state === FeatureState.complete) {
       drawing.rect(48,0,32,108);
       drawing.fill(0xFFFFFF);
       drawing.rect(52,0,24,104);

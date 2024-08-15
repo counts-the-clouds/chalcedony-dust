@@ -2,7 +2,7 @@ describe('DiscoveryAdjuster', function() {
 
   it('adds a resource node to a tile', function() {
     const tile = Tile({ code:'baseline-h2-0' });
-    const discovery = { code:'iron-mine', type:_discoverResource };
+    const discovery = { code:'iron-mine', type:DiscoveryType.resource };
 
     DiscoveryAdjuster.adjustTile(tile, discovery);
 
@@ -26,7 +26,7 @@ describe('DiscoveryAdjuster', function() {
 
     expect(resource.getExits()).to.have.members([])
     expect(resource.getType()).to.equal(TileType.resource);
-    expect(feature.getState()).to.equal(_complete);
+    expect(feature.getState()).to.equal(FeatureState.complete);
   });
 
 });

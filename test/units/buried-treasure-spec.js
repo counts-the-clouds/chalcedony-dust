@@ -14,7 +14,7 @@ describe('BuriedTreasure', function() {
 
   it('addTreasures()', function() {
     BuriedTreasure.addTreasures('baseline-treasures');
-    expect(BuriedTreasure.getTreasure('coal-mine').type).to.equal(_discoverResource);
+    expect(BuriedTreasure.getTreasure('coal-mine').type).to.equal(DiscoveryType.resource);
   });
 
   describe('removeTreasure()', function() {
@@ -63,10 +63,10 @@ describe('BuriedTreasure', function() {
   describe('getDiscoverableTreasures()', function() {
     it('returns discoveries within range of origin', function() {
       BuriedTreasure.addTreasures([
-        { code:'coal-mine', type:_discoverResource, distance:[0,null]},
-        { code:'iron-mine', type:_discoverResource, distance:[0,10]},
-        { code:'copper-mine', type:_discoverResource, distance:[10,20]},
-        { code:'silver-mine', type:_discoverResource, distance:[20,30]},
+        { code:'coal-mine', type:DiscoveryType.resource, distance:[0,null]},
+        { code:'iron-mine', type:DiscoveryType.resource, distance:[0,10]},
+        { code:'copper-mine', type:DiscoveryType.resource, distance:[10,20]},
+        { code:'silver-mine', type:DiscoveryType.resource, distance:[20,30]},
       ]);
 
       expect(BuriedTreasure.getDiscoverableTreasures(distantTile()).
@@ -75,8 +75,8 @@ describe('BuriedTreasure', function() {
 
     it("doesn't allow node tiles to have resource discoveries", function() {
       BuriedTreasure.addTreasures([
-        { code:'coal-mine', type:_discoverResource },
-        { code:'cave-in', type:_discoverEvent },
+        { code:'coal-mine', type:DiscoveryType.resource },
+        { code:'cave-in', type:DiscoveryType.event },
       ]);
 
       const discoverable = BuriedTreasure.getDiscoverableTreasures(nodeTile());
@@ -87,9 +87,9 @@ describe('BuriedTreasure', function() {
 
   it('sumAllWeight()', function() {
     const treasures = [
-      { code:'iron-mine', type:_discoverResource, weight:600 },
-      { code:'copper-mine', type:_discoverResource, weight:60 },
-      { code:'silver-mine', type:_discoverResource, weight:6 },
+      { code:'iron-mine', type:DiscoveryType.resource, weight:600 },
+      { code:'copper-mine', type:DiscoveryType.resource, weight:60 },
+      { code:'silver-mine', type:DiscoveryType.resource, weight:6 },
     ];
 
     expect(BuriedTreasure.sumAllWeights(treasures)).to.equal(666);
@@ -106,7 +106,7 @@ describe('BuriedTreasure', function() {
   describe('Forced Discovery', function() {
     it('when a discovery is invalid it reverts to standard (random) discovery', function() {
       BuriedTreasure.addTreasures([
-        { code:'silver-mine', type:_discoverResource, count:3, distance:[20,30]},
+        { code:'silver-mine', type:DiscoveryType.resource, count:3, distance:[20,30]},
       ]);
 
       GameFlags.set(SystemFlags.forceDiscovery,'silver-mine')
@@ -115,7 +115,7 @@ describe('BuriedTreasure', function() {
 
     it('returns the valid discovery given its code', function() {
       BuriedTreasure.addTreasures([
-        { code:'silver-mine', type:_discoverResource, count:3, distance:[10,20]},
+        { code:'silver-mine', type:DiscoveryType.resource, count:3, distance:[10,20]},
       ]);
 
       GameFlags.set(SystemFlags.forceDiscovery,'silver-mine')
@@ -127,9 +127,9 @@ describe('BuriedTreasure', function() {
 
     it('returns a random discovery when set to true', function() {
       BuriedTreasure.addTreasures([
-        { code:'copper-mine', type:_discoverResource, count:3, weight:0 },
-        { code:'silver-mine', type:_discoverResource, count:3, weight:100 },
-        { code:'gold-mine', type:_discoverResource, count:3, weight:100 },
+        { code:'copper-mine', type:DiscoveryType.resource, count:3, weight:0 },
+        { code:'silver-mine', type:DiscoveryType.resource, count:3, weight:100 },
+        { code:'gold-mine', type:DiscoveryType.resource, count:3, weight:100 },
       ]);
 
       GameFlags.set(SystemFlags.forceDiscovery,true);

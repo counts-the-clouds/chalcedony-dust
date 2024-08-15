@@ -96,7 +96,7 @@ describe("Tile", function() {
     it('with placement events', function() {
       const tile = Tile({ code:'baseline-r2-2', id:42, extra:{
         placementEvent:'fake-event',
-        placementRules:[_noDiscard] }});
+        placementRules:[PlacementRules.noDiscard] }});
       tile.setCoordinates(Coordinates.fromGlobal(5,10));
 
       const packed = tile.pack();
@@ -109,7 +109,7 @@ describe("Tile", function() {
       expect(packed.edges.e).to.equal(TileType.room);
       expect(packed.segments.length).to.equal(1);
       expect(packed.extra.placementEvent).to.equal('fake-event');
-      expect(packed.extra.placementRules[0]).to.equal(_noDiscard);
+      expect(packed.extra.placementRules[0]).to.equal(PlacementRules.noDiscard);
       expect(packed.rotation).to.equal(0);
     });
 

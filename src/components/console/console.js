@@ -28,7 +28,7 @@ global.Console = (function() {
     if (Tests.running() === false) {
       options.time = TimeHelper.getTimeString();
       options.message = message;
-      options.type = options.type || _info;
+      options.type = options.type || LogType.info;
       append(options);
     }
   }
@@ -45,7 +45,7 @@ global.Console = (function() {
     }
 
     options.level = 1;
-    options.type = _error;
+    options.type = LogType.error;
     options.data.error = ErrorHelper.errorToString(error)
 
     log(message, options);
@@ -69,7 +69,7 @@ global.Console = (function() {
     ScrollingPanel.resize('#console .scrolling-panel');
 
     if (Environment.isDevelopment) {
-      if (logData.type === _error || logData.type === _warning) {
+      if (logData.type === LogType.error || logData.type === LogType.warning) {
         Alert.showFromLog(logData)
       }
     }

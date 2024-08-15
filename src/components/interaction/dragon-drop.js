@@ -98,7 +98,7 @@ window.DragonDrop = (function() {
   }
 
   function isRotateAllowed(tile) {
-    return ! (tile.getPlacementRules()||[]).includes(_noRotate);
+    return ! (tile.getPlacementRules()||[]).includes(PlacementRules.noRotate);
   }
 
   return Object.freeze({

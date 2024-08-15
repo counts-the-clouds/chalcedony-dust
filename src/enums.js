@@ -1,4 +1,11 @@
 
+global.LogType = Object.freeze({
+  info: 'info',
+  success: 'success',
+  warning: 'warning',
+  error: 'error',
+});
+
 global.KeyCodes = Object.freeze({
   Backquote: 'Backquote',
   Enter: 'Enter',
@@ -57,12 +64,28 @@ global.TileType = Object.freeze({
   resource: 'resource',
 });
 
+global.PlacementRules = Object.freeze({
+  noRotate: 'no-rotate',
+  noDiscard: 'no-discard',
+  placeNext: 'place-next',
+});
+
+global.FeatureState = Object.freeze({
+  complete: 'complete',
+  incomplete: 'incomplete',
+});
+
 global.EventType = Object.freeze({
   tileDrawn: 'tile-drawn',
   tilePlaced: 'tile-placed',
   tileDiscarded: 'tile-discarded',
   featureCompleted: 'feature-completed',
   resourceDiscovered: 'resource-discovered',
+});
+
+global.DiscoveryType = Object.freeze({
+  resource: 'resource',
+  event: 'event',
 });
 
 global.ConditionKeys = Object.freeze({

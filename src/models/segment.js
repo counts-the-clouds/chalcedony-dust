@@ -28,7 +28,7 @@ global.Segment = function(data) {
   function getFeatureID() { return $featureID; }
   function setFeatureID(featureID) { $featureID = featureID; }
   function getFeature() { return FeatureDataStore.get($featureID); }
-  function getState() { return $featureID ? getFeature().getState() : _incomplete }
+  function getState() { return $featureID ? getFeature().getState() : FeatureState.incomplete }
 
   function getConnections() { return $connections }
   function getConnection(direction) { return $connections[direction]; }

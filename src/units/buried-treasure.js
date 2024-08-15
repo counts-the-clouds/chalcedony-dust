@@ -18,7 +18,7 @@ global.BuriedTreasure = (function() {
   //
   // Add treasures either from a standard package or as map of discoveries.
   // Expected format is 'currently'
-  //       'coal-mine':{ type:_discoverResource, count:2, distance:[0,null], weight:100 },
+  //       'coal-mine':{ type:DiscoveryType.resource, count:2, distance:[0,null], weight:100 },
   function addTreasures(argument) {
     $treasures = (typeof argument === 'string') ? structuredClone(ExtraRegistry.lookup(argument).treasures) : argument;
   }
@@ -119,7 +119,7 @@ global.BuriedTreasure = (function() {
     const isNode = tile.getSegments().map(segment => segment.getType()).includes(TileType.node);
 
     return $treasures.filter(treasureData => {
-      if (isNode && treasureData.type === _discoverResource) { return false; }
+      if (isNode && treasureData.type === DiscoveryType.resource) { return false; }
 
       if (treasureData.distance) {
         let min = treasureData.distance[0];

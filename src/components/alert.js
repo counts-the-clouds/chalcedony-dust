@@ -33,7 +33,7 @@ global.Alert = (function() {
       title: title,
       message: message,
       position: _sideAlert,
-      type: logData.type || _info,
+      type: logData.type || LogType.info,
     });
   }
 

@@ -59,7 +59,7 @@ global.PagedEvent = function(code) {
       if ($context == null) {
         log('Context should not be null here. Did you forget to return the context object I just gave you?', {
           level: 1,
-          type: _warning,
+          type: LogType.warning,
           system: 'PagedEvent',
           data: { code:$code },
         });
