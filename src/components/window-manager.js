@@ -3,7 +3,7 @@ global.WindowManager = (function() {
   let $windowStack = [];
 
   function init() {
-    X.onCodeDown(_keyCodeEscape,true,() => {
+    X.onCodeDown(KeyCodes.Escape,true,() => {
       if (Console.isVisible()) { return Console.hide(); }
       if ($windowStack.length > 0) { return pop() }
 

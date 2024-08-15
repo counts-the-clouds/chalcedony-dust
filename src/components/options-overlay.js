@@ -1,22 +1,22 @@
 global.OptionsOverlay = (function() {
 
   const $forbiddenCodes = [
-    _keyCodeF11,
-    _keyCodeEnter,
-    _keyCodeBackquote,
-    _keyContextMenu,
-    _keyCodeCapsLock,
-    _keyCodePageUp,
-    _keyCodePageDown,
-    _keyCodeHome,
-    _keyCodeEnd,
-    _keyCodeShiftLeft,
-    _keyCodeShiftRight,
-    _keyControlLeft,
-    _keyControlRight,
-    _keyAltLeft,
-    _keyAltRight,
-    _keyMetaLeft,
+    KeyCodes.F11,
+    KeyCodes.Enter,
+    KeyCodes.Backquote,
+    KeyCodes.ContextMenu,
+    KeyCodes.CapsLock,
+    KeyCodes.PageUp,
+    KeyCodes.PageDown,
+    KeyCodes.Home,
+    KeyCodes.End,
+    KeyCodes.ShiftLeft,
+    KeyCodes.ShiftRight,
+    KeyCodes.ControlLeft,
+    KeyCodes.ControlRight,
+    KeyCodes.AltLeft,
+    KeyCodes.AltRight,
+    KeyCodes.MetaLeft,
   ];
 
   let $recordingState = {};
@@ -162,7 +162,7 @@ global.OptionsOverlay = (function() {
   // Pressing the escape key will remove whatever keybinding is set.
   function setKeybinding(code) {
     if (!$forbiddenCodes.includes(code)) {
-      if (code === _keyCodeEscape) { code = null; }
+      if (code === KeyCodes.Escape) { code = null; }
 
       $recordingState.inputElement.innerHTML = labelFor(code);
       $recordingState.inputElement.dataset.code = code || '';

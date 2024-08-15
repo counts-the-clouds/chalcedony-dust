@@ -14,49 +14,6 @@ global._sideAlert = 'side';
 global._centerAlert = 'center';
 global._eventAlert = 'event';
 
-// === Key Codes ===
-
-global._keyCodeBackquote = 'Backquote';
-global._keyCodeEnter = 'Enter';
-global._keyCodeEscape = 'Escape';
-global._keyCodeSpace = 'Space';
-
-global._keyCodeCapsLock = 'CapsLock';
-global._keyCodeShiftLeft = 'ShiftLeft';
-global._keyCodeShiftRight = 'ShiftRight';
-global._keyControlLeft = 'ControlLeft';
-global._keyControlRight = 'ControlRight';
-global._keyAltLeft = 'AltLeft';
-global._keyAltRight = 'AltRight';
-global._keyMetaLeft = 'MetaLeft';
-global._keyContextMenu = 'ContextMenu';
-
-global._keyCodePageUp = 'PageUp';
-global._keyCodePageDown = 'PageDown';
-global._keyCodeHome = 'Home';
-global._keyCodeEnd = 'End';
-
-global._keyCodeArrowUp = 'ArrowUp';
-global._keyCodeArrowDown = 'ArrowDown';
-global._keyCodeArrowLeft = 'ArrowLeft';
-global._keyCodeArrowRight = 'ArrowRight';
-
-global._keyDigit1 = 'Digit1';
-global._keyDigit2 = 'Digit2';
-global._keyDigit3 = 'Digit3';
-
-global._keyNumpad1 = 'Numpad1';
-global._keyNumpad2 = 'Numpad2';
-global._keyNumpad3 = 'Numpad3';
-
-global._keyCodeA = 'KeyA';
-global._keyCodeD = 'KeyD';
-global._keyCodeE = 'KeyE';
-global._keyCodeQ = 'KeyQ';
-global._keyCodeS = 'KeyS';
-global._keyCodeW = 'KeyW';
-
-global._keyCodeF11 = 'F11';
 
 // === Game ====================================================================
 

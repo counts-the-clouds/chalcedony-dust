@@ -1,16 +1,16 @@
 global.WorldState = (function() {
 
   const DefaultBindings = [
-    { name:'Move Down',          action:'action.move-down',          codes:[ _keyCodeS, _keyCodeArrowDown ]},
-    { name:'Move Up',            action:'action.move-up',            codes:[ _keyCodeW, _keyCodeArrowUp ]},
-    { name:'Move Left',          action:'action.move-left',          codes:[ _keyCodeA, _keyCodeArrowLeft ]},
-    { name:'Move Right',         action:'action.move-right',         codes:[ _keyCodeD, _keyCodeArrowRight ]},
-    { name:'Rotate Clockwise',   action:'action.rotate-clockwise',   codes:[ _keyCodeE ]},
-    { name:'Rotate Widdershins', action:'action.rotate-widdershins', codes:[ _keyCodeQ ]},
-    { name:'Pause',              action:'action.pause',              codes:[ _keyCodeSpace ]},
-    { name:'Set Speed ▶',        action:'action.set-speed-1',        codes:[ _keyDigit1, _keyNumpad1 ]},
-    { name:'Set Speed ▶▶',       action:'action.set-speed-2',        codes:[ _keyDigit2, _keyNumpad2 ]},
-    { name:'Set Speed ▶▶▶',      action:'action.set-speed-3',        codes:[ _keyDigit3, _keyNumpad3 ]},
+    { name:'Move Down',          action:'action.move-down',          codes:[ KeyCodes.S, KeyCodes.ArrowDown ]},
+    { name:'Move Up',            action:'action.move-up',            codes:[ KeyCodes.W, KeyCodes.ArrowUp ]},
+    { name:'Move Left',          action:'action.move-left',          codes:[ KeyCodes.A, KeyCodes.ArrowLeft ]},
+    { name:'Move Right',         action:'action.move-right',         codes:[ KeyCodes.D, KeyCodes.ArrowRight ]},
+    { name:'Rotate Clockwise',   action:'action.rotate-clockwise',   codes:[ KeyCodes.E ]},
+    { name:'Rotate Widdershins', action:'action.rotate-widdershins', codes:[ KeyCodes.Q ]},
+    { name:'Pause',              action:'action.pause',              codes:[ KeyCodes.Space ]},
+    { name:'Set Speed ▶',        action:'action.set-speed-1',        codes:[ KeyCodes.Digit1, KeyCodes.Numpad1 ]},
+    { name:'Set Speed ▶▶',       action:'action.set-speed-2',        codes:[ KeyCodes.Digit2, KeyCodes.Numpad2 ]},
+    { name:'Set Speed ▶▶▶',      action:'action.set-speed-3',        codes:[ KeyCodes.Digit3, KeyCodes.Numpad3 ]},
   ];
 
   const DefaultState = {

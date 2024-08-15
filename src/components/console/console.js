@@ -3,8 +3,8 @@ global.Console = (function() {
   const $entryLimit = 1000;
 
   function init() {
-    X.onCodeDown(_keyCodeBackquote, () => true, toggleConsole);
-    X.onCodeDown(_keyCodeEnter, isVisible, ConsoleCommands.sendCommand);
+    X.onCodeDown(KeyCodes.Backquote, () => true, toggleConsole);
+    X.onCodeDown(KeyCodes.Enter, isVisible, ConsoleCommands.sendCommand);
     ScrollingPanel.build('#console .scrolling-panel');
   }
 
