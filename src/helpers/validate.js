@@ -5,9 +5,9 @@ global.Validate = (function() {
     if (value > max) { throw message ? message : `Validation Failed: ${name}.${value} greater than ${max}`; }
   }
 
-  // function isIn(name, value, list, message=null) {
-  //   if (!list.includes(value)) { throw message ? message : `Validation Failed: ${name}[${value}] not in list.`; }
-  // }
+  function isIn(name, value, list, message=null) {
+    if (!list.includes(value)) { throw message ? message : `Validation Failed: ${name}[${value}] not in list.`; }
+  }
 
   // function allIn(name, array, validValues, message=null) {
   //   for (const element of array) {
@@ -27,7 +27,7 @@ global.Validate = (function() {
 
   return Object.freeze({
     between,
-    // isIn,
+    isIn,
     // allIn,
     exists,
     // arrayLength,

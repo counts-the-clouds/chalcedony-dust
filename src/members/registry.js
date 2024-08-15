@@ -9,6 +9,13 @@ global.Registry = function(typeName) {
     $registry[code] = data;
   }
 
+  function unregister(code) {
+    if (Tests.running() === false) { throw `Unregistering is only allowed by the specs to remove test fixtures.` }
+    if (code.startsWith('test') === false) { throw `Test fixtures should start with test.` }
+    if ($registry[code] == null) { throw `${typeName} with code ${code} does not exist.` }
+    delete $registry[code];
+  }
+
   // I'd like to return something actually immutable by using structuredClone(),
   // but some of the data objects contain functions which can't be serialized.
   // I just need to be careful to make copies of arrays and objects when using
@@ -30,6 +37,7 @@ global.Registry = function(typeName) {
 
   return Object.freeze({
     register,
+    unregister,
     lookup,
     getSize,
     forEach,

@@ -71,7 +71,7 @@ global.Feature = function(data) {
         return DungeonView.getCellContainerAt(coordinates.gx, coordinates.gy);
       });
 
-      Panopticon.induce(EventType.featureCompleted,{ id:getID(), type:getType() });
+      Panopticon.induce(EventType.featureCompleted,{ feature:$self });
 
       waitForTileContainers(cellContainers).then(tileContainers => {
         segments.forEach((segment,i) => {
@@ -98,7 +98,6 @@ global.Feature = function(data) {
       },1);
     });
   }
-
 
   function isComplete() {
     if ($segments.length > 0) {

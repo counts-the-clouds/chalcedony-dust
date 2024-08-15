@@ -6,3 +6,4 @@ global.EventType = Object.freeze({
   featureCompleted: 'feature-completed',
   resourceDiscovered: 'resource-discovered',
 });
+
