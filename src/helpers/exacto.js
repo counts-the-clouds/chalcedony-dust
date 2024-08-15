@@ -57,6 +57,11 @@ X.onClick = function(selector, callback) {
   });
 }
 
+// To prevent the code down event from repeating if the key is held down the
+// key listeners set an active flag that's cleared when we get a matching key
+// up event. If we want this repeating behavior it's better to use the
+// KeyboardMonitor
+
 X.registerKeyAction = function(action, when, callback) {
   window.addEventListener('keydown', event => {
     if (lookupActionCodes(action).includes(event.code)) {
@@ -66,9 +71,18 @@ X.registerKeyAction = function(action, when, callback) {
 }
 
 X.onCodeDown = function(code, when, callback) {
+  let active = false;
+
+  window.addEventListener('keyup', event => {
+    if (active && event.code === code) { active = false; }
+  });
+
   window.addEventListener('keydown', event => {
-    if (event.code === code) {
-      if (when === true || when(event)) { callback(event); }
+    if (!active && event.code === code) {
+      if (when === true || when(event)) {
+        active = true;
+        callback(event);
+      }
     }
   });
 }

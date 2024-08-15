@@ -4,6 +4,7 @@ global.EventView = (function() {
   let $returnState;
 
   function init() {
+    X.onCodeDown(KeyCodes.Space, isVisible, advance);
     X.onClick('#eventView .next-button', nextPage);
     X.onClick('#eventView .continue-button', nextStage);
     X.loadDocument('#eventArea','/views/event-view.html');
@@ -29,6 +30,11 @@ global.EventView = (function() {
 
   function isVisible() {
     return !X.hasClass('#eventView','hide');
+  }
+
+  function advance() {
+    if (X.hasClass('#eventView .next-button','hide') === false) { nextPage(); }
+    if (X.hasClass('#eventView .continue-button','hide') === false) { nextStage(); }
   }
 
   function completeEvent() {
