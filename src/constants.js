@@ -1,17 +1,16 @@
 
 // Set global constants here. Because they're actually just properties on the
 // global object they're not actually immutable. Prefix them with an underscore
-// to indicate that they shouldn't be set.
+// to indicate that they shouldn't be set. I could have made an immutable
+// Constants object of course, but having to type Constants.s every time we
+// want to use the south direction is worse than just having a global _s
+// variable in my opinion.
 
-// === Tiles ===================================================================
-
-// Directions
 global._n = 'n';
 global._s = 's';
 global._e = 'e';
 global._w = 'w';
 
-// === Dungeon =================================================================
 global._chunkLength = 16;
 global._tileSize = 128;
 global._chunkSize = _tileSize * _chunkLength;
@@ -22,4 +21,3 @@ global._scaleFactors = [2,1.980,1.825,1.713,1.676,1.641,1.570,1.535,1.501,1.467,
   0.723,0.702,0.681,0.660,0.640,0.621,0.602,0.583,0.565,0.547,0.530,0.513,0.500,0.480,0.465,0.450,0.435,0.421,0.407,
   0.393,0.381,0.368,0.356,0.344,0.333,0.323,0.312,0.303,0.293,0.285,0.276,0.268,0.261,0.253,0.247,0.241,0.235,0.229,
   0.225,0.220,0.216,0.213,0.209,0.207,0.205,0.203,0.201,0.200];
-
