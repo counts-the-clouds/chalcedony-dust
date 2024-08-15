@@ -68,8 +68,8 @@ global.BuriedTreasure = (function() {
   }
 
   function rollForTreasure(tile) {
-    if (GameFlags.has(_forbidDiscovery)) { return undefined; }
-    if (GameFlags.has(_forceDiscovery)) {
+    if (GameFlags.has(SystemFlags.forbidDiscovery)) { return undefined; }
+    if (GameFlags.has(SystemFlags.forceDiscovery)) {
       const forcedDiscovery = getForcedDiscovery(tile);
 
       // If we're forcing the discovery to happen we still need to make sure
@@ -171,21 +171,21 @@ global.BuriedTreasure = (function() {
   // other. GameFlags won't enforce this, so these functions should usually be
   // used to set these flags..
   function forbidDiscovery() {
-    GameFlags.set(_forbidDiscovery, true);
-    if (GameFlags.has(_forceDiscovery)) {
-      GameFlags.clear(_forceDiscovery);
+    GameFlags.set(SystemFlags.forbidDiscovery, true);
+    if (GameFlags.has(SystemFlags.forceDiscovery)) {
+      GameFlags.clear(SystemFlags.forceDiscovery);
     }
   }
 
   function forceDiscovery(code) {
-    GameFlags.set(_forceDiscovery, code);
-    if (GameFlags.has(_forbidDiscovery)) {
-      GameFlags.clear(_forbidDiscovery);
+    GameFlags.set(SystemFlags.forceDiscovery, code);
+    if (GameFlags.has(SystemFlags.forbidDiscovery)) {
+      GameFlags.clear(SystemFlags.forbidDiscovery);
     }
   }
 
   function getForcedDiscovery(tile) {
-    const forcedCode = GameFlags.get(_forceDiscovery);
+    const forcedCode = GameFlags.get(SystemFlags.forceDiscovery);
     const discoverable = getDiscoverableTreasures(tile);
 
     if (discoverable.length === 0) {
@@ -198,7 +198,7 @@ global.BuriedTreasure = (function() {
     if (typeof forcedCode === 'string') {
       const index = ArrayHelper.find(discoverable, d => d.code === forcedCode);
       if (index >= 0) {
-        GameFlags.clear(_forceDiscovery);
+        GameFlags.clear(SystemFlags.forceDiscovery);
         const discovery = discoverable[index];
         removeTreasure(discovery.code);
         return discovery;
@@ -210,7 +210,7 @@ global.BuriedTreasure = (function() {
     // return anything that's currently discoverable. (SelectDiscovery handles
     // the removal for us here)
     if (forcedCode === true) {
-      GameFlags.clear(_forceDiscovery);
+      GameFlags.clear(SystemFlags.forceDiscovery);
       const totalWeight = sumAllWeights(discoverable);
       return selectDiscovery(discoverable, totalWeight, Random.roll(totalWeight))
     }

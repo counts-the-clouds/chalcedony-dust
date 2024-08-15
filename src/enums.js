@@ -1,5 +1,5 @@
 
-global.KeyCodes = {
+global.KeyCodes = Object.freeze({
   Backquote: 'Backquote',
   Enter: 'Enter',
   Escape: 'Escape',
@@ -34,18 +34,24 @@ global.KeyCodes = {
   S: 'KeyS',
   W: 'KeyW',
   F11: 'F11',
-}
+});
+
+global.SystemFlags = Object.freeze({
+  forbidDiscovery: 'buried-treasure.forbid-discovery',
+  forceDiscovery: 'buried-treasure.force-discovery',
+  currentEvent: 'event.current-event',
+  disableMovement: 'dungeon-view.disable-movement',
+  hideSpeedControl: 'dungeon-view.hide-speed-control',
+});
 
 // There is a bit of overlap between the edge types and feature types but
 // there's no reason they can't share the same enum.
 global.TileType = Object.freeze({
   any: 'any',
   forbidden: 'forbidden',
-
   stone: 'stone',
   room: 'room',
   hall: 'hall',
-
   core: 'core',
   node: 'node',
   resource: 'resource',

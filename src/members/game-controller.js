@@ -52,7 +52,7 @@ global.GameController = (function() {
     }
 
     if (stageData.startingEvent) {
-      GameFlags.set(_currentEvent,stageData.startingEvent);
+      GameFlags.set(SystemFlags.currentEvent,stageData.startingEvent);
     }
 
     await GameState.saveState();
@@ -62,8 +62,8 @@ global.GameController = (function() {
   // loading. This needs to perform any tasks needed to put the recently
   // loaded game into the proper state.
   async function openGame() {
-    if (GameFlags.has(_currentEvent)) {
-      EventView.show(PagedEvent(GameFlags.get(_currentEvent)));
+    if (GameFlags.has(SystemFlags.currentEvent)) {
+      EventView.show(PagedEvent(GameFlags.get(SystemFlags.currentEvent)));
     }
   }
 
@@ -165,7 +165,7 @@ global.GameController = (function() {
   }
 
   async function endEvent() {
-    GameFlags.clear(_currentEvent);
+    GameFlags.clear(SystemFlags.currentEvent);
     await GameState.saveState();
   }
 

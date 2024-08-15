@@ -109,7 +109,7 @@ describe('BuriedTreasure', function() {
         { code:'silver-mine', type:_discoverResource, count:3, distance:[20,30]},
       ]);
 
-      GameFlags.set(_forceDiscovery,'silver-mine')
+      GameFlags.set(SystemFlags.forceDiscovery,'silver-mine')
       expect(BuriedTreasure.rollForTreasure(distantTile())).to.be.undefined;
     });
 
@@ -118,7 +118,7 @@ describe('BuriedTreasure', function() {
         { code:'silver-mine', type:_discoverResource, count:3, distance:[10,20]},
       ]);
 
-      GameFlags.set(_forceDiscovery,'silver-mine')
+      GameFlags.set(SystemFlags.forceDiscovery,'silver-mine')
 
       const discovery = BuriedTreasure.rollForTreasure(distantTile());
       expect(discovery.code).to.equal('silver-mine');
@@ -132,7 +132,7 @@ describe('BuriedTreasure', function() {
         { code:'gold-mine', type:_discoverResource, count:3, weight:100 },
       ]);
 
-      GameFlags.set(_forceDiscovery,true);
+      GameFlags.set(SystemFlags.forceDiscovery,true);
 
       const discovery = BuriedTreasure.rollForTreasure(distantTile());
       expect(discovery.code).to.be.oneOf(['silver-mine','gold-mine']);

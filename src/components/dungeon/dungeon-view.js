@@ -33,7 +33,7 @@ global.DungeonView = (function() {
     await createApplication();
     await TileShelfView.refresh();
 
-    if (GameFlags.has(_hideSpeedControl)) {
+    if (GameFlags.has(SystemFlags.hideSpeedControl)) {
       SpeedControl.hide();
     }
   }
@@ -112,7 +112,7 @@ global.DungeonView = (function() {
   // or when other dialogs are open. Movement can also be disabled with a game
   // flag in the case of the tutorial game.
   function isMovementEnabled() {
-    if (GameFlags.has(_disableMovement)) { return false; }
+    if (GameFlags.has(SystemFlags.disableMovement)) { return false; }
     if (DragonDrop.isDragging()) { return false; }
     if (EventView.isVisible()) { return false; }
     if (MainMenu.isVisible()) { return false; }

@@ -10,7 +10,7 @@ TriggerRegistry.register('tutorial.pause-and-zero', {
 TriggerRegistry.register('tutorial.enable-speed-control', {
   triggerFunction: () => {
     const clock = ClockManager.findByCode('generate-tile')[0];
-    GameFlags.clear(_hideSpeedControl);
+    GameFlags.clear(SystemFlags.hideSpeedControl);
     ClockManager.pause();
     ClockManager.zeroClock(clock.getID());
     SpeedControl.show();
@@ -19,6 +19,6 @@ TriggerRegistry.register('tutorial.enable-speed-control', {
 
 TriggerRegistry.register('tutorial.enable-movement', {
   triggerFunction: () => {
-    GameFlags.clear(_disableMovement);
+    GameFlags.clear(SystemFlags.disableMovement);
   }
 });

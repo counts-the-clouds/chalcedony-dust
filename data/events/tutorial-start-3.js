@@ -26,8 +26,7 @@ EventRegistry.register('tutorial-start-3', {
   },
 
   onFinish: () => {
-    GameFlags.clear(_forbidDiscovery);
+    GameFlags.clear(SystemFlags.forbidDiscovery);
   }
-
 
 });
