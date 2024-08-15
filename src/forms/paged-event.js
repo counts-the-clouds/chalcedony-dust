@@ -39,7 +39,7 @@ global.PagedEvent = function(code) {
   }
 
   function getEventData() { return EventRegistry.lookup($code); }
-  function getLayout() { return getEventData().layout || _defaultLayout; }
+  function getLayout() { return getEventData().layout || EventLayouts.defaultLayout; }
   function getImage() { return getEventData().image; }
 
   function getStages() {

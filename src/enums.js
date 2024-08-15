@@ -68,3 +68,8 @@ global.EventType = Object.freeze({
 global.ConditionKeys = Object.freeze({
   featureTypeIs: 'feature-type-is',
 });
+
+global.EventLayouts = Object.freeze({
+  defaultLayout: 'default-layout',
+  leftSquareImageLayout: 'left-square-image-layout',
+});

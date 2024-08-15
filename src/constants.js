@@ -32,7 +32,6 @@ global._w = 'w';
 global._complete = 'complete';
 global._incomplete = 'incomplete';
 
-
 // Tile Placement Rules
 global._noRotate = 'no-rotate';
 global._noDiscard = 'no-discard';
@@ -56,8 +55,3 @@ global._scaleFactors = [2,1.980,1.825,1.713,1.676,1.641,1.570,1.535,1.501,1.467,
   0.393,0.381,0.368,0.356,0.344,0.333,0.323,0.312,0.303,0.293,0.285,0.276,0.268,0.261,0.253,0.247,0.241,0.235,0.229,
   0.225,0.220,0.216,0.213,0.209,0.207,0.205,0.203,0.201,0.200];
 
-// === Events ==================================================================
-
-// Layouts
-global._defaultLayout = 'default-layout';
-global._leftSquareImageLayout = 'left-square-image-layout';

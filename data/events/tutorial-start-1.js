@@ -1,6 +1,6 @@
 EventRegistry.register('tutorial-start-1', {
 
-  layout: _leftSquareImageLayout,
+  layout: EventLayouts.leftSquareImageLayout,
   image: 'events/dungeon-core.png',
 
   stages:[{
