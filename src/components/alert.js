@@ -3,10 +3,10 @@ global.Alert = (function() {
   function show(options) {
     let parent;
 
-    if (options.position == null) { options.position = _sideAlert; }
-    if (options.position === _centerAlert) { parent = X.first('#centerAlerts'); }
-    if (options.position === _eventAlert) { parent = X.first('#eventAlerts'); }
-    if (options.position === _sideAlert) { parent = X.first('#sideAlerts'); }
+    if (options.position == null) { options.position = AlertPosition.side; }
+    if (options.position === AlertPosition.center) { parent = X.first('#centerAlerts'); }
+    if (options.position === AlertPosition.event) { parent = X.first('#eventAlerts'); }
+    if (options.position === AlertPosition.side) { parent = X.first('#sideAlerts'); }
 
     const element = X.createElement(`<li class='alert ${options.position} ${options.type || ''}'></li>`);
 
@@ -32,7 +32,7 @@ global.Alert = (function() {
     show({
       title: title,
       message: message,
-      position: _sideAlert,
+      position: AlertPosition.side,
       type: logData.type || LogType.info,
     });
   }

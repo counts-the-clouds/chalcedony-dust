@@ -3,12 +3,6 @@
 // global object they're not actually immutable. Prefix them with an underscore
 // to indicate that they shouldn't be set.
 
-
-// === Alert Positions ===
-global._sideAlert = 'side';
-global._centerAlert = 'center';
-global._eventAlert = 'event';
-
 // === Game ====================================================================
 
 // Stages

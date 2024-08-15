@@ -6,6 +6,12 @@ global.LogType = Object.freeze({
   error: 'error',
 });
 
+global.AlertPosition = Object.freeze({
+  side: 'side',
+  center: 'center',
+  event: 'event',
+});
+
 global.KeyCodes = Object.freeze({
   Backquote: 'Backquote',
   Enter: 'Enter',

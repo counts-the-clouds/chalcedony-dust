@@ -67,7 +67,7 @@ global.OptionsOverlay = (function() {
   function saveSuccessful() {
     Alert.show({
       message: 'Options Saved',
-      position: _sideAlert,
+      position: AlertPosition.side,
       type: LogType.success,
       fadeTime: 1000,
     });
