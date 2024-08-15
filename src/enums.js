@@ -7,3 +7,6 @@ global.EventType = Object.freeze({
   resourceDiscovered: 'resource-discovered',
 });
 
+global.ConditionKeys = Object.freeze({
+  featureTypeIs: 'feature-type-is',
+});

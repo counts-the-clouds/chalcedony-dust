@@ -1,4 +1,4 @@
-describe.only('Reaction', function() {
+describe('Reaction', function() {
 
   before(function() {
     TriggerRegistry.register('test.trigger',{
@@ -23,11 +23,10 @@ describe.only('Reaction', function() {
       const feature = Feature({ state:_complete });
             feature.addSegment(segment);
 
-      Reaction({ eventType:EventType.featureCompleted, triggerCode:'test.trigger', conditions:[{ featureTypeIs:_node }] });
+      Reaction({ eventType:EventType.featureCompleted, triggerCode:'test.trigger', conditions:[Condition.featureTypeIs(_node)] });
 
       Panopticon.induce(EventType.featureCompleted, { feature:feature, value:'fnord' });
       expect(GameFlags.get('test.trigger')).to.equal('fnord')
     });
   });
-
 });
