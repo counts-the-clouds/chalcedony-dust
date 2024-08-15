@@ -55,12 +55,12 @@ global.Segment = function(data) {
   function shouldBeComplete() {
 
     // The core and resource nodes are always complete.
-    if (getType() === _core) { return true; }
-    if (getType() === _resource) { return true; }
+    if (getType() === TileType.core) { return true; }
+    if (getType() === TileType.resource) { return true; }
 
     // A node segment is complete when all the other segments on this tile are
     // complete.
-    if (getType() === _node) {
+    if (getType() === TileType.node) {
       for (const feature of getTile().getFeatures()) {
         if (feature.getID() !== $featureID && feature.isNotIncomplete() === false) { return false; }
       }

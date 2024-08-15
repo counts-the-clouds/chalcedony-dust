@@ -45,7 +45,7 @@ global.DiscoveryAdjuster = (function() {
       SegmentDataStore.remove(oldSegment.getID())
     });
 
-    const resourceSegment = Segment({ tileID:tile.getID(), type:_resource, index:index, graphics:{ shape:'resource-node' } });
+    const resourceSegment = Segment({ tileID:tile.getID(), type:TileType.resource, index:index, graphics:{ shape:'resource-node' } });
 
     const feature = Feature({ state:_complete });
           feature.addSegment(resourceSegment);
@@ -59,8 +59,8 @@ global.DiscoveryAdjuster = (function() {
     const graphics = { };
     const rotate = rotationForDirection(direction);
 
-    if (type === _room) { graphics.shape = 'room-wedge' }
-    if (type === _hall) { graphics.shape = 'hall-short' }
+    if (type === TileType.room) { graphics.shape = 'room-wedge' }
+    if (type === TileType.hall) { graphics.shape = 'hall-short' }
     if (rotate > 0) { graphics.rotate = rotate; }
 
     if (graphics.shape == null) {

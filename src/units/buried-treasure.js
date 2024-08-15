@@ -116,7 +116,7 @@ global.BuriedTreasure = (function() {
   // distances from the origin.
   function getDiscoverableTreasures(tile) {
     const distance = distanceToOrigin(tile.getCoordinates())
-    const isNode = tile.getSegments().map(segment => segment.getType()).includes(_node);
+    const isNode = tile.getSegments().map(segment => segment.getType()).includes(TileType.node);
 
     return $treasures.filter(treasureData => {
       if (isNode && treasureData.type === _discoverResource) { return false; }

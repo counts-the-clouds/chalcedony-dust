@@ -23,7 +23,7 @@ describe('Reaction', function() {
       const feature = Feature({ state:_complete });
             feature.addSegment(segment);
 
-      Reaction({ eventType:EventType.featureCompleted, triggerCode:'test.trigger', conditions:[Condition.featureTypeIs(_node)] });
+      Reaction({ eventType:EventType.featureCompleted, triggerCode:'test.trigger', conditions:[Condition.featureTypeIs(TileType.node)] });
 
       Panopticon.induce(EventType.featureCompleted, { feature:feature, value:'fnord' });
       expect(GameFlags.get('test.trigger')).to.equal('fnord')

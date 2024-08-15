@@ -15,17 +15,17 @@ describe('DiscoveryAdjuster', function() {
     expect(SegmentDataStore.all().length).to.equal(3);
 
     expect(hallN.getExits()).to.have.members([_n])
-    expect(hallN.getType()).to.equal(_hall);
+    expect(hallN.getType()).to.equal(TileType.hall);
     expect(hallN.getGraphics().shape).to.equal('hall-short');
     expect(hallN.getGraphics().rotate).to.be.undefined;
 
     expect(hallS.getExits()).to.have.members([_s])
-    expect(hallS.getType()).to.equal(_hall);
+    expect(hallS.getType()).to.equal(TileType.hall);
     expect(hallS.getGraphics().shape).to.equal('hall-short');
     expect(hallS.getGraphics().rotate).to.equal(2);
 
     expect(resource.getExits()).to.have.members([])
-    expect(resource.getType()).to.equal(_resource);
+    expect(resource.getType()).to.equal(TileType.resource);
     expect(feature.getState()).to.equal(_complete);
   });
 

@@ -83,21 +83,6 @@ global._w = 'w';
 global._complete = 'complete';
 global._incomplete = 'incomplete';
 
-// Edge Types
-global._any = 'any';
-global._forbidden = 'forbidden';
-global._forestPath = 'forest-path'
-
-global._stone = 'stone'
-global._room = 'room'
-global._hall = 'hall'
-global._river = 'river'
-global._lake = 'lake'
-
-// Non-Edge Segment Types
-global._core = 'core';
-global._node = 'node';
-global._resource = 'resource';
 
 // Tile Placement Rules
 global._noRotate = 'no-rotate';

@@ -52,16 +52,16 @@ global.PlacementManager = (function () {
     // Even though stone matches against stone, it counts as an empty match,
     // meaning that even if the tile fits in the space, it's not a legal
     // placement because it would allow for disconnected areas.
-    if (neighbor === _stone && home === _stone) { return 'empty'; }
+    if (neighbor === TileType.stone && home === TileType.stone) { return 'empty'; }
 
     // A forbidden edge can only be placed next to an empty space. Because the
     // neighboring tile is not null, neither tile can have a forbidden edge.
-    if (home === _forbidden) { return 'no'; }
-    if (neighbor === _forbidden) { return 'no'; }
+    if (home === TileType.forbidden) { return 'no'; }
+    if (neighbor === TileType.forbidden) { return 'no'; }
 
     // An any edge can be placed next to any other edge.
-    if (home === _any) { return 'yes'; }
-    if (neighbor === _any) { return 'yes'; }
+    if (home === TileType.any) { return 'yes'; }
+    if (neighbor === TileType.any) { return 'yes'; }
 
     // Otherwise the edges have to match.
     return (home === neighbor) ? 'yes' : 'no'

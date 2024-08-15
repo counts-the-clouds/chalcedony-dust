@@ -1,8 +1,8 @@
 TileRegistry.register('baseline-h1-r2-2', {
 
   segments:[
-    { type:_hall, exits:[_n], graphics:{ shape:'hall-long' }},
-    { type:_room, exits:[_s,_e], graphics:{ shape:'room-corner-notch', rotate:2 }},
+    { type:TileType.hall, exits:[_n], graphics:{ shape:'hall-long' }},
+    { type:TileType.room, exits:[_s,_e], graphics:{ shape:'room-corner-notch', rotate:2 }},
   ],
 
 });

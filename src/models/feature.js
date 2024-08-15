@@ -33,7 +33,7 @@ global.Feature = function(data) {
   // completeness of the features it shares a tile with, so they need to be
   // done first.
   function checkStatus() {
-    if ([_core,_node].includes(getType())) { return false; }
+    if ([TileType.core,TileType.node].includes(getType())) { return false; }
 
     for (const segment of getSegments()) {
       if (segment.shouldBeComplete() === false) { return false; }
@@ -48,7 +48,7 @@ global.Feature = function(data) {
   function checkNodeStatus() {
     getTiles().forEach(tile => {
       tile.getFeatures().forEach(feature => {
-        if (feature.getType() === _node) {
+        if (feature.getType() === TileType.node) {
           const segment = feature.getSegments()[0];
           if (feature.isNotIncomplete() === false && segment.shouldBeComplete()) {
             feature.complete();

@@ -5,7 +5,7 @@ describe("Tile", function() {
       const hall = Tile({ code:'baseline-h1-0' });
       const segments = hall.getSegments();
 
-      expect(hall.getEdges().n).to.equal(_hall);
+      expect(hall.getEdges().n).to.equal(TileType.hall);
       expect(segments[0].getIndex()).to.equal(0);
     });
 
@@ -16,10 +16,10 @@ describe("Tile", function() {
 
     it('builds tile from segment data', function() {
       const tile = Tile({ segments:[
-        { type:_hall, exits:[_n], graphics:{ shape:'hall-medium' }},
+        { type:TileType.hall, exits:[_n], graphics:{ shape:'hall-medium' }},
       ]});
 
-      expect(tile.getEdges().n).to.equal(_hall);
+      expect(tile.getEdges().n).to.equal(TileType.hall);
     })
   });
 
@@ -39,31 +39,31 @@ describe("Tile", function() {
     it('setting rotation rotates tiles',function() {
       const tile = Tile({ code:'baseline-h2-r1-0' });
 
-      expect(tile.getEdges().s).to.equal(_stone);
-      expect(tile.getEdges().n).to.equal(_room);
-      expect(tile.getEdges().e).to.equal(_hall);
-      expect(tile.getEdges().w).to.equal(_hall);
+      expect(tile.getEdges().s).to.equal(TileType.stone);
+      expect(tile.getEdges().n).to.equal(TileType.room);
+      expect(tile.getEdges().e).to.equal(TileType.hall);
+      expect(tile.getEdges().w).to.equal(TileType.hall);
 
       tile.setRotation(1);
-      expect(tile.getEdges().e).to.equal(_room);
+      expect(tile.getEdges().e).to.equal(TileType.room);
 
       tile.setRotation(2);
-      expect(tile.getEdges().s).to.equal(_room);
+      expect(tile.getEdges().s).to.equal(TileType.room);
 
       tile.setRotation(3);
-      expect(tile.getEdges().w).to.equal(_room);
+      expect(tile.getEdges().w).to.equal(TileType.room);
     });
 
     it('rotates clockwise', function() {
       const tile = Tile({ code:'baseline-h1-0' });
       tile.rotateClockwise();
-      expect(tile.getEdges().e).to.equal(_hall);
+      expect(tile.getEdges().e).to.equal(TileType.hall);
     });
 
     it('rotates widdershins', function() {
       const tile = Tile({ code:'baseline-r1-0' });
       tile.rotateWiddershins();
-      expect(tile.getEdges().w).to.equal(_room);
+      expect(tile.getEdges().w).to.equal(TileType.room);
     });
   });
 
@@ -106,7 +106,7 @@ describe("Tile", function() {
       expect(packed.code).to.equal('baseline-r2-2');
       expect(packed.coordinates.gx).to.equal(5);
       expect(packed.coordinates.gy).to.equal(10);
-      expect(packed.edges.e).to.equal(_room);
+      expect(packed.edges.e).to.equal(TileType.room);
       expect(packed.segments.length).to.equal(1);
       expect(packed.extra.placementEvent).to.equal('fake-event');
       expect(packed.extra.placementRules[0]).to.equal(_noDiscard);
@@ -149,7 +149,7 @@ describe("Tile", function() {
       const unpacked = Tile(tile.pack());
       const segment = unpacked.getSegments()[0];
 
-      expect(unpacked.getEdges().n).to.equal(_hall);
+      expect(unpacked.getEdges().n).to.equal(TileType.hall);
       expect(unpacked.getSegments().length).to.equal(4);
       expect(segment.getIndex()).to.equal(0);
     });

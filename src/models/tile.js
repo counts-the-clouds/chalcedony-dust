@@ -58,7 +58,7 @@ global.Tile = function(data) {
   }
 
   function determineEdges() {
-    $edges = { n:_stone, s:_stone, e:_stone, w:_stone };
+    $edges = { n:TileType.stone, s:TileType.stone, e:TileType.stone, w:TileType.stone };
     $segments.forEach(id => {
       const segment = SegmentDataStore.get(id);
       segment.getExits().forEach(exit => {
