@@ -97,15 +97,19 @@ $z-canvas: 200;
 $z-viewport: 300;
 $z-controls: 1000;
 $z-event-view: 2000;
-$z-menu-cover: 3005;
-$z-main-menu: 3010;
-$z-overlay: 9000;
-$z-overlay-footer: 9001;
-$z-main-cover: 10000;
-$z-confirmation-cover: 12000;
-$z-confirmation-window: 12010;
-$z-confirmation-footer: 12011;
-$z-effects: 50000;
-$z-alerts: 50100;
-// $z-tooltip: 50200;
+$z-overlay: 3000;
+$z-overlay-footer: 3001;
+$z-casements: 4000;
+
+$z-effects: 9000;
+$z-alerts: 9100;
+
+$z-menu-cover: 13005;
+$z-main-menu: 13010;
+$z-main-cover: 13020;
+
+$z-confirmation-cover: 15000;
+$z-confirmation-window: 15010;
+$z-confirmation-footer: 15011;
+
 $z-console: 60000;
