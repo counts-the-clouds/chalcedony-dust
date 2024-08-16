@@ -9,10 +9,15 @@ global.Casement = function(options) {
   function getCasementContent() { return $casementContent; }
   function getCasementWindow() { return $casementWindow; }
 
+  function setTitle(title) {
+    $casementWindow.querySelector('h1.title').innerHTML = title;
+  }
+
   return Object.freeze({
     getID,
     getCasementContent,
     getCasementWindow,
+    setTitle,
   });
 }
 
@@ -38,6 +43,10 @@ Casement.fromPath = function(path) {
           <h1 class='title'>[TITLE]</h1>
           <a href='#' class='close-button'></a>
         </div>
+        <div class='resize-handle ne'></div>
+        <div class='resize-handle nw'></div>
+        <div class='resize-handle se'></div>
+        <div class='resize-handle sw'></div>
         <div class='scrolling-panel'>
           <div class='scrolling-panel-content'>
           </div>

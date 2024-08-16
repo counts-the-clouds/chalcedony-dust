@@ -129,6 +129,37 @@ global.Feature = function(data) {
 
   // ===========================================================================
 
+  function getDisplayName() {
+    if (getType() === TileType.core) { return 'The Dungeon Core'; }
+
+    // TODO: The resource node should actually pull the name from the type of
+    //       resource it is. Iron Mine, Ley Line, etc.
+    if (getType() === TileType.resource) {
+      return `(A Resource Node)`
+    }
+
+    if (getType() === TileType.node) {
+      switch (getState()) {
+        case FeatureState.incomplete: return `An Incomplete Boss Room`;
+        case FeatureState.complete: return `An Empty Boss Room`;
+      }
+    }
+
+    if (getType() === TileType.room) {
+      switch (getState()) {
+        case FeatureState.incomplete: return `An Incomplete Room`;
+        case FeatureState.complete: return `An Empty Room`
+      }
+    }
+
+    if (getType() === TileType.hall) {
+      switch (getState()) {
+        case FeatureState.incomplete: return `An Incomplete Corridor`;
+        case FeatureState.complete: return `An Empty Corridor`
+      }
+    }
+  }
+
   function toString() {
     return `Feature:${$id}`;
   }
@@ -157,6 +188,7 @@ global.Feature = function(data) {
     addSegmentDrawing,
     onMouseEnter,
     onMouseLeave,
+    getDisplayName,
     toString,
     pack,
   });
