@@ -127,10 +127,6 @@ global.Feature = function(data) {
   function onMouseEnter() { applyTint('select'); }
   function onMouseLeave() { applyTint('base'); }
 
-  function onMouseDown() {
-    console.log(`Click ${toString()}`);
-  }
-
   // ===========================================================================
 
   function toString() {
@@ -161,7 +157,6 @@ global.Feature = function(data) {
     addSegmentDrawing,
     onMouseEnter,
     onMouseLeave,
-    onMouseDown,
     toString,
     pack,
   });

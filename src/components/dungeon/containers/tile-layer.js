@@ -51,7 +51,7 @@ global.TileLayer = function(segment) {
     $drawing.eventMode = 'dynamic';
     $drawing.onmouseenter = feature.onMouseEnter;
     $drawing.onmouseleave = feature.onMouseLeave;
-    $drawing.onmousedown = feature.onMouseDown;
+    $drawing.onclick = () => { FeatureWindows.open(feature) };
   }
 
   function getShapeContainer() {
