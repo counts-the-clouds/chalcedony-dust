@@ -1,0 +1,13 @@
+
+.casement-window {
+  position: absolute;
+
+  background-color: rgba(130,120,110);
+  border: 3px solid rgba(150,140,130);
+  box-shadow: $shadow-frame;
+}
+
+.casement-bar {
+  height: 30px;
+  background-color: rgba(150,140,130);
+}

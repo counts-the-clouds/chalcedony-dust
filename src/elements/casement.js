@@ -14,7 +14,6 @@ global.Casement = function(options) {
     getCasementContent,
     getCasementWindow,
   });
-
 }
 
 Casement.init = function() {
@@ -55,4 +54,3 @@ Casement.fromPath = function(path) {
     resolve(casement);
   });
 }
-
