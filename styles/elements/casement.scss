@@ -23,9 +23,13 @@
   .resize-handle.sw { bottom:-3px; left:-3px; cursor:sw-resize; }
   .resize-handle.se { bottom:-3px; right:-3px; cursor:se-resize; }
 
+
+  .casement-container {
+    position: relative;
+    top: 30px;
+  }
+
   .casement-content {
-    position: absolute;
-    cursor: pointer;
     height: 100%;
     width: 100%;
 

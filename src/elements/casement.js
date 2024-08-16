@@ -47,8 +47,9 @@ Casement.fromPath = function(path) {
         <div class='resize-handle nw'></div>
         <div class='resize-handle se'></div>
         <div class='resize-handle sw'></div>
-        <div class='scrolling-panel'>
-          <div class='scrolling-panel-content'>
+        <div class='casement-container'>
+          <div class='scrolling-panel'>
+            <div class='scrolling-panel-content'></div>
           </div>
         </div>
       </div>
@@ -56,6 +57,8 @@ Casement.fromPath = function(path) {
 
     casementWindow.querySelector('.scrolling-panel-content').appendChild(casementContent);
     X.first('#casementsArea').appendChild(casementWindow);
+
+    ScrollingPanel.build(casementWindow.querySelector('.scrolling-panel'));
 
     const casement = Casement({ id, casementContent, casementWindow });
     Casement.Internals.currentCasements[id] = casement;
