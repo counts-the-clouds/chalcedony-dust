@@ -1,9 +1,12 @@
 
 global.Casement = function(options) {
 
+  const barHeight = 20;
+
   const $id = options.id;
   const $casementContent = options.casementContent;
   const $casementWindow = options.casementWindow;
+  const $scrollingPanel = options.scrollingPanel;
 
   function getID() { return $id }
   function getCasementContent() { return $casementContent; }
@@ -13,11 +16,26 @@ global.Casement = function(options) {
     $casementWindow.querySelector('h1.title').innerHTML = title;
   }
 
+  function setBounds(bounds) {
+    if (bounds.height < 100) { bounds.height = 100; }
+    if (bounds.width < 300) { bounds.width = 300; }
+
+    $casementWindow.style['top'] = `${bounds.top}px`;
+    $casementWindow.style['left'] = `${bounds.left}px`;
+    $casementWindow.style['height'] = `${bounds.height}px`;
+    $casementWindow.style['width'] = `${bounds.width}px`;
+
+    $scrollingPanel.style['height'] = `${bounds.height - barHeight}px`;
+
+    ScrollingPanel.resize($scrollingPanel);
+  }
+
   return Object.freeze({
     getID,
     getCasementContent,
     getCasementWindow,
     setTitle,
+    setBounds,
   });
 }
 
@@ -55,12 +73,14 @@ Casement.fromPath = function(path) {
       </div>
     `);
 
+    casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
     casementWindow.querySelector('.scrolling-panel-content').appendChild(casementContent);
     X.first('#casementsArea').appendChild(casementWindow);
 
-    ScrollingPanel.build(casementWindow.querySelector('.scrolling-panel'));
+    const scrollingPanel = casementWindow.querySelector('.scrolling-panel')
+    ScrollingPanel.build(scrollingPanel);
 
-    const casement = Casement({ id, casementContent, casementWindow });
+    const casement = Casement({ id, casementContent, casementWindow, scrollingPanel });
     Casement.Internals.currentCasements[id] = casement;
 
     resolve(casement);

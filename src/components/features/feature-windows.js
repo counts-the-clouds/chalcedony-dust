@@ -24,6 +24,7 @@ global.FeatureWindows = (function() {
   async function openEmptyFeatureWindow(feature) {
     const casement = await Casement.fromPath('views/empty-feature-window.html');
     casement.setTitle(feature.getDisplayName());
+    casement.setBounds({ top:20, left:20, height:200, width:400 });
   }
 
 
