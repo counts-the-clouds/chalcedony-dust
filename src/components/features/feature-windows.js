@@ -13,14 +13,6 @@ global.FeatureWindows = (function() {
     throw `Unexpected state for feature window: ${feature} ${feature.getState()}`;
   }
 
-  function close() {
-
-  }
-
-  function isVisible() {
-
-  }
-
   async function openEmptyFeatureWindow(feature) {
     if (Casement.getAssociatedCasements(feature.toString()).length === 0) {
       const casement = await Casement.fromPath('views/empty-feature-window.html');
@@ -32,8 +24,6 @@ global.FeatureWindows = (function() {
 
   return Object.freeze({
     open,
-    close,
-    isVisible,
   });
 
 })();
