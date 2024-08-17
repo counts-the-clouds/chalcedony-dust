@@ -16,6 +16,12 @@ global.Casement = (function() {
     return $$currentCasements[event.target.closest('.casement-window').getAttribute('id')]
   }
 
+  function getAssociatedCasements(association) {
+    return Object.values($$currentCasements).filter(casement => {
+      return casement.getAssociatedWith() === association;
+    });
+  }
+
   function fromPath(path) {
     return new Promise(resolve => {
       const index = $$casementCounter++;
@@ -64,6 +70,7 @@ global.Casement = (function() {
     const $casementWindow = options.casementWindow;
     const $scrollingPanel = options.scrollingPanel;
 
+    let $associatedWith;
     let $bounds = {};
 
     function getID() { return $id }
@@ -72,6 +79,9 @@ global.Casement = (function() {
 
     $casementWindow.querySelector('.resize-handle').addEventListener('mousedown', event => startResizeDrag(event));
     $casementWindow.querySelector('.casement-bar').addEventListener('mousedown', event => startMoveDrag(event));
+
+    function setAssociatedWith(association) { $associatedWith = association; }
+    function getAssociatedWith() { return $associatedWith; }
 
     function setTitle(title) {
       $casementWindow.querySelector('h1.title').innerHTML = title;
@@ -121,6 +131,8 @@ global.Casement = (function() {
       getID,
       getCasementContent,
       getCasementWindow,
+      setAssociatedWith,
+      getAssociatedWith,
       setTitle,
       setBounds,
       moveTo,
@@ -165,6 +177,7 @@ global.Casement = (function() {
   return Object.freeze({
     init,
     fromPath,
+    getAssociatedCasements,
   });
 
 })();

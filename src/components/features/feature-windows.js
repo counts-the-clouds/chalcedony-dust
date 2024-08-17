@@ -22,12 +22,13 @@ global.FeatureWindows = (function() {
   }
 
   async function openEmptyFeatureWindow(feature) {
-    const casement = await Casement.fromPath('views/empty-feature-window.html');
-    casement.setTitle(feature.getDisplayName());
-    casement.setBounds({ top:20, left:20, height:200, width:400 });
+    if (Casement.getAssociatedCasements(feature.toString()).length === 0) {
+      const casement = await Casement.fromPath('views/empty-feature-window.html');
+      casement.setAssociatedWith(feature.toString());
+      casement.setTitle(feature.getDisplayName());
+      casement.setBounds({ top:20, left:20, height:200, width:400 });
+    }
   }
-
-
 
   return Object.freeze({
     open,
