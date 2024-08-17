@@ -1,11 +1,12 @@
+
 #casementsArea {
   .casement-window {
     position: absolute;
 
     pointer-events: all;
 
-    background-color: rgba(20,20,20);
-    border: 3px solid rgba(50,50,50);
+    background-color: rgba(0,0,0,0.8);
+    border: 3px solid $casementBorderColor;
     box-shadow: $shadow-frame;
   }
 
@@ -25,27 +26,22 @@
 
   .casement-content {
     width: 100%;
-
     z-index: 50;
-
-    background-color: rgba(0,150,0,0.1);
   }
 
   .casement-bar {
     position: absolute;
     width:100%;
     height: 20px;
-    background-color: rgba(50,50,50);
+    background: $casementTopGradient;
     overflow: hidden;
-
-    z-index: 100;
-
     cursor: move;
+    z-index: 100;
 
     h1 {
       font-size: 15px;
-      line-height: 20px;
-      font-family: "habibi";
+      line-height: 18px;
+      font-family: 'aleo-light';
       margin: 0 2px;
     }
 
