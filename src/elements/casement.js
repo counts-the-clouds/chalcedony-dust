@@ -79,6 +79,8 @@ global.Casement = (function() {
 
     function setAssociatedWith(association) { $associatedWith = association; }
     function getAssociatedWith() { return $associatedWith; }
+    function setZIndex(index) { getCasementWindow().style['z-index'] = index; }
+    function getZIndex() { return getCasementWindow().style['z-index'] }
 
     function setTitle(title) {
       $casementWindow.querySelector('h1.title').innerHTML = title;
@@ -140,6 +142,8 @@ global.Casement = (function() {
       getCasementWindow,
       setAssociatedWith,
       getAssociatedWith,
+      setZIndex,
+      getZIndex,
       setTitle,
       setBounds,
       getBounds,
@@ -162,6 +166,8 @@ global.Casement = (function() {
       }
     };
 
+    reorderWindows(casement);
+
     document.addEventListener('mouseup', stopDrag);
     document.addEventListener('mousemove', moveWindow);
   }
@@ -176,6 +182,8 @@ global.Casement = (function() {
       origin: { x:event.clientX, y:event.clientY },
       size: { height:bounds.height, width:bounds.width },
     };
+
+    reorderWindows(casement);
 
     document.addEventListener('mouseup', stopDrag);
     document.addEventListener('mousemove', resizeWindow);
@@ -203,6 +211,23 @@ global.Casement = (function() {
       if ($$dragContext.resizing) { document.removeEventListener('mousemove', resizeWindow); }
       $$dragContext = null;
     }
+  }
+
+  // First get all the casements except for the top casement, sort them by
+  // their current z-index, reassign a new z-index in order, then finally
+  // assign the topCasement the highest z-index.
+  function reorderWindows(topCasement) {
+    $$casementCounter = 100;
+
+    Object.keys($$currentCasements).filter(key => {
+      return key !== topCasement.getID();
+    }).toSorted((a,b) => {
+      return $$currentCasements[a].getZIndex() - $$currentCasements[b].getZIndex();
+    }).forEach(id => {
+      $$currentCasements[id].setZIndex(4000 + $$casementCounter++);
+    });
+
+    topCasement.setZIndex(4000 + $$casementCounter++);
   }
 
   return Object.freeze({
