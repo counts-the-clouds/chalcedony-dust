@@ -62,9 +62,15 @@ global.Casement = (function() {
     const $casementWindow = options.casementWindow;
     const $scrollingPanel = options.scrollingPanel;
 
+    let $dragContext;
+
     function getID() { return $id }
     function getCasementContent() { return $casementContent; }
     function getCasementWindow() { return $casementWindow; }
+
+    $casementWindow.addEventListener('mouseup', event => stopDrag(event));
+    $casementWindow.querySelector('.resize-handle').addEventListener('mousedown', event => startResizeDrag(event));
+    $casementWindow.querySelector('.casement-bar').addEventListener('mousedown', event => startMoveDrag(event));
 
     function setTitle(title) {
       $casementWindow.querySelector('h1.title').innerHTML = title;
@@ -91,6 +97,18 @@ global.Casement = (function() {
         $$casementCounter = 100;
       }
     }
+
+    function stopDrag() {
+
+    }
+    function startResizeDrag(event) {
+// $dragContext
+    }
+    function startMoveDrag(event) {
+      console.log('Start move',event.clientX, event.clientY)
+
+    }
+
 
     return Object.freeze({
       getID,
