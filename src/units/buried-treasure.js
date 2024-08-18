@@ -115,7 +115,7 @@ global.BuriedTreasure = (function() {
   // can't hold another resource node. We also consider the the min and max
   // distances from the origin.
   function getDiscoverableTreasures(tile) {
-    const distance = distanceToOrigin(tile.getCoordinates())
+    const distance = tile.distanceToOrigin();
     const isNode = tile.getSegments().map(segment => segment.getType()).includes(TileType.node);
 
     return $treasures.filter(treasureData => {
@@ -136,12 +136,6 @@ global.BuriedTreasure = (function() {
     return discoveries.reduce((sum, discovery) => sum + discovery.weight, 0);
   }
 
-  function distanceToOrigin(coordinates) {
-    const x = coordinates.gx * coordinates.gx;
-    const y = coordinates.gy * coordinates.gy;
-    return Math.floor(Math.sqrt(x+y));
-  }
-
   // TODO: There may be other factors that adjust how much we raise the heat
   //       by. There could be some kind of treasure hunting buff that increases
   //       the rate. I think a default value if 3% each tile sounds like a
@@ -156,7 +150,7 @@ global.BuriedTreasure = (function() {
   // also only raise the heat if there are things that can be discovered when a
   // tile is placed.
   function raiseHeat(tile) {
-    const distance = distanceToOrigin(tile.getCoordinates())
+    const distance = tile.distanceToOrigin();
     const discoverable = getDiscoverableTreasures(tile);
 
     if (distance >= 5 && discoverable.length > 0) { $heat += 3; }

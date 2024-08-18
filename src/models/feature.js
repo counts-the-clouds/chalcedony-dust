@@ -12,12 +12,19 @@ global.Feature = function(data) {
   function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
   function getState() { return $state; }
   function getType() { return $segments.length > 0 ? SegmentDataStore.get($segments[0]).getType() : null; }
+  function getSize() { return getTiles().length; }
 
   // It's possible for a tile to appear more than once in the same feature.
   // Consider two unconnected rooms on a single tile that get connected by
   // tiles placed around them.
   function getTiles() {
     return ArrayHelper.unique(getSegments().map(segment => segment.getTile()));
+  }
+
+  // The distance to the origin from the feature is the distance from the
+  // closest tile.
+  function distanceToOrigin() {
+    return getTiles().map(tile => tile.distanceToOrigin()).toSorted()[0]
   }
 
   function addSegment(segment) {
@@ -179,7 +186,9 @@ global.Feature = function(data) {
     getSegments,
     getState,
     getType,
+    getSize,
     getTiles,
+    distanceToOrigin,
     addSegment,
     checkStatus,
     complete,

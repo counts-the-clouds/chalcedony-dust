@@ -27,6 +27,7 @@ global.Registry = function(typeName) {
     return { ...$registry[code] };
   }
 
+  function allCodes() { return Object.keys($registry) }
   function getSize() { return Object.keys($registry).length }
 
   function forEach(callback) {
@@ -39,6 +40,7 @@ global.Registry = function(typeName) {
     register,
     unregister,
     lookup,
+    allCodes,
     getSize,
     forEach,
   });
@@ -48,6 +50,7 @@ global.AnimationRegistry = Registry('Animation');
 global.ClockRegistry = Registry('Clock');
 global.EventRegistry = Registry('PagedEvent');
 global.ExtraRegistry = Registry('Extra');
+global.FeatureUpgradeRegistry = Registry('FeatureUpgrade');
 global.NoteRegistry = Registry('Note');
 global.ShapeRegistry = Registry('Shape');
 global.TileRegistry = Registry('Tile');

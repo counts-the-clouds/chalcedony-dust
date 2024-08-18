@@ -83,6 +83,12 @@ global.Tile = function(data) {
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return $coordinates ? { ...$coordinates } : null; }
 
+  function distanceToOrigin(coordinates) {
+    const x = $coordinates.gx * $coordinates.gx;
+    const y = $coordinates.gy * $coordinates.gy;
+    return Math.floor(Math.sqrt(x+y));
+  }
+
   function getNeighbors() {
     const x = $coordinates.gx;
     const y = $coordinates.gy;
@@ -166,6 +172,7 @@ global.Tile = function(data) {
     getClock,
     setCoordinates,
     getCoordinates,
+    distanceToOrigin,
     getNeighbors,
 
     rotateClockwise,

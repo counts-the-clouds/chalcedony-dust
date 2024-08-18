@@ -67,6 +67,11 @@ describe("Tile", function() {
     });
   });
 
+  it('distanceToOrigin()', function() {
+    const tile = SpecHelper.placeTile(5,10,{ code:'baseline-h2-n1-0' })
+    expect(tile.distanceToOrigin()).to.equal(11);
+  });
+
   describe('getNeighbors()', function() {
     it('gets neighboring tiles', function() {
       const core = SpecHelper.placeTile(0,0,{ code:'dungeon-core' });

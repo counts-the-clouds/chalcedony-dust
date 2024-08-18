@@ -7,7 +7,11 @@ global.FeatureWindows = (function() {
     }
 
     if (feature.getState() === FeatureState.complete) {
-      return openEmptyFeatureWindow(feature);
+      openEmptyFeatureWindow(feature);
+
+      const upgrades = FeatureUpgrades.availableFor(feature);
+      console.log("Show Upgrades",upgrades);
+      return
     }
 
     throw `Unexpected state for feature window: ${feature} ${feature.getState()}`;
