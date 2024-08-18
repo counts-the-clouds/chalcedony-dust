@@ -1,20 +1,30 @@
 global.FeatureWindows = (function() {
 
   async function open(feature) {
-
     if (feature.getState() === FeatureState.incomplete) {
       throw `Cannot open a feature window for an incomplete feature.`
     }
 
-    if (feature.getState() === FeatureState.complete) {
-      const casement = await openEmptyFeatureWindow(feature);
-      if (casement) {
-        addAvailableUpgrades(feature,casement);
-      }
-      return;
+    if (feature.getState() !== FeatureState.complete) {
+      throw `Unexpected state for feature window: ${feature} ${feature.getState()}`;
     }
 
-    throw `Unexpected state for feature window: ${feature} ${feature.getState()}`;
+    const casement = await openEmptyFeatureWindow(feature);
+    if (casement) {
+      if (feature.getType() === TileType.node) {
+        buildGuardianSelector()
+      }
+      if (feature.getType() === TileType.resource) {
+        // This needs to be specific for the feature.
+      }
+      if ([TileType.hall, TileType.room].includes(feature.getType())) {
+        addAvailableUpgrades(feature,casement);
+      }
+    }
+  }
+
+  function buildGuardianSelector() {
+
   }
 
   async function openEmptyFeatureWindow(feature) {
