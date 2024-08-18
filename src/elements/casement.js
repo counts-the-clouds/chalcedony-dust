@@ -128,6 +128,12 @@ global.Casement = (function() {
       ScrollingPanel.resize($scrollingPanel);
     }
 
+    // The scrolling panel needs to be resized if the size of the content
+    // changes.
+    function contentResized() {
+      ScrollingPanel.resize($scrollingPanel);
+    }
+
     function close() {
       $casementWindow.remove();
       delete $$currentCasements[$id];
@@ -149,6 +155,7 @@ global.Casement = (function() {
       getBounds,
       setLocation,
       setSize,
+      contentResized,
       close,
     });
   }

@@ -4,7 +4,7 @@ describe('DiscoveryAdjuster', function() {
     const tile = Tile({ code:'baseline-h2-0' });
     const discovery = { code:'iron-mine', type:DiscoveryType.resource };
 
-    DiscoveryAdjuster.adjustTile(tile, discovery);
+    DiscoveryAdjuster.addResourceNode(tile, discovery);
 
     const hallN = tile.getSegments()[0];
     const hallS = tile.getSegments()[1];

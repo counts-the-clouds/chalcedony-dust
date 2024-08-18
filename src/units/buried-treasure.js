@@ -62,8 +62,11 @@ global.BuriedTreasure = (function() {
     const discovery = rollForTreasure(tile);
     if (discovery) {
       log(`A Discovery was made`, { system:'BuriedTreasure', level:1, data:{ discovery }});
-      DiscoveryAdjuster.adjustTile(tile,discovery);
-      Panopticon.induce(EventType.resourceDiscovered,{ tile, discovery });
+
+      if (discovery.type === DiscoveryType.resource) {
+        DiscoveryAdjuster.addResourceNode(tile,discovery);
+        Panopticon.induce(EventType.resourceDiscovered,{ tile, discovery });
+      }
     }
   }
 

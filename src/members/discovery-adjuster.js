@@ -1,11 +1,5 @@
 global.DiscoveryAdjuster = (function() {
 
-  function adjustTile(tile,discovery) {
-    if (discovery.type === DiscoveryType.resource) {
-      addResourceNode(tile, discovery);
-    }
-  }
-
   // When adding a resource node to a tile we first remove all the old segments
   // and replace them with new ones with the same types and exits. This may be
   // surprising to the player. When a tile is placed some features that looked
@@ -48,7 +42,8 @@ global.DiscoveryAdjuster = (function() {
     const resourceSegment = Segment({ tileID:tile.getID(), type:TileType.resource, index:index, graphics:{ shape:'resource-node' } });
 
     const feature = Feature({ state:FeatureState.complete });
-          feature.addSegment(resourceSegment);
+    feature.addSegment(resourceSegment);
+    feature.attachConstruction(discovery.code);
 
     tile.addSegment(resourceSegment);
 
@@ -81,7 +76,7 @@ global.DiscoveryAdjuster = (function() {
   }
 
   return Object.freeze({
-    adjustTile,
+    addResourceNode,
   });
 
 })();

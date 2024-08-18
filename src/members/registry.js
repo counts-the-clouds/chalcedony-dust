@@ -27,8 +27,22 @@ global.Registry = function(typeName) {
     return { ...$registry[code] };
   }
 
-  function allCodes() { return Object.keys($registry) }
   function getSize() { return Object.keys($registry).length }
+
+  // Get a shallow copy of all the data objects that satisfy the passed
+  // criteria function()
+  function filter(criteria) {
+    const result = {};
+
+    Object.keys($registry).forEach(key => {
+      const copy = { ...$registry[key] };
+      if (criteria(key,copy)) {
+        result[key] = copy;
+      }
+    });
+
+    return result;
+  }
 
   function forEach(callback) {
     Object.keys($registry).forEach(code => {
@@ -40,10 +54,19 @@ global.Registry = function(typeName) {
     register,
     unregister,
     lookup,
-    allCodes,
+    filter,
     getSize,
     forEach,
   });
+}
+
+Registry.forType = function(type) {
+  switch (type) {
+    case TileType.hall: return HallRegistry;
+    case TileType.resource: return ResourceRegistry;
+    case TileType.room: return RoomRegistry;
+    default: throw `There is no registry for a ${type} type`;
+  }
 }
 
 global.AnimationRegistry = Registry('Animation');

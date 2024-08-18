@@ -16,6 +16,8 @@ global.Feature = function(data) {
   function getType() { return $type; }
   function getSize() { return getTiles().length; }
 
+  // === Construction ==========================================================
+
   function attachConstruction(code) {
     if ($constructionID) { throw `This feature already has a construction.` }
     if ($type === TileType.hall) { $constructionID = Hall({ code }).getID(); }
@@ -202,7 +204,9 @@ global.Feature = function(data) {
     return {
       id: $id,
       state: $state,
+      type: $type,
       segments: $segments,
+      constructionID: $constructionID,
     }
   }
 
