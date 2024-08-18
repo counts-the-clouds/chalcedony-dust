@@ -10,5 +10,5 @@ describe('Feature',function() {
       expect(feature.pack().segments[0]).to.equal(segment.getID());
     });
   });
-  
+
 })

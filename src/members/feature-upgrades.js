@@ -18,20 +18,20 @@ global.FeatureUpgrades = (function() {
       const available = FeatureUpgradeRegistry.allCodes().filter(code => {
         const upgrade = FeatureUpgradeRegistry.lookup(code);
 
+        // TODO: Some upgrades will follow a tree where you need to craft the
+        //       previous upgrades to unlock the more advanced upgrades. Need
+        //       to have any upgrades working first though.
+        if (upgrade.upgradeFrom) { return false; }
+
         if (upgrade.featureType !== feature.getType()) { return false; }
+        if (upgrade.minSize && size < upgrade.minSize) { return false; }
+        if (upgrade.maxSize && size > upgrade.maxSize) { return false; }
 
         return true;
       });
 
       return available.map(code => {
-        const upgrade = FeatureUpgradeRegistry.lookup(code);
-
-        return {
-          code: code,
-          displayName: upgrade.displayName,
-          cost: [...upgrade.cost],
-          canAfford: true
-        };
+        return { code:code, canAfford:true };
       });
     }
 

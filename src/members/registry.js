@@ -51,6 +51,7 @@ global.ClockRegistry = Registry('Clock');
 global.EventRegistry = Registry('PagedEvent');
 global.ExtraRegistry = Registry('Extra');
 global.FeatureUpgradeRegistry = Registry('FeatureUpgrade');
+global.ItemRegistry = Registry('Item');
 global.NoteRegistry = Registry('Note');
 global.ShapeRegistry = Registry('Shape');
 global.TileRegistry = Registry('Tile');
