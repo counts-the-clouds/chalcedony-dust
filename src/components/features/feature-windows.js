@@ -24,7 +24,7 @@ global.FeatureWindows = (function() {
   }
 
   function buildGuardianSelector() {
-
+    // Working on adding guardians.
   }
 
   async function openEmptyFeatureWindow(feature) {

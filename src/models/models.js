@@ -9,7 +9,10 @@ global.Models = (function() {
     global.ClockDataStore = DataStore({ name:'Clock', model:Clock });
     global.ChunkDataStore = DataStore({ name:'Chunk', model:Chunk });
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
+    global.HallDataStore = DataStore({ name:'Hall', model:Hall });
     global.ReactionDataStore = DataStore({ name:'Reaction', model:Reaction });
+    global.ResourceDataStore = DataStore({ name:'Resource', model:Resource });
+    global.RoomDataStore = DataStore({ name:'Room', model:Room });
     global.SegmentDataStore = DataStore({ name:'Segment', model:Segment });
     global.TileDataStore = DataStore({ name:'Tile', model:Tile });
 
@@ -17,8 +20,11 @@ global.Models = (function() {
       ClockDataStore,
       ChunkDataStore,
       FeatureDataStore,
-      SegmentDataStore,
+      HallDataStore,
       ReactionDataStore,
+      ResourceDataStore,
+      RoomDataStore,
+      SegmentDataStore,
       TileDataStore,
     ]
   }

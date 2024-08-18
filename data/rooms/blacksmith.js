@@ -1,5 +1,4 @@
-FeatureUpgradeRegistry.register('blacksmith',{
-  featureType: TileType.room,
+RoomRegistry.register('blacksmith',{
   displayName: 'Blacksmith',
   description: `A monster can be assigned here to craft weapons and armor from whatever materials are made available.`,
 

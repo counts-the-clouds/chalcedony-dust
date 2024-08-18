@@ -4,6 +4,8 @@ global.Feature = function(data) {
   const $segments = data.segments || [];
   const $segmentDrawings = [];
 
+  let $type = data.type;
+  let $constructionID = data.constructionID;
   let $state = data.state || FeatureState.incomplete;
 
   // ===========================================================================
@@ -11,8 +13,25 @@ global.Feature = function(data) {
   function getID() { return $id; }
   function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
   function getState() { return $state; }
-  function getType() { return $segments.length > 0 ? SegmentDataStore.get($segments[0]).getType() : null; }
+  function getType() { return $type; }
   function getSize() { return getTiles().length; }
+
+  function attachConstruction(code) {
+    if ($constructionID) { throw `This feature already has a construction.` }
+    if ($type === TileType.hall) { $constructionID = Hall({ code }).getID(); }
+    if ($type === TileType.resource) { $constructionID = Resource({ code }).getID(); }
+    if ($type === TileType.room) { $constructionID = Room({ code }).getID(); }
+  }
+
+  function getConstruction() {
+    if ($constructionID) {
+      switch ($type) {
+        case TileType.hall: return HallDataStore.get($constructionID);
+        case TileType.resource: return ResourceDataStore.get($constructionID);
+        case TileType.room: return RoomDataStore.get($constructionID);
+      }
+    }
+  }
 
   // It's possible for a tile to appear more than once in the same feature.
   // Consider two unconnected rooms on a single tile that get connected by
@@ -27,8 +46,16 @@ global.Feature = function(data) {
     return getTiles().map(tile => tile.distanceToOrigin()).toSorted()[0]
   }
 
+  // The segments should all have the same type, so it should be fine to set
+  // the feature type to the type of the first segment added. Type should never
+  // change and I use it often enough that it's probably fine to have the same
+  // value stored on the feature and all of its segments.
   function addSegment(segment) {
     segment.setFeatureID($id);
+
+    if ($type == null) {
+      $type = segment.getType();
+    }
 
     if ($segments.includes(segment.getID()) === false) {
       $segments.push(segment.getID());
@@ -187,6 +214,8 @@ global.Feature = function(data) {
     getState,
     getType,
     getSize,
+    attachConstruction,
+    getConstruction,
     getTiles,
     distanceToOrigin,
     addSegment,
