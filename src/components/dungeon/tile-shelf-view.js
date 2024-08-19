@@ -8,6 +8,8 @@ window.TileShelfView = (function() {
   let $rightTrim;
   let $center;
 
+  let $tileProgress;
+
   let $tileState;
 
   function init() {
@@ -21,6 +23,7 @@ window.TileShelfView = (function() {
   //       the overall look of things.
   //
   async function create(application) {
+    $tileProgress = new Pixi.Graphics();
 
     $leftTrim = new Pixi.Graphics();
     $leftTrim.rect(0,20,20,60);
@@ -41,6 +44,7 @@ window.TileShelfView = (function() {
     $shelf.addChild($center);
     $shelf.addChild($leftTrim);
     $shelf.addChild($rightTrim);
+    $shelf.addChild($tileProgress);
 
     $dragArea = new Pixi.Container();
     $dragArea.x = 0;
@@ -100,6 +104,25 @@ window.TileShelfView = (function() {
     positionTiles();
   }
 
+  const _progressBarWidth = 178;
+
+  function updateProgressBar(percentage) {
+    const width = _progressBarWidth * (percentage / 100);
+
+    let barColor = 'rgba(120,170,120,0.6)';
+
+    if (TileShelf.isFull()) {
+      if (percentage > 50) { barColor = 'rgba(200,150,100,0.6)' }
+      if (percentage > 75) { barColor = 'rgba(250,100,100,0.6)' }
+g    }
+
+    $tileProgress.rect(21,40,_progressBarWidth,10);
+    $tileProgress.fill({ color:'rgb(12,17,12)' });
+
+    $tileProgress.rect(21,42,width,6);
+    $tileProgress.fill({ color:barColor });
+  }
+
   return Object.freeze({
     init,
     create,
@@ -107,6 +130,7 @@ window.TileShelfView = (function() {
     positionTiles,
     addTile,
     removeTile,
+    updateProgressBar,
   })
 
 })();

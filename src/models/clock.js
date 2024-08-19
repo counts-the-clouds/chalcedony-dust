@@ -1,9 +1,11 @@
-global.Clock = function(options) {
+global.Clock = function(data) {
 
-  const $id = options.id || ClockDataStore.nextID();
-  const $code = options.code;
+  const $id = data.id || ClockDataStore.nextID();
+  const $code = data.code;
 
-  let $elapsedTime = options.elapsedTime || 0;
+  let $duration = data.duration || ClockRegistry.lookup($code).duration;
+  let $elapsedTime = data.elapsedTime || 0;
+  let $context = data.context;
   let $tileContainer;
 
   // ===========================================================================
@@ -11,20 +13,29 @@ global.Clock = function(options) {
   function getID() { return $id; }
   function getCode() { return $code; }
   function getClockData() { return ClockRegistry.lookup($code); }
-  function getDuration() { return getClockData().duration; }
+  function setContext(context) { $context = context; }
+  function getContext() { return $context; }
+  function setDuration(duration) { $duration = duration }
+  function getDuration() { return $duration }
   function getRepeat() { return getClockData().repeat || false; }
-
   function getElapsedTime() { return $elapsedTime; }
   function setElapsedTime(time) { $elapsedTime = time; }
+  function start() { ClockManager.addClock($self); }
 
   function onUpdate() {
+    const progress = (getElapsedTime() / getDuration()) * 100;
+
     if ($tileContainer) {
-      $tileContainer.updateClock((getElapsedTime() / getDuration()) * 100);
+      return $tileContainer.updateClock(progress);
     }
+
+    // TODO: The clock needs to know what tile it belongs to, or if it belongs to some other object.
+    TileShelfView.updateProgressBar(progress);
+
+
   }
 
   function onComplete() { getClockData().onComplete($self); }
-
   function attachTileContainer(tileContainer) { $tileContainer = tileContainer; }
   function getTileContainer() { return $tileContainer; }
 
@@ -36,7 +47,9 @@ global.Clock = function(options) {
     return {
       id: $id,
       code: $code,
+      duration: $duration,
       elapsedTime: $elapsedTime,
+      context: $context,
     }
   }
 
@@ -45,10 +58,14 @@ global.Clock = function(options) {
   const $self = Object.freeze({
     getID,
     getCode,
+    setContext,
+    getContext,
+    setDuration,
     getDuration,
     getRepeat,
     getElapsedTime,
     setElapsedTime,
+    start,
     onUpdate,
     onComplete,
     attachTileContainer,

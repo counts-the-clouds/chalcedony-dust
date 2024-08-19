@@ -1,7 +1,5 @@
 TileRegistry.register('dungeon-core', {
 
-  clock: { code:'generate-tile' },
-
   segments:[
     { type:TileType.hall, exits:[_n], graphics:{ shape:'hall-short' }},
     { type:TileType.hall, exits:[_s], graphics:{ shape:'hall-short', rotate:2 }},

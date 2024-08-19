@@ -45,14 +45,11 @@ global.EmptyFeatureWindow = (function () {
       </li>`);
 
     constructionItem.querySelector('a.button').addEventListener('click', () => {
-      startConstruction(feature, construction.code);
+      feature.startConstruction(construction.code);
+      WindowManager.pop();
     });
 
     return constructionItem
-  }
-
-  function startConstruction(feature, code) {
-    console.log("Start Construction:",feature.toString(), code);
   }
 
   return Object.freeze({

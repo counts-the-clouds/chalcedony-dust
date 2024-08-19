@@ -55,6 +55,8 @@ global.GameController = (function() {
       GameFlags.set(SystemFlags.currentEvent,stageData.startingEvent);
     }
 
+    Clock({ code:'generate-tile' }).start();
+
     await GameState.saveState();
   }
 

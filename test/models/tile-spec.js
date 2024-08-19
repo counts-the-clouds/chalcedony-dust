@@ -9,11 +9,6 @@ describe("Tile", function() {
       expect(segments[0].getIndex()).to.equal(0);
     });
 
-    it('builds clock', function() {
-      const core = Tile({ code:'dungeon-core' });
-      expect(core.getClock().getCode()).to.equal('generate-tile');
-    });
-
     it('builds tile from segment data', function() {
       const tile = Tile({ segments:[
         { type:TileType.hall, exits:[_n], graphics:{ shape:'hall-medium' }},
@@ -125,13 +120,6 @@ describe("Tile", function() {
 
       expect(packed.extra.drawNote).to.equal('tutorial.rotate-tile');
     });
-
-    it('with clock', function() {
-      const packed = Tile({ code:'dungeon-core' }).pack();
-      const clock = ClockDataStore.get(packed.clockID);
-      expect(clock.getCode()).to.equal('generate-tile');
-      expect(clock.getElapsedTime()).to.equal(0);
-    });
   });
 
   describe("unpack()", function() {
@@ -161,11 +149,12 @@ describe("Tile", function() {
 
     it("with clock", function() {
       const tile = Tile({ code:'dungeon-core' });
+      tile.setClock(Clock({ code:'generate-tile' }));
+
       const clock = tile.getClock();
-            clock.setElapsedTime(30);
+      clock.setElapsedTime(30);
 
       const anotherTile = Tile(tile.pack());
-
       expect(anotherTile.getClock().getElapsedTime()).to.equal(30);
     });
   });

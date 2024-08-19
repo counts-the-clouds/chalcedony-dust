@@ -82,8 +82,10 @@ global.PlacementRules = Object.freeze({
 });
 
 global.FeatureState = Object.freeze({
-  complete: 'complete',
   incomplete: 'incomplete',
+  complete: 'complete',
+  building: 'building',
+  constructed: 'constructed',
 });
 
 global.EventType = Object.freeze({

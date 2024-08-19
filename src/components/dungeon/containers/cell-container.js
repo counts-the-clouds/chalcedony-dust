@@ -70,7 +70,12 @@ global.CellContainer = function(x,y,coordinates) {
 
     $tileContainer = await TileContainer(tile);
     $tileContainer.setPosition(HS,HS);
-    await $tileContainer.enableClock();
+
+    // This is pretty nasty actually. Let's find a better way to add clocks to
+    // tiles. Removed adding the clock to the manager from this. This should
+    // just adjust the ui.
+    // await $tileContainer.enableClock();
+
     $cellContainer.addChild($tileContainer.getTileContainer());
 
     if (tile.getRotation() > 0) {

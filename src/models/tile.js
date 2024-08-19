@@ -79,6 +79,7 @@ global.Tile = function(data) {
   function getPlacementRules()   { return $extra.placementRules   }
   function getPlacementNote()    { return $extra.placementNote    }
 
+  function setClock(clock) { $clockID = clock.getID(); }
   function getClock() { return ClockDataStore.get($clockID); }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return $coordinates ? { ...$coordinates } : null; }
@@ -169,6 +170,7 @@ global.Tile = function(data) {
     getPlacementTrigger,
     getPlacementRules,
     getPlacementNote,
+    setClock,
     getClock,
     setCoordinates,
     getCoordinates,

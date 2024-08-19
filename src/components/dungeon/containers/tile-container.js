@@ -51,15 +51,17 @@ global.TileContainer = async function(tile) {
 
   async function enableClock() {
     const clock = getTile().getClock();
-    if (clock) {
+
+    if (clock && $clockContainer == null) {
       $clockContainer = await ClockContainer(clock);
-
       clock.attachTileContainer(this);
-
       $tileContainer.addChild($clockContainer.getContainer());
-
-      ClockManager.addClock(clock);
     }
+  }
+
+  function disableClock() {
+    $clockContainer.destroy();
+    $clockContainer = null;
   }
 
   async function updateClock(percent) {
@@ -131,10 +133,15 @@ global.TileContainer = async function(tile) {
     setCursor,
     setPosition,
     enableClock,
+    disableClock,
     updateClock,
     setOnShelf,
     segmentComplete,
   };
 };
 
-
+TileContainer.forTile = function(tile) {
+  const coords = tile.getCoordinates();
+  const cellContainer = DungeonView.getCellContainerAt(coords.gx, coords.gy);
+  return cellContainer ? cellContainer.getTileContainer() : null;
+}

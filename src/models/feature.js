@@ -151,6 +151,56 @@ global.Feature = function(data) {
            would not be incomplete, but not in the way you're probably thinking.`
   }
 
+  // === Construction ==========================================================
+
+  function startConstruction(code) {
+
+    // TODO: Duration based on what's being built?
+    const clock = Clock({ code:'build-feature', duration:9000 });
+    clock.setContext({ featureID:getID() });
+
+    const centerTile = centermostTile();
+    centerTile.setClock(clock);
+
+    TileContainer.forTile(tile)
+
+    // clock.attachTile(centerTile);
+    // ClockManager.addClock(clock)
+
+    console.log("Start construction:",code);
+
+    $state = FeatureState.building;
+  }
+
+  function centermostTile() {
+    let minx, maxx, miny, maxy, centermost, distance;
+
+    getTiles().forEach(tile => {
+      const coords = tile.getCoordinates();
+      if (minx == null || minx > coords.gx) { minx = coords.gx }
+      if (miny == null || miny > coords.gy) { miny = coords.gy }
+      if (maxx == null || maxx < coords.gx) { maxx = coords.gx }
+      if (maxy == null || maxy < coords.gy) { maxy = coords.gy }
+    });
+
+    const midPoint = {
+      x: (maxx-minx)/2 + minx,
+      y: (maxy-miny)/2 + miny,
+    }
+
+    getTiles().forEach(tile => {
+      const coords = tile.getCoordinates();
+      const dist = MathHelper.distanceBetweenPoints(midPoint, { x:coords.gx, y:coords.gy });
+
+      if (distance == null || distance > dist) {
+        distance = dist;
+        centermost = tile;
+      }
+    });
+
+    return centermost;
+  }
+
   // ===========================================================================
 
   function addSegmentDrawing(drawing) { $segmentDrawings.push(drawing); }
@@ -227,6 +277,7 @@ global.Feature = function(data) {
     complete,
     isComplete,
     isNotIncomplete,
+    startConstruction,
     addSegmentDrawing,
     onMouseEnter,
     onMouseLeave,
