@@ -1,0 +1,35 @@
+.empty-feature-window {
+
+  .banner {
+    height: 120px;
+    background-color: rgba(250,100,0,0.5);
+    border-bottom: $border-normal;
+  }
+
+  .construction-list {
+    .construction-item {
+      font-family: 'aleo-light';
+      margin: 10px;
+      padding-bottom: 10px;
+
+      border-bottom: $border-light;
+
+      & > .name {
+        font-size: $fs-big;
+        color: $fg-strong;
+      }
+      .description {
+        font-size: $fs-small;
+        color: $fg-body;
+      }
+      .bottom-row {
+        display: flex;
+        align-items: flex-end;
+      }
+      .actions {
+        text-align: right;
+        flex-grow: 1;
+      }
+    }
+  }
+}

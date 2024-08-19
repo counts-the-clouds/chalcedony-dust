@@ -40,7 +40,9 @@ global.FeatureWindows = (function() {
   async function openEmptyFeatureWindow(feature) {
     const casement = await openCasementFor(feature,'views/empty-feature-window.html');
     if (casement) {
-      casement.setBounds({ top:20, left:20, height:200, width:400 });
+      casement.setBounds({ top:20, left:20, height:600, width:450 });
+      casement.setBackground('rgb(15,15,15)')
+      casement.setMinimumWidth(450);
 
       ConstructionHelper.availableFor(feature).forEach(construction => {
         const constructionItem = buildConstructionItem(construction);
@@ -48,7 +50,7 @@ global.FeatureWindows = (function() {
           console.log("Execute Build:",feature.toString(),construction.code);
         });
 
-        casement.getCasementContent().querySelector('#upgradeList').appendChild(constructionItem);
+        casement.getCasementContent().querySelector('.construction-list').appendChild(constructionItem);
       });
 
       casement.contentResized();
@@ -57,36 +59,16 @@ global.FeatureWindows = (function() {
 
   function buildConstructionItem(construction) {
     return X.createElement(`
-      <li class='construction'>
+      <li class='construction-item'>
         <div class='name'>${construction.displayName}</div>
         <div class='description'>${construction.description}</div>
-        <div class='costs'>${buildCostElements(construction)}</div>
-        <div class='actions'>
-          <a href='#' class='button button-small'>Build</a>
+        <div class='bottom-row'>
+          ${CostPanel.build(construction.cost)}
+          <div class='actions'>
+            <a href='#' class='button button-primary button-small'>Build</a>
+          </div>
         </div>
       </li>`);
-  }
-
-  // This is built as a string because we're feeding it directly into the
-  // createElement() function.
-  function buildCostElements(construction) {
-    let buffer = '';
-
-    Object.keys(construction.cost).forEach(costCode => {
-      let name;
-      let quantity = construction.cost[costCode];
-
-      if (costCode === 'mana') { name = 'Mana'; }
-      if (name == null) { name = ItemRegistry.lookup(costCode).name; }
-
-      buffer += `
-        <div class='cost-item'>
-          <div class='name'>${name}</div>
-          <div class='count'>${quantity}</div>
-        </div>`;
-    });
-
-    return buffer;
   }
 
   return Object.freeze({

@@ -1,0 +1,31 @@
+
+.cost-panel {
+  display: flex;
+  flex-wrap: wrap;
+
+  .cost-item {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding-right: 10px;
+    margin-top: 10px;
+    margin-right: 10px;
+    background-color: rgba(0,0,0,0.8);
+    border: $border-light;
+    box-shadow: $shadow-shallow;
+    white-space: nowrap;
+
+    .count {
+      margin-left: 10px;
+      margin-right: 5px;
+    }
+  }
+
+  .icon {
+    height: 40px;
+    width: 40px;
+    background-color: rgb(250,100,0);
+  }
+
+}
+

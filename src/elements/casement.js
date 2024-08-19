@@ -70,6 +70,9 @@ global.Casement = (function() {
     let $associatedWith;
     let $bounds = {};
 
+    let $minHeight = 200;
+    let $minWidth = 300;
+
     function getID() { return $id }
     function getCasementContent() { return $casementContent; }
     function getCasementWindow() { return $casementWindow; }
@@ -85,6 +88,15 @@ global.Casement = (function() {
     function setTitle(title) {
       $casementWindow.querySelector('h1.title').innerHTML = title;
     }
+
+    function setBackground(color) {
+      $casementWindow.querySelector('.casement-container').style['background-color'] = color;
+    }
+
+    // We can only set the minimum height and width to values greater than the
+    // scrolling panel's minimum height and width.
+    function setMinimumHeight(height) { if (height >= 200) { $minHeight = height } }
+    function setMinimumWidth(width) { if (width >= 300) { $minWidth = width; } }
 
     function getBounds() { return $bounds; }
     function setBounds(bounds) {
@@ -105,8 +117,8 @@ global.Casement = (function() {
     }
 
     function reposition() {
-      if ($bounds.height < 200) { $bounds.height = 200; }
-      if ($bounds.width < 300) { $bounds.width = 300; }
+      if ($bounds.height < $minHeight) { $bounds.height = $minHeight; }
+      if ($bounds.width < $minWidth) { $bounds.width = $minWidth; }
       if ($bounds.height > window.innerHeight - 100) { $bounds.height = window.innerHeight - 100; }
       if ($bounds.width > window.innerWidth - 100) { $bounds.width = window.innerWidth - 100; }
 
@@ -151,6 +163,9 @@ global.Casement = (function() {
       setZIndex,
       getZIndex,
       setTitle,
+      setBackground,
+      setMinimumHeight,
+      setMinimumWidth,
       setBounds,
       getBounds,
       setLocation,
