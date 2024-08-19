@@ -1,4 +1,4 @@
 ItemRegistry.register('iron-ore',{
   name: 'Iron Ore',
-  icon: 'icons/unknown.png'
+  icon: 'unknown.png'
 });

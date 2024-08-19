@@ -1,5 +1,4 @@
 global.MainContent = (function() {
-
   // Just requiring PixiJS doesn't do anything, so I'll just add a script tag
   // to the head like some kind of boomer. I'm also not sure when Pixi
   // becomes available doing it this way.
@@ -38,6 +37,7 @@ global.MainContent = (function() {
 
   function loadStyles() {
     addStylesheet(`${APP}/styles/chalcedony.css`);
+    addIconStyles();
   }
 
   function addScriptTag(src) {
@@ -53,7 +53,35 @@ global.MainContent = (function() {
           link.setAttribute('type','text/css');
           link.setAttribute('href',href);
 
-    document.getElementsByTagName('head')[0].appendChild(link);
+    document.querySelector('head').appendChild(link);
+  }
+
+  function buildStyleSheet(string) {
+    const style = document.createElement("style");
+          style.textContent = string;
+
+    document.querySelector('head').appendChild(style);
+  }
+
+  // Adding all of these asset URLs here is shitty, but chromium sanitizes
+  // everything when setting an element's innerHTML. This makes it impossible
+  // to set a style attribute that points to an asset URL. So instead I create
+  // a style tag with all the URLs that I would have set on the elements. I'm
+  // doing this as a promise because nothing is waiting on it and I don't
+  // really care how long it takes.
+  function addIconStyles() {
+    return new Promise(resolve => {
+      let iconStyles = `
+        .icon-for-mana { background-image:${X.assetURL('icons/unknown.png')} }
+      `;
+
+      ItemRegistry.forEach((code,item) => {
+        iconStyles += `.icon-for-${code} { background-image:${X.assetURL(`icons/${item.icon}`)} }\n`
+      });
+
+      buildStyleSheet(iconStyles);
+      resolve();
+    });
   }
 
   function setMainContent(path) {

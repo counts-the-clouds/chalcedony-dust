@@ -65,7 +65,7 @@ global.FeatureWindows = (function() {
         <div class='bottom-row'>
           ${CostPanel.build(construction.cost)}
           <div class='actions'>
-            <a href='#' class='button button-primary button-small'>Build</a>
+            <a href='#' class='button button-primary button-big'>Build</a>
           </div>
         </div>
       </li>`);
