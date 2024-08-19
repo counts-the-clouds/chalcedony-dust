@@ -72,7 +72,7 @@ global.MainContent = (function() {
   function addIconStyles() {
     return new Promise(resolve => {
       let iconStyles = `
-        .icon-for-mana { background-image:${X.assetURL('icons/unknown.png')} }
+        .icon-for-mana { background-image:${X.assetURL('icons/mana.png')} }
       `;
 
       ItemRegistry.forEach((code,item) => {
