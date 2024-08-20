@@ -16,6 +16,8 @@ global.Segment = function(data) {
   let $featureID = data.featureID;
   let $connections = data.connections || {};
 
+  let $tileLayer;
+
   // ===========================================================================
 
   function getID() { return $id; }
@@ -29,6 +31,8 @@ global.Segment = function(data) {
   function setFeatureID(featureID) { $featureID = featureID; }
   function getFeature() { return FeatureDataStore.get($featureID); }
   function getState() { return $featureID ? getFeature().getState() : FeatureState.incomplete }
+  function setTileLayer(layer) { $tileLayer = layer; }
+  function getTileLayer() { return $tileLayer; }
 
   function getConnections() { return $connections }
   function getConnection(direction) { return $connections[direction]; }
@@ -104,6 +108,8 @@ global.Segment = function(data) {
     setFeatureID,
     getFeature,
     getState,
+    setTileLayer,
+    getTileLayer,
     getConnections,
     getConnection,
     setConnection,

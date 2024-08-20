@@ -1,22 +1,22 @@
 ShapeRegistry.register('hall-across', {
   draw: (drawing,segment) => {
     const state = segment.getState()
-    const palette = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
+    const color = ExtraRegistry.lookup('ColorPalette').segments.hall[state];
 
     if (state === FeatureState.incomplete) {
       drawing.rect(52,0,24,128);
       drawing.fill(0xCCCCCC);
       drawing.rect(54,0,20,128);
       drawing.fill(0xFFFFFF);
-      drawing.tint = palette.base;
+      drawing.tint = color;
     }
 
-    if (state === FeatureState.complete) {
+    if (state !== FeatureState.incomplete) {
       drawing.rect(48,0,32,128);
       drawing.fill(0xFFFFFF);
       drawing.rect(52,0,24,128);
       drawing.fill(0xCCCCCC);
-      drawing.tint = palette.base;
+      drawing.tint = color;
     }
   }
 });

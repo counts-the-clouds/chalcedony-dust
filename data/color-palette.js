@@ -28,59 +28,31 @@ ExtraRegistry.register('ColorPalette',{
 
   segments:{
     hall:{
-      incomplete:{
-        dark: '#272727',
-        base: '#373737',
-        light: '#474747',
-      },
-      complete:{
-        dark: '#493e36',
-        base: '#726156',
-        light: '#a28b7b',
-        select: '#7b6e8a',
-      }
+      incomplete: '#373737',
+      complete: '#726156',
+      building: '#493e36',
+      constructed: '#a28b7b',
+      select: '#7b6e8a',
     },
     room:{
-      incomplete:{
-        dark: '#303030',
-        base: '#474747',
-        light: '#656565',
-      },
-      complete:{
-        dark: '#303142',
-        base: '#4d4f68',
-        light: '#6e7094',
-        select: '#5a5e95',
-      }
+      incomplete: '#474747',
+      complete: '#4d4f68',
+      building: '#303142',
+      constructed: '#6e7094',
+      select: '#5a5e95',
     },
     core:{
-      complete: {
-        dark: '#331f2f',
-        base: '#4e364c',
-        light: '#6f4d6c',
-        select: '#5e4784',
-      }
+      complete: '#4e364c',
+      select: '#5e4784',
     },
     node:{
-      incomplete: {
-        dark: '#303030',
-        base: '#404040',
-        light: '#505050',
-      },
-      complete: {
-        dark: '#331f20',
-        base: '#523536',
-        light: '#754b4d',
-        select: '#5e4777',
-      }
+      incomplete: '#404040',
+      complete: '#523536',
+      select: '#5e4777',
     },
     resource:{
-      complete: {
-        dark: '#2a3020',
-        base: '#454e36',
-        light: '#626f4d',
-        select: '#525c76',
-      }
+      complete: '#454e36',
+      select: '#525c76',
     }
   },
 

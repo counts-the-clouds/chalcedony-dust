@@ -12,6 +12,7 @@ global.Feature = function(data) {
 
   function getID() { return $id; }
   function getSegments() { return $segments.map(id => { return SegmentDataStore.get(id); }); }
+  function setState(state) { $state = state; }
   function getState() { return $state; }
   function getType() { return $type; }
   function getSize() { return getTiles().length; }
@@ -98,7 +99,7 @@ global.Feature = function(data) {
   // nothing in test or when the Dungeon isn't visible for whatever reason.
   function complete() {
     if (DungeonView.isVisible()) {
-      $state = FeatureState.complete;
+      setState(FeatureState.complete);
 
       const segments = getSegments();
 
@@ -135,13 +136,10 @@ global.Feature = function(data) {
     });
   }
 
-  function isComplete() {
-    if ($segments.length > 0) {
-      return SegmentDataStore.get($segments[0]).getState() === FeatureState.complete;
-    }
-    throw `Don't call this function when there are no segments. If there are no
-           segments there is no feature.`
-  }
+  // TODO: Source of some potential bugs here. Thinking about it, do
+  //       segments need to store their own state? If a segment is on the
+  //       dungeon grid it should be a part of a feature. Segments should
+  //       always get their state from their feature state.
 
   function isNotIncomplete() {
     if ($segments.length > 0) {
@@ -157,48 +155,19 @@ global.Feature = function(data) {
     log(`Construction started on ${toString()}`,{ system:'Feature', data:{ code }});
 
     const construction = (getType() === TileType.room) ? RoomRegistry.lookup(code) : HallRegistry.lookup(code);
-    const centerTile = centermostTile();
-
-    const clock = Clock({ code:'build-feature', duration:(construction.constructionTime * 1000) });
-    clock.setContext({ featureID:getID() });
-    clock.setParent({ type:'Tile', id:centerTile.getID() });
+    const clock = Clock({
+      code:'build-feature',
+      duration:(construction.constructionTime * 1000),
+      parent:{ type:'Feature', id:getID() },
+    });
 
     ClockManager.addClock(clock);
-
-    $state = FeatureState.building;
+    setState(FeatureState.building);
+    applyTint(FeatureState.building);
 
     // TODO: Update the graphics to show the building state...
 
     await GameState.saveState();
-  }
-
-  function centermostTile() {
-    let minx, maxx, miny, maxy, centermost, distance;
-
-    getTiles().forEach(tile => {
-      const coords = tile.getCoordinates();
-      if (minx == null || minx > coords.gx) { minx = coords.gx }
-      if (miny == null || miny > coords.gy) { miny = coords.gy }
-      if (maxx == null || maxx < coords.gx) { maxx = coords.gx }
-      if (maxy == null || maxy < coords.gy) { maxy = coords.gy }
-    });
-
-    const midPoint = {
-      x: (maxx-minx)/2 + minx,
-      y: (maxy-miny)/2 + miny,
-    }
-
-    getTiles().forEach(tile => {
-      const coords = tile.getCoordinates();
-      const dist = MathHelper.distanceBetweenPoints(midPoint, { x:coords.gx, y:coords.gy });
-
-      if (distance == null || distance > dist) {
-        distance = dist;
-        centermost = tile;
-      }
-    });
-
-    return centermost;
   }
 
   // ===========================================================================
@@ -206,12 +175,12 @@ global.Feature = function(data) {
   function addSegmentDrawing(drawing) { $segmentDrawings.push(drawing); }
 
   function applyTint(code) {
-    const tint = ExtraRegistry.lookup('ColorPalette').segments[getType()].complete[code];
+    const tint = ExtraRegistry.lookup('ColorPalette').segments[getType()][code];
     $segmentDrawings.forEach(drawing => { drawing.tint = tint; })
   }
 
   function onMouseEnter() { applyTint('select'); }
-  function onMouseLeave() { applyTint('base'); }
+  function onMouseLeave() { applyTint(getState()); }
 
   // ===========================================================================
 
@@ -265,6 +234,7 @@ global.Feature = function(data) {
   const $self = Object.freeze({
     getID,
     getSegments,
+    setState,
     getState,
     getType,
     getSize,
@@ -275,10 +245,10 @@ global.Feature = function(data) {
     addSegment,
     checkStatus,
     complete,
-    isComplete,
     isNotIncomplete,
     startConstruction,
     addSegmentDrawing,
+    applyTint,
     onMouseEnter,
     onMouseLeave,
     getDisplayName,

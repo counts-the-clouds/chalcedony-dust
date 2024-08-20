@@ -8,22 +8,22 @@ global.ShapeHelper = {
   drawThreeLayeredPoly: function(drawing,segment,pointArrays) {
     const state = segment.getState();
     const type = segment.getType();
-    const tint = ExtraRegistry.lookup('ColorPalette').segments[type][state].base;
+    const color = ExtraRegistry.lookup('ColorPalette').segments[type][state];
 
     if (state === FeatureState.incomplete) {
       drawing.poly(pointArrays[1]); // Middle
       drawing.fill(0xCCCCCC);
       drawing.poly(pointArrays[0]); // Inner
       drawing.fill(0xFFFFFF);
-      drawing.tint = tint;
+      drawing.tint = color;
     }
 
-    if (state === FeatureState.complete) {
+    if (state !== FeatureState.incomplete) {
       drawing.poly(pointArrays[2]); // Outer
       drawing.fill(0xFFFFFF);
       drawing.poly(pointArrays[1]); // Middle
       drawing.fill(0xCCCCCC);
-      drawing.tint = tint;
+      drawing.tint = color;
     }
   },
 
@@ -36,7 +36,7 @@ global.ShapeHelper = {
   drawSixLayeredPoly: function(drawing,segment,pointArrays) {
     const state = segment.getState();
     const type = segment.getType();
-    const tint = ExtraRegistry.lookup('ColorPalette').segments[type][state].base;
+    const color = ExtraRegistry.lookup('ColorPalette').segments[type][state];
 
     if (state === FeatureState.incomplete) {
       drawing.poly(pointArrays[2]); // Middle
@@ -45,17 +45,17 @@ global.ShapeHelper = {
       drawing.poly(pointArrays[0]); // Inner
       drawing.poly(pointArrays[1]);
       drawing.fill(0xFFFFFF);
-      drawing.tint = tint;
+      drawing.tint = color;
     }
 
-    if (state === FeatureState.complete) {
+    if (state !== FeatureState.incomplete) {
       drawing.poly(pointArrays[4]); // Outer
       drawing.poly(pointArrays[5]);
       drawing.fill(0xFFFFFF);
       drawing.poly(pointArrays[2]); // Middle
       drawing.poly(pointArrays[3]);
       drawing.fill(0xCCCCCC);
-      drawing.tint = tint;
+      drawing.tint = color;
     }
   }
 

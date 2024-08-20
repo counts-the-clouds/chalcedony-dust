@@ -6,8 +6,8 @@ global.TileLayer = function(segment) {
   const $drawing = buildDrawing();
 
   $shapeContainer.addChild($drawing);
-  if ($segment.getState() === FeatureState.complete) {
-    wireEvents()
+  if ($segment.getState() !== FeatureState.incomplete) {
+    wireEvents();
   }
 
   function buildContainer() {
@@ -58,8 +58,23 @@ global.TileLayer = function(segment) {
     return $shapeContainer;
   }
 
-  return Object.freeze({
-    getShapeContainer
+  // === Animation =============================================================
+
+  function startPulse() {
+$drawing.tint
+  }
+
+  function setProgress(percent) {
+    console.log("Set Progress...",percent)
+  }
+
+  const $self = Object.freeze({
+    startPulse,
+    getShapeContainer,
+    setProgress,
   });
 
+  $segment.setTileLayer($self);
+
+  return $self;
 }

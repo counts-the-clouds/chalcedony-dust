@@ -11,7 +11,12 @@ global.Clock = function(data) {
   let $elapsedTime = data.elapsedTime || 0;
   let $context = data.context;
   let $parent = data.parent;
+
+  // When we add the clock to the manager, we store whatever UI component
+  // we'll need to update when onUpdate() is called. These values are not
+  // persisted and should be recreated when the game is loaded.
   let $tileContainer;
+  let $tileLayers;
 
   if ($repeat == null) { $repeat = false; }
 
@@ -37,16 +42,19 @@ global.Clock = function(data) {
   function setParent(parent) { $parent = parent; }
   function getParent() { return $parent; }
 
-  // The tile container isn't persisted and needs to be set when the clock is
-  // added to the manager.
   function setTileContainer(tileContainer) { $tileContainer = tileContainer; }
   function getTileContainer() { return $tileContainer; }
+  function setTileLayers(layers) { $tileLayers = layers; }
+  function getTileLayers() { return $tileLayers; }
 
   function onUpdate() {
     const progress = (getElapsedTime() / getDuration()) * 100;
 
     if ($parent.type === 'TileShelfView') {
       return TileShelfView.updateProgressBar(progress);
+    }
+    if ($parent.type === 'Feature') {
+      // TODO: Feature clock onUpdate()
     }
     if ($tileContainer) {
       return $tileContainer.updateClock(progress);
@@ -60,7 +68,10 @@ global.Clock = function(data) {
     if ($repeat === false) {
       ClockManager.removeClock(getID());
       ClockDataStore.remove(getID());
-      $tileContainer.disableClock();
+
+      if ($tileContainer) {
+        $tileContainer.disableClock();
+      }
 
       log(`${toString()} completed and removed`,{ system:'Clock' });
     }
@@ -99,6 +110,8 @@ global.Clock = function(data) {
     getParent,
     setTileContainer,
     getTileContainer,
+    setTileLayers,
+    getTileLayers,
     onUpdate,
     onComplete,
     toString,

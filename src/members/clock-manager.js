@@ -39,6 +39,14 @@ global.ClockManager = (function() {
     if (parent.type === 'Tile') {
       TileContainer.forTile(TileDataStore.get(parent.id)).enableClock(clock);
     }
+    if (parent.type === 'Feature') {
+      const feature = FeatureDataStore.get(parent.id);
+      const layers = feature.getSegments().map(seg => seg.getTileLayer());
+
+      clock.setTileLayers(layers);
+
+      layers.forEach(layer => { layer.startPulse() })
+    }
   }
 
   function getClock(id) { return $clocks[id]; }

@@ -19,7 +19,7 @@ EventRegistry.register('tutorial-start-3', {
 
   onBefore: context => {
     FeatureDataStore.all().forEach(feature => {
-      if (feature.isComplete()) { context.type = feature.getType(); }
+      if (feature.getState() === FeatureState.complete) { context.type = feature.getType(); }
     });
 
     return context;
