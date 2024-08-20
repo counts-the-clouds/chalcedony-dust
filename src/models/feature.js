@@ -153,19 +153,23 @@ global.Feature = function(data) {
 
   // === Construction ==========================================================
 
-  function startConstruction(code) {
+  async function startConstruction(code) {
+    log(`Construction started on ${toString()}`,{ system:'Feature', data:{ code }});
+
+    const construction = (getType() === TileType.room) ? RoomRegistry.lookup(code) : HallRegistry.lookup(code);
     const centerTile = centermostTile();
 
-    // TODO: Duration based on what's being built?
-    const clock = Clock({ code:'build-feature', duration:9000 });
+    const clock = Clock({ code:'build-feature', duration:(construction.constructionTime * 1000) });
     clock.setContext({ featureID:getID() });
     clock.setParent({ type:'Tile', id:centerTile.getID() });
 
     ClockManager.addClock(clock);
 
-    console.log("Start construction:",code);
-
     $state = FeatureState.building;
+
+    // TODO: Update the graphics to show the building state...
+
+    await GameState.saveState();
   }
 
   function centermostTile() {

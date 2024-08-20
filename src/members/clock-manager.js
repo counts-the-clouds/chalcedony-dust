@@ -87,10 +87,8 @@ global.ClockManager = (function() {
     clock.onComplete();
 
     if (clock.getRepeat()) {
-      return clock.setElapsedTime(0);
+      clock.setElapsedTime(0);
     }
-
-    removeClock(clock.getID());
   }
 
   function onUpdate(clock, elapsed) {

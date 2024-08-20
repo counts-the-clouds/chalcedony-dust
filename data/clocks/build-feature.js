@@ -1,8 +1,11 @@
 ClockRegistry.register('build-feature', {
 
-  onComplete: clock => {
+  onComplete: async clock => {
+    const feature = FeatureDataStore.get(clock.getContext().featureID);
     console.log("Completed The Build Feature Clock...");
-    console.log("Context:",clock.getContext());
+    console.log(`Feature here is ${feature}`)
+
+    await GameState.saveState();
   }
 
 });

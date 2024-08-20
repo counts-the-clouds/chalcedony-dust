@@ -53,8 +53,9 @@ global.Clock = function(data) {
     }
   }
 
-  function onComplete() {
-    ClockRegistry.lookup($code).onComplete($self);
+  async function onComplete() {
+    const clockData = ClockRegistry.lookup($code);
+    await clockData.onComplete($self);
 
     if ($repeat === false) {
       ClockManager.removeClock(getID());
