@@ -49,18 +49,20 @@ global.TileContainer = async function(tile) {
     $tileContainer.y = y;
   }
 
-  async function enableClock() {
-    const clock = getTile().getClock();
-
-    if (clock && $clockContainer == null) {
+  // When we enable the clock we build a clock container and add it to this
+  // tile container. Because the updateClock() function is called 60 times a
+  // second, we also need to set the tile container on the clock in order to
+  // make the lookup process as smooth as possible.
+  async function enableClock(clock) {
+    if ($clockContainer == null) {
       $clockContainer = await ClockContainer(clock);
-      clock.attachTileContainer(this);
+      clock.setTileContainer(this);
       $tileContainer.addChild($clockContainer.getContainer());
     }
   }
 
   function disableClock() {
-    $clockContainer.destroy();
+    $clockContainer.getContainer().destroy();
     $clockContainer = null;
   }
 

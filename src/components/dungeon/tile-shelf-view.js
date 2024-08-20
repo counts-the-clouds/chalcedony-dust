@@ -114,7 +114,7 @@ window.TileShelfView = (function() {
     if (TileShelf.isFull()) {
       if (percentage > 50) { barColor = 'rgba(200,150,100,0.6)' }
       if (percentage > 75) { barColor = 'rgba(250,100,100,0.6)' }
-g    }
+    }
 
     $tileProgress.rect(21,40,_progressBarWidth,10);
     $tileProgress.fill({ color:'rgb(12,17,12)' });

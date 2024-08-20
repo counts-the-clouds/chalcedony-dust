@@ -1,43 +1,69 @@
 global.Clock = function(data) {
-
   const $id = data.id || ClockDataStore.nextID();
   const $code = data.code;
 
-  let $duration = data.duration || ClockRegistry.lookup($code).duration;
+  Validate.exists('code',$code);
+
+  const clockData = ClockRegistry.lookup($code);
+
+  let $duration = data.duration || clockData.duration;
+  let $repeat = (data.repeat != null) ? data.repeat : clockData.repeat;
   let $elapsedTime = data.elapsedTime || 0;
   let $context = data.context;
+  let $parent = data.parent;
   let $tileContainer;
+
+  if ($repeat == null) { $repeat = false; }
 
   // ===========================================================================
 
   function getID() { return $id; }
   function getCode() { return $code; }
-  function getClockData() { return ClockRegistry.lookup($code); }
-  function setContext(context) { $context = context; }
-  function getContext() { return $context; }
+
   function setDuration(duration) { $duration = duration }
   function getDuration() { return $duration }
-  function getRepeat() { return getClockData().repeat || false; }
-  function getElapsedTime() { return $elapsedTime; }
+
+  function setRepeat(repeat) { $repeat = repeat; }
+  function getRepeat() { return $repeat; }
+
   function setElapsedTime(time) { $elapsedTime = time; }
-  function start() { ClockManager.addClock($self); }
+  function getElapsedTime() { return $elapsedTime; }
+
+  function setContext(context) { $context = context; }
+  function getContext() { return $context; }
+
+  // Parent should have the form: { type:'Type', id:0 } with id being optional
+  // unless the parent is a model.
+  function setParent(parent) { $parent = parent; }
+  function getParent() { return $parent; }
+
+  // The tile container isn't persisted and needs to be set when the clock is
+  // added to the manager.
+  function setTileContainer(tileContainer) { $tileContainer = tileContainer; }
+  function getTileContainer() { return $tileContainer; }
 
   function onUpdate() {
     const progress = (getElapsedTime() / getDuration()) * 100;
 
+    if ($parent.type === 'TileShelfView') {
+      return TileShelfView.updateProgressBar(progress);
+    }
     if ($tileContainer) {
       return $tileContainer.updateClock(progress);
     }
-
-    // TODO: The clock needs to know what tile it belongs to, or if it belongs to some other object.
-    TileShelfView.updateProgressBar(progress);
-
-
   }
 
-  function onComplete() { getClockData().onComplete($self); }
-  function attachTileContainer(tileContainer) { $tileContainer = tileContainer; }
-  function getTileContainer() { return $tileContainer; }
+  function onComplete() {
+    ClockRegistry.lookup($code).onComplete($self);
+
+    if ($repeat === false) {
+      ClockManager.removeClock(getID());
+      ClockDataStore.remove(getID());
+      $tileContainer.disableClock();
+
+      log(`${toString()} completed and removed`,{ system:'Clock' });
+    }
+  }
 
   function toString() {
     return `Clock:${$id}[${$code}]`
@@ -48,8 +74,10 @@ global.Clock = function(data) {
       id: $id,
       code: $code,
       duration: $duration,
+      repeat: $repeat,
       elapsedTime: $elapsedTime,
       context: $context,
+      parent: $parent,
     }
   }
 
@@ -58,18 +86,20 @@ global.Clock = function(data) {
   const $self = Object.freeze({
     getID,
     getCode,
-    setContext,
-    getContext,
     setDuration,
     getDuration,
+    setRepeat,
     getRepeat,
-    getElapsedTime,
     setElapsedTime,
-    start,
+    getElapsedTime,
+    setContext,
+    getContext,
+    setParent,
+    getParent,
+    setTileContainer,
+    getTileContainer,
     onUpdate,
     onComplete,
-    attachTileContainer,
-    getTileContainer,
     toString,
     pack,
   });

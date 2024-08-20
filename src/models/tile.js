@@ -14,19 +14,6 @@ global.Tile = function(data) {
   // When built, segments will either be an array of segment indices or an
   // array of objects that can be used to build the segments.
   let $segments = data.segments;
-  let $clockID = data.clockID;
-
-  // If the tile data specifies that this tile should have a clock we add it
-  // to the tile automatically. This clock won't actually do anything until
-  // it's added to the ClockManager when the tile is added to the dungeon.
-  function buildClock() {
-    if ($clockID == null && $code) {
-      const tileData = TileRegistry.lookup($code);
-      if (tileData.clock) {
-        $clockID = Clock({ code:tileData.clock.code }).getID();
-      }
-    }
-  }
 
   function buildSegments() {
     // If $segments is already an array of number we don't need to do anything.
@@ -79,8 +66,6 @@ global.Tile = function(data) {
   function getPlacementRules()   { return $extra.placementRules   }
   function getPlacementNote()    { return $extra.placementNote    }
 
-  function setClock(clock) { $clockID = clock.getID(); }
-  function getClock() { return ClockDataStore.get($clockID); }
   function setCoordinates(coordinates) { $coordinates = coordinates; }
   function getCoordinates() { return $coordinates ? { ...$coordinates } : null; }
 
@@ -150,7 +135,6 @@ global.Tile = function(data) {
       code: $code,
       id: $id,
 
-      clockID: $clockID,
       coordinates: $coordinates,
       rotation: $rotation,
       edges: $edges,
@@ -170,8 +154,6 @@ global.Tile = function(data) {
     getPlacementTrigger,
     getPlacementRules,
     getPlacementNote,
-    setClock,
-    getClock,
     setCoordinates,
     getCoordinates,
     distanceToOrigin,
@@ -194,7 +176,6 @@ global.Tile = function(data) {
     pack,
   });
 
-  buildClock();
   buildSegments();
   determineEdges();
 

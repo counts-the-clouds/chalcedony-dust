@@ -154,18 +154,14 @@ global.Feature = function(data) {
   // === Construction ==========================================================
 
   function startConstruction(code) {
+    const centerTile = centermostTile();
 
     // TODO: Duration based on what's being built?
     const clock = Clock({ code:'build-feature', duration:9000 });
     clock.setContext({ featureID:getID() });
+    clock.setParent({ type:'Tile', id:centerTile.getID() });
 
-    const centerTile = centermostTile();
-    centerTile.setClock(clock);
-
-    TileContainer.forTile(tile)
-
-    // clock.attachTile(centerTile);
-    // ClockManager.addClock(clock)
+    ClockManager.addClock(clock);
 
     console.log("Start construction:",code);
 

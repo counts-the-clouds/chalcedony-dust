@@ -21,7 +21,26 @@ global.ClockManager = (function() {
     $forcePaused = false;
   }
 
-  function addClock(clock) { $clocks[clock.getID()] = clock; }
+  // This is called when the game is started to take all the clock models and
+  // add them into the manager. I don't think there's a case where we want to
+  // create a clock but not have it running, except in the tests obviously.
+  function manageAllClocks() {
+    ClockDataStore.all().forEach(clock => {
+      addClock(clock);
+    });
+  }
+
+  // Adding a clock to the manager should also build the UI element for the
+  // clock if that clock is associated with a tile.
+  function addClock(clock) {
+    $clocks[clock.getID()] = clock;
+
+    const parent = clock.getParent();
+    if (parent.type === 'Tile') {
+      TileContainer.forTile(TileDataStore.get(parent.id)).enableClock(clock);
+    }
+  }
+
   function getClock(id) { return $clocks[id]; }
   function removeClock(id) { delete $clocks[id]; }
 
@@ -119,6 +138,7 @@ global.ClockManager = (function() {
   return Object.freeze({
     init,
     reset,
+    manageAllClocks,
     addClock,
     getClock,
     findByCode,

@@ -55,7 +55,7 @@ global.GameController = (function() {
       GameFlags.set(SystemFlags.currentEvent,stageData.startingEvent);
     }
 
-    Clock({ code:'generate-tile' }).start();
+    Clock({ code:'generate-tile', parent:{ type:'TileShelfView' }});
 
     await GameState.saveState();
   }
@@ -67,6 +67,8 @@ global.GameController = (function() {
     if (GameFlags.has(SystemFlags.currentEvent)) {
       EventView.show(PagedEvent(GameFlags.get(SystemFlags.currentEvent)));
     }
+
+    ClockManager.manageAllClocks();
   }
 
   // ===========================================================================

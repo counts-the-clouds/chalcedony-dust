@@ -101,7 +101,7 @@ describe("Tile", function() {
 
       const packed = tile.pack();
 
-      expect(Object.keys(packed).length).to.equal(8);
+      expect(Object.keys(packed).length).to.equal(7);
       expect(packed.id).to.equal(42);
       expect(packed.code).to.equal('baseline-r2-2');
       expect(packed.coordinates.gx).to.equal(5);
@@ -145,17 +145,6 @@ describe("Tile", function() {
       expect(unpacked.getEdges().n).to.equal(TileType.hall);
       expect(unpacked.getSegments().length).to.equal(4);
       expect(segment.getIndex()).to.equal(0);
-    });
-
-    it("with clock", function() {
-      const tile = Tile({ code:'dungeon-core' });
-      tile.setClock(Clock({ code:'generate-tile' }));
-
-      const clock = tile.getClock();
-      clock.setElapsedTime(30);
-
-      const anotherTile = Tile(tile.pack());
-      expect(anotherTile.getClock().getElapsedTime()).to.equal(30);
     });
   });
 
