@@ -60,18 +60,22 @@ global.TileLayer = function(segment) {
 
   // === Animation =============================================================
 
+  // TODO: Figure out how to make a nice pulse animation given the completed
+  //       percentage. (may want to just call this with the delta time instead)
+
   function startPulse() {
-$drawing.tint
+    console.log("Start pulse")
+    // $drawing.tint
   }
 
-  function setProgress(percent) {
-    console.log("Set Progress...",percent)
+  function updatePulse(percent) {
+    console.log("Update Progress...",percent)
   }
 
   const $self = Object.freeze({
     startPulse,
+    updatePulse,
     getShapeContainer,
-    setProgress,
   });
 
   $segment.setTileLayer($self);

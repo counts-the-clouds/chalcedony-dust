@@ -53,9 +53,11 @@ global.Clock = function(data) {
     if ($parent.type === 'TileShelfView') {
       return TileShelfView.updateProgressBar(progress);
     }
-    if ($parent.type === 'Feature') {
-      // TODO: Feature clock onUpdate()
+
+    if ($tileLayers) {
+      return $tileLayers.forEach(layer => layer.updatePulse(progress));
     }
+
     if ($tileContainer) {
       return $tileContainer.updateClock(progress);
     }
