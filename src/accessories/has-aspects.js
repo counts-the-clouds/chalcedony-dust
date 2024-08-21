@@ -6,6 +6,14 @@ global.HasAspects = function(data = {}) {
     return $aspectIDs.map(id => AspectDataStore.get(id));
   }
 
+  function getAspectMap() {
+    const map = {};
+    getAspects().forEach(aspect => {
+      map[aspect.getCode()] = aspect.getLevel();
+    });
+    return map;
+  }
+
   function addAspect(aspect) {
     const index = $aspectIDs.indexOf(aspect.getID());
     if (index >= 0) { throw `${aspect} already exists.` }
@@ -28,6 +36,7 @@ global.HasAspects = function(data = {}) {
 
   function attach(model) {
     model.getAspects = getAspects;
+    model.getAspectMap = getAspectMap;
     model.addAspect = addAspect;
     model.deleteAspect = deleteAspect;
   }

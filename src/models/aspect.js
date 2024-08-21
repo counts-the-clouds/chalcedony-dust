@@ -3,8 +3,8 @@ global.Aspect = function(data) {
   const $code = data.code;
   const $id = data.id || ItemDataStore.nextID();
 
-  let $level = data.level;
-  let $experience = data.experience;
+  let $level = data.level || 1;
+  let $experience = data.experience || 0;
 
   function getCode() { return $code; }
   function getID() { return $id; }

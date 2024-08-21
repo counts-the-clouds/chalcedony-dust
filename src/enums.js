@@ -62,6 +62,17 @@ global.GameStages = Object.freeze({
   baseline: 'baseline',
 });
 
+global.Gender = Object.freeze({
+  male: 'male',
+  female: 'female',
+  futa: 'futa',
+});
+
+global.AspectType = Object.freeze({
+  personality: 'personality',
+  skill: 'skill',
+});
+
 // There is a bit of overlap between the edge types and feature types but
 // there's no reason they can't share the same enum.
 global.TileType = Object.freeze({
