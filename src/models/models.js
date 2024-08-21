@@ -6,6 +6,7 @@ global.Models = (function() {
   // just the Segments that need to be loaded before the Tiles. That is, for
   // now at least.
   function init() {
+    global.AspectDataStore = DataStore({ name:'Aspect', model:Clock });
     global.ClockDataStore = DataStore({ name:'Clock', model:Clock });
     global.ChunkDataStore = DataStore({ name:'Chunk', model:Chunk });
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
@@ -18,6 +19,7 @@ global.Models = (function() {
     global.TileDataStore = DataStore({ name:'Tile', model:Tile });
 
     $dataStores = [
+      AspectDataStore,
       ClockDataStore,
       ChunkDataStore,
       FeatureDataStore,
