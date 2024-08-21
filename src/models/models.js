@@ -6,10 +6,12 @@ global.Models = (function() {
   // just the Segments that need to be loaded before the Tiles. That is, for
   // now at least.
   function init() {
-    global.AspectDataStore = DataStore({ name:'Aspect', model:Clock });
+    global.AdventurerDataStore = DataStore({ name:'Adventurer', model:Adventurer });
+    global.AspectDataStore = DataStore({ name:'Aspect', model:Aspect });
     global.ClockDataStore = DataStore({ name:'Clock', model:Clock });
     global.ChunkDataStore = DataStore({ name:'Chunk', model:Chunk });
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
+    global.GuardianDataStore = DataStore({ name:'Guardian', model:Guardian });
     global.HallDataStore = DataStore({ name:'Hall', model:Hall });
     global.ItemDataStore = DataStore({ name:'Item', model:Item });
     global.MinionDataStore = DataStore({ name:'Minion', model:Minion });
@@ -20,10 +22,12 @@ global.Models = (function() {
     global.TileDataStore = DataStore({ name:'Tile', model:Tile });
 
     $dataStores = [
+      AdventurerDataStore,
       AspectDataStore,
       ClockDataStore,
       ChunkDataStore,
       FeatureDataStore,
+      GuardianDataStore,
       HallDataStore,
       ItemDataStore,
       MinionDataStore,
@@ -53,7 +57,9 @@ global.Models = (function() {
     }
   }
 
-  function reset() { $dataStores.forEach(store => { store.reset(); }); }
+  function reset() {
+    $dataStores.forEach(store => store.reset());
+  }
 
   return Object.freeze({
     init,
