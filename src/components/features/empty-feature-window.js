@@ -4,7 +4,13 @@ global.EmptyFeatureWindow = (function () {
   const hallNote = `This empty hall could be made into something more useful.`
 
   async function open(feature) {
-    const casement = await FeatureWindows.openCasementFor(feature,'views/empty-feature-window.html');
+    const casement = FeatureWindows.openCasementWith(feature,`
+      <div class='empty-feature-window'>
+        <div class='banner'></div>
+        <div class='note'></div>
+        <ul class='construction-list'></ul>
+      </div>`);
+
     if (casement) {
       casement.setBounds({ top:20, left:20, height:600, width:450 });
       casement.setBackground('rgb(15,15,15)')

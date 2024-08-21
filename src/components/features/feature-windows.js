@@ -4,24 +4,32 @@ global.FeatureWindows = (function() {
     if ([FeatureState.building, FeatureState.incomplete].includes(feature.getState())) {
       return false;
     }
+
     if (feature.getType() === TileType.node) {
       // If a guardian hasn't been selected.
       return GuardianSelectWindow.open(feature);
     }
+
     if (feature.getType() === TileType.resource) {
       return ResourceWindow.open(feature);
     }
-    if ([TileType.hall, TileType.room].includes(feature.getType())) {
+
+    if (feature.getType() === TileType.room) {
       if (feature.getState() === FeatureState.complete) { return await EmptyFeatureWindow.open(feature); }
-      if (feature.getState() === FeatureState.constructed) { return console.log("Open Construction Window...") }
+      if (feature.getState() === FeatureState.constructed) { return await RoomWindow.open(feature); }
+    }
+
+    if (feature.getType() === TileType.hall) {
+      if (feature.getState() === FeatureState.complete) { return await EmptyFeatureWindow.open(feature); }
+      if (feature.getState() === FeatureState.constructed) { return await HallWindow.open(feature); }
     }
 
     throw `Unexpected state for feature ${feature} [${feature.getType()}/${feature.getState()}]`
   }
 
-  async function openCasementFor(feature, viewPath) {
+  function openCasementWith(feature, content) {
     if (Casement.getAssociatedCasements(feature.toString()).length === 0) {
-      const casement = await Casement.fromPath(viewPath);
+      const casement = Casement.fromString(content);
       casement.setAssociatedWith(feature.toString());
       casement.setTitle(feature.getDisplayName());
       return casement;
@@ -32,7 +40,7 @@ global.FeatureWindows = (function() {
 
   return Object.freeze({
     open,
-    openCasementFor,
+    openCasementWith,
   });
 
 })();

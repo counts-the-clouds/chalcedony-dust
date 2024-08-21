@@ -23,42 +23,44 @@ global.Casement = (function() {
   }
 
   function fromPath(path) {
-    return new Promise(resolve => {
-      const index = $$casementCounter++;
-      const id = `casement-${index}`;
+    fromString(FileHelper.readFile(path));
+  }
 
-      const casementContent = X.createElement(
-        `<div class='casement-content'>${FileHelper.readFile(path)}</div>
-      `);
+  function fromString(html) {
+    const index = $$casementCounter++;
+    const id = `casement-${index}`;
 
-      const casementWindow = X.createElement(`
-        <div id='${id}' class='casement-window' style='z-index:${4000+index}'>
-          <div class='casement-bar'>
-            <h1 class='title'>[TITLE]</h1>
-            <a href='#' class='close-button'></a>
-          </div>
-          <div class='resize-handle'></div>
-          <div class='casement-container'>
-            <div class='scrolling-panel'>
-              <div class='scrolling-panel-content'></div>
-            </div>
+    const casementContent = X.createElement(
+      `<div class='casement-content'>${html}</div>
+    `);
+
+    const casementWindow = X.createElement(`
+      <div id='${id}' class='casement-window' style='z-index:${4000+index}'>
+        <div class='casement-bar'>
+          <h1 class='title'>[TITLE]</h1>
+          <a href='#' class='close-button'></a>
+        </div>
+        <div class='resize-handle'></div>
+        <div class='casement-container'>
+          <div class='scrolling-panel'>
+            <div class='scrolling-panel-content'></div>
           </div>
         </div>
-      `);
+      </div>
+    `);
 
-      casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
-      casementWindow.querySelector('.scrolling-panel-content').appendChild(casementContent);
-      X.first('#casementsArea').appendChild(casementWindow);
+    casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
+    casementWindow.querySelector('.scrolling-panel-content').appendChild(casementContent);
+    X.first('#casementsArea').appendChild(casementWindow);
 
-      const scrollingPanel = casementWindow.querySelector('.scrolling-panel')
-      ScrollingPanel.build(scrollingPanel);
+    const scrollingPanel = casementWindow.querySelector('.scrolling-panel')
+    ScrollingPanel.build(scrollingPanel);
 
-      const casement = buildCasement({ id, casementContent, casementWindow, scrollingPanel });
-      $$currentCasements[id] = casement;
-      WindowManager.push(casement);
+    const casement = buildCasement({ id, casementContent, casementWindow, scrollingPanel });
+    $$currentCasements[id] = casement;
+    WindowManager.push(casement);
 
-      resolve(casement);
-    });
+    return casement;
   }
 
   function buildCasement(options) {
@@ -255,6 +257,7 @@ global.Casement = (function() {
   return Object.freeze({
     init,
     fromPath,
+    fromString,
     getAssociatedCasements,
   });
 

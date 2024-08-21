@@ -1,7 +1,8 @@
 global.GuardianSelectWindow = (function() {
 
   async function open(feature) {
-    const casement = await FeatureWindows.openCasementFor(feature,'views/guardian-select-window.html');
+    const casement = FeatureWindows.openCasementFor(feature,`
+      <div class='guardian-select-window'>[GUARDIAN SELECT WINDOW]</div>`);
   }
 
   return Object.freeze({
