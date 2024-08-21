@@ -2,9 +2,12 @@ global.Room = function(data) {
 
   const $code = data.code;
   const $id = data.id || RoomDataStore.nextID();
+  const $hasItems = HasItems(data.hasItems);
 
   function getCode() { return $code; }
   function getID() { return $id; }
+
+  // ===========================================================================
 
   function toString() {
     return `Room:${$id}[${$code}]`
@@ -13,18 +16,23 @@ global.Room = function(data) {
   function pack() {
     return {
       code: $code,
-      id: $id
+      id: $id,
+      hasItems: $hasItems.pack(),
     }
   }
 
-  const $self = Object.freeze({
+  // ===========================================================================
+
+  const $self = {
     getID,
     getCode,
     toString,
     pack,
-  });
+  };
+
+  $hasItems.attach($self);
 
   RoomDataStore.store($self);
 
-  return $self;
+  return Object.freeze($self);
 }
