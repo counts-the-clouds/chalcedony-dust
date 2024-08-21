@@ -16,25 +16,6 @@ global.Feature = function(data) {
   function getType() { return $type; }
   function getSize() { return getTiles().length; }
 
-  // === Construction ==========================================================
-
-  function attachConstruction(code) {
-    if ($constructionID) { throw `This feature already has a construction.` }
-    if ($type === TileType.hall) { $constructionID = Hall({ code }).getID(); }
-    if ($type === TileType.resource) { $constructionID = Resource({ code }).getID(); }
-    if ($type === TileType.room) { $constructionID = Room({ code }).getID(); }
-  }
-
-  function getConstruction() {
-    if ($constructionID) {
-      switch ($type) {
-        case TileType.hall: return HallDataStore.get($constructionID);
-        case TileType.resource: return ResourceDataStore.get($constructionID);
-        case TileType.room: return RoomDataStore.get($constructionID);
-      }
-    }
-  }
-
   // It's possible for a tile to appear more than once in the same feature.
   // Consider two unconnected rooms on a single tile that get connected by
   // tiles placed around them.
@@ -150,7 +131,30 @@ global.Feature = function(data) {
 
   // === Construction ==========================================================
 
+  function attachConstruction(code) {
+    if ($constructionID != null) { throw `This feature already has a construction.` }
+    if ($type === TileType.hall) { $constructionID = Hall({ code }).getID(); }
+    if ($type === TileType.resource) { $constructionID = Resource({ code }).getID(); }
+    if ($type === TileType.room) { $constructionID = Room({ code }).getID(); }
+  }
+
+  function getConstruction() {
+    if ($constructionID) {
+      switch ($type) {
+        case TileType.hall: return HallDataStore.get($constructionID);
+        case TileType.resource: return ResourceDataStore.get($constructionID);
+        case TileType.room: return RoomDataStore.get($constructionID);
+      }
+    }
+  }
+
+  // TODO: There will probably be differences when upgrading an existing
+  //       construction though both will need to start a clock in a similar
+  //       way.
+  //
   async function startConstruction(code) {
+    if ($constructionID != null) { throw `This feature already has a construction.` }
+
     log(`Construction started on ${toString()}`,{ system:'Feature', data:{ code }});
 
     const construction = (getType() === TileType.room) ? RoomRegistry.lookup(code) : HallRegistry.lookup(code);
@@ -173,12 +177,9 @@ global.Feature = function(data) {
 
     setState(FeatureState.constructed);
     applyTint(FeatureState.constructed);
-
-    console.log("===== Completed Construction on ",code)
-
+    attachConstruction(code);
 
     await GameState.saveState();
-
   }
 
   // ===========================================================================

@@ -1,21 +1,22 @@
 global.FeatureWindows = (function() {
 
   async function open(feature) {
-    if (feature.getState() !== FeatureState.complete) {
-      throw `Unexpected state for feature window: ${feature} ${feature.getState()}`;
+    if ([FeatureState.building, FeatureState.incomplete].includes(feature.getState())) {
+      return false;
     }
-
     if (feature.getType() === TileType.node) {
-      GuardianSelectWindow.open(feature);
+      // If a guardian hasn't been selected.
+      return GuardianSelectWindow.open(feature);
     }
-
     if (feature.getType() === TileType.resource) {
-      ResourceWindow.open(feature);
+      return ResourceWindow.open(feature);
+    }
+    if ([TileType.hall, TileType.room].includes(feature.getType())) {
+      if (feature.getState() === FeatureState.complete) { return await EmptyFeatureWindow.open(feature); }
+      if (feature.getState() === FeatureState.constructed) { return console.log("Open Construction Window...") }
     }
 
-    if ([TileType.hall, TileType.room].includes(feature.getType())) {
-      await EmptyFeatureWindow.open(feature);
-    }
+    throw `Unexpected state for feature ${feature} [${feature.getType()}/${feature.getState()}]`
   }
 
   async function openCasementFor(feature, viewPath) {
