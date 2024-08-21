@@ -5,6 +5,8 @@ global.TileLayer = function(segment) {
   const $shapeContainer = buildContainer();
   const $drawing = buildDrawing();
 
+  let pulse;
+
   $shapeContainer.addChild($drawing);
   if ($segment.getState() !== FeatureState.incomplete) {
     wireEvents();
@@ -64,12 +66,36 @@ global.TileLayer = function(segment) {
   //       percentage. (may want to just call this with the delta time instead)
 
   function startPulse() {
-    console.log("Start pulse")
-    // $drawing.tint
+    const palette = ExtraRegistry.lookup('ColorPalette').segments[$segment.getType()];
+
+    const c1 = ColorHelper.hexStringToColors(palette.building);
+    const c2 = ColorHelper.hexStringToColors(palette.complete);
+
+    const rLow = (c1.r < c2.r) ? c1.r : c2.r;
+    const gLow = (c1.g < c2.g) ? c1.g : c2.g;
+    const bLow = (c1.b < c2.b) ? c1.b : c2.b;
+
+    const rRange = Math.abs(c1.r - c2.r);
+    const gRange = Math.abs(c1.g - c2.g);
+    const bRange = Math.abs(c1.b - c2.b);
+
+    pulse = {
+      value: 0,
+      rLow, gLow, bLow,
+      rRange, gRange, bRange,
+    };
   }
 
+  // We can just assume we'll be getting around 60 pulses / second...
   function updatePulse(percent) {
-    console.log("Update Progress...",percent)
+    pulse.value += 1/30;
+
+    const phase = (Math.sin(pulse.value) + 1)/2;
+    const r = Math.floor(pulse.rLow + (phase * pulse.rRange));
+    const g = Math.floor(pulse.gLow + (phase * pulse.gRange));
+    const b = Math.floor(pulse.bLow + (phase * pulse.bRange));
+
+    $drawing.tint = `rgb(${r},${g},${b})`;
   }
 
   const $self = Object.freeze({
