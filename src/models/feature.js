@@ -2,7 +2,6 @@ global.Feature = function(data) {
 
   const $id = data.id || FeatureDataStore.nextID();
   const $segments = data.segments || [];
-  const $segmentDrawings = [];
 
   let $type = data.type;
   let $constructionID = data.constructionID;
@@ -158,6 +157,7 @@ global.Feature = function(data) {
     const clock = Clock({
       code:'build-feature',
       duration:(construction.constructionTime * 1000),
+      context: { code },
       parent:{ type:'Feature', id:getID() },
     });
 
@@ -165,20 +165,55 @@ global.Feature = function(data) {
     setState(FeatureState.building);
     applyTint(FeatureState.building);
 
-    // TODO: Update the graphics to show the building state...
+    await GameState.saveState();
+  }
+
+  async function completeConstruction(code) {
+    log(`Construction completed on ${toString()}`,{ system:'Feature', data:{ code }});
+
+    setState(FeatureState.constructed);
+    applyTint(FeatureState.constructed);
+
+    console.log("===== Completed Construction on ",code)
+
 
     await GameState.saveState();
+
   }
 
   // ===========================================================================
 
-  function addSegmentDrawing(drawing) { $segmentDrawings.push(drawing); }
+  function getTileLayers() { return getSegments().map(seg => seg.getTileLayer()); }
 
   function applyTint(code) {
     const tint = ExtraRegistry.lookup('ColorPalette').segments[getType()][code];
-    $segmentDrawings.forEach(drawing => { drawing.tint = tint; })
+    getTileLayers().forEach(layer => layer.applyTint(tint));
   }
 
+  function startPulse() {
+    const palette = ExtraRegistry.lookup('ColorPalette').segments[getType()];
+
+    const c1 = ColorHelper.hexStringToColors(palette.building);
+    const c2 = ColorHelper.hexStringToColors(palette.complete);
+
+    const rLow = (c1.r < c2.r) ? c1.r : c2.r;
+    const gLow = (c1.g < c2.g) ? c1.g : c2.g;
+    const bLow = (c1.b < c2.b) ? c1.b : c2.b;
+
+    const rRange = Math.abs(c1.r - c2.r);
+    const gRange = Math.abs(c1.g - c2.g);
+    const bRange = Math.abs(c1.b - c2.b);
+
+    const pulseData = {
+      value: 0,
+      rLow, gLow, bLow,
+      rRange, gRange, bRange,
+    };
+
+    getTileLayers().forEach(layer => layer.startPulse(pulseData));
+  }
+
+  function stopPulse() { getTileLayers().forEach(layer => layer.stopPulse()); }
   function onMouseEnter() { applyTint('select'); }
   function onMouseLeave() { applyTint(getState()); }
 
@@ -247,8 +282,11 @@ global.Feature = function(data) {
     complete,
     isNotIncomplete,
     startConstruction,
-    addSegmentDrawing,
+    completeConstruction,
+    getTileLayers,
     applyTint,
+    startPulse,
+    stopPulse,
     onMouseEnter,
     onMouseLeave,
     getDisplayName,

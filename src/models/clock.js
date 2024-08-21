@@ -55,7 +55,7 @@ global.Clock = function(data) {
     }
 
     if ($tileLayers) {
-      return $tileLayers.forEach(layer => layer.updatePulse(progress));
+      return $tileLayers.forEach(layer => layer.updatePulse());
     }
 
     if ($tileContainer) {

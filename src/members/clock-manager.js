@@ -41,11 +41,8 @@ global.ClockManager = (function() {
     }
     if (parent.type === 'Feature') {
       const feature = FeatureDataStore.get(parent.id);
-      const layers = feature.getSegments().map(seg => seg.getTileLayer());
-
-      clock.setTileLayers(layers);
-
-      layers.forEach(layer => { layer.startPulse() })
+      clock.setTileLayers(feature.getTileLayers());
+      feature.startPulse();
     }
   }
 

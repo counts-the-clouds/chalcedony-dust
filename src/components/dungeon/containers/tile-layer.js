@@ -5,7 +5,7 @@ global.TileLayer = function(segment) {
   const $shapeContainer = buildContainer();
   const $drawing = buildDrawing();
 
-  let pulse;
+  let $pulse;
 
   $shapeContainer.addChild($drawing);
   if ($segment.getState() !== FeatureState.incomplete) {
@@ -48,58 +48,52 @@ global.TileLayer = function(segment) {
 
   function wireEvents() {
     const feature = $segment.getFeature();
-    feature.addSegmentDrawing($drawing);
 
     $drawing.eventMode = 'dynamic';
     $drawing.onmouseenter = feature.onMouseEnter;
     $drawing.onmouseleave = feature.onMouseLeave;
+    $drawing.cursor = 'pointer';
     $drawing.onclick = () => { FeatureWindows.open(feature) };
   }
 
-  function getShapeContainer() {
-    return $shapeContainer;
-  }
+  function getShapeContainer() { return $shapeContainer; }
+  function applyTint(tint) { $drawing.tint = tint; }
 
   // === Animation =============================================================
 
-  // TODO: Figure out how to make a nice pulse animation given the completed
-  //       percentage. (may want to just call this with the delta time instead)
-
-  function startPulse() {
-    const palette = ExtraRegistry.lookup('ColorPalette').segments[$segment.getType()];
-
-    const c1 = ColorHelper.hexStringToColors(palette.building);
-    const c2 = ColorHelper.hexStringToColors(palette.complete);
-
-    const rLow = (c1.r < c2.r) ? c1.r : c2.r;
-    const gLow = (c1.g < c2.g) ? c1.g : c2.g;
-    const bLow = (c1.b < c2.b) ? c1.b : c2.b;
-
-    const rRange = Math.abs(c1.r - c2.r);
-    const gRange = Math.abs(c1.g - c2.g);
-    const bRange = Math.abs(c1.b - c2.b);
-
-    pulse = {
-      value: 0,
-      rLow, gLow, bLow,
-      rRange, gRange, bRange,
-    };
+  // Because the same pulseData object is used in every segment, it's built in
+  // the feature. It should have the keys { value, rLow, gLow, bLow, rRange,
+  // gRange, bRange } The pulse will cycle the drawing's tint between:
+  //      rgb(rLow, gLow, bLow) and rgb(rLow+rRange, gLow+gRange, bLow+bRange)
+  function startPulse(pulseData) {
+    $drawing.cursor = null;
+    $pulse = pulseData;
   }
 
-  // We can just assume we'll be getting around 60 pulses / second...
-  function updatePulse(percent) {
-    pulse.value += 1/30;
+  function stopPulse() {
+    $drawing.cursor = 'pointer';
+    $pulse = null;
+  }
 
-    const phase = (Math.sin(pulse.value) + 1)/2;
-    const r = Math.floor(pulse.rLow + (phase * pulse.rRange));
-    const g = Math.floor(pulse.gLow + (phase * pulse.gRange));
-    const b = Math.floor(pulse.bLow + (phase * pulse.bRange));
+  // We can just assume we'll be getting around 60 pulses / second. Making the
+  // pulsing be frame rate locked is probably fine.
+  function updatePulse() {
+    if ($pulse) {
+      $pulse.value += 1/60;
 
-    $drawing.tint = `rgb(${r},${g},${b})`;
+      const phase = (Math.sin($pulse.value) + 1)/2;
+      const r = Math.floor($pulse.rLow + (phase * $pulse.rRange));
+      const g = Math.floor($pulse.gLow + (phase * $pulse.gRange));
+      const b = Math.floor($pulse.bLow + (phase * $pulse.bRange));
+
+      $drawing.tint = `rgb(${r},${g},${b})`;
+    }
   }
 
   const $self = Object.freeze({
+    applyTint,
     startPulse,
+    stopPulse,
     updatePulse,
     getShapeContainer,
   });
