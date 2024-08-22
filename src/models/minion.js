@@ -1,6 +1,7 @@
 global.Minion = function(data) {
 
   const $id = data.id || MinionDataStore.nextID();
+
   const $isActor = IsActor(data.isActor);
   const $hasAspects = HasAspects(data.hasAspects);
 
@@ -9,7 +10,7 @@ global.Minion = function(data) {
   // ===========================================================================
 
   function toString() {
-    return `Minion:${$id}[${getFullName()}]`
+    return `Minion:${$id}[${$self.getSpecies().getName()}|${$self.getFullName()}]`
   }
 
   function pack() {
