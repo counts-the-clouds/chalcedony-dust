@@ -36,43 +36,45 @@ global.NameBuilder = (function() {
   // }
 
 
+  // TODO: There's got to be a better way to do this right?
   function getRandom(options) {
     let name;
     let tries = 0;
 
-  //   if (Names[options.category] == null) {
-  //     throw `Unknown index: ${options.category}`;
-  //   }
-  //
-  //   while (tries < 100) {
-      // tries += 1;
+    while (tries < 100) {
+      tries += 1;
       name = Random.from($names[options.category]);
-      // if (meetsRequirements(name, options)) {
+      if (meetsRequirements(name, options)) {
+
+        if (tries > 2) {
+          console.warn(`Took a few tries (${tries}) to randomly select a name given`,options)
+        }
+
         return name;
-      // }
-    // }
-  //
-  //   // I give up, their name is Greg.
-  //   return { name:"Greg" };
+      }
+    }
+
+
+    // I give up, their name is Greg.
+    return { name:"Greg" };
   }
 
 
-  // This will eventually need to be rewritten. It works for checking against a
-  // sex option, but eventually we'll probably need to check against a
-  // character to see if the name fits or not.
-  // function meetsRequirements(name, options) {
-  //   if (name.restriction) {
-  //     if (name.restriction == _male) { return options.sex == _male; }
-  //     if (name.restriction == _female) { return options.sex == _female; }
-  //     if (name.restriction == _notMale) { return options.sex != _male; }
-  //     if (name.restriction == _notFemale) { return options.sex != _female; }
-  //     if (name.restriction == _hasFur) { return false; }
-  //     if (name.restriction == _hasScales) { return false; }
-  //     if (name.restriction == _hasSkin) { return false; }
-  //   }
-  //
-  //   return true;
-  // }
+  // TODO: This will need to check against other character attributes such as
+  //       species.
+  function meetsRequirements(name, options) {
+    if (name.restriction) {
+      if (name.restriction === NameRestriction.male) { return options.gender === Gender.male; }
+      if (name.restriction === NameRestriction.female) { return options.gender === Gender.female; }
+      if (name.restriction === NameRestriction.notMale) { return options.gender !== Gender.male; }
+      if (name.restriction === NameRestriction.notFemale) { return options.gender !== Gender.female; }
+      if (name.restriction === NameRestriction.hasFur) { return false; }
+      if (name.restriction === NameRestriction.hasScales) { return false; }
+      if (name.restriction === NameRestriction.hasSkin) { return false; }
+    }
+
+    return true;
+  }
 
   return Object.freeze({
     addName,
