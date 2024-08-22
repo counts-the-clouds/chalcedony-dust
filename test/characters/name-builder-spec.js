@@ -4,7 +4,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Female Demon Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Demon', gender:Gender.female });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -12,7 +12,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Male Demon Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Demon', gender:Gender.male });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -20,7 +20,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Futa Demon Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Demon', gender:Gender.futa });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -28,7 +28,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Female Elf Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Elf', gender:Gender.female });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -36,7 +36,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Male Elf Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Elf', gender:Gender.male });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -44,7 +44,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Futa Elf Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Elf', gender:Gender.futa });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -52,7 +52,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Female Goblin Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Goblin', gender:Gender.female });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -60,7 +60,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Male Goblin Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Goblin', gender:Gender.male });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -68,7 +68,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Futa Goblin Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Goblin', gender:Gender.futa });
-      SpecHelper.log(`${name.first} ${name.last}`);
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
     });
   });
 
@@ -76,7 +76,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Female Kobold Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Kobold', gender:Gender.female });
-      SpecHelper.log(`${name.first}`);
+      SpecHelper.log(`${name.first.name}`);
     });
   });
 
@@ -84,7 +84,7 @@ describe('NameBuilder', function() {
     SpecHelper.startLog('Male Kobold Name');
     SpecHelper.times(10, () => {
       let name = NameBuilder.getRandom({ category:'Kobold', gender:Gender.male });
-      SpecHelper.log(`${name.first}`);
+      SpecHelper.log(`${name.first.name}`);
     });
   });
 

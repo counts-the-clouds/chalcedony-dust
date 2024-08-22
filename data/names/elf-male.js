@@ -657,4 +657,4 @@ let names = [
   { name:"Œthelwald" },
 ];
 
-NameBuilder.addNames(names, { category:'Elf', gender:Gender.male, position:'last' });
+NameBuilder.addNames(names, { category:'Elf', gender:Gender.male, position:'first' });

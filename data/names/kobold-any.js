@@ -103,6 +103,7 @@ let names = [
   { name:"Moves-Many-Rocks", triggers:['strong']},
   { name:"Names-The-Leaves", triggers:['smart','beautiful']},
   { name:"One-Eye-Green" },
+  { name:"Onyx-Glittering-In-The-Deep", triggers:['black-scales']},
   { name:"Races-The-River" },
   { name:"Races-The-Wind" },
   { name:"Rat-On-A-Stick", triggers:['stupid']},
