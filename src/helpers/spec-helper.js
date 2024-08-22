@@ -12,8 +12,12 @@ global.SpecHelper = {
     }
   },
 
-  // TODO: These should have a UI component...
-  startLog(header) { console.log(`=== ${header} ===`) },
-  log(message) { console.log(message) },
+  startLog(title) {
+    X.first('#testLog').appendChild(X.createElement(`<h1>${title}</h1>`));
+  },
+
+  log(message) {
+    X.first('#testLog').appendChild(X.createElement(`<p>${message}</p>`));
+  },
 
 };

@@ -31,9 +31,19 @@ global.Tests = (function() {
         </div>
       </div>`);
 
-    X.first('#mainContent').appendChild(testFrame);
+    const testLogFrame = X.createElement(`
+      <div id='testLogFrame' class='scrolling-panel'>
+        <div class='scrolling-panel-content'>
+          <div id='testLog'></div>
+        </div>
+      </div>`)
+
+    const mainContent = X.first('#mainContent');
+    mainContent.appendChild(testFrame);
+    mainContent.appendChild(testLogFrame);
 
     ScrollingPanel.build('#testFrame');
+    ScrollingPanel.build('#testLogFrame');
   }
 
   function loadMocha() {
@@ -78,6 +88,7 @@ global.Tests = (function() {
     }
 
     ScrollingPanel.resize('#testFrame');
+    ScrollingPanel.resize('#testLogFrame');
   }
 
   function running() { return $running; }

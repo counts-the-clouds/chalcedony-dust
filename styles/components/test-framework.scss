@@ -70,3 +70,31 @@
     #mocha pre.error { background-color: rgba(60,20,20,0.3); }
   }
 }
+
+#testLogFrame {
+  position: absolute;
+
+  top: 20px;
+  bottom: 20px;
+  left: 20px;
+  width: 455px;
+
+  border: $border-normal;
+  box-shadow: $shadow-frame;
+  background-color: $bg-light;
+  z-index: $z-viewport;
+
+  h1 {
+    margin: 20px 10px 0;
+    padding-bottom: 5px;
+    font-size: $fs-bigger;
+    line-height: 1;
+    border-bottom: $border-normal;
+  }
+
+  p {
+    font-family: 'roboto-mono';
+    font-size: $fs-small;
+    margin: 0 10px 0 30px;
+  }
+}
