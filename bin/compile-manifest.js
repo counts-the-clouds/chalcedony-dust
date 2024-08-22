@@ -10,9 +10,9 @@ console.log("=== Compiling manifest.json ===");
 const fileList = [
   'src/constants.js',
   'src/enums.js',
-  'src/members/state-recorder.js',
-  'src/members/registry.js',
-  'src/members/data-store.js',
+  'src/data-store.js',
+  'src/registry.js',
+  'src/state-recorder.js',
 ];
 
 addFiles(fileList,'src');

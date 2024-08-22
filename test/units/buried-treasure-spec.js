@@ -1,4 +1,4 @@
-describe.only('BuriedTreasure', function() {
+describe('BuriedTreasure', function() {
 
   function distantTile() {
     const tile = Tile({ code:'baseline-r2-0' });
