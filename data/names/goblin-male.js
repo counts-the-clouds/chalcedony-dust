@@ -173,6 +173,4 @@ const names = [
   { name:"Xyzzy", triggers:['smart','magical']},
 ];
 
-names.forEach(name => {
-  NameBuilder.addName(name, 'GoblinMale');
-});
+NameBuilder.addNames(names, { category:'Goblin', gender:Gender.male, position:'first' });

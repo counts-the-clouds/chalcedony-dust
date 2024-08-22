@@ -121,6 +121,4 @@ let names = [
   { name:'Wolfrunner' },
 ];
 
-names.forEach(name => {
-  NameBuilder.addName(name, 'ElfLast');
-});
+NameBuilder.addNames(names, { category:'Elf', position:'last' });

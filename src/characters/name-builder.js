@@ -1,20 +1,21 @@
 global.NameBuilder = (function() {
 
-  const $names = {
-    DemonMale: [],
-    DemonFemale: [],
-    DemonLast: [],
-    ElfMale: [],
-    ElfFemale: [],
-    ElfLast: [],
-    GoblinMale: [],
-    GoblinFemale: [],
-    GoblinLast: [],
-    Kobold: [],
+  const $categories = {
+    Demon:  { first:{} },
+    Elf:    { first:{} },
+    Goblin: { first:{} },
+    Kobold: { first:{} },
   };
 
-  function addName(name, category) {
-    $names[category].push(name);
+  function addNames(nameList, listOptions) {
+    const category = $categories[listOptions.category];
+
+    if (listOptions.position === 'last') {
+      category.last = nameList;
+    }
+    else {
+      category.first[listOptions.gender] = nameList;
+    }
   }
 
   // Get a full random name given a gender and a species. Arguments should be
@@ -38,25 +39,34 @@ global.NameBuilder = (function() {
 
   // TODO: There's got to be a better way to do this right?
   function getRandom(options) {
-    let name;
-    let tries = 0;
+    const category = options.category;
+    const gender = options.gender;
 
-    while (tries < 100) {
-      tries += 1;
-      name = Random.from($names[options.category]);
-      if (meetsRequirements(name, options)) {
+    let name = {
+      first: 'Greg',
+      last: 'Everybody',
+    };
 
-        if (tries > 2) {
-          console.warn(`Took a few tries (${tries}) to randomly select a name given`,options)
-        }
+    return name;
 
-        return name;
-      }
-    }
+    // let tries = 0;
+    //
+    // while (tries < 100) {
+    //   tries += 1;
+    //   name = Random.from($names[options.category]);
+    //   if (meetsRequirements(name, options)) {
+    //
+    //     if (tries > 2) {
+    //       console.warn(`Took a few tries (${tries}) to randomly select a name given`,options)
+    //     }
+    //
+    //     return name;
+    //   }
+    // }
 
 
     // I give up, their name is Greg.
-    return { name:"Greg" };
+    // return { name:"Greg" };
   }
 
 
@@ -77,7 +87,7 @@ global.NameBuilder = (function() {
   }
 
   return Object.freeze({
-    addName,
+    addNames,
     getRandom,
   })
 

@@ -657,6 +657,4 @@ let names = [
   { name:"Œthelwald" },
 ];
 
-names.forEach(name => {
-  NameBuilder.addName(name, 'ElfMale');
-});
+NameBuilder.addNames(names, { category:'Elf', gender:Gender.male, position:'last' });
