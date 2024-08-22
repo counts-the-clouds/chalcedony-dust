@@ -73,7 +73,10 @@ global.NameRestriction = Object.freeze({
   female: 'female',
   notMale: 'not-male',
   notFemale: 'not-female',
-})
+  hasFur: 'has-fur',
+  hasScales: 'has-scales',
+  hasSkin: 'has-skin',
+});
 
 global.AspectType = Object.freeze({
   personality: 'personality',
