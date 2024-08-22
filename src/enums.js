@@ -68,6 +68,13 @@ global.Gender = Object.freeze({
   futa: 'futa',
 });
 
+global.NameRestriction = Object.freeze({
+  male: 'male',
+  female: 'female',
+  notMale: 'not-male',
+  notFemale: 'not-female',
+})
+
 global.AspectType = Object.freeze({
   personality: 'personality',
   skill: 'skill',
