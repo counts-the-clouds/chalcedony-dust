@@ -16,7 +16,12 @@ global.FeatureWindows = (function() {
 
     if (feature.getType() === TileType.room) {
       if (feature.getState() === FeatureState.complete) { return await EmptyFeatureWindow.open(feature); }
-      if (feature.getState() === FeatureState.constructed) { return await RoomWindow.open(feature); }
+      if (feature.getState() === FeatureState.constructed) {
+        switch(feature.getConstruction().getCode()) {
+          case 'storeroom': return StoreroomWindow.open(feature);
+          default: throw `TODO: Open window for ${feature.getConstruction().getCode()}`;
+        }
+      }
     }
 
     if (feature.getType() === TileType.hall) {

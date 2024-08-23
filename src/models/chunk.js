@@ -47,6 +47,7 @@ global.Chunk = function(data) {
   // ===========================================================================
 
   const $self = Object.freeze({
+    model: 'Chunk',
     getID,
     getChunkLocation,
     getCells,

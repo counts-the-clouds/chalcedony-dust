@@ -46,8 +46,6 @@ global.DiscoveryAdjuster = (function() {
     feature.attachConstruction(discovery.code);
 
     tile.addSegment(resourceSegment);
-
-    console.log(`Discover Made on ${tile}`,discovery)
   }
 
   function graphicsForType(type, direction) {

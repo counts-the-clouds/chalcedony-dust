@@ -274,6 +274,7 @@ global.Feature = function(data) {
   // ===========================================================================
 
   const $self = Object.freeze({
+    model: 'Feature',
     getID,
     getSegments,
     setState,

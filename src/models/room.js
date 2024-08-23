@@ -1,13 +1,8 @@
 global.Room = function(data) {
-
   const $code = data.code;
   const $id = data.id || RoomDataStore.nextID();
   const $featureID = data.featureID;
   const $hasItems = HasItems(data.hasItems);
-
-  if (data.inventorySizePerTile) {
-    $self.setInventorySize(getFeature().getSize() * data.inventorySizePerTile);
-  }
 
   function getID() { return $id; }
   function getCode() { return $code; }
@@ -31,6 +26,7 @@ global.Room = function(data) {
   // ===========================================================================
 
   const $self = {
+    model: 'Room',
     getID,
     getCode,
     getFeature,

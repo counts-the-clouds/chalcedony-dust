@@ -98,6 +98,7 @@ global.Clock = function(data) {
   // ===========================================================================
 
   const $self = Object.freeze({
+    model: 'Clock',
     getID,
     getCode,
     setDuration,

@@ -3,7 +3,7 @@ global.HasItems = function(data = {}) {
   const $itemIDs = data.itemIDs || [];
   let $inventorySize = data.inventorySize || 0;
 
-  function setInventorySize(size) { $inventorySize = size; }
+  function setInventorySize(size) { $inventorySize = size }
   function getInventorySize() { return $inventorySize }
 
   function getItems() {
@@ -32,6 +32,13 @@ global.HasItems = function(data = {}) {
   }
 
   function attach(model) {
+    if (model.model === 'Room') {
+      const data = RoomRegistry.lookup(model.getCode());
+      if (data.inventorySizePerTile) {
+        setInventorySize(model.getFeature().getSize() * data.inventorySizePerTile)
+      }
+    }
+
     model.setInventorySize = setInventorySize;
     model.getInventorySize = getInventorySize;
     model.getItems = getItems;

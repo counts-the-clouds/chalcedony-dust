@@ -21,6 +21,7 @@ global.Item = function(data) {
   }
 
   const $self = Object.freeze({
+    model: 'Item',
     getID,
     getCode,
     getCount,

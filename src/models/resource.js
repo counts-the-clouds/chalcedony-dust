@@ -21,6 +21,7 @@ global.Resource = function(data) {
   }
 
   const $self = Object.freeze({
+    model: 'Resource',
     getID,
     getCode,
     getFeature,

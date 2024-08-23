@@ -146,6 +146,7 @@ global.Tile = function(data) {
   // ===========================================================================
 
   const $self = Object.freeze({
+    model: 'Tile',
     getCode,
     getID,
     getDrawNote,

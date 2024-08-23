@@ -23,6 +23,7 @@ global.Guardian = function(data) {
   // ===========================================================================
 
   const $self = {
+    model: 'Guardian',
     getID,
     toString,
     pack,

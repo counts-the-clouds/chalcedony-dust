@@ -27,6 +27,7 @@ global.Aspect = function(data) {
   }
 
   const $self = Object.freeze({
+    model: 'Aspect',
     getID,
     getCode,
     setLevel,

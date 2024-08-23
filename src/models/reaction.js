@@ -36,6 +36,7 @@ global.Reaction = function(options) {
   // ===========================================================================
 
   const $self = Object.freeze({
+    model: 'Reaction',
     getID,
     getEventType,
     getConditions,

@@ -24,6 +24,7 @@ global.Minion = function(data) {
   // ===========================================================================
 
   const $self = {
+    model: 'Minion',
     getID,
     toString,
     pack,

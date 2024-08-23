@@ -23,6 +23,7 @@ global.Adventurer = function(data) {
   // ===========================================================================
 
   const $self = {
+    model: 'Adventurer',
     getID,
     toString,
     pack,

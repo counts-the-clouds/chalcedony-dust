@@ -98,6 +98,7 @@ global.Segment = function(data) {
   // ===========================================================================
 
   const $self = Object.freeze({
+    model: 'Segment',
     getID,
     getTileID,
     getType,
