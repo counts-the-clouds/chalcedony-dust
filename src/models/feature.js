@@ -133,9 +133,15 @@ global.Feature = function(data) {
 
   function attachConstruction(code) {
     if ($constructionID != null) { throw `This feature already has a construction.` }
-    if ($type === TileType.hall) { $constructionID = Hall({ code }).getID(); }
-    if ($type === TileType.resource) { $constructionID = Resource({ code }).getID(); }
-    if ($type === TileType.room) { $constructionID = Room({ code }).getID(); }
+    if ($type === TileType.hall) {
+      $constructionID = Hall({ code, featureID:getID() }).getID();
+    }
+    if ($type === TileType.resource) {
+      $constructionID = Resource({ code, featureID:getID() }).getID();
+    }
+    if ($type === TileType.room) {
+      $constructionID = Room({ code, featureID:getID() }).getID();
+    }
   }
 
   function getConstruction() {

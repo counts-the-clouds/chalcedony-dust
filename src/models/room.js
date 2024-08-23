@@ -2,10 +2,16 @@ global.Room = function(data) {
 
   const $code = data.code;
   const $id = data.id || RoomDataStore.nextID();
+  const $featureID = data.featureID;
   const $hasItems = HasItems(data.hasItems);
 
-  function getCode() { return $code; }
+  if (data.inventorySizePerTile) {
+    $self.setInventorySize(getFeature().getSize() * data.inventorySizePerTile);
+  }
+
   function getID() { return $id; }
+  function getCode() { return $code; }
+  function getFeature() { return FeatureDataStore.get($featureID); }
 
   // ===========================================================================
 
@@ -15,8 +21,9 @@ global.Room = function(data) {
 
   function pack() {
     return {
-      code: $code,
       id: $id,
+      code: $code,
+      featureID: $featureID,
       hasItems: $hasItems.pack(),
     }
   }
@@ -26,6 +33,7 @@ global.Room = function(data) {
   const $self = {
     getID,
     getCode,
+    getFeature,
     toString,
     pack,
   };

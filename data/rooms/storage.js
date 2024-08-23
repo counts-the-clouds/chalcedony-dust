@@ -6,4 +6,7 @@ RoomRegistry.register('storeroom',{
   constructionTime: 30,
   cost:{ mana:20 },
   minSize: 4,
+
+  inventorySizePerTile: 2,
+
 });

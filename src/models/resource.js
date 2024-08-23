@@ -2,11 +2,11 @@ global.Resource = function(data) {
 
   const $code = data.code;
   const $id = data.id || ResourceDataStore.nextID();
+  const $featureID = data.featureID;
 
-  function getCode() { return $code; }
   function getID() { return $id; }
-
-  console.log("Built A Resource:",toString());
+  function getCode() { return $code; }
+  function getFeature() { return FeatureDataStore.get($featureID); }
 
   function toString() {
     return `Resource:${$id}[${$code}]`
@@ -14,14 +14,16 @@ global.Resource = function(data) {
 
   function pack() {
     return {
+      id: $id,
       code: $code,
-      id: $id
+      featureID: $featureID,
     }
   }
 
   const $self = Object.freeze({
     getID,
     getCode,
+    getFeature,
     toString,
     pack,
   });

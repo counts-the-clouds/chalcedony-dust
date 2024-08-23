@@ -1,6 +1,10 @@
 global.HasItems = function(data = {}) {
 
   const $itemIDs = data.itemIDs || [];
+  let $inventorySize = data.inventorySize || 0;
+
+  function setInventorySize(size) { $inventorySize = size; }
+  function getInventorySize() { return $inventorySize }
 
   function getItems() {
     return $itemIDs.map(id => ItemDataStore.get(id));
@@ -22,11 +26,14 @@ global.HasItems = function(data = {}) {
 
   function pack() {
     return {
+      inventorySize: $inventorySize,
       itemIDs: $itemIDs,
     };
   }
 
   function attach(model) {
+    model.setInventorySize = setInventorySize;
+    model.getInventorySize = getInventorySize;
     model.getItems = getItems;
     model.addItem = addItem;
     model.deleteItem = deleteItem;
