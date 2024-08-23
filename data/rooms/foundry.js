@@ -4,7 +4,7 @@ RoomRegistry.register('foundry',{
     the foundry before it can be processed. `,
 
   constructionTime: 90,
-  cost:{ mana:30, 'iron-ore':10 },
+  cost:{ mana:30, 'labrynthian-ore':10 },
   minSize: 4,
   maxSize: 6,
 });
