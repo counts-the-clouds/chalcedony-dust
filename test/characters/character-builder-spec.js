@@ -9,5 +9,3 @@ describe("Character Builder", function() {
   });
 
 });
-
-// 15/54
