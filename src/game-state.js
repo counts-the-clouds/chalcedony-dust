@@ -3,6 +3,8 @@ global.GameState = (function() {
   const $gameFile = `${DATA}/Game.json`;
   const $stateRecorder = new StateRecorder($gameFile);
 
+  let $mana;
+
   // Clear removes the saved game files.
   async function clear() {
     await Models.clearAll();
@@ -19,11 +21,17 @@ global.GameState = (function() {
     TileShelf.reset();
   }
 
+  function setMana(mana) { $mana = mana; }
+  function gainMana(mana) { $mana += mana; }
+  function spendMana(mana) { $mana -= mana; }
+  function getMana() { return $mana; }
+
   // === Saving and Loading ====================================================
 
   async function saveState() {
     if (Tests.running() === false) {
       await $stateRecorder.saveState({
+        mana: $mana,
         buriedTreasure: BuriedTreasure.pack(),
         gameFlags: GameFlags.pack(),
         tileBag: TileBag.pack(),
@@ -41,6 +49,7 @@ global.GameState = (function() {
       const loadedState = await $stateRecorder.loadState();
 
       if (loadedState) {
+        $mana = loadedState.mana;
         BuriedTreasure.unpack(loadedState.buriedTreasure);
         GameFlags.unpack(loadedState.gameFlags);
         TileBag.unpack(loadedState.tileBag);
@@ -58,6 +67,10 @@ global.GameState = (function() {
   return Object.freeze({
     clear,
     reset,
+    setMana,
+    gainMana,
+    spendMana,
+    getMana,
     saveState,
     loadState,
   });

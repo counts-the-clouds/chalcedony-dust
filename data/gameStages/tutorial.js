@@ -1,5 +1,7 @@
 ExtraRegistry.register(GameStages.tutorial,{
 
+  startingMana: 990,
+
   flags: {
     'buried-treasure.forbid-discovery': true,
     'dungeon-view.disable-movement': true,

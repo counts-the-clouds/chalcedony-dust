@@ -1,0 +1,21 @@
+
+.icon {
+  height: 40px;
+  width: 40px;
+  background-size: contain;
+  background-color: rgb(250,100,0);
+}
+
+.icon.small {
+  height: 30px;
+  width: 30px;
+}
+
+.icon.bordered {
+  border: $border-light;
+  border-radius: 4px;
+}
+
+.icon.shadowed {
+  box-shadow: $shadow-shallow;
+}

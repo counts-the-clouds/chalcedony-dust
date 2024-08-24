@@ -31,7 +31,26 @@ $z-lower-bar: 250;
     #statusPanel {
       display: flex;
       flex-grow: 1;
+      align-items: center;
       overflow: hidden;
+
+      .status-panel {
+        display: inline-flex;
+        align-items: center;
+        height: 30px;
+        margin-left: 5px;
+        box-shadow: $shadow-shallow;
+        border: $border-light;
+
+        .value {
+          position: relative;
+          top: 1px;
+          font-family: 'aleo';
+          font-size: $fs-big;
+          margin: 0 10px;
+        }
+      }
+
     }
 
   }
