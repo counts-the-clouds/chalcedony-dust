@@ -193,11 +193,12 @@ global.Casement = (function() {
       if (Object.keys($$currentCasements).length === 0) {
         $$casementCounter = 100;
       }
+      WindowManager.remove($self);
     }
 
     wireEvents();
 
-    return Object.freeze({
+    const $self = Object.freeze({
       getID,
       getCasementContent,
       getCasementWindow,
@@ -216,6 +217,8 @@ global.Casement = (function() {
       contentResized,
       close,
     });
+
+    return $self;
   }
 
   function startMoveDrag(event) {

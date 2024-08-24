@@ -1,4 +1,5 @@
 <div id='dungeonView'>
+  <div id='dungeonCanvas'></div>
 
   <div id='lowerBar'>
     <div id='leftPanel'>
@@ -16,11 +17,38 @@
       </div>
     </div>
     <div id='tileShelfArea'></div>
-    <div id='rightPanel' class='slide-buttons'>
-      <div id='minionsButton' class='button button-large'>Minions</div>
-      <div id='inventoryButton' class='button button-large'>Inventory</div>
+    <div id='rightPanel'>
     </div>
   </div>
 
-  <div id='dungeonCanvas'></div>
+  <div id='inventoryWindow' class='slide-window left'>
+    <div class='slide-space'></div>
+    <div class='slide-header'>
+      <div class='slide-button'>Inventory</div>
+    </div>
+    <div class='slide-container'>
+      <div class='content-header'>Content Header</div>
+      <div class='scrolling-panel'>
+        <div class='scrolling-panel-content'>
+          <div class='slide-content empty'>The dungeon's storage is unforgivably empty.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id='minionsWindow' class='slide-window right'>
+    <div class='slide-space'></div>
+    <div class='slide-header'>
+      <div class='slide-button'>Minions</div>
+    </div>
+    <div class='slide-container'>
+      <div class='content-header'>Content Header</div>
+      <div class='scrolling-panel'>
+        <div class='scrolling-panel-content'>
+          <div class='slide-content empty'>There are no minions currently<br/>serving in the dungeon.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>

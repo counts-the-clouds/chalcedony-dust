@@ -1,8 +1,4 @@
 
-$z-lower-bar: 250;
-//$z-controls: 1000;
-
-
 #dungeonCanvas {
   position: absolute;
   inset: 0;
@@ -64,30 +60,10 @@ $z-lower-bar: 250;
     border-top: $border-light;
     border-left: $border-light;
   }
-
-  .slide-buttons {
-    .button {
-      height: 30px;
-      margin-right: 5px;
-    }
-
-  }
 }
 
-
-
 #speedControl {
-  //position: absolute;
-  //bottom: 50px;
-  //left: calc(50% - 356px);
   padding: 3px;
-
-
-
-  //background-color: rgb(20,25,20);
-  //border: $border-normal;
-  //box-shadow: $shadow-frame;
-  //z-index: $z-controls;
 
   a {
     display: inline-flex;

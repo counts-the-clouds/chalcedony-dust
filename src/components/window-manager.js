@@ -22,10 +22,18 @@ global.WindowManager = (function() {
     $windowStack.pop().close();
   }
 
+  function remove(model) {
+    const index = $windowStack.indexOf(model);
+    if (index >= 0) {
+      $windowStack.splice(index,1);
+    }
+  }
+
   return Object.freeze({
     init,
     push,
     pop,
+    remove,
   });
 
 })();
