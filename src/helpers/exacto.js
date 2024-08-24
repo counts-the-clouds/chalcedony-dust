@@ -134,8 +134,6 @@ X.removeClassWithin = function(element, classname) {
   element.querySelectorAll(`.${classname}`)[0].classList.remove(classname);
 }
 
-// === Style ===================================================================
-
 X.getPosition = function(element) {
   return element.getBoundingClientRect();
 }

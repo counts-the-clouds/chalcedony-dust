@@ -37,6 +37,11 @@ global.EmptyFeatureWindow = (function () {
     content.querySelector('.note').textContent = feature.getType() === TileType.room ? roomNote : hallNote;
   }
 
+  // TODO: The cost for a construction isn't static. Some rooms like the
+  //       gallery has a cost that changes with every gallery built. There's no
+  //       need for the room model to actually have any of the cost functions
+  //       but we could put something in the ConstructionHelper to calculate it
+  //       I think.
   function buildConstructionItem(feature, construction) {
     const constructionItem = X.createElement(`
       <li class='construction-item'>

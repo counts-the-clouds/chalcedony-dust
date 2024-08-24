@@ -55,6 +55,7 @@ global.SystemFlags = Object.freeze({
   currentEvent: 'event.current-event',
   disableMovement: 'dungeon-view.disable-movement',
   hideSpeedControl: 'dungeon-view.hide-speed-control',
+  tileShelfSize: 'tile-shelf.size',
 });
 
 global.GameStages = Object.freeze({

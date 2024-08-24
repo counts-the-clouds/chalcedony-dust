@@ -6,6 +6,8 @@ global.DungeonView = (function() {
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
 
   function init() {
+    window.addEventListener("resize", resize);
+
     DragonDrop.init();
     DungeonViewport.init();
     TileShelfView.init();
@@ -36,6 +38,7 @@ global.DungeonView = (function() {
     if (GameFlags.has(SystemFlags.hideSpeedControl)) {
       SpeedControl.hide();
     }
+    resize();
   }
 
   function isVisible() {
@@ -95,7 +98,21 @@ global.DungeonView = (function() {
     DungeonViewport.addChild($chunkContainers[id].getChunkContainer());
   }
 
-  function resize() { $application.resize(); }
+  function resize() {
+    if (isVisible()) {
+      const screen = getDimensions();
+      const shelfWidth = TileShelfView.getWidth();
+      const panelWidth = (screen.width - shelfWidth) / 2;
+
+      X.first('#lowerBar #tileShelfArea').style.width = `${shelfWidth}px`;
+      X.first('#lowerBar #leftPanel').style.width = `${panelWidth}px`;
+      X.first('#lowerBar #rightPanel').style.width = `${panelWidth}px`;
+
+      $application.resize();
+      DungeonViewport.handleResize();
+      TileShelfView.handleResize();
+    }
+  }
 
   function getChunkExtent() { return $chunkExtent }
 

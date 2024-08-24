@@ -14,7 +14,6 @@ global.DungeonViewport = (function() {
   let $speed = SLOW;
 
   function init() {
-    window.addEventListener("resize", handleResize);
     window.addEventListener("wheel", event => {
       if (DungeonView.isVisible() && DungeonView.isMovementEnabled()) {
         const velocity = (Math.abs(event.deltaY) >= 100) ? 5 : 1;
@@ -91,7 +90,6 @@ global.DungeonViewport = (function() {
 
   function handleResize() {
     if ($viewport) {
-      DungeonView.resize();
       updateLimits();
       positionViewport();
     }
@@ -282,6 +280,7 @@ global.DungeonViewport = (function() {
   return Object.freeze({
     init,
     create,
+    handleResize,
     addChild,
     updateLimits,
     getLocation,

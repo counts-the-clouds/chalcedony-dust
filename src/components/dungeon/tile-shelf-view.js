@@ -1,20 +1,15 @@
 window.TileShelfView = (function() {
 
-  // Normally I would make all of these consts, but Pixi will not be loaded
-  // when this containing function is first run.
+  let $shelfBackground;
+  let $shelfSize;
   let $dragArea;
   let $shelf;
-  let $leftTrim;
-  let $rightTrim;
-  let $center;
-
   let $tileProgress;
 
   let $tileState;
 
   function init() {
     $tileState = {};
-    window.addEventListener("resize", handleResize);
   }
 
   // TODO: We'll just draw the tile shelf with a graphics object for now.
@@ -23,27 +18,22 @@ window.TileShelfView = (function() {
   //       the overall look of things.
   //
   async function create(application) {
+    const screen = DungeonView.getDimensions();
+
+    $shelfBackground = new Pixi.Graphics();
+    $shelfBackground.rect(0,0,5000,40);
+    $shelfBackground.stroke({ color:'rgb(70,70,90)' });
+    $shelfBackground.fill({ color:'rgb(15,15,24)' });
+    $shelfBackground.y = screen.height - 30;
+
+    $shelfSize = new Pixi.Graphics();
+    $shelfSize.rect(0,0,getWidth(),30);
+    $shelfSize.fill({ color:'rgba(250,150,0,0)' });
+
     $tileProgress = new Pixi.Graphics();
 
-    $leftTrim = new Pixi.Graphics();
-    $leftTrim.rect(0,20,20,60);
-    $leftTrim.stroke({ color:'rgb(80,100,80)' });
-    $leftTrim.fill({ color:'rgb(40,50,40)' });
-
-    $rightTrim = new Pixi.Graphics();
-    $rightTrim.rect(200,20,20,60);
-    $rightTrim.stroke({ color:'rgb(80,100,80)' });
-    $rightTrim.fill({ color:'rgb(40,50,40)' });
-
-    $center = new Pixi.Graphics();
-    $center.rect(0,30,200,50);
-    $center.stroke({ color:'rgb(80,100,80)' });
-    $center.fill({ color:'rgb(40,50,40)' });
-
     $shelf = new Pixi.Container();
-    $shelf.addChild($center);
-    $shelf.addChild($leftTrim);
-    $shelf.addChild($rightTrim);
+    $shelf.addChild($shelfSize);
     $shelf.addChild($tileProgress);
 
     $dragArea = new Pixi.Container();
@@ -52,15 +42,11 @@ window.TileShelfView = (function() {
     $dragArea.width = application.screen.width
     $dragArea.height = application.screen.height
 
+    application.stage.addChild($shelfBackground);
     application.stage.addChild($shelf);
     application.stage.addChild($dragArea);
 
-    positionShelf();
-  }
-
-  function handleResize() {
-    positionShelf();
-    positionTiles();
+    updateProgressBar(0);
   }
 
   // We should call this to rebuild the shelf if the tile shelf state changes.
@@ -68,16 +54,17 @@ window.TileShelfView = (function() {
     await Promise.all(TileShelf.getShelf().map(async id => {
       await addTile(TileDataStore.get(id))
     }));
-
-    positionTiles();
   }
 
-  function positionTiles() {
-    Object.values($tileState).forEach(tileContainer => {
-      tileContainer.setPosition(
-        ($shelf.x + ($shelf.width/2)),
-        ($shelf.y + 12));
-    });
+  // At least 200, but assume tile size of 64px + 10px margin
+  function getWidth() {
+    const size = GameFlags.get(SystemFlags.tileShelfSize);
+    return (size <= 2) ? 200 : (size * 74) + 10;
+  }
+
+  function handleResize() {
+    positionShelf();
+    positionTiles();
   }
 
   function positionShelf() {
@@ -87,6 +74,15 @@ window.TileShelfView = (function() {
       $shelf.x = (screen.width/2) - ($shelf.width/2);
     }
   }
+
+  function positionTiles() {
+    Object.values($tileState).forEach(tileContainer => {
+      tileContainer.setPosition(
+        ($shelf.x + ($shelf.width/2)),
+        ($shelf.y - 30));
+    });
+  }
+
 
   async function addTile(tile) {
     const tileContainer = await TileContainer(tile);
@@ -104,29 +100,31 @@ window.TileShelfView = (function() {
     positionTiles();
   }
 
-  const _progressBarWidth = 178;
 
   function updateProgressBar(percentage) {
-    const width = _progressBarWidth * (percentage / 100);
+    const barWidth = getWidth() - 20
+    const progressWidth = barWidth * (percentage / 100);
 
-    let barColor = 'rgba(120,170,120,0.6)';
+    let progressColor = 'rgba(120,170,120,0.6)';
 
     if (TileShelf.isFull()) {
-      if (percentage > 50) { barColor = 'rgba(200,150,100,0.6)' }
-      if (percentage > 75) { barColor = 'rgba(250,100,100,0.6)' }
+      if (percentage > 50) { progressColor = 'rgba(200,150,100,0.6)' }
+      if (percentage > 75) { progressColor = 'rgba(250,100,100,0.6)' }
     }
 
-    $tileProgress.rect(21,40,_progressBarWidth,10);
-    $tileProgress.fill({ color:'rgb(12,17,12)' });
+    $tileProgress.rect(10,10,barWidth,10);
+    $tileProgress.fill({ color:'rgb(0,0,0)' });
 
-    $tileProgress.rect(21,42,width,6);
-    $tileProgress.fill({ color:barColor });
+    $tileProgress.rect(10,12,progressWidth,6);
+    $tileProgress.fill({ color:progressColor });
   }
 
   return Object.freeze({
     init,
     create,
+    handleResize,
     refresh,
+    getWidth,
     positionTiles,
     addTile,
     removeTile,

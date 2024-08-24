@@ -6,6 +6,8 @@ global.Models = (function() {
   // just the Segments that need to be loaded before the Tiles. That is, for
   // now at least.
   function init() {
+    global.SegmentDataStore = DataStore({ name:'Segment', model:Segment });
+
     global.AdventurerDataStore = DataStore({ name:'Adventurer', model:Adventurer });
     global.AspectDataStore = DataStore({ name:'Aspect', model:Aspect });
     global.ClockDataStore = DataStore({ name:'Clock', model:Clock });
@@ -18,10 +20,11 @@ global.Models = (function() {
     global.ReactionDataStore = DataStore({ name:'Reaction', model:Reaction });
     global.ResourceDataStore = DataStore({ name:'Resource', model:Resource });
     global.RoomDataStore = DataStore({ name:'Room', model:Room });
-    global.SegmentDataStore = DataStore({ name:'Segment', model:Segment });
     global.TileDataStore = DataStore({ name:'Tile', model:Tile });
 
     $dataStores = [
+      SegmentDataStore,
+
       AdventurerDataStore,
       AspectDataStore,
       ClockDataStore,
@@ -34,7 +37,6 @@ global.Models = (function() {
       ReactionDataStore,
       ResourceDataStore,
       RoomDataStore,
-      SegmentDataStore,
       TileDataStore,
     ]
   }

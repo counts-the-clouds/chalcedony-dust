@@ -1,20 +1,65 @@
 
+$z-lower-bar: 250;
+//$z-controls: 1000;
+
+
 #dungeonCanvas {
   position: absolute;
   inset: 0;
   z-index: $z-canvas;
 }
 
-#speedControl {
+#lowerBar {
   position: absolute;
-  bottom: 1px;
-  left: calc(50% - 356px);
+  display: flex;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 40px;
+
+  z-index: $z-lower-bar;
+
+
+  #leftPanel {
+    display: flex;
+    overflow: hidden;
+
+    background-color: rgb(20,20,30);
+    border-top: $border-light;
+    border-right: $border-light;
+
+    #statusPanel {
+      display: flex;
+      flex-grow: 1;
+      overflow: hidden;
+    }
+
+  }
+  #rightPanel {
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+
+    background-color: rgb(20,20,30);
+    border-top: $border-light;
+    border-left: $border-light;
+  }
+}
+
+
+
+#speedControl {
+  //position: absolute;
+  //bottom: 50px;
+  //left: calc(50% - 356px);
   padding: 3px;
 
-  background-color: rgb(20,25,20);
-  border: $border-normal;
-  box-shadow: $shadow-frame;
-  z-index: $z-controls;
+
+
+  //background-color: rgb(20,25,20);
+  //border: $border-normal;
+  //box-shadow: $shadow-frame;
+  //z-index: $z-controls;
 
   a {
     display: inline-flex;

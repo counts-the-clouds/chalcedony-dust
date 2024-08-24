@@ -4,6 +4,7 @@ ExtraRegistry.register(GameStages.tutorial,{
     'buried-treasure.forbid-discovery': true,
     'dungeon-view.disable-movement': true,
     'dungeon-view.hide-speed-control': true,
+    'tile-shelf.size': 1,
   },
 
   buriedTreasure: 'baseline-treasures',
