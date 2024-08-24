@@ -18,13 +18,7 @@ window.TileShelfView = (function() {
   //       the overall look of things.
   //
   async function create(application) {
-    const screen = DungeonView.getDimensions();
-
     $shelfBackground = new Pixi.Graphics();
-    $shelfBackground.rect(0,0,5000,40);
-    $shelfBackground.stroke({ color:'rgb(70,70,90)' });
-    $shelfBackground.fill({ color:'rgb(15,15,24)' });
-    $shelfBackground.y = screen.height - 30;
 
     $shelfSize = new Pixi.Graphics();
     $shelfSize.rect(0,0,getWidth(),30);
@@ -72,6 +66,11 @@ window.TileShelfView = (function() {
       const screen = DungeonView.getDimensions();
       $shelf.y = screen.height - $shelf.height;
       $shelf.x = (screen.width/2) - ($shelf.width/2);
+
+      $shelfBackground.rect(0,0,screen.width,40);
+      $shelfBackground.stroke({ color:'rgb(70,70,90)' });
+      $shelfBackground.fill({ color:'rgb(15,15,24)' });
+      $shelfBackground.y = screen.height - 30;
     }
   }
 

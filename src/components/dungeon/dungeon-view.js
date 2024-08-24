@@ -4,6 +4,7 @@ global.DungeonView = (function() {
   let $effectsContainer;
   let $chunkContainers = {}
   let $chunkExtent = { minx:0, miny:0, maxx:0, maxy:0 }
+  let $isResizing = false;
 
   function init() {
     window.addEventListener("resize", resize);
@@ -98,7 +99,7 @@ global.DungeonView = (function() {
     DungeonViewport.addChild($chunkContainers[id].getChunkContainer());
   }
 
-  function resize() {
+  function resize(event) {
     if (isVisible()) {
       const screen = getDimensions();
       const shelfWidth = TileShelfView.getWidth();
@@ -111,7 +112,40 @@ global.DungeonView = (function() {
       $application.resize();
       DungeonViewport.handleResize();
       TileShelfView.handleResize();
+
+      if (event && $isResizing === false) {
+        console.log(">>> Arm Hack")
+        window.addEventListener('mousemove', resizeHack);
+        $isResizing = true;
+      }
+
+      if (event == null) {
+        console.log("--- Resize Without Event")
+      }
     }
+  }
+
+  // I think there's a bug in chromium on Mac that when a window is maximized
+  // it plays an animation showing the window getting bigger before entering
+  // into the maximized state. This results in resize() getting fired a couple
+  // times as the window gets bigger, but doesn't fire a final time when the
+  // window is at its maximum size. This results in an incorrect size being
+  // received on the final resize event. To combat this I arm a mousemove
+  // listener while we're resizing the window. This shouldn't be caught by the
+  // window while it's being resized as those event happen outside the window
+  // boundary. When the mouse is moved over the window again we remove the
+  // listener and after a short delay call resize() to make sure that we're
+  // resizing to the correct dimensions once the window has stopped being
+  // resized and we can assume it's in a stable state.
+  //
+  // TODO: Verify that this works the same way on Windows, or isn't actually
+  //       needed there.
+  //
+  function resizeHack() {
+    console.log("<<< Disarm Hack")
+    window.setTimeout(resize,100);
+    window.removeEventListener('mousemove', resizeHack);
+    $isResizing = false;
   }
 
   function getChunkExtent() { return $chunkExtent }

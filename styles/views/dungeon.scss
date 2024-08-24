@@ -57,11 +57,20 @@ $z-lower-bar: 250;
   #rightPanel {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     overflow: hidden;
 
     background-color: rgb(20,20,30);
     border-top: $border-light;
     border-left: $border-light;
+  }
+
+  .slide-buttons {
+    .button {
+      height: 30px;
+      margin-right: 5px;
+    }
+
   }
 }
 
