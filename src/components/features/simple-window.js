@@ -4,7 +4,7 @@ global.SimpleWindow = (function() {
     const room = feature.getConstruction();
     const background = room.getBackground();
 
-    const casement = FeatureWindows.openCasementWith(feature,getBase(room),{ scrollingPanel:false });
+    const casement = FeatureWindows.openCasementWith(feature,getBase(room),{ scrollingPanel:false, resizable:false });
     casement.setTitle(room.getDisplayName());
     casement.setBounds(getBounds(room));
 
@@ -20,7 +20,7 @@ global.SimpleWindow = (function() {
     const left = position.x - 150;
 
     if (room.getLayout() === 'card-layout') {
-      return { top, left, height:400, width:300 }
+      return { top, left, height:420, width:300 }
     }
   }
 

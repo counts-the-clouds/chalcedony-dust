@@ -26,11 +26,16 @@ global.Casement = (function() {
     fromString(FileHelper.readFile(path),options);
   }
 
+  // Available Options:
+  //    scrollingPanel   (true by default)
+  //    resizable        (true by default)
+  //
   function fromString(html,options={}) {
     const index = $$casementCounter++;
     const id = `casement-${index}`;
 
-    const enableScrollingPanel = options.scrollingPanel || true;
+    const enableScrollingPanel = options.scrollingPanel !== false;
+    const enableResize = options.resizable !== false;
 
     const casementContent = X.createElement(
       `<div class='casement-content'>${html}</div>
@@ -42,12 +47,15 @@ global.Casement = (function() {
           <h1 class='title'>[TITLE]</h1>
           <a href='#' class='close-button'></a>
         </div>
-        <div class='resize-handle'></div>
         <div class='casement-container'></div>
       </div>
     `);
 
     casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
+
+    if (enableResize) {
+      casementWindow.appendChild(X.createElement(`<div class='resize-handle'></div>`));
+    }
 
     if (enableScrollingPanel) {
       const scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
@@ -60,7 +68,9 @@ global.Casement = (function() {
       ScrollingPanel.build(scrollingPanel);
     }
     if (!enableScrollingPanel) {
-      casementWindow.querySelector('.casement-container').appendChild(casementContent);
+      const container = casementWindow.querySelector('.casement-container');
+      container.style.overflow = 'hidden';
+      container.appendChild(casementContent);
     }
 
     X.first('#casementsArea').appendChild(casementWindow);
@@ -88,8 +98,16 @@ global.Casement = (function() {
     function getCasementContent() { return $casementContent; }
     function getCasementWindow() { return $casementWindow; }
 
-    $casementWindow.querySelector('.casement-bar').addEventListener('mousedown', event => startMoveDrag(event));
-    $casementWindow.querySelector('.resize-handle').addEventListener('mousedown', event => startResizeDrag(event));
+    function wireEvents() {
+      const casementBar = $casementWindow.querySelector('.casement-bar');
+      const resizeHandle = $casementWindow.querySelector('.resize-handle');
+
+      casementBar.addEventListener('mousedown', event => startMoveDrag(event));
+
+      if (resizeHandle) {
+        resizeHandle.addEventListener('mousedown', event => startResizeDrag(event));
+      }
+    }
 
     function setAssociatedWith(association) { $associatedWith = association; }
     function getAssociatedWith() { return $associatedWith; }
@@ -176,6 +194,8 @@ global.Casement = (function() {
         $$casementCounter = 100;
       }
     }
+
+    wireEvents();
 
     return Object.freeze({
       getID,
