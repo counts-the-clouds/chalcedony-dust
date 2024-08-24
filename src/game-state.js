@@ -17,6 +17,7 @@ global.GameState = (function() {
     Models.reset();
     BuriedTreasure.reset();
     GameFlags.reset();
+    GameInventory.reset();
     TileBag.reset();
     TileShelf.reset();
   }
@@ -34,6 +35,7 @@ global.GameState = (function() {
         mana: $mana,
         buriedTreasure: BuriedTreasure.pack(),
         gameFlags: GameFlags.pack(),
+        gameInventory: GameInventory.pack(),
         tileBag: TileBag.pack(),
         tileShelf: TileShelf.pack(),
       });
@@ -52,6 +54,7 @@ global.GameState = (function() {
         $mana = loadedState.mana;
         BuriedTreasure.unpack(loadedState.buriedTreasure);
         GameFlags.unpack(loadedState.gameFlags);
+        GameInventory.unpack(loadedState.gameInventory);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);
         await Models.loadAll();

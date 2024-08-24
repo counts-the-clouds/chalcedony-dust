@@ -1,7 +1,7 @@
 global.Aspect = function(data) {
 
   const $code = data.code;
-  const $id = data.id || ItemDataStore.nextID();
+  const $id = data.id || AspectDataStore.nextID();
 
   let $level = data.level || 1;
   let $experience = data.experience || 0;

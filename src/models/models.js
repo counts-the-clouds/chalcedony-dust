@@ -15,7 +15,6 @@ global.Models = (function() {
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
     global.GuardianDataStore = DataStore({ name:'Guardian', model:Guardian });
     global.HallDataStore = DataStore({ name:'Hall', model:Hall });
-    global.ItemDataStore = DataStore({ name:'Item', model:Item });
     global.MinionDataStore = DataStore({ name:'Minion', model:Minion });
     global.ReactionDataStore = DataStore({ name:'Reaction', model:Reaction });
     global.ResourceDataStore = DataStore({ name:'Resource', model:Resource });
@@ -32,7 +31,6 @@ global.Models = (function() {
       FeatureDataStore,
       GuardianDataStore,
       HallDataStore,
-      ItemDataStore,
       MinionDataStore,
       ReactionDataStore,
       ResourceDataStore,

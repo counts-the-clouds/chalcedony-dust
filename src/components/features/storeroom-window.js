@@ -1,12 +1,12 @@
-global.StoreroomWindow = (function() {
+global.SimpleWindow = (function() {
 
   function open(feature) {
     const room = feature.getConstruction();
 
     const casement = FeatureWindows.openCasementWith(feature,`
-      <div class='resource-window'>
-        <h4>[Storeroom Window]</h4>
-        <p>Item Grid for ${room.getInventorySize()} items</p>
+      <div class='simple-window'>
+        <h4>[Simple Window]</h4>
+        <p>And a description for whatever this is.</p>
       </div>`);
   }
 
