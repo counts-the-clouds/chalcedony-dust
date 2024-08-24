@@ -22,13 +22,15 @@ global.Casement = (function() {
     });
   }
 
-  function fromPath(path) {
-    fromString(FileHelper.readFile(path));
+  function fromPath(path,options={}) {
+    fromString(FileHelper.readFile(path),options);
   }
 
-  function fromString(html) {
+  function fromString(html,options={}) {
     const index = $$casementCounter++;
     const id = `casement-${index}`;
+
+    const enableScrollingPanel = options.scrollingPanel || true;
 
     const casementContent = X.createElement(
       `<div class='casement-content'>${html}</div>
@@ -41,22 +43,29 @@ global.Casement = (function() {
           <a href='#' class='close-button'></a>
         </div>
         <div class='resize-handle'></div>
-        <div class='casement-container'>
-          <div class='scrolling-panel'>
-            <div class='scrolling-panel-content'></div>
-          </div>
-        </div>
+        <div class='casement-container'></div>
       </div>
     `);
 
     casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
-    casementWindow.querySelector('.scrolling-panel-content').appendChild(casementContent);
+
+    if (enableScrollingPanel) {
+      const scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
+      const scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
+
+      casementWindow.querySelector('.casement-container').appendChild(scrollingPanel);
+      scrollingPanel.appendChild(scrollingPanelContent);
+      scrollingPanelContent.appendChild(casementContent);
+
+      ScrollingPanel.build(scrollingPanel);
+    }
+    if (!enableScrollingPanel) {
+      casementWindow.querySelector('.casement-container').appendChild(casementContent);
+    }
+
     X.first('#casementsArea').appendChild(casementWindow);
 
-    const scrollingPanel = casementWindow.querySelector('.scrolling-panel')
-    ScrollingPanel.build(scrollingPanel);
-
-    const casement = buildCasement({ id, casementContent, casementWindow, scrollingPanel });
+    const casement = buildCasement({ id, casementContent, casementWindow });
     $$currentCasements[id] = casement;
     WindowManager.push(casement);
 
@@ -67,7 +76,7 @@ global.Casement = (function() {
     const $id = options.id;
     const $casementContent = options.casementContent;
     const $casementWindow = options.casementWindow;
-    const $scrollingPanel = options.scrollingPanel;
+    const $scrollingPanel = $casementWindow.querySelector('.scrolling-panel');
 
     let $associatedWith;
     let $bounds = {};
@@ -102,6 +111,11 @@ global.Casement = (function() {
 
     function getBounds() { return $bounds; }
     function setBounds(bounds) {
+      Validate.exists("top", bounds.top);
+      Validate.exists("left", bounds.left);
+      Validate.exists("height", bounds.height);
+      Validate.exists("width", bounds.width);
+
       $bounds = bounds;
       reposition();
     }
@@ -119,6 +133,10 @@ global.Casement = (function() {
     }
 
     function reposition() {
+      if (Object.keys($bounds).length !== 4) {
+        throw `Casement bounds have not been set.`
+      }
+
       if ($bounds.height < $minHeight) { $bounds.height = $minHeight; }
       if ($bounds.width < $minWidth) { $bounds.width = $minWidth; }
       if ($bounds.height > window.innerHeight - 100) { $bounds.height = window.innerHeight - 100; }
@@ -137,15 +155,18 @@ global.Casement = (function() {
       $casementWindow.style['height'] = `${$bounds.height}px`;
       $casementWindow.style['width'] = `${$bounds.width}px`;
 
-      $scrollingPanel.style['height'] = `${$bounds.height - _barHeight}px`;
-
-      ScrollingPanel.resize($scrollingPanel);
+      if ($scrollingPanel) {
+        $scrollingPanel.style['height'] = `${$bounds.height - _barHeight}px`;
+        ScrollingPanel.resize($scrollingPanel);
+      }
     }
 
     // The scrolling panel needs to be resized if the size of the content
     // changes.
     function contentResized() {
-      ScrollingPanel.resize($scrollingPanel);
+      if ($scrollingPanel) {
+        ScrollingPanel.resize($scrollingPanel);
+      }
     }
 
     function close() {

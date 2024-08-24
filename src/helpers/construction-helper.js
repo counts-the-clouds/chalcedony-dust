@@ -27,10 +27,8 @@ global.ConstructionHelper = (function() {
       });
 
       return Object.keys(available).map(code => {
-        const clone = structuredClone(registry.lookup(code));
-        clone.code = code
-        clone.canAfford = true;
-        return clone;
+        const data = { ...registry.lookup(code) }
+        return { code, canAfford:canAfford(data), ...data };
       });
     }
 
@@ -41,6 +39,23 @@ global.ConstructionHelper = (function() {
     //       rather than what's available for any feature of that type.
     //
     throw `TODO: Other feature states.`
+  }
+
+  function canAfford(construction) {
+    if (construction.cost) {
+      for (const key of Object.keys(construction.cost)) {
+        if (key === 'mana') {
+          if (GameState.getMana() < construction.cost.mana) { return false; }
+        }
+        if (key !== 'mana') {
+          if (GameInventory.getItemCount(key) < construction.cost[key]) { return false; }
+        }
+      }
+    }
+
+    // TODO: Handle non-static construction costs here as well.
+
+    return true;
   }
 
   return Object.freeze({

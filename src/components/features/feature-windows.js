@@ -18,7 +18,7 @@ global.FeatureWindows = (function() {
       if (feature.getState() === FeatureState.complete) { return await EmptyFeatureWindow.open(feature); }
       if (feature.getState() === FeatureState.constructed) {
         switch(feature.getConstruction().getCode()) {
-          case 'storeroom': return StoreroomWindow.open(feature);
+          case 'storeroom': return SimpleWindow.open(feature);
           default: throw `TODO: Open window for ${feature.getConstruction().getCode()}`;
         }
       }
@@ -32,9 +32,9 @@ global.FeatureWindows = (function() {
     throw `Unexpected state for feature ${feature} [${feature.getType()}/${feature.getState()}]`
   }
 
-  function openCasementWith(feature, content) {
+  function openCasementWith(feature, content, options={}) {
     if (Casement.getAssociatedCasements(feature.toString()).length === 0) {
-      const casement = Casement.fromString(content);
+      const casement = Casement.fromString(content, options);
       casement.setAssociatedWith(feature.toString());
       casement.setTitle(feature.getDisplayName());
       return casement;

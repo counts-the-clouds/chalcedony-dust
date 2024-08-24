@@ -185,6 +185,11 @@ global.Feature = function(data) {
     applyTint(FeatureState.constructed);
     attachConstruction(code);
 
+    const construction = (getType() === TileType.room) ? RoomRegistry.lookup(code) : HallRegistry.lookup(code);
+    if (typeof construction.onConstructionComplete === 'function') {
+      construction.onConstructionComplete($self);
+    }
+
     await GameState.saveState();
   }
 

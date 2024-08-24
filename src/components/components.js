@@ -6,6 +6,7 @@ global.Components = (function() {
     DungeonView.init();
     EventView.init();
     MainMenu.init();
+    MouseMonitor.init();
     OptionsOverlay.init();
     SpeedControl.init();
     WindowManager.init();

@@ -7,6 +7,15 @@ RoomRegistry.register('storeroom',{
   cost:{ mana:20 },
   minSize: 4,
 
-  inventorySizePerTile: 2,
+  onConstructionComplete: feature => {
+    GameInventory.addStorage(feature.getSize());
+    console.log("Storeroom Construction Complete. Total storage is now",GameInventory.getStorage());
+  },
+
+  casement: {
+    layout: 'card-layout',
+    background: 'backgrounds/storeroom.png',
+    details: `This storeroom is increasing the dungeon's storage capacity by {{@size}} units.`,
+  },
 
 });

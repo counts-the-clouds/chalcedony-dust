@@ -1,3 +1,20 @@
+
+.simple-window.card-layout {
+  height: 400px;
+  width: 300px;
+  background-size: contain;
+
+  .details {
+    position: absolute;
+    bottom: 0;
+    margin: 10px;
+    padding: 10px;
+    background-color: $bg-frame;
+    border: $border-light;
+    box-shadow: $shadow-frame;
+  }
+}
+
 .empty-feature-window {
 
   .banner {

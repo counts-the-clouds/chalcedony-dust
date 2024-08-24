@@ -1,11 +1,28 @@
 global.Room = function(data) {
+  const roomData = RoomRegistry.lookup(data.code);
+
   const $code = data.code;
   const $id = data.id || RoomDataStore.nextID();
   const $featureID = data.featureID;
 
+  const $displayName = roomData.displayName;
+  const $casementInfo = roomData.casement;
+
   function getID() { return $id; }
   function getCode() { return $code; }
   function getFeature() { return FeatureDataStore.get($featureID); }
+
+  function getDisplayName() { return $displayName; }
+  function getLayout() { return $casementInfo.layout; }
+  function getBackground() { return $casementInfo.background; }
+
+  function getDetails() {
+    const feature = getFeature();
+
+    return Weaver({
+      size:feature.getSize()
+    }).weave($casementInfo.details);
+  }
 
   // ===========================================================================
 
@@ -28,6 +45,10 @@ global.Room = function(data) {
     getID,
     getCode,
     getFeature,
+    getDisplayName,
+    getLayout,
+    getBackground,
+    getDetails,
     toString,
     pack,
   };

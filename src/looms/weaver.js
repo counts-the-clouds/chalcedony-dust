@@ -21,9 +21,10 @@ global.Weaver = function(context) {
   const UTILITY_PATTERN = /{{([^}]+)\|([^}]+)}}/
   const SIMPLE_PATTERN = /{{([^}]+)}}/
 
-  function weave(text) {
-    if (text == null) { return ''; }
+  function weave(source) {
+    if (source == null) { return ''; }
 
+    let text = `${source}`
     let weaving = true;
 
     while (weaving) {
@@ -46,6 +47,8 @@ global.Weaver = function(context) {
 
       return text.replace(/\s+/g,' ');
     }
+
+    return text;
   }
 
   function contextValue(key) {
