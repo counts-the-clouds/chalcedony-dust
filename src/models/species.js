@@ -1,6 +1,7 @@
-global.Species = function(data) {
+global.Species = function(code) {
+  const data = SpeciesRegistry.lookup(code);
 
-  const $code = data.code;
+  const $code = code;
   const $name = data.name;
   const $nameCategory = data.nameCategory;
 
@@ -13,5 +14,4 @@ global.Species = function(data) {
     getName,
     getNameCategory,
   });
-
 }

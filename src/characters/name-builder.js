@@ -5,6 +5,7 @@ global.NameBuilder = (function() {
     Elf:    { first:{ male:[], female:[] }},
     Goblin: { first:{ male:[], female:[] }},
     Kobold: { first:{ male:[], female:[] }},
+    Rat:    { first:{ male:[], female:[] }},
   };
 
   function addNames(nameList, listOptions) {

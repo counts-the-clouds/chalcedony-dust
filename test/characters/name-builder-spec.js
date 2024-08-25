@@ -88,4 +88,20 @@ describe('NameBuilder', function() {
     });
   });
 
+  it("gets a random futa kobold name", function() {
+    SpecHelper.startLog('Futa Kobold Name');
+    SpecHelper.times(10, () => {
+      let name = NameBuilder.getRandom({ category:'Kobold', gender:Gender.futa });
+      SpecHelper.log(`${name.first.name}`);
+    });
+  });
+
+  it("gets a random rat name", function() {
+    SpecHelper.startLog('Rat Name');
+    SpecHelper.times(10, () => {
+      let name = NameBuilder.getRandom({ category:'Rat', gender:Gender.male });
+      SpecHelper.log(`${name.first.name} ${name.last.name}`);
+    });
+  });
+
 });

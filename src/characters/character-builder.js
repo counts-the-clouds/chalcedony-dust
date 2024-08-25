@@ -1,7 +1,7 @@
 global.CharacterBuilder = (function() {
 
   function buildMinion(options) {
-    const species = Species[options.species];
+    const species = Species(options.species);
 
     const name = NameBuilder.getRandom({
       category: species.getNameCategory(),

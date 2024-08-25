@@ -9,7 +9,7 @@ global.Guardian = function(data) {
   // ===========================================================================
 
   function toString() {
-    return `Guardian:${$id}[${getFullName()}]`
+    return `Guardian:${$id}[${$self.getSpecies().getName()}|${$self.getFullName()}]`;
   }
 
   function pack() {

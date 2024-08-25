@@ -1,5 +1,4 @@
-Species.goblin = Species({
-  code: 'goblin',
+SpeciesRegistry.register('goblin',{
   name: 'Goblin',
   nameCategory: 'Goblin',
 });

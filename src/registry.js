@@ -81,5 +81,6 @@ global.NoteRegistry = Registry('Note');
 global.ResourceRegistry = Registry('Resource');
 global.RoomRegistry = Registry('Room');
 global.ShapeRegistry = Registry('Shape');
+global.SpeciesRegistry = Registry('Species');
 global.TileRegistry = Registry('Tile');
 global.TriggerRegistry = Registry('Trigger');

@@ -9,7 +9,7 @@ global.Adventurer = function(data) {
   // ===========================================================================
 
   function toString() {
-    return `Adventurer:${$id}[${getFullName()}]`
+    return `Adventurer:${$id}[${$self.getSpecies().getName()}|${$self.getFullName()}]`;
   }
 
   function pack() {
