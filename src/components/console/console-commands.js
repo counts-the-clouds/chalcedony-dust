@@ -1,34 +1,109 @@
 global.ConsoleCommands = (function() {
 
   const $commands = {
-    help: () => { log("You cry out in vain, but no help will come."); }
+    help: {
+      commandFunction: printHelp,
+      description:`Prints this list of console commands.` },
+
+    save: {
+      commandFunction: () => { return GameCommands.save() },
+      requires: ['game.loaded'],
+      description:`Save the current game state.` },
+
+    gainMana: {
+      commandFunction: args => { return GameCommands.gainMana(parseInt(args[0])) },
+      requires: ['game.loaded'],
+      description:`[amount=100] Add mana to the game state.` },
+
+    addItem:  {
+      commandFunction: args => { return ItemCommands.addItem(args[0], parseInt(args[1])) },
+      requires: ['game.loaded'],
+      description:`[itemCode,count=1] Add items to the game inventory.` },
   }
 
-  function sendCommand(event) {
-    const input = X.first('#commandInput');
-    const command = input.value;
+  const $commandHistory = [];
+  let $commandHistoryPointer;
 
+  function sendCommand(input) {
+    const command = input.value;
     if (command.length) {
       input.value = '';
-      executeCommand(command);
+      try {
+        executeCommand(command);
+      }
+      catch (error) {
+        logError(`Error running command`,error,{ system:'Console' });
+      }
+      $commandHistory.push(command);
+      $commandHistoryPointer = null;
     }
   }
 
-  // TODO: Eventually we'll hook up some useful functions to this. For now we
-  //       can just print the command to the log to show it works. We might
-  //       could add a command history and autocomplete and shit too.
-  function executeCommand(commandString) {
-    log("Execute Command",{ system:"Console", data:commandString });
-
-    const args = commandString.split(" ");
-    const commandFunction = $commands[args[0]];
-    if (typeof commandFunction === 'function') {
-      commandFunction(args);
+  function loadPreviousCommand() {
+    if ($commandHistoryPointer == null) {
+      $commandHistoryPointer = $commandHistory.length;
     }
+    $commandHistoryPointer -= 1;
+
+    if ($commandHistoryPointer >= 0) {
+      const command = $commandHistory[$commandHistoryPointer];
+      if (command) {
+        const input = X.first('#commandInput');
+        input.value = command;
+        setTimeout(() => {
+          input.selectionStart = command.length;
+          input.selectionEnd = command.length;
+        },0);
+      }
+    }
+
+    if ($commandHistoryPointer === 0) {
+      $commandHistoryPointer = null;
+    }
+  }
+
+  function executeCommand(commandString) {
+    const args = commandString.split(" ");
+    const command = $commands[args[0]];
+    args.shift();
+
+    if (command == null) {
+      throw `Unrecognized Command: ${commandString}. Type 'help' for a list of commands.`
+    }
+
+    const valid = meetsRequirements(command);
+    if (valid === true) {
+      return log(command.commandFunction(args) || 'Success',{ system:"Console" });
+    }
+
+    log(`Invalid Command: ${valid}`, { system:'Console', type:LogType.warning })
+  }
+
+  function meetsRequirements(command) {
+    if (command.requires) {
+      for (const requirement of command.requires) {
+        switch (requirement) {
+          case 'game.loaded':
+            if (!GameState.isLoaded()) { return `A Game must be loaded.`; }
+            break;
+          default: throw `Bad Requirement ${requirement}`
+        }
+      }
+    }
+    return true;
+  }
+
+  function printHelp() {
+    let list = `<pre class='padding'>\n=== Console Help ===\n`;
+    Object.keys($commands).forEach(name => {
+      list += `${StringHelper.pad(name,12)} ${$commands[name].description}\n`
+    });
+    return `${list}</pre>`;
   }
 
   return {
-    sendCommand
+    sendCommand,
+    loadPreviousCommand,
   }
 
 })();

@@ -2,16 +2,45 @@ global.Console = (function() {
 
   const $entryLimit = 1000;
 
+  // TODO: We can still consider adding autocomplete for some commands at some
+  //       point. If we know we're starting an addItem command it might be
+  //       nice to autocomplete the item code as it's being typed. Depends on
+  //       how often I use this console I suppose.
+
   function init() {
-    X.onCodeDown(KeyCodes.Backquote, () => true, toggleConsole);
-    X.onCodeDown(KeyCodes.Enter, isVisible, ConsoleCommands.sendCommand);
     ScrollingPanel.build('#console .scrolling-panel');
+
+    window.addEventListener('keydown', event => {
+      if (event.code === KeyCodes.Backquote) {
+        event.stopPropagation();
+        event.preventDefault();
+        toggleConsole();
+      }
+    })
+
+    X.first('#commandInput').addEventListener('keydown', event => {
+      event.stopPropagation();
+      if (event.code === KeyCodes.Backquote) {
+        event.preventDefault();
+        toggleConsole();
+      }
+      if (event.code === KeyCodes.Escape) {
+        toggleConsole();
+      }
+      if (event.code === KeyCodes.ArrowUp) {
+        ConsoleCommands.loadPreviousCommand();
+      }
+      if (event.code === KeyCodes.Enter) {
+        ConsoleCommands.sendCommand(event.target);
+      }
+    });
   }
 
   function toggleConsole() {
     if (isVisible()) { return hide(); }
 
     X.removeClass('#console','hide');
+    X.first('#commandInput').focus();
     setTimeout(() => {
       ScrollingPanel.resize('#console .scrolling-panel');
     },1);

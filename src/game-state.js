@@ -14,6 +14,7 @@ global.GameState = (function() {
   // Reset puts the game into it's default empty state but shouldn't
   // automatically save the game.
   function reset() {
+    $mana = null;
     Models.reset();
     BuriedTreasure.reset();
     GameFlags.reset();
@@ -26,6 +27,7 @@ global.GameState = (function() {
   function gainMana(mana) { $mana += mana; }
   function spendMana(mana) { $mana -= mana; }
   function getMana() { return $mana; }
+  function isLoaded() { return $mana != null; }
 
   // === Saving and Loading ====================================================
 
@@ -74,6 +76,7 @@ global.GameState = (function() {
     gainMana,
     spendMana,
     getMana,
+    isLoaded,
     saveState,
     loadState,
   });
