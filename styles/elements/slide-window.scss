@@ -15,6 +15,7 @@
   }
 
   .slide-space {
+    pointer-events: none;
     transition-property: height;
     transition-duration: 250ms;
     transition-timing-function: ease-in-out;

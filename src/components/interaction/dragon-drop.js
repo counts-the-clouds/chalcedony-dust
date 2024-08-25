@@ -2,13 +2,24 @@ window.DragonDrop = (function() {
 
   let $dragContext;
 
-  // The drag event is placed on the window so that we are guaranteed a mouse
-  // out event if the cursor leaves the window. If the mouse is dragged off the
-  // screen we stop the event, but we only attempt to place the tile on a mouse
-  // up event.
+  // Getting a mouseout event for when the cursor leaves the window is damn
+  // near impossible. This is probably a terribly expensive way to do this,
+  // but it works. (I think) To consistently stop dragging when the cursor
+  // leaves the screen we need to attach a mousemove event that while dragging
+  // checks the pointer position against the screen dimensions. If we see an
+  // event that's out of bounds we cancel the drag. We only attempt to place
+  // the tile on an actual mouse up event.
   function init() {
     window.addEventListener('mouseup', () => { stopDrag(); });
-    window.addEventListener('mouseout', () => { stopDrag('cancel'); });
+    window.addEventListener('mousemove', event => {
+      if (isDragging()) {
+        const screen = DungeonView.getDimensions();
+        if (event.clientY < 0) { stopDrag('cancel'); }
+        if (event.clientX < 0) { stopDrag('cancel'); }
+        if (event.clientY > screen.height) { stopDrag('cancel'); }
+        if (event.clientX > screen.width) { stopDrag('cancel'); }
+      }
+    });
 
     X.registerKeyAction("action.rotate-clockwise", isDragging, () => { rotateTile(1) });
     X.registerKeyAction("action.rotate-widdershins", isDragging, () => { rotateTile(-1) });
