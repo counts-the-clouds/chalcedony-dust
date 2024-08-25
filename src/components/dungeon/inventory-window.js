@@ -75,7 +75,7 @@ global.InventoryWindow = (function() {
       const item = ItemRegistry.lookup(code);
       const count = GameInventory.getItemCount(code);
 
-      itemList += `<li class='inventory-item'>
+      itemList += `<li class='inventory-item ${code}'>
         <div class='icon icon-for-${code}'></div>
         <div class='name'>${item.name}</div>
         <div class='count'>${count}</div>
@@ -88,7 +88,20 @@ global.InventoryWindow = (function() {
   }
 
   function updateItemQuantity(itemList, data) {
-    console.log("TODO: Update quantity with ",data);
+    const itemElement = itemList.querySelector(`.inventory-item.${data.code}`);
+
+    if (itemElement == null) {
+      log(`Cannot update the quantity of an item when it is not in the item list`,{
+        system: 'InventoryWindow',
+        type: LogType.error,
+        level: 1,
+        data: data
+      });
+
+      return rebuildItemList();
+    }
+
+    itemElement.querySelector('.count').innerText = GameInventory.getItemCount(data.code);
   }
 
   function reposition() { $slideWindow.reposition(); }
