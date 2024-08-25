@@ -9,10 +9,16 @@ global.GameInventory = (function() {
   }
 
   function setStorage(storage) { $storage = storage; }
-  function addStorage(space) { $storage += space }
+
+  function addStorage(space) {
+    $storage += space
+    Panopticon.induce(EventType.storageExpanded,{ storage:$storage })
+  }
+
   function getStorage() { return $storage; }
-  function getFreeStorage() { return $storage - Object.keys($inventory).length; }
-  function isEmpty() { return Object.keys($inventory).length === 0 }
+  function getFreeStorage() { return $storage - getUsedStorage(); }
+  function getUsedStorage() { return Object.keys($inventory).length; }
+  function isEmpty() { return getUsedStorage() === 0 }
   function isFull() { return getFreeStorage() === 0 }
   function canAddItem(code) { return ($inventory[code] == null && isFull()) === false }
 
@@ -25,6 +31,8 @@ global.GameInventory = (function() {
       $inventory[code] = 0;
     }
     $inventory[code] += count;
+
+    Panopticon.induce(EventType.itemAdded,{ code, count });
   }
 
   function removeItem(code, count) {
@@ -36,11 +44,12 @@ global.GameInventory = (function() {
     if ($inventory[code] === 0) {
       delete $inventory[code];
     }
+
+    Panopticon.induce(EventType.itemRemoved,{ code, count });
   }
 
-  function getItemCount(code) {
-    return $inventory[code] ? $inventory[code] : 0;
-  }
+  function getItemCount(code) { return $inventory[code] ? $inventory[code] : 0; }
+  function getAll() { return {...$inventory}; }
 
   function pack() {
     return {
@@ -60,12 +69,14 @@ global.GameInventory = (function() {
     addStorage,
     getStorage,
     getFreeStorage,
+    getUsedStorage,
     isEmpty,
     isFull,
     canAddItem,
     addItem,
     removeItem,
     getItemCount,
+    getAll,
     pack,
     unpack,
   })

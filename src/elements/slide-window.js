@@ -3,10 +3,14 @@ global.SlideWindow = function(options) {
   const $slideSpace = $slideWindow.querySelector('.slide-space');
   const $slideContainer = $slideWindow.querySelector('.slide-container');
   const $scrollingPanel = $slideContainer.querySelector('.scrolling-panel');
+  const $slideContent = $slideContainer.querySelector('.slide-content');
+  const $slideContentHeader = $slideContainer.querySelector('.content-header');
 
   Validate.exists("Slide Space", $slideSpace);
   Validate.exists("Slide Container", $slideContainer);
   Validate.exists("Scrolling Panel", $scrollingPanel);
+  Validate.exists("Slide Content", $slideContent);
+  Validate.exists("Slide Content Header", $slideContentHeader);
 
   let animationTimeout;
 
@@ -76,23 +80,26 @@ global.SlideWindow = function(options) {
     },250);
   }
 
+  function getHeader() { return $slideContentHeader; }
   function setHeader(header) {
-    const headerElement = $slideContainer.querySelector('.content-header');
-    headerElement.innerHTML = '';
-    headerElement.appendChild(header);
+    $slideContentHeader.innerHTML = '';
+    $slideContentHeader.appendChild(header);
   }
 
+  function getContent() { return $slideContent; }
   function setContent(content) {
-    const contentElement = $slideContainer.querySelector('.slide-content');
-    contentElement.innerHTML = '';
-    contentElement.appendChild(content);
+    $slideContent.innerHTML = '';
+    $slideContent.appendChild(content);
   }
 
   const $self = Object.freeze({
+    resize,
     reposition,
     open,
     close,
+    getHeader,
     setHeader,
+    getContent,
     setContent,
   });
 

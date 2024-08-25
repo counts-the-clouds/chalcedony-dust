@@ -88,6 +88,29 @@
   .inventory-state {
     &.empty { opacity: 0.5; }
   }
+  .inventory-item {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    width: 250px;
+    font-size: $fs-big;
+    margin-bottom: 7px;
+
+    background-color: rgba(100,120,140,0.1);
+    box-shadow: $shadow-shallow;
+    border: $border-light;
+
+    .name {
+      margin-left: 10px;
+      flex-grow:1;
+    }
+    .count {
+      margin-right: 10px;
+    }
+  }
+  .inventory-item:last-child {
+    margin-bottom: 0;
+  }
 }
 
 #minionsWindow {

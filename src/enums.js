@@ -116,6 +116,9 @@ global.EventType = Object.freeze({
   tileDiscarded: 'tile-discarded',
   featureCompleted: 'feature-completed',
   resourceDiscovered: 'resource-discovered',
+  itemAdded: 'item-added',
+  itemRemoved: 'item-removed',
+  storageExpanded: 'storage-expanded',
 });
 
 global.DiscoveryType = Object.freeze({
