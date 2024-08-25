@@ -12,6 +12,7 @@ global.GameInventory = (function() {
   function addStorage(space) { $storage += space }
   function getStorage() { return $storage; }
   function getFreeStorage() { return $storage - Object.keys($inventory).length; }
+  function isEmpty() { return Object.keys($inventory).length === 0 }
   function isFull() { return getFreeStorage() === 0 }
   function canAddItem(code) { return ($inventory[code] == null && isFull()) === false }
 
@@ -59,6 +60,7 @@ global.GameInventory = (function() {
     addStorage,
     getStorage,
     getFreeStorage,
+    isEmpty,
     isFull,
     canAddItem,
     addItem,

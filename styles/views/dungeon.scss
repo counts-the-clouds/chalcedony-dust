@@ -46,10 +46,9 @@
           margin: 0 10px;
         }
       }
-
     }
-
   }
+
   #rightPanel {
     display: flex;
     justify-content: flex-end;
@@ -83,4 +82,16 @@
 
   a:first-child { margin-left:0 }
   a.pause { font-size:25px; }
+}
+
+#inventoryWindow {
+  .inventory-state {
+    &.empty { opacity: 0.5; }
+  }
+}
+
+#minionsWindow {
+  .minions-state {
+    &.empty { opacity: 0.5; }
+  }
 }

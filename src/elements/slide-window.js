@@ -8,6 +8,8 @@ global.SlideWindow = function(options) {
   Validate.exists("Slide Container", $slideContainer);
   Validate.exists("Scrolling Panel", $scrollingPanel);
 
+  let animationTimeout;
+
   build();
 
   function build() {
@@ -43,15 +45,41 @@ global.SlideWindow = function(options) {
   }
 
   function open() {
+    if (animationTimeout) {
+      clearTimeout(animationTimeout);
+      animationTimeout = null;
+    }
+
+    X.addClass($slideSpace,'animating');
     X.addClass($slideWindow,'open');
     reposition();
     WindowManager.push($self);
+
+    animationTimeout = setTimeout(() => {
+      X.removeClass($slideSpace,'animating');
+    },250);
   }
 
   function close() {
+    if (animationTimeout) {
+      clearTimeout(animationTimeout);
+      animationTimeout = null;
+    }
+
+    X.addClass($slideSpace,'animating');
     X.removeClass($slideWindow,'open');
     reposition();
     WindowManager.remove($self);
+
+    animationTimeout = setTimeout(() => {
+      X.removeClass($slideSpace,'animating');
+    },250);
+  }
+
+  function setHeader(header) {
+    const headerElement = $slideContainer.querySelector('.content-header');
+    headerElement.innerHTML = '';
+    headerElement.appendChild(header);
   }
 
   function setContent(content) {
@@ -64,6 +92,7 @@ global.SlideWindow = function(options) {
     reposition,
     open,
     close,
+    setHeader,
     setContent,
   });
 

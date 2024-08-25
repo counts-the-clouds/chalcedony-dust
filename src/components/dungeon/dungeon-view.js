@@ -1,8 +1,6 @@
 global.DungeonView = (function() {
 
   let $application;
-  let $minionWindow;
-  let $inventoryWindow;
 
   let $effectsContainer;
   let $chunkContainers = {}
@@ -39,12 +37,12 @@ global.DungeonView = (function() {
     await createApplication();
     await TileShelfView.refresh();
 
+    InventoryWindow.build();
+    MinionWindow.build();
+
     if (GameFlags.has(SystemFlags.hideSpeedControl)) {
       SpeedControl.hide();
     }
-
-    $minionWindow = SlideWindow({ selector:'#minionsWindow' });
-    $inventoryWindow = SlideWindow({ selector:'#inventoryWindow' });
 
     resize();
   }
@@ -117,8 +115,8 @@ global.DungeonView = (function() {
       X.first('#lowerBar #rightPanel').style.width = `${panelWidth}px`;
 
       $application.resize();
-      $minionWindow.reposition();
-      $inventoryWindow.reposition();
+      MinionWindow.reposition();
+      InventoryWindow.reposition();
       DungeonViewport.handleResize();
       TileShelfView.handleResize();
 

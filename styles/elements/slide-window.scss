@@ -16,6 +16,8 @@
 
   .slide-space {
     pointer-events: none;
+  }
+  .slide-space.animating {
     transition-property: height;
     transition-duration: 250ms;
     transition-timing-function: ease-in-out;
@@ -49,7 +51,8 @@
 
     .content-header {
       text-align: center;
-      padding: 5px;
+      font-size: $fs-big;
+      padding: 5px 10px;
       border-bottom: $border-light;
     }
 
