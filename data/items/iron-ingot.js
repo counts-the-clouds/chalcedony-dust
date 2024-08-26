@@ -1,4 +1,4 @@
 ItemRegistry.register('iron-ingot',{
   name: 'Iron Ingot',
-  icon: 'unknown.png'
+  icon: 'iron-ingot.png'
 });
