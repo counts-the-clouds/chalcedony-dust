@@ -1,4 +1,6 @@
 GuardianRegistry.register('satyr-party-girl',{
+  species: 'satyr',
+  genders: ['female','futa'],
 
   requirements:[
     { flagExists:'feature.revel-grove-unlocked' }

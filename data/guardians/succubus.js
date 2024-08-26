@@ -1,4 +1,6 @@
 GuardianRegistry.register('succubus',{
+  species: 'succubus',
+  genders: ['female','futa'],
 
   requirements:[
     { flagExists:'guardian.demons.unlocked' }

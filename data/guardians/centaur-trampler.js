@@ -1,4 +1,6 @@
 GuardianRegistry.register('centaur-trampler',{
+  species: 'centaur',
+  gender: 'male',
 
   requirements:[
     { flagExists:'guardian.centaurs.unlocked' }
@@ -7,9 +9,7 @@ GuardianRegistry.register('centaur-trampler',{
   battle: {
     power: 6,
     toughness: 6,
-    aspects:[
-      { fast:1 }
-    ],
+    aspects: { fast:1 }
   }
 
 });

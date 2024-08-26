@@ -1,4 +1,6 @@
 GuardianRegistry.register('incubus',{
+  species: 'incubus',
+  gender: 'male',
 
   requirements:[
     { flagExists:'guardian.demons.unlocked' }

@@ -1,4 +1,5 @@
 GuardianRegistry.register('kobold-poisoner',{
+  species: 'kobold',
 
   battle: {
     power: 3,

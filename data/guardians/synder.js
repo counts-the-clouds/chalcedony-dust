@@ -1,16 +1,23 @@
-GuardianRegistry.register('wolfkin-hunter',{
+GuardianRegistry.register('synder',{
+  species: 'dragon',
 
-  requirements:[
-    { flagExists:'guardian.wolfkin.unlocked' }
-  ],
+  unique: true,
+  rarity: 'rare',
+
+  description: `Holy shit. A dragon.`,
+
+  character: {
+    name: 'Synder',
+    gender: 'female',
+    personality: 'synder',
+  },
 
   battle: {
-    power: 7,
+    power: 8,
     toughness: 5,
-    immuneTo: ['physical'],
-    aspects:[
-      { range:1 }
-    ],
+    damageType: 'fire',
+    immuneTo: ['fire'],
+    aspects: { range:1 },
   }
 
 });

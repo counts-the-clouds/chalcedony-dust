@@ -1,4 +1,6 @@
-GuardianRegistry.register('faun',{
+GuardianRegistry.register('faun-totem',{
+  species: 'faun',
+  gender: 'female',
 
   requirements:[
     { flagExists:'feature.revel-grove-unlocked' }
@@ -7,9 +9,7 @@ GuardianRegistry.register('faun',{
   battle: {
     power: 0,
     toughness: 5,
-    aspects:[
-      { reflect:2 }
-    ],
+    aspects: { reflect:2 },
   }
 
 });

@@ -1,4 +1,6 @@
-GuardianRegistry.register('fairy-illusionist',{
+GuardianRegistry.register('sylph-illusionist',{
+  species: 'sylph',
+  gender: 'female',
 
   requirements:[
     { flagExists:'feature.revel-grove-unlocked' }
@@ -8,9 +10,7 @@ GuardianRegistry.register('fairy-illusionist',{
     power: 3,
     toughness: 1,
     damageType: 'psychic',
-    aspects:[
-      { stealth:3 }
-    ],
+    aspects: { stealth:3 },
   }
 
 });
