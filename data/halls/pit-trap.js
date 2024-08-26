@@ -4,5 +4,5 @@ HallRegistry.register('pit-trap',{
     designed to crumble if any weight is put upon it.`,
 
   constructionTime: 45,
-  cost:{ mana:20 },
+  costPerTile:{ mana:1 },
 });

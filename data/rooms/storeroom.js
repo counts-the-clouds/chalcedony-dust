@@ -4,7 +4,7 @@ RoomRegistry.register('storeroom',{
     can be stored depends on the size of the room.`,
 
   constructionTime: 30,
-  cost:{ mana:20 },
+  costPerTile:{ mana:2 },
   minSize: 4,
 
   onConstructionComplete: feature => {

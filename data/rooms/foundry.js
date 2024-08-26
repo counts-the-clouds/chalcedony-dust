@@ -3,8 +3,12 @@ RoomRegistry.register('foundry',{
   description: `One of your minions can be assigned here to smelt raw ores into ingots. Raw ore must be delivered to
     the foundry before it can be processed. `,
 
+  requirements:[
+    { itemInInventory:'labrynthian-ore' }
+  ],
+
   constructionTime: 90,
-  cost:{ mana:30, 'labrynthian-ore':10 },
+  costPerTile:{ mana:10, 'labrynthian-ore':3 },
   minSize: 4,
   maxSize: 6,
 });

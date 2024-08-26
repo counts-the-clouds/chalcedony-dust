@@ -48,7 +48,7 @@ global.EmptyFeatureWindow = (function () {
         <div class='name'>${construction.displayName}</div>
         <div class='description'>${construction.description}</div>
         <div class='bottom-row'>
-          ${CostPanel.build(construction.cost)}
+          ${CostPanel.build(compileCost(feature, construction))}
           <div class='actions'>
             <a href='#' class='button button-primary button-big'>Build</a>
           </div>
@@ -62,6 +62,21 @@ global.EmptyFeatureWindow = (function () {
 
     return constructionItem
   }
+
+  function compileCost(feature, construction) {
+    const size = feature.getSize();
+    const compiledCost = {};
+
+    Object.keys(construction.costPerTile || {}).forEach(code => {
+      compiledCost[code] = construction.costPerTile[code] * size;
+    });
+
+    // TODO: Some features may have additional costs, something like a single
+    //       item needed to unlock and create the room, or something like that.
+
+    return compiledCost;
+  }
+
 
   return Object.freeze({
     open,
