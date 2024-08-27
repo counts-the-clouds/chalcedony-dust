@@ -60,17 +60,9 @@ global.Registry = function(typeName) {
   });
 }
 
-Registry.forType = function(type) {
-  switch (type) {
-    case TileType.hall: return HallRegistry;
-    case TileType.resource: return ResourceRegistry;
-    case TileType.room: return RoomRegistry;
-    default: throw `There is no registry for a ${type} type`;
-  }
-}
-
 global.AnimationRegistry = Registry('Animation');
 global.AspectRegistry = Registry('Aspect');
+global.BlueprintRegistry = Registry('Blueprint');
 global.ClockRegistry = Registry('Clock');
 global.ConditionRegistry = Registry('Condition');
 global.EventRegistry = Registry('PagedEvent');

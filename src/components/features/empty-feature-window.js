@@ -20,8 +20,8 @@ global.EmptyFeatureWindow = (function () {
       setBannerImage(feature,content);
       setNote(feature,content);
 
-      ConstructionHelper.availableFor(feature).forEach(construction => {
-        content.querySelector('.construction-list').appendChild(buildConstructionItem(feature, construction));
+      Blueprint.availableFor(feature).forEach(blueprint => {
+        content.querySelector('.construction-list').appendChild(buildBlueprintItem(feature, blueprint));
       });
 
       casement.contentResized();
@@ -42,41 +42,26 @@ global.EmptyFeatureWindow = (function () {
   //       need for the room model to actually have any of the cost functions
   //       but we could put something in the ConstructionHelper to calculate it
   //       I think.
-  function buildConstructionItem(feature, construction) {
-    const constructionItem = X.createElement(`
+  function buildBlueprintItem(feature, blueprint) {
+    const blueprintItem = X.createElement(`
       <li class='construction-item'>
-        <div class='name'>${construction.displayName}</div>
-        <div class='description'>${construction.description}</div>
+        <div class='name'>${blueprint.getDisplayName()}</div>
+        <div class='description'>${blueprint.getDescription()}</div>
         <div class='bottom-row'>
-          ${CostPanel.build(compileCost(feature, construction))}
+          ${CostPanel.build(blueprint.getCost(feature))}
           <div class='actions'>
             <a href='#' class='button button-primary button-big'>Build</a>
           </div>
         </div>
       </li>`);
 
-    constructionItem.querySelector('a.button').addEventListener('click', () => {
-      feature.startConstruction(construction.code);
+    blueprintItem.querySelector('a.button').addEventListener('click', () => {
+      feature.startConstruction(blueprint.getCode());
       WindowManager.pop();
     });
 
-    return constructionItem
+    return blueprintItem
   }
-
-  function compileCost(feature, construction) {
-    const size = feature.getSize();
-    const compiledCost = {};
-
-    Object.keys(construction.costPerTile || {}).forEach(code => {
-      compiledCost[code] = construction.costPerTile[code] * size;
-    });
-
-    // TODO: Some features may have additional costs, something like a single
-    //       item needed to unlock and create the room, or something like that.
-
-    return compiledCost;
-  }
-
 
   return Object.freeze({
     open,
