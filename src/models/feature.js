@@ -163,15 +163,7 @@ global.Feature = function(data) {
 
     log(`Construction started on ${toString()}`,{ system:'Feature', data:{ code }});
 
-    const construction = (getType() === TileType.room) ? RoomRegistry.lookup(code) : HallRegistry.lookup(code);
-    const clock = Clock({
-      code:'build-feature',
-      duration:(construction.constructionTime * 1000),
-      context: { code },
-      parent:{ type:'Feature', id:getID() },
-    });
-
-    ClockManager.addClock(clock);
+    Blueprint(code).startConstruction(getID());
     setState(FeatureState.building);
     applyTint(FeatureState.building);
 
@@ -184,11 +176,7 @@ global.Feature = function(data) {
     setState(FeatureState.constructed);
     applyTint(FeatureState.constructed);
     attachConstruction(code);
-
-    const construction = (getType() === TileType.room) ? RoomRegistry.lookup(code) : HallRegistry.lookup(code);
-    if (typeof construction.onConstructionComplete === 'function') {
-      construction.onConstructionComplete($self);
-    }
+    Blueprint(code).onConstructionComplete($self);
 
     await GameState.saveState();
   }

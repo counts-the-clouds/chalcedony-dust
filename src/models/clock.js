@@ -1,9 +1,6 @@
 global.Clock = function(data) {
   const $id = data.id || ClockDataStore.nextID();
   const $code = data.code;
-
-  Validate.exists('code',$code);
-
   const clockData = ClockRegistry.lookup($code);
 
   let $duration = data.duration || clockData.duration;
@@ -11,6 +8,9 @@ global.Clock = function(data) {
   let $elapsedTime = data.elapsedTime || 0;
   let $context = data.context;
   let $parent = data.parent;
+
+  Validate.exists('code',$code);
+  Validate.atLeast('duration',$duration,1);
 
   // When we add the clock to the manager, we store whatever UI component
   // we'll need to update when onUpdate() is called. These values are not

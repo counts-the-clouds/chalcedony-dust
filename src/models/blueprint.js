@@ -5,6 +5,7 @@ global.Blueprint = function(code) {
   const $displayName = data.displayName;
   const $description = data.description;
   const $costPerTile = data.costPerTile;
+  const $constructionTime = data.constructionTime;
   const $onConstructionComplete = data.onConstructionComplete;
 
   function getCode() { return $code; }
@@ -33,6 +34,15 @@ global.Blueprint = function(code) {
     return true;
   }
 
+  function startConstruction(featureID) {
+    ClockManager.addClock(Clock({
+      code:'build-feature',
+      duration:($constructionTime * 1000),
+      context: { code:$code },
+      parent:{ type:'Feature', id:featureID },
+    }));
+  }
+
   function onConstructionComplete(feature) {
     if (typeof $onConstructionComplete === 'function') {
       $onConstructionComplete(feature);
@@ -45,6 +55,7 @@ global.Blueprint = function(code) {
     getDescription,
     getCost,
     canAfford,
+    startConstruction,
     onConstructionComplete,
   });
 }
