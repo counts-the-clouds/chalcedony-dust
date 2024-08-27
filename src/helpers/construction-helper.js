@@ -17,6 +17,13 @@ global.ConstructionHelper = (function() {
       const registry = Registry.forType(type);
 
       const available = registry.filter((code, construction) => {
+
+        if (construction.requirements) {
+          if (CentralScrutinizer.anyConditionFails(construction.requirements, { feature })) {
+            return false;
+          }
+        }
+
         if (construction.upgradeFrom) { return false; }
         if (construction.minSize && size < construction.minSize) { return false; }
         if (construction.maxSize && size > construction.maxSize) { return false; }

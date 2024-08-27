@@ -4,7 +4,7 @@ RoomRegistry.register('blacksmith',{
     available.`,
 
   requirements:[
-    { itemInInventory:'iron-ingot' }
+    Condition.itemInInventory('iron-ingot'),
   ],
 
   constructionTime: 90,

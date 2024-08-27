@@ -4,7 +4,7 @@ RoomRegistry.register('foundry',{
     the foundry before it can be processed. `,
 
   requirements:[
-    { itemInInventory:'labrynthian-ore' }
+    Condition.itemInInventory('labrynthian-ore')
   ],
 
   constructionTime: 90,

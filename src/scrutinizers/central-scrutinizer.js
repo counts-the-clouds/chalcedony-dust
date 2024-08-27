@@ -13,9 +13,14 @@ global.CentralScrutinizer = (function() {
     return true;
   }
 
+  function anyConditionFails(conditions,context) {
+    return allConditionsPass(conditions,context) === false;
+  }
+
   function conditionPasses(condition,context) {
     switch (condition.key) {
       case ConditionKeys.featureTypeIs: return FeatureScrutinizer.featureTypeIs(condition,context);
+      case ConditionKeys.itemInInventory: return InventoryScrutinizer.itemInInventory(condition);
     }
 
     throw `Unrecognized Condition: ${condition.key}`;
@@ -23,6 +28,7 @@ global.CentralScrutinizer = (function() {
 
   return Object.freeze({
     allConditionsPass,
+    anyConditionFails,
     conditionPasses,
   });
 

@@ -128,6 +128,7 @@ global.DiscoveryType = Object.freeze({
 
 global.ConditionKeys = Object.freeze({
   featureTypeIs: 'feature-type-is',
+  itemInInventory: 'item-in-inventory',
 });
 
 global.EventLayouts = Object.freeze({
