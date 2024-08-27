@@ -8,7 +8,7 @@ global.CentralScrutinizer = (function() {
 
   function allConditionsPass(conditions,context) {
     for (const condition of (conditions||[])) {
-      if (false === conditionPasses(condition,context)) { return false; }
+      if (false === condition.isValid(context)) { return false; }
     }
     return true;
   }
@@ -17,19 +17,16 @@ global.CentralScrutinizer = (function() {
     return allConditionsPass(conditions,context) === false;
   }
 
-  function conditionPasses(condition,context) {
-    switch (condition.key) {
-      case ConditionKeys.featureTypeIs: return FeatureScrutinizer.featureTypeIs(condition,context);
-      case ConditionKeys.itemInInventory: return InventoryScrutinizer.itemInInventory(condition);
-    }
-
-    throw `Unrecognized Condition: ${condition.key}`;
+  function lookupFeature(context) {
+    if (context.feature) { return context.feature; }
+    if (context.featureID) { return FeatureDataStore.get(context.featureID); }
+    throw `Feature not found in context`
   }
 
   return Object.freeze({
     allConditionsPass,
     anyConditionFails,
-    conditionPasses,
+    lookupFeature,
   });
 
 })();

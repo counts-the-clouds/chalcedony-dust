@@ -126,11 +126,6 @@ global.DiscoveryType = Object.freeze({
   event: 'event',
 });
 
-global.ConditionKeys = Object.freeze({
-  featureTypeIs: 'feature-type-is',
-  itemInInventory: 'item-in-inventory',
-});
-
 global.EventLayouts = Object.freeze({
   defaultLayout: 'default-layout',
   leftSquareImageLayout: 'left-square-image-layout',

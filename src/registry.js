@@ -72,6 +72,7 @@ Registry.forType = function(type) {
 global.AnimationRegistry = Registry('Animation');
 global.AspectRegistry = Registry('Aspect');
 global.ClockRegistry = Registry('Clock');
+global.ConditionRegistry = Registry('Condition');
 global.EventRegistry = Registry('PagedEvent');
 global.ExtraRegistry = Registry('Extra');
 global.GuardianRegistry = Registry('Guardian');
