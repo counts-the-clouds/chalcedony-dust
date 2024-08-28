@@ -100,9 +100,11 @@ let names = [
   { name:"Tristwood" },
   { name:"Twistedneeds" },
   { name:"Urge" },
+  { name:"Warmblood" },
   { name:"Wasterot" },
   { name:"Wolfchant" },
   { name:"Wolfhowl" },
+  { name:"Wormwood" },
 ];
 
 NameBuilder.addNames(names, { category:'Demon', position:'last' });
