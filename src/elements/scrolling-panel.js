@@ -1,52 +1,119 @@
+
+const STEP_DISTANCE = 50;
+
+const $$scrollingPanels = {};
+let $$panelIndex = 0;
+let $$activeGrab = null;
+
+
+
 // <div class='scrolling-panel-frame'>
 //   <div class='scrolling-panel' style='height=200px'>
 //     <div class='scrolling-panel-content'>
 //
-// <div class='fixedContent'>
-//   <div class='scrolling-panel track-parent'>
-//     <div class='scrolling-panel-content'>
-//
-global.ScrollingPanel = (function() {
-  const stepDistance = 50;
-  let activeGrab = null;
+global.ScrollingPanel = function(options) {
+  const $id = options.id || nextID();
+  const $wrappedContent = determineWrappedContent(options)
 
-  // Keycodes for scrolling panel movement
-  //   33 - Page Up
-  //   34 - Page Down
-  //   35 - End
-  //   36 - Home
-  //   38 - Up Arrow
-  //   40 - Down Arrow
-  //
-  function init() {
+  function getID() { return $id; }
+  function getWrappedContent() { return $wrappedContent; }
 
-    window.addEventListener('mousedown', event => {
-      if (event.target.matches('.scrolling-panel-track')) { trackClicked(event); }
-    });
+  function build() {
 
-    window.addEventListener('mousedown', event => {
-      if (event.target.matches('.scrolling-panel-thumbwheel')) { startDrag(event); }
-    });
+    console.log("=== Building ===")
+    console.log($wrappedContent);
+    console.log($wrappedContent.parentNode)
 
-    window.addEventListener('keydown', event => {
-      visibleScrollPanels().forEach(scrollingPanel => {
-        if ([33,34,35,36,38,40].includes(event.keyCode)) {
-          event.preventDefault();
-          event.stopPropagation();
 
-          if (event.keyCode === 33) { stepUp(scrollingPanel, stepDistance); }
-          if (event.keyCode === 34) { stepDown(scrollingPanel, stepDistance); }
-          if (event.keyCode === 35) { scrollToBottom(scrollingPanel); }
-          if (event.keyCode === 36) { scrollToTop(scrollingPanel); }
-          if (event.keyCode === 38) { stepUp(scrollingPanel, stepDistance/5); }
-          if (event.keyCode === 40) { stepDown(scrollingPanel, stepDistance/5); }
-        }
-      });
-    });
 
-    // Trigger Resize when window is resized. (Container height may change.)
-    window.addEventListener('resize', resizeAll);
+    // window.addEventListener('mousedown', event => {
+    //   if (event.target.matches('.scrolling-panel-track')) { trackClicked(event); }
+    // });
+
+    // window.addEventListener('mousedown', event => {
+    //   if (event.target.matches('.scrolling-panel-thumbwheel')) { startDrag(event); }
+    // });
   }
+
+  function resize() {
+
+  }
+
+  // ===========================================================================
+
+  build()
+
+  const $self = Object.freeze({
+    getID,
+    getWrappedContent,
+    resize,
+  });
+
+  $$scrollingPanels[$id] = $self;
+
+  return $self;
+}
+
+
+
+// Wrapped content could be found with an id, a selector, or the element.
+// (id and selector options are different because id can be used as scrolling
+// panel ID)
+function determineWrappedContent(options) {
+  if (options.id) { return X.first(options.id); }
+  if (options.selector) { return X.first(options.selector); }
+  if (options.element) { return element; }
+  throw `Cannot find wrapped content in options`;
+}
+
+function nextID() {
+  return `panel-${$$panelIndex++}`;
+}
+
+function resizeAll() {
+  Object.values($$scrollingPanels).forEach(scrollingPanel => scrollingPanel.resize());
+}
+
+
+ScrollingPanel.init = function() {
+  window.addEventListener('resize', resizeAll);
+
+  window.addEventListener('keydown', event => {
+    visibleScrollPanels().forEach(scrollingPanel => {
+      let didSomething = false;
+
+      if (event.code === KeyCodes.PageUp) {
+        stepUp(scrollingPanel, stepDistance);
+        didSomething=true; }
+      if (event.code === KeyCodes.PageDown) {
+        stepDown(scrollingPanel, stepDistance);
+        didSomething=true; }
+      if (event.code === KeyCodes.End) {
+        scrollToBottom(scrollingPanel);
+        didSomething=true; }
+      if (event.code === KeyCodes.Home) {
+        scrollToTop(scrollingPanel);
+        didSomething=true; }
+      if (event.code === KeyCodes.ArrowUp) {
+        stepUp(scrollingPanel, stepDistance/5);
+        didSomething=true; }
+      if (event.code === KeyCodes.ArrowDown) {
+        stepDown(scrollingPanel, stepDistance/5);
+        didSomething=true; }
+
+      if (didSomething) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+    });
+  });
+}
+
+
+
+
+
+  /*
 
   function visibleScrollPanels() {
     let panels = [];
@@ -64,7 +131,10 @@ global.ScrollingPanel = (function() {
   function build(arg) {
     let result = findScrollingPanel(arg);
     let scrollingPanel = result.scrollingPanel;
-    let contentPanel = result.contentPanel;
+
+    console.log("=== Building ===");
+    console.log(result);
+    console.log(scrollingPanel);
 
     // Only build scrolling panels once.
     if (scrollingPanel.querySelector('.scrolling-panel-track')) { return; }
@@ -90,8 +160,7 @@ global.ScrollingPanel = (function() {
     let track = X.createElement(`
       <div class='scrolling-panel-track'>
         <div class='scrolling-panel-thumbwheel'></div>
-      </div>
-    `);
+      </div>`);
 
     scrollingPanel.appendChild(track);
     scrollingPanel.setAttribute('data-scroll-position',0);
@@ -151,33 +220,11 @@ global.ScrollingPanel = (function() {
 
     let thumbExtent = visibleHeight - thumbHeight;
     let thumbPosition = scrollingPanel.getAttribute('data-scroll-position') * thumbExtent;
-    let stepExtent = (stepDistance / contentHeight) * visibleHeight;
 
     setThumbPosition(scrollingPanel, thumbPosition);
     setThumbExtent(scrollingPanel, thumbExtent);
 
     thumbwheel.style['height'] = `${thumbHeight}px`;
-  }
-
-  function resizeAll() {
-    X.each('.scrolling-panel', scrollingPanel => resize(scrollingPanel));
-  }
-
-  // If the contents of the scrolling panel are likely to change call observe()
-  // to automatically call resize() when the content panel is resized.
-  function observe(scrollingPanel) {
-    var content = scrollingPanel.querySelector('.scrolling-panel-content');
-
-    var observer = new MutationObserver(function(mutations) {
-      resize(scrollingPanel);
-    });
-
-    observer.observe(content, {
-      childList: true,
-      subtree: true,
-      attributes: false,
-      characterData: false
-    });
   }
 
   function getThumbExtent(scrollingPanel) {
@@ -241,7 +288,7 @@ global.ScrollingPanel = (function() {
   function stepUp(scrollingPanel, step) {
     if (isActive(scrollingPanel) === false) { return false; }
 
-    var position = getThumbPosition(scrollingPanel) - step;
+    let position = getThumbPosition(scrollingPanel) - step;
     if (position < 0) {
       position = 0;
     }
@@ -293,7 +340,7 @@ global.ScrollingPanel = (function() {
     body.addEventListener('mouseleave', stopDrag);
   }
 
-  function stopDrag(event) {
+  function stopDrag() {
     let body = X.first('body');
 
     body.removeEventListener('mousemove', moveThumb);
@@ -329,10 +376,10 @@ global.ScrollingPanel = (function() {
     init,
     build,
     resize,
-    resizeAll,
-    observe,
     scrollToTop,
     scrollToBottom,
   };
 
 })();
+*/
+
