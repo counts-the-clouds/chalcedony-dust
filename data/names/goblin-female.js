@@ -21,6 +21,7 @@ let names = [
   { name:"Creampie", aspects:['pussy-slut.2','androphilic','cum-lover']},
   { name:"Creamy", aspects:['androphilic','cum-lover']},
   { name:"Cumcovered", aspects:['androphilic','cum-lover.3']},
+  { name:"Cumdripping" },
   { name:"Cumgargle", aspects:['androphilic','cum-lover.3']},
   { name:"Cumguzzle", aspects:['androphilic','cum-lover.3']},
   { name:"Cumloving", aspects:['androphilic','cum-lover.3']},
