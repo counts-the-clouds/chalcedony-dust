@@ -8,6 +8,8 @@ global.Tests = (function() {
   const $mochaLoadTime = 500;
   const $mochaTestTime = 100;
 
+  let $testScrollingPanel;
+  let $testLogScrollingPanel;
   let $running = false;
 
   function load() {
@@ -17,7 +19,8 @@ global.Tests = (function() {
       runTests();
 
       X.onClick('#mocha li.test', () => {
-        ScrollingPanel.resize('#testFrame');
+        $testScrollingPanel.resize();
+        $testLogScrollingPanel.resize();
       });
     }
   }
@@ -42,8 +45,8 @@ global.Tests = (function() {
     mainContent.appendChild(testFrame);
     mainContent.appendChild(testLogFrame);
 
-    ScrollingPanel.build('#testFrame');
-    ScrollingPanel.build('#testLogFrame');
+    $testScrollingPanel = ScrollingPanel({ id:'#testFrame' });
+    $testLogScrollingPanel = ScrollingPanel({ id:'#testLogFrame' });
   }
 
   function loadMocha() {
@@ -87,8 +90,8 @@ global.Tests = (function() {
       X.addClass('#mainMenu','hide');
     }
 
-    ScrollingPanel.resize('#testFrame');
-    ScrollingPanel.resize('#testLogFrame');
+    $testScrollingPanel.resize();
+    $testLogScrollingPanel.resize();
   }
 
   function running() { return $running; }
