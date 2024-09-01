@@ -15,15 +15,29 @@ global.ScrollingPanel = function(options) {
   const $id = options.id || nextID();
   const $wrappedContent = determineWrappedContent(options)
 
+  let $scrollingPanel;
+  let $scrollingPanelContent;
+
   function getID() { return $id; }
   function getWrappedContent() { return $wrappedContent; }
 
   function build() {
 
     console.log("=== Building ===")
-    console.log($wrappedContent);
-    console.log($wrappedContent.parentNode)
 
+    $scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
+
+    $scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
+    $scrollingPanel.appendChild($scrollingPanelContent);
+
+    const parent = $wrappedContent.parentNode;
+    parent.removeChild($wrappedContent);
+    parent.appendChild($scrollingPanel);
+
+    $scrollingPanelContent.appendChild($wrappedContent);
+
+
+    console.log(parent.innerHTML);
 
 
     // window.addEventListener('mousedown', event => {
