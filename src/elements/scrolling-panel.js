@@ -22,8 +22,6 @@ global.ScrollingPanel = function(options) {
   function getWrappedContent() { return $wrappedContent; }
 
   function build() {
-    console.log("=== Building ===")
-
     $scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
     $scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
     $scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
@@ -83,8 +81,6 @@ global.ScrollingPanel = function(options) {
     // });
 
     resize();
-
-    console.log(parent.innerHTML);
   }
 
   function resize() {
@@ -93,52 +89,52 @@ global.ScrollingPanel = function(options) {
     let contentHeight = $scrollingPanelContent.scrollHeight;
     let visibleHeight = $scrollingPanel.clientHeight;
 
-    console.log("Content Height:",contentHeight);
-    console.log("Visible Height:",visibleHeight);
-
     if (visibleHeight >= contentHeight) {
       setThumbPosition(0);
-      X.addClass($scrollingPanelTrack,'off');
-      return
+      return hideTrack();
     }
-    //
-    // X.removeClass(track,'off');
-    //
-    // let thumbHeight = (visibleHeight / contentHeight) * visibleHeight;
-    // if (thumbHeight < 50) {
-    //   thumbHeight = 50;
-    // }
-    //
-    // let thumbExtent = visibleHeight - thumbHeight;
-    // let thumbPosition = scrollingPanel.getAttribute('data-scroll-position') * thumbExtent;
-    //
-    // setThumbPosition(scrollingPanel, thumbPosition);
-    // setThumbExtent(scrollingPanel, thumbExtent);
-    //
-    // thumbwheel.style['height'] = `${thumbHeight}px`;
+
+    showTrack();
+
+    let thumbHeight = (visibleHeight / contentHeight) * visibleHeight;
+    if (thumbHeight < 50) {
+      thumbHeight = 50;
+    }
+
+    let thumbExtent = visibleHeight - thumbHeight;
+    let thumbPosition = $scrollingPanel.dataset.scrollPosition * thumbExtent;
+
+    setThumbPosition(thumbPosition);
+    setThumbExtent(thumbExtent);
+
+    $scrollingPanelThumb.style['height'] = `${thumbHeight}px`;
   }
 
+  function isActive() { return X.hasClass($scrollingPanelTrack,'off') === false; }
+  function showTrack() { X.removeClass($scrollingPanelTrack,'off'); }
+  function hideTrack() { X.addClass($scrollingPanelTrack,'off'); }
+
   function stepDown(distance) {
-    // if (isActive(scrollingPanel) === false) { return false; }
-    //
-    // let extent = getThumbExtent(scrollingPanel);
-    // let position = getThumbPosition(scrollingPanel) + distance;
-    // if (position > extent) {
-    //   position = extent;
-    // }
-    //
-    // setThumbPosition(scrollingPanel, position);
+    if (isActive()) {
+      let extent = getThumbExtent();
+      let position = getThumbPosition() + distance;
+      if (position > extent) {
+        position = extent;
+      }
+
+      setThumbPosition(position);
+    }
   }
 
   function stepUp(distance) {
-    // if (isActive(scrollingPanel) === false) { return false; }
-    //
-    // let position = getThumbPosition(scrollingPanel) - distance;
-    // if (position < 0) {
-    //   position = 0;
-    // }
-    //
-    // setThumbPosition(scrollingPanel, position);
+    if (isActive()) {
+      let position = getThumbPosition() - distance;
+      if (position < 0) {
+        position = 0;
+      }
+
+      setThumbPosition(position);
+    }
   }
 
   function setThumbPosition(position) {
@@ -147,26 +143,32 @@ global.ScrollingPanel = function(options) {
     positionView();
   }
 
+  function getThumbPosition() { return parseInt($scrollingPanel.dataset.thumbPosition || 0); }
+  function setThumbExtent(extent) { $scrollingPanel.dataset.thumbExtent = extent; }
+  function getThumbExtent() { return parseInt($scrollingPanel.dataset.thumbExtent || 1); }
+
+
   // Read the thumb-position and set view offset
   function positionView() {
-    // let thumbExtent = getThumbExtent(scrollingPanel);
-    // let thumbPosition = getThumbPosition(scrollingPanel);
-    // let scrollPosition = 1 - ((thumbExtent - thumbPosition) / thumbExtent);
-    // let contentOffset = 0;
-    //
-    // if (scrollPosition > 1) {
-    //   scrollPosition = 1;
-    // }
-    //
-    // scrollingPanel.setAttribute('data-scroll-position', scrollPosition);
-    //
-    // if (scrollPosition > 0) {
-    //   let contentHeight = $scrollingPanelContent.scrollHeight;
-    //   let visibleHeight = getVisibleHeight(scrollingPanel);
-    //   contentOffset = (contentHeight - visibleHeight) * -scrollPosition
-    // }
-    //
-    // $scrollingPanelContent.style['top'] = `${contentOffset}px`;
+    let thumbExtent = getThumbExtent();
+    let thumbPosition = getThumbPosition();
+    let scrollPosition = 1 - ((thumbExtent - thumbPosition) / thumbExtent);
+    let contentOffset = 0;
+
+    if (scrollPosition > 1) {
+      scrollPosition = 1;
+    }
+
+    $scrollingPanel.dataset.scrollPosition = scrollPosition;
+
+    if (scrollPosition > 0) {
+      let contentHeight = $scrollingPanelContent.scrollHeight;
+      let visibleHeight = $scrollingPanel.clientHeight;
+
+      contentOffset = (contentHeight - visibleHeight) * -scrollPosition
+    }
+
+    $scrollingPanelContent.style['top'] = `${contentOffset}px`;
   }
 
   // ===========================================================================
@@ -211,17 +213,7 @@ ScrollingPanel.init = function() {
 }
 
   /*
-  function getThumbExtent(scrollingPanel) {
-    return parseInt(scrollingPanel.getAttribute('data-thumb-extent') || 1);
-  }
 
-  function getThumbPosition(scrollingPanel) {
-    return parseInt(scrollingPanel.getAttribute('data-thumb-position') || 0);
-  }
-
-  function setThumbExtent(scrollingPanel,extent) {
-    scrollingPanel.setAttribute('data-thumb-extent', extent);
-  }
 
   function scrollToTop(scrollingPanel) {
     if (isActive(scrollingPanel)) {
@@ -290,9 +282,6 @@ ScrollingPanel.init = function() {
   }
 
 
-  function isActive(scrollingPanel) {
-    return X.hasClass(scrollingPanel.querySelector('.scrolling-panel-track'), 'off') === false
-  }
 
   return {
     init,
