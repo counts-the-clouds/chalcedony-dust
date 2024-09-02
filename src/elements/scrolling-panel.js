@@ -5,8 +5,6 @@ const $$scrollingPanels = {};
 let $$panelIndex = 0;
 let $$activeGrab = null;
 
-
-
 // <div class='scrolling-panel-frame'>
 //   <div class='scrolling-panel' style='height=200px'>
 //     <div class='scrolling-panel-content'>
@@ -17,27 +15,63 @@ global.ScrollingPanel = function(options) {
 
   let $scrollingPanel;
   let $scrollingPanelContent;
+  let $scrollingPanelTrack;
+  let $scrollingPanelThumb;
 
   function getID() { return $id; }
   function getWrappedContent() { return $wrappedContent; }
 
   function build() {
-
     console.log("=== Building ===")
 
+    $scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
+    $scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
     $scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
 
     $scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
+    $scrollingPanel.dataset.scrollPosition = 0;
+    $scrollingPanel.dataset.thumbPosition = 0;
     $scrollingPanel.appendChild($scrollingPanelContent);
+    $scrollingPanel.appendChild($scrollingPanelTrack);
 
     const parent = $wrappedContent.parentNode;
     parent.removeChild($wrappedContent);
     parent.appendChild($scrollingPanel);
 
+    $scrollingPanelTrack.appendChild($scrollingPanelThumb);
     $scrollingPanelContent.appendChild($wrappedContent);
 
+    $scrollingPanel.addEventListener('wheel', event => {
+      event.preventDefault();
+      event.stopPropagation();
+      (event.deltaY > 0) ? stepDown(STEP_DISTANCE) : stepUp(STEP_DISTANCE);
+    });
 
-    console.log(parent.innerHTML);
+      //     let didSomething = false;
+  //
+  //     if (event.code === KeyCodes.PageUp) {
+  //       stepUp(scrollingPanel, stepDistance);
+  //       didSomething=true; }
+  //     if (event.code === KeyCodes.PageDown) {
+  //       stepDown(scrollingPanel, stepDistance);
+  //       didSomething=true; }
+  //     if (event.code === KeyCodes.End) {
+  //       scrollToBottom(scrollingPanel);
+  //       didSomething=true; }
+  //     if (event.code === KeyCodes.Home) {
+  //       scrollToTop(scrollingPanel);
+  //       didSomething=true; }
+  //     if (event.code === KeyCodes.ArrowUp) {
+  //       stepUp(scrollingPanel, stepDistance/5);
+  //       didSomething=true; }
+  //     if (event.code === KeyCodes.ArrowDown) {
+  //       stepDown(scrollingPanel, stepDistance/5);
+  //       didSomething=true; }
+  //
+  //     if (didSomething) {
+  //       event.preventDefault();
+  //       event.stopPropagation();
+  //     }
 
 
     // window.addEventListener('mousedown', event => {
@@ -47,10 +81,92 @@ global.ScrollingPanel = function(options) {
     // window.addEventListener('mousedown', event => {
     //   if (event.target.matches('.scrolling-panel-thumbwheel')) { startDrag(event); }
     // });
+
+    resize();
+
+    console.log(parent.innerHTML);
   }
 
   function resize() {
+    if ($scrollingPanel.clientHeight === 0) { return; }
 
+    let contentHeight = $scrollingPanelContent.scrollHeight;
+    let visibleHeight = $scrollingPanel.clientHeight;
+
+    console.log("Content Height:",contentHeight);
+    console.log("Visible Height:",visibleHeight);
+
+    if (visibleHeight >= contentHeight) {
+      setThumbPosition(0);
+      X.addClass($scrollingPanelTrack,'off');
+      return
+    }
+    //
+    // X.removeClass(track,'off');
+    //
+    // let thumbHeight = (visibleHeight / contentHeight) * visibleHeight;
+    // if (thumbHeight < 50) {
+    //   thumbHeight = 50;
+    // }
+    //
+    // let thumbExtent = visibleHeight - thumbHeight;
+    // let thumbPosition = scrollingPanel.getAttribute('data-scroll-position') * thumbExtent;
+    //
+    // setThumbPosition(scrollingPanel, thumbPosition);
+    // setThumbExtent(scrollingPanel, thumbExtent);
+    //
+    // thumbwheel.style['height'] = `${thumbHeight}px`;
+  }
+
+  function stepDown(distance) {
+    // if (isActive(scrollingPanel) === false) { return false; }
+    //
+    // let extent = getThumbExtent(scrollingPanel);
+    // let position = getThumbPosition(scrollingPanel) + distance;
+    // if (position > extent) {
+    //   position = extent;
+    // }
+    //
+    // setThumbPosition(scrollingPanel, position);
+  }
+
+  function stepUp(distance) {
+    // if (isActive(scrollingPanel) === false) { return false; }
+    //
+    // let position = getThumbPosition(scrollingPanel) - distance;
+    // if (position < 0) {
+    //   position = 0;
+    // }
+    //
+    // setThumbPosition(scrollingPanel, position);
+  }
+
+  function setThumbPosition(position) {
+    $scrollingPanel.dataset.thumbPosition = position;
+    $scrollingPanelThumb.style['top'] = `${position}px`;
+    positionView();
+  }
+
+  // Read the thumb-position and set view offset
+  function positionView() {
+    // let thumbExtent = getThumbExtent(scrollingPanel);
+    // let thumbPosition = getThumbPosition(scrollingPanel);
+    // let scrollPosition = 1 - ((thumbExtent - thumbPosition) / thumbExtent);
+    // let contentOffset = 0;
+    //
+    // if (scrollPosition > 1) {
+    //   scrollPosition = 1;
+    // }
+    //
+    // scrollingPanel.setAttribute('data-scroll-position', scrollPosition);
+    //
+    // if (scrollPosition > 0) {
+    //   let contentHeight = $scrollingPanelContent.scrollHeight;
+    //   let visibleHeight = getVisibleHeight(scrollingPanel);
+    //   contentOffset = (contentHeight - visibleHeight) * -scrollPosition
+    // }
+    //
+    // $scrollingPanelContent.style['top'] = `${contentOffset}px`;
   }
 
   // ===========================================================================
@@ -89,158 +205,12 @@ function resizeAll() {
 }
 
 
+
 ScrollingPanel.init = function() {
   window.addEventListener('resize', resizeAll);
-
-  window.addEventListener('keydown', event => {
-    visibleScrollPanels().forEach(scrollingPanel => {
-      let didSomething = false;
-
-      if (event.code === KeyCodes.PageUp) {
-        stepUp(scrollingPanel, stepDistance);
-        didSomething=true; }
-      if (event.code === KeyCodes.PageDown) {
-        stepDown(scrollingPanel, stepDistance);
-        didSomething=true; }
-      if (event.code === KeyCodes.End) {
-        scrollToBottom(scrollingPanel);
-        didSomething=true; }
-      if (event.code === KeyCodes.Home) {
-        scrollToTop(scrollingPanel);
-        didSomething=true; }
-      if (event.code === KeyCodes.ArrowUp) {
-        stepUp(scrollingPanel, stepDistance/5);
-        didSomething=true; }
-      if (event.code === KeyCodes.ArrowDown) {
-        stepDown(scrollingPanel, stepDistance/5);
-        didSomething=true; }
-
-      if (didSomething) {
-        event.preventDefault();
-        event.stopPropagation();
-      }
-    });
-  });
 }
 
-
-
-
-
   /*
-
-  function visibleScrollPanels() {
-    let panels = [];
-    X.each('.scrolling-panel', panel => {
-      if (panel.offsetWidth > 0 && panel.offsetHeight > 0) {
-        panels.push(panel);
-      }
-    });
-    return panels;
-  }
-
-  // Build the scrolling panel. This only needs to be called once for each
-  // panel. The argument can either be a query selector to the element or the
-  // scrolling panel element itself.
-  function build(arg) {
-    let result = findScrollingPanel(arg);
-    let scrollingPanel = result.scrollingPanel;
-
-    console.log("=== Building ===");
-    console.log(result);
-    console.log(scrollingPanel);
-
-    // Only build scrolling panels once.
-    if (scrollingPanel.querySelector('.scrolling-panel-track')) { return; }
-
-    // If this panel should track its parent for its height, and there is no
-    // ancestor with the scrolling-panel-parent class, then assume the
-    // immediate parent is the height source.
-    if (X.hasClass(scrollingPanel,'track-parent')) {
-      if (scrollingPanel.closest('.scrolling-panel-parent') == null) {
-        X.addClass(scrollingPanel.parentElement,'scrolling-panel-parent');
-      }
-    }
-
-    scrollingPanel.addEventListener('wheel', event => {
-      event.preventDefault();
-      event.stopPropagation();
-
-      (event.deltaY > 0) ?
-        stepDown(scrollingPanel, stepDistance):
-        stepUp(scrollingPanel, stepDistance);
-    });
-
-    let track = X.createElement(`
-      <div class='scrolling-panel-track'>
-        <div class='scrolling-panel-thumbwheel'></div>
-      </div>`);
-
-    scrollingPanel.appendChild(track);
-    scrollingPanel.setAttribute('data-scroll-position',0);
-    scrollingPanel.setAttribute('data-thumb-position',0);
-
-    resize(scrollingPanel);
-  }
-
-  // Find the scrolling panel element given either an element or a query
-  // selector to the element or an element that has a scrolling panel as a
-  // decendent.
-  function findScrollingPanel(arg) {
-    let scrollingPanel = arg;
-
-    if (typeof arg == 'string') {
-      scrollingPanel = document.querySelector(`${arg} .scrolling-panel`) ||
-                       document.querySelector(arg);
-    }
-
-    if (scrollingPanel === null || X.hasClass(scrollingPanel,'scrolling-panel') === false) {
-      throw `Cannot find .scrolling-panel within ${arg}`;
-    }
-
-    let contentPanel = scrollingPanel.querySelector('.scrolling-panel-content');
-    if (contentPanel == null) {
-      throw "Scrolling panel must contain a .scrolling-panel-content";
-    }
-
-    return { scrollingPanel, contentPanel };
-  }
-
-  function resize(arg) {
-    let result = findScrollingPanel(arg);
-    let scrollingPanel = result.scrollingPanel;
-    let contentPanel = result.contentPanel;
-
-    if (scrollingPanel.clientHeight === 0) { return; }
-
-    let track = scrollingPanel.querySelector('.scrolling-panel-track');
-    let thumbwheel = scrollingPanel.querySelector('.scrolling-panel-thumbwheel');
-
-    let contentHeight = contentPanel.scrollHeight;
-    let visibleHeight = getVisibleHeight(scrollingPanel);
-
-    if (visibleHeight >= contentHeight) {
-      setThumbPosition(scrollingPanel, 0);
-      X.addClass(track,'off');
-      return
-    }
-
-    X.removeClass(track,'off');
-
-    let thumbHeight = (visibleHeight / contentHeight) * visibleHeight;
-    if (thumbHeight < 50) {
-      thumbHeight = 50;
-    }
-
-    let thumbExtent = visibleHeight - thumbHeight;
-    let thumbPosition = scrollingPanel.getAttribute('data-scroll-position') * thumbExtent;
-
-    setThumbPosition(scrollingPanel, thumbPosition);
-    setThumbExtent(scrollingPanel, thumbExtent);
-
-    thumbwheel.style['height'] = `${thumbHeight}px`;
-  }
-
   function getThumbExtent(scrollingPanel) {
     return parseInt(scrollingPanel.getAttribute('data-thumb-extent') || 1);
   }
@@ -251,63 +221,6 @@ ScrollingPanel.init = function() {
 
   function setThumbExtent(scrollingPanel,extent) {
     scrollingPanel.setAttribute('data-thumb-extent', extent);
-  }
-
-  function setThumbPosition(scrollingPanel, position) {
-    if (typeof position == 'string') {
-      position = parseInt(position);
-    }
-
-    scrollingPanel.setAttribute('data-thumb-position', position);
-    scrollingPanel.querySelector('.scrolling-panel-thumbwheel').style['top'] = `${position}px`;
-
-    positionView(scrollingPanel);
-  }
-
-  // Read the thumb-position and set view offset
-  function positionView(scrollingPanel) {
-    let content = scrollingPanel.querySelector('.scrolling-panel-content');
-    let thumbExtent = getThumbExtent(scrollingPanel);
-    let thumbPosition = getThumbPosition(scrollingPanel);
-    let scrollPosition = 1 - ((thumbExtent - thumbPosition) / thumbExtent);
-    let contentOffset = 0;
-
-    if (scrollPosition > 1) {
-      scrollPosition = 1;
-    }
-
-    scrollingPanel.setAttribute('data-scroll-position', scrollPosition);
-
-    if (scrollPosition > 0) {
-      let contentHeight = content.scrollHeight;
-      let visibleHeight = getVisibleHeight(scrollingPanel);
-      contentOffset = (contentHeight - visibleHeight) * -scrollPosition
-    }
-
-    content.style['top'] = `${contentOffset}px`;
-  }
-
-  function stepDown(scrollingPanel, step) {
-    if (isActive(scrollingPanel) === false) { return false; }
-
-    let extent = getThumbExtent(scrollingPanel);
-    let position = getThumbPosition(scrollingPanel) + step;
-    if (position > extent) {
-      position = extent;
-    }
-
-    setThumbPosition(scrollingPanel, position);
-  }
-
-  function stepUp(scrollingPanel, step) {
-    if (isActive(scrollingPanel) === false) { return false; }
-
-    let position = getThumbPosition(scrollingPanel) - step;
-    if (position < 0) {
-      position = 0;
-    }
-
-    setThumbPosition(scrollingPanel, position);
   }
 
   function scrollToTop(scrollingPanel) {
@@ -376,11 +289,6 @@ ScrollingPanel.init = function() {
     setThumbPosition(activeGrab.scrollingPanel, top);
   }
 
-  function getVisibleHeight(scrollingPanel) {
-    return X.hasClass(scrollingPanel,'track-parent') ?
-      scrollingPanel.closest('.scrolling-panel-parent').clientHeight:
-      scrollingPanel.clientHeight;
-  }
 
   function isActive(scrollingPanel) {
     return X.hasClass(scrollingPanel.querySelector('.scrolling-panel-track'), 'off') === false
