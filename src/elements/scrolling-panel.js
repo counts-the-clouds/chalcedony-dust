@@ -22,9 +22,14 @@ global.ScrollingPanel = function(options) {
   function getWrappedContent() { return $wrappedContent; }
 
   function build() {
-    $scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
-    $scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
     $scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
+
+    $scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
+    $scrollingPanelThumb.addEventListener('mousedown', startDrag);
+
+    $scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
+    $scrollingPanelTrack.appendChild($scrollingPanelThumb);
+    $scrollingPanelTrack.addEventListener('click', trackClicked);
 
     $scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
     $scrollingPanel.dataset.scrollPosition = 0;
@@ -36,7 +41,6 @@ global.ScrollingPanel = function(options) {
     parent.removeChild($wrappedContent);
     parent.appendChild($scrollingPanel);
 
-    $scrollingPanelTrack.appendChild($scrollingPanelThumb);
     $scrollingPanelContent.appendChild($wrappedContent);
 
     $scrollingPanel.addEventListener('wheel', event => {
@@ -44,6 +48,7 @@ global.ScrollingPanel = function(options) {
       event.stopPropagation();
       (event.deltaY > 0) ? stepDown(STEP_DISTANCE) : stepUp(STEP_DISTANCE);
     });
+
 
       //     let didSomething = false;
   //
@@ -71,14 +76,6 @@ global.ScrollingPanel = function(options) {
   //       event.stopPropagation();
   //     }
 
-
-    // window.addEventListener('mousedown', event => {
-    //   if (event.target.matches('.scrolling-panel-track')) { trackClicked(event); }
-    // });
-
-    // window.addEventListener('mousedown', event => {
-    //   if (event.target.matches('.scrolling-panel-thumbwheel')) { startDrag(event); }
-    // });
 
     resize();
   }
@@ -114,6 +111,16 @@ global.ScrollingPanel = function(options) {
   function showTrack() { X.removeClass($scrollingPanelTrack,'off'); }
   function hideTrack() { X.addClass($scrollingPanelTrack,'off'); }
 
+  function trackClicked(event) {
+    if (X.hasClass(event.target,'scrolling-panel-track')) {
+      let clickAt = event.pageY;
+      let thumbPosition = X.getPosition($scrollingPanelThumb).top;
+      let thumbHeight = $scrollingPanelThumb.clientHeight;
+
+      (clickAt < thumbPosition) ? stepUp(thumbHeight) : stepDown(thumbHeight);
+    }
+  }
+
   function stepDown(distance) {
     if (isActive()) {
       let extent = getThumbExtent();
@@ -135,6 +142,14 @@ global.ScrollingPanel = function(options) {
 
       setThumbPosition(position);
     }
+  }
+
+  function scrollToTop() {
+    if (isActive()) { setThumbPosition(0); }
+  }
+
+  function scrollToBottom() {
+    if (isActive()) { setThumbPosition(getThumbExtent()); }
   }
 
   function setThumbPosition(position) {
@@ -171,6 +186,43 @@ global.ScrollingPanel = function(options) {
     $scrollingPanelContent.style['top'] = `${contentOffset}px`;
   }
 
+  // === Drag and Drop =========================================================
+
+  function startDrag(event) {
+    let body = X.first('body');
+    let scrollTop = body.scrollTop;
+
+    $$activeGrab = {
+      position: (event.pageY - X.getPosition(event.target).top + scrollTop)
+    };
+
+    body.addEventListener('mousemove', moveThumb);
+    body.addEventListener('mouseup', stopDrag);
+    body.addEventListener('mouseleave', stopDrag);
+  }
+
+  function moveThumb(event) {
+    let panelTop = X.getPosition($scrollingPanel).top;
+    let scrollTop = X.first('body').scrollTop;
+    let top = event.pageY - $$activeGrab.position - panelTop + scrollTop;
+    let limit = getThumbExtent();
+
+    if (top < 0) { top = 0; }
+    if (top > limit) { top = limit; }
+
+    setThumbPosition(top);
+  }
+
+  function stopDrag() {
+    let body = X.first('body');
+
+    body.removeEventListener('mousemove', moveThumb);
+    body.removeEventListener('mouseup', stopDrag);
+    body.removeEventListener('mouseleave', stopDrag);
+
+    $$activeGrab = null;
+  }
+
   // ===========================================================================
 
   build()
@@ -179,14 +231,14 @@ global.ScrollingPanel = function(options) {
     getID,
     getWrappedContent,
     resize,
+    scrollToTop,
+    scrollToBottom,
   });
 
   $$scrollingPanels[$id] = $self;
 
   return $self;
 }
-
-
 
 // Wrapped content could be found with an id, a selector, or the element.
 // (id and selector options are different because id can be used as scrolling
@@ -206,91 +258,6 @@ function resizeAll() {
   Object.values($$scrollingPanels).forEach(scrollingPanel => scrollingPanel.resize());
 }
 
-
-
 ScrollingPanel.init = function() {
   window.addEventListener('resize', resizeAll);
 }
-
-  /*
-
-
-  function scrollToTop(scrollingPanel) {
-    if (isActive(scrollingPanel)) {
-      setThumbPosition(scrollingPanel, 0);
-    }
-  }
-
-  function scrollToBottom(scrollingPanel) {
-    if (isActive(scrollingPanel)) {
-      setThumbPosition(scrollingPanel, getThumbExtent(scrollingPanel));
-    }
-  }
-
-  function trackClicked(event) {
-    let scrollingPanel = event.target.closest('.scrolling-panel');
-    let thumb = scrollingPanel.querySelector('.scrolling-panel-thumbwheel');
-
-    let clickAt = event.pageY;
-    let thumbPosition = X.getPosition(thumb).top;
-    let thumbHeight = thumb.clientHeight;
-
-    if (clickAt < thumbPosition) {
-      stepUp(scrollingPanel, thumbHeight);
-    }
-
-    if (clickAt > (thumbPosition + thumbHeight)) {
-      stepDown(scrollingPanel, thumbHeight);
-    }
-  }
-
-  function startDrag(event) {
-    let body = X.first('body');
-    let scrollingPanel = event.target.closest('.scrolling-panel');
-    let scrollTop = body.scrollTop;
-
-    activeGrab = {
-      scrollingPanel: scrollingPanel,
-      position: (event.pageY - X.getPosition(event.target).top + scrollTop)
-    };
-
-    body.addEventListener('mousemove', moveThumb);
-    body.addEventListener('mouseup', stopDrag);
-    body.addEventListener('mouseleave', stopDrag);
-  }
-
-  function stopDrag() {
-    let body = X.first('body');
-
-    body.removeEventListener('mousemove', moveThumb);
-    body.removeEventListener('mouseup', stopDrag);
-    body.removeEventListener('mouseleave', stopDrag);
-
-    activeGrab = null;
-  }
-
-  function moveThumb(event) {
-    let panelTop = X.getPosition(activeGrab.scrollingPanel).top;
-    let scrollTop = X.first('body').scrollTop;
-    let top = event.pageY - activeGrab.position - panelTop + scrollTop;
-    let limit = getThumbExtent(activeGrab.scrollingPanel);
-
-    if (top < 0) { top = 0; }
-    if (top > limit) { top = limit; }
-
-    setThumbPosition(activeGrab.scrollingPanel, top);
-  }
-
-
-
-  return {
-    init,
-    build,
-    resize,
-    scrollToTop,
-    scrollToBottom,
-  };
-
-})();
-*/
-
