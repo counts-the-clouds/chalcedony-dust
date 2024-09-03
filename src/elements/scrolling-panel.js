@@ -48,6 +48,10 @@ global.ScrollingPanel = function(options) {
     resize();
   }
 
+  function setHeight(height) {
+    $scrollingPanel.style['height'] = `${height}px`;
+  }
+
   function resize() {
     if ($scrollingPanel.clientHeight === 0) { return; }
 
@@ -191,6 +195,7 @@ global.ScrollingPanel = function(options) {
   const $self = Object.freeze({
     getID,
     getWrappedContent,
+    setHeight,
     resize,
     isActive,
     getPageDistance,
