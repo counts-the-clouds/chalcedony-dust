@@ -95,6 +95,7 @@ global.ScrollingPanel = function(options) {
     if (isActive()) {
       let extent = getThumbExtent();
       let position = getThumbPosition() + distance;
+
       if (position > extent) {
         position = extent;
       }
@@ -118,15 +119,21 @@ global.ScrollingPanel = function(options) {
   function scrollToBottom() { if (isActive()) { setThumbPosition(getThumbExtent()); }}
 
   function setThumbPosition(position) {
+    if (typeof position !== 'number' || isNaN(position)) { throw `Thumb position is not a number`; }
+
     $scrollingPanel.dataset.thumbPosition = position;
     $scrollingPanelThumb.style['top'] = `${position}px`;
     positionView();
   }
 
+  function setThumbExtent(extent) {
+    if (typeof extent !== 'number' || isNaN(extent)) { throw `Thumb extent is not a number`; }
+    $scrollingPanel.dataset.thumbExtent = extent;
+  }
+
   function getPageDistance() { return X.getPosition($scrollingPanelThumb).height * 0.9; }
   function getThumbPosition() { return parseInt($scrollingPanel.dataset.thumbPosition || 0); }
-  function setThumbExtent(extent) { $scrollingPanel.dataset.thumbExtent = extent; }
-  function getThumbExtent() { return parseInt($scrollingPanel.dataset.thumbExtent || 1); }
+  function getThumbExtent() { return parseFloat($scrollingPanel.dataset.thumbExtent || 1); }
 
   // Read the thumb-position and set view offset
   function positionView() {
