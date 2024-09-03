@@ -45,7 +45,7 @@ global.Console = (function() {
     X.removeClass('#console','hide');
     X.first('#commandInput').focus();
     setTimeout(() => {
-      $scrollingPanel.resize('#console .scrolling-panel');
+      $scrollingPanel.resize();
     },1);
   }
 
@@ -99,9 +99,7 @@ global.Console = (function() {
     X.addClass(entryElement, `level-${logData.level || 2}`)
     X.first('#consoleLog').appendChild(entryElement);
 
-    if ($scrollingPanel) {
-      $scrollingPanel.resize('#console .scrolling-panel');
-    }
+    if ($scrollingPanel) { $scrollingPanel.resize(); }
 
     if (Environment.isDevelopment) {
       if (logData.type === LogType.error || logData.type === LogType.warning) {

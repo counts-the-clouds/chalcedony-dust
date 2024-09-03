@@ -211,7 +211,7 @@ global.ScrollingPanel = function(options) {
 function determineWrappedContent(options) {
   if (options.id) { return X.first(options.id); }
   if (options.selector) { return X.first(options.selector); }
-  if (options.element) { return element; }
+  if (options.element) { return options.element; }
   throw `Cannot find wrapped content in options`;
 }
 

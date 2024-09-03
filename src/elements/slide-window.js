@@ -2,13 +2,12 @@ global.SlideWindow = function(options) {
   const $slideWindow = X.first(options.selector);
   const $slideSpace = $slideWindow.querySelector('.slide-space');
   const $slideContainer = $slideWindow.querySelector('.slide-container');
-  const $scrollingPanel = $slideContainer.querySelector('.scrolling-panel');
+  const $scrollingPanel = ScrollingPanel({ element:$slideContainer.querySelector('.slide-content') });
   const $slideContent = $slideContainer.querySelector('.slide-content');
   const $slideContentHeader = $slideContainer.querySelector('.content-header');
 
   Validate.exists("Slide Space", $slideSpace);
   Validate.exists("Slide Container", $slideContainer);
-  Validate.exists("Scrolling Panel", $scrollingPanel);
   Validate.exists("Slide Content", $slideContent);
   Validate.exists("Slide Content Header", $slideContentHeader);
 
@@ -18,9 +17,6 @@ global.SlideWindow = function(options) {
 
   function build() {
     $slideWindow.querySelector('.slide-button').addEventListener('click', toggle);
-
-    ScrollingPanel.build($scrollingPanel);
-
     resize();
     reposition();
   }
@@ -30,7 +26,7 @@ global.SlideWindow = function(options) {
   }
 
   function resize() {
-    ScrollingPanel.resize($scrollingPanel)
+    $scrollingPanel.resize()
   }
 
   function reposition() {
