@@ -23,6 +23,8 @@ global.OptionsOverlay = (function() {
   let $isDirty = false;
   let $isBuilt = false;
 
+  let $keyBindingsScrollingPanel;
+
   function init() {
     X.onClick('#keyBindingList .binding-input', startRecording);
 
@@ -40,7 +42,7 @@ global.OptionsOverlay = (function() {
 
   function build() {
     X.loadDocument('#optionsOverlay','views/options-overlay.html');
-    ScrollingPanel.build('#optionsOverlay .scrolling-panel');
+    $keyBindingsScrollingPanel = ScrollingPanel({ id:'#keyBindings' });
     buildKeyBindings();
   }
 
@@ -49,7 +51,7 @@ global.OptionsOverlay = (function() {
 
     MainMenu.hide();
     X.removeClass('#optionsOverlay','hide');
-    ScrollingPanel.resize('#optionsOverlay .scrolling-panel');
+    $keyBindingsScrollingPanel.resize();
   }
 
   function close() {

@@ -1,148 +1,69 @@
-// <div class='scrolling-panel-frame'>
-//   <div class='scrolling-panel' style='height=200px'>
-//     <div class='scrolling-panel-content'>
-//
-// <div class='fixedContent'>
-//   <div class='scrolling-panel track-parent'>
-//     <div class='scrolling-panel-content'>
-//
-global.ScrollingPanel = (function() {
-  const stepDistance = 50;
-  let activeGrab = null;
 
-  // Keycodes for scrolling panel movement
-  //   33 - Page Up
-  //   34 - Page Down
-  //   35 - End
-  //   36 - Home
-  //   38 - Up Arrow
-  //   40 - Down Arrow
-  //
-  function init() {
+const STEP_DISTANCE = 50;
 
-    window.addEventListener('mousedown', event => {
-      if (event.target.matches('.scrolling-panel-track')) { trackClicked(event); }
-    });
+const $$scrollingPanels = {};
+let $$panelIndex = 0;
+let $$activeGrab = null;
 
-    window.addEventListener('mousedown', event => {
-      if (event.target.matches('.scrolling-panel-thumbwheel')) { startDrag(event); }
-    });
+global.ScrollingPanel = function(options) {
+  const $id = options.id || nextID();
+  const $wrappedContent = determineWrappedContent(options)
 
-    window.addEventListener('keydown', event => {
-      visibleScrollPanels().forEach(scrollingPanel => {
-        if ([33,34,35,36,38,40].includes(event.keyCode)) {
-          event.preventDefault();
-          event.stopPropagation();
+  let $scrollingPanel;
+  let $scrollingPanelContent;
+  let $scrollingPanelTrack;
+  let $scrollingPanelThumb;
 
-          if (event.keyCode === 33) { stepUp(scrollingPanel, stepDistance); }
-          if (event.keyCode === 34) { stepDown(scrollingPanel, stepDistance); }
-          if (event.keyCode === 35) { scrollToBottom(scrollingPanel); }
-          if (event.keyCode === 36) { scrollToTop(scrollingPanel); }
-          if (event.keyCode === 38) { stepUp(scrollingPanel, stepDistance/5); }
-          if (event.keyCode === 40) { stepDown(scrollingPanel, stepDistance/5); }
-        }
-      });
-    });
+  function getID() { return $id; }
+  function getWrappedContent() { return $wrappedContent; }
 
-    // Trigger Resize when window is resized. (Container height may change.)
-    window.addEventListener('resize', resizeAll);
-  }
+  function build() {
+    $scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
 
-  function visibleScrollPanels() {
-    let panels = [];
-    X.each('.scrolling-panel', panel => {
-      if (panel.offsetWidth > 0 && panel.offsetHeight > 0) {
-        panels.push(panel);
-      }
-    });
-    return panels;
-  }
+    $scrollingPanelThumb = X.createElement(`<div class='scrolling-panel-thumbwheel'></div>`);
+    $scrollingPanelThumb.addEventListener('mousedown', startDrag);
 
-  // Build the scrolling panel. This only needs to be called once for each
-  // panel. The argument can either be a query selector to the element or the
-  // scrolling panel element itself.
-  function build(arg) {
-    let result = findScrollingPanel(arg);
-    let scrollingPanel = result.scrollingPanel;
-    let contentPanel = result.contentPanel;
+    $scrollingPanelTrack = X.createElement(`<div class='scrolling-panel-track'></div>`);
+    $scrollingPanelTrack.appendChild($scrollingPanelThumb);
+    $scrollingPanelTrack.addEventListener('click', trackClicked);
 
-    // Only build scrolling panels once.
-    if (scrollingPanel.querySelector('.scrolling-panel-track')) { return; }
-
-    // If this panel should track its parent for its height, and there is no
-    // ancestor with the scrolling-panel-parent class, then assume the
-    // immediate parent is the height source.
-    if (X.hasClass(scrollingPanel,'track-parent')) {
-      if (scrollingPanel.closest('.scrolling-panel-parent') == null) {
-        X.addClass(scrollingPanel.parentElement,'scrolling-panel-parent');
-      }
-    }
-
-    scrollingPanel.addEventListener('wheel', event => {
+    $scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
+    $scrollingPanel.dataset.id = $id;
+    $scrollingPanel.dataset.scrollPosition = 0;
+    $scrollingPanel.dataset.thumbPosition = 0;
+    $scrollingPanel.appendChild($scrollingPanelContent);
+    $scrollingPanel.appendChild($scrollingPanelTrack);
+    $scrollingPanel.addEventListener('wheel', event => {
       event.preventDefault();
       event.stopPropagation();
-
-      (event.deltaY > 0) ?
-        stepDown(scrollingPanel, stepDistance):
-        stepUp(scrollingPanel, stepDistance);
+      (event.deltaY > 0) ? stepDown(STEP_DISTANCE) : stepUp(STEP_DISTANCE);
     });
 
-    let track = X.createElement(`
-      <div class='scrolling-panel-track'>
-        <div class='scrolling-panel-thumbwheel'></div>
-      </div>
-    `);
+    const parent = $wrappedContent.parentNode;
+    parent.removeChild($wrappedContent);
+    parent.appendChild($scrollingPanel);
 
-    scrollingPanel.appendChild(track);
-    scrollingPanel.setAttribute('data-scroll-position',0);
-    scrollingPanel.setAttribute('data-thumb-position',0);
+    $scrollingPanelContent.appendChild($wrappedContent);
 
-    resize(scrollingPanel);
+    resize();
   }
 
-  // Find the scrolling panel element given either an element or a query
-  // selector to the element or an element that has a scrolling panel as a
-  // decendent.
-  function findScrollingPanel(arg) {
-    let scrollingPanel = arg;
-
-    if (typeof arg == 'string') {
-      scrollingPanel = document.querySelector(`${arg} .scrolling-panel`) ||
-                       document.querySelector(arg);
-    }
-
-    if (scrollingPanel === null || X.hasClass(scrollingPanel,'scrolling-panel') === false) {
-      throw `Cannot find .scrolling-panel within ${arg}`;
-    }
-
-    let contentPanel = scrollingPanel.querySelector('.scrolling-panel-content');
-    if (contentPanel == null) {
-      throw "Scrolling panel must contain a .scrolling-panel-content";
-    }
-
-    return { scrollingPanel, contentPanel };
+  function setHeight(height) {
+    $scrollingPanel.style['height'] = `${height}px`;
   }
 
-  function resize(arg) {
-    let result = findScrollingPanel(arg);
-    let scrollingPanel = result.scrollingPanel;
-    let contentPanel = result.contentPanel;
+  function resize() {
+    if ($scrollingPanel.clientHeight === 0) { return; }
 
-    if (scrollingPanel.clientHeight === 0) { return; }
-
-    let track = scrollingPanel.querySelector('.scrolling-panel-track');
-    let thumbwheel = scrollingPanel.querySelector('.scrolling-panel-thumbwheel');
-
-    let contentHeight = contentPanel.scrollHeight;
-    let visibleHeight = getVisibleHeight(scrollingPanel);
+    let contentHeight = $scrollingPanelContent.scrollHeight;
+    let visibleHeight = $scrollingPanel.clientHeight;
 
     if (visibleHeight >= contentHeight) {
-      setThumbPosition(scrollingPanel, 0);
-      X.addClass(track,'off');
-      return
+      setThumbPosition(0);
+      return hideTrack();
     }
 
-    X.removeClass(track,'off');
+    showTrack();
 
     let thumbHeight = (visibleHeight / contentHeight) * visibleHeight;
     if (thumbHeight < 50) {
@@ -150,64 +71,74 @@ global.ScrollingPanel = (function() {
     }
 
     let thumbExtent = visibleHeight - thumbHeight;
-    let thumbPosition = scrollingPanel.getAttribute('data-scroll-position') * thumbExtent;
-    let stepExtent = (stepDistance / contentHeight) * visibleHeight;
+    let thumbPosition = $scrollingPanel.dataset.scrollPosition * thumbExtent;
 
-    setThumbPosition(scrollingPanel, thumbPosition);
-    setThumbExtent(scrollingPanel, thumbExtent);
+    setThumbPosition(thumbPosition);
+    setThumbExtent(thumbExtent);
 
-    thumbwheel.style['height'] = `${thumbHeight}px`;
+    $scrollingPanelThumb.style['height'] = `${thumbHeight}px`;
   }
 
-  function resizeAll() {
-    X.each('.scrolling-panel', scrollingPanel => resize(scrollingPanel));
-  }
+  function isActive() { return X.hasClass($scrollingPanelTrack,'off') === false; }
+  function showTrack() { X.removeClass($scrollingPanelTrack,'off'); }
+  function hideTrack() { X.addClass($scrollingPanelTrack,'off'); }
 
-  // If the contents of the scrolling panel are likely to change call observe()
-  // to automatically call resize() when the content panel is resized.
-  function observe(scrollingPanel) {
-    var content = scrollingPanel.querySelector('.scrolling-panel-content');
-
-    var observer = new MutationObserver(function(mutations) {
-      resize(scrollingPanel);
-    });
-
-    observer.observe(content, {
-      childList: true,
-      subtree: true,
-      attributes: false,
-      characterData: false
-    });
-  }
-
-  function getThumbExtent(scrollingPanel) {
-    return parseInt(scrollingPanel.getAttribute('data-thumb-extent') || 1);
-  }
-
-  function getThumbPosition(scrollingPanel) {
-    return parseInt(scrollingPanel.getAttribute('data-thumb-position') || 0);
-  }
-
-  function setThumbExtent(scrollingPanel,extent) {
-    scrollingPanel.setAttribute('data-thumb-extent', extent);
-  }
-
-  function setThumbPosition(scrollingPanel, position) {
-    if (typeof position == 'string') {
-      position = parseInt(position);
+  function trackClicked(event) {
+    if (X.hasClass(event.target,'scrolling-panel-track')) {
+      let clickAt = event.pageY;
+      let thumbPosition = X.getPosition($scrollingPanelThumb).top;
+      (clickAt < thumbPosition) ? stepUp(getPageDistance()) : stepDown(getPageDistance());
     }
-
-    scrollingPanel.setAttribute('data-thumb-position', position);
-    scrollingPanel.querySelector('.scrolling-panel-thumbwheel').style['top'] = `${position}px`;
-
-    positionView(scrollingPanel);
   }
+
+  function stepDown(distance) {
+    if (isActive()) {
+      let extent = getThumbExtent();
+      let position = getThumbPosition() + distance;
+
+      if (position > extent) {
+        position = extent;
+      }
+
+      setThumbPosition(position);
+    }
+  }
+
+  function stepUp(distance) {
+    if (isActive()) {
+      let position = getThumbPosition() - distance;
+      if (position < 0) {
+        position = 0;
+      }
+
+      setThumbPosition(position);
+    }
+  }
+
+  function scrollToTop() { if (isActive()) { setThumbPosition(0); }}
+  function scrollToBottom() { if (isActive()) { setThumbPosition(getThumbExtent()); }}
+
+  function setThumbPosition(position) {
+    if (typeof position !== 'number' || isNaN(position)) { throw `Thumb position is not a number`; }
+
+    $scrollingPanel.dataset.thumbPosition = position;
+    $scrollingPanelThumb.style['top'] = `${position}px`;
+    positionView();
+  }
+
+  function setThumbExtent(extent) {
+    if (typeof extent !== 'number' || isNaN(extent)) { throw `Thumb extent is not a number`; }
+    $scrollingPanel.dataset.thumbExtent = extent;
+  }
+
+  function getPageDistance() { return X.getPosition($scrollingPanelThumb).height * 0.9; }
+  function getThumbPosition() { return parseInt($scrollingPanel.dataset.thumbPosition || 0); }
+  function getThumbExtent() { return parseFloat($scrollingPanel.dataset.thumbExtent || 1); }
 
   // Read the thumb-position and set view offset
-  function positionView(scrollingPanel) {
-    let content = scrollingPanel.querySelector('.scrolling-panel-content');
-    let thumbExtent = getThumbExtent(scrollingPanel);
-    let thumbPosition = getThumbPosition(scrollingPanel);
+  function positionView() {
+    let thumbExtent = getThumbExtent();
+    let thumbPosition = getThumbPosition();
     let scrollPosition = 1 - ((thumbExtent - thumbPosition) / thumbExtent);
     let contentOffset = 0;
 
@@ -215,76 +146,25 @@ global.ScrollingPanel = (function() {
       scrollPosition = 1;
     }
 
-    scrollingPanel.setAttribute('data-scroll-position', scrollPosition);
+    $scrollingPanel.dataset.scrollPosition = scrollPosition;
 
     if (scrollPosition > 0) {
-      let contentHeight = content.scrollHeight;
-      let visibleHeight = getVisibleHeight(scrollingPanel);
+      let contentHeight = $scrollingPanelContent.scrollHeight;
+      let visibleHeight = $scrollingPanel.clientHeight;
+
       contentOffset = (contentHeight - visibleHeight) * -scrollPosition
     }
 
-    content.style['top'] = `${contentOffset}px`;
+    $scrollingPanelContent.style['top'] = `${contentOffset}px`;
   }
 
-  function stepDown(scrollingPanel, step) {
-    if (isActive(scrollingPanel) === false) { return false; }
-
-    let extent = getThumbExtent(scrollingPanel);
-    let position = getThumbPosition(scrollingPanel) + step;
-    if (position > extent) {
-      position = extent;
-    }
-
-    setThumbPosition(scrollingPanel, position);
-  }
-
-  function stepUp(scrollingPanel, step) {
-    if (isActive(scrollingPanel) === false) { return false; }
-
-    var position = getThumbPosition(scrollingPanel) - step;
-    if (position < 0) {
-      position = 0;
-    }
-
-    setThumbPosition(scrollingPanel, position);
-  }
-
-  function scrollToTop(scrollingPanel) {
-    if (isActive(scrollingPanel)) {
-      setThumbPosition(scrollingPanel, 0);
-    }
-  }
-
-  function scrollToBottom(scrollingPanel) {
-    if (isActive(scrollingPanel)) {
-      setThumbPosition(scrollingPanel, getThumbExtent(scrollingPanel));
-    }
-  }
-
-  function trackClicked(event) {
-    let scrollingPanel = event.target.closest('.scrolling-panel');
-    let thumb = scrollingPanel.querySelector('.scrolling-panel-thumbwheel');
-
-    let clickAt = event.pageY;
-    let thumbPosition = X.getPosition(thumb).top;
-    let thumbHeight = thumb.clientHeight;
-
-    if (clickAt < thumbPosition) {
-      stepUp(scrollingPanel, thumbHeight);
-    }
-
-    if (clickAt > (thumbPosition + thumbHeight)) {
-      stepDown(scrollingPanel, thumbHeight);
-    }
-  }
+  // === Drag and Drop =========================================================
 
   function startDrag(event) {
     let body = X.first('body');
-    let scrollingPanel = event.target.closest('.scrolling-panel');
     let scrollTop = body.scrollTop;
 
-    activeGrab = {
-      scrollingPanel: scrollingPanel,
+    $$activeGrab = {
       position: (event.pageY - X.getPosition(event.target).top + scrollTop)
     };
 
@@ -293,46 +173,93 @@ global.ScrollingPanel = (function() {
     body.addEventListener('mouseleave', stopDrag);
   }
 
-  function stopDrag(event) {
+  function moveThumb(event) {
+    let panelTop = X.getPosition($scrollingPanel).top;
+    let scrollTop = X.first('body').scrollTop;
+    let top = event.pageY - $$activeGrab.position - panelTop + scrollTop;
+    let limit = getThumbExtent();
+
+    if (top < 0) { top = 0; }
+    if (top > limit) { top = limit; }
+
+    setThumbPosition(top);
+  }
+
+  function stopDrag() {
     let body = X.first('body');
 
     body.removeEventListener('mousemove', moveThumb);
     body.removeEventListener('mouseup', stopDrag);
     body.removeEventListener('mouseleave', stopDrag);
 
-    activeGrab = null;
+    $$activeGrab = null;
   }
 
-  function moveThumb(event) {
-    let panelTop = X.getPosition(activeGrab.scrollingPanel).top;
-    let scrollTop = X.first('body').scrollTop;
-    let top = event.pageY - activeGrab.position - panelTop + scrollTop;
-    let limit = getThumbExtent(activeGrab.scrollingPanel);
+  // ===========================================================================
 
-    if (top < 0) { top = 0; }
-    if (top > limit) { top = limit; }
+  build()
 
-    setThumbPosition(activeGrab.scrollingPanel, top);
-  }
-
-  function getVisibleHeight(scrollingPanel) {
-    return X.hasClass(scrollingPanel,'track-parent') ?
-      scrollingPanel.closest('.scrolling-panel-parent').clientHeight:
-      scrollingPanel.clientHeight;
-  }
-
-  function isActive(scrollingPanel) {
-    return X.hasClass(scrollingPanel.querySelector('.scrolling-panel-track'), 'off') === false
-  }
-
-  return {
-    init,
-    build,
+  const $self = Object.freeze({
+    getID,
+    getWrappedContent,
+    setHeight,
     resize,
-    resizeAll,
-    observe,
+    isActive,
+    getPageDistance,
+    stepUp,
+    stepDown,
     scrollToTop,
     scrollToBottom,
-  };
+  });
 
-})();
+  $$scrollingPanels[$id] = $self;
+
+  return $self;
+}
+
+// Wrapped content could be found with an id, a selector, or the element.
+// (id and selector options are different because id can be used as scrolling
+// panel ID)
+function determineWrappedContent(options) {
+  if (options.id) { return X.first(options.id); }
+  if (options.selector) { return X.first(options.selector); }
+  if (options.element) { return options.element; }
+  throw `Cannot find wrapped content in options`;
+}
+
+function activeScrollingPanel() {
+  const position = MouseMonitor.getPosition()
+  const root = document.elementFromPoint(position.x, position.y)
+  const element = root.closest('.scrolling-panel');
+  return element ? $$scrollingPanels[element.dataset.id] : null;
+}
+
+function handleKeyPress(event) {
+  const panel = activeScrollingPanel();
+
+  if (panel && panel.isActive()) {
+    const execute = callback => {
+      event.preventDefault();
+      event.stopPropagation();
+      callback();
+    }
+
+    if (event.code === KeyCodes.PageUp)    { execute(() => panel.stepUp(panel.getPageDistance())); }
+    if (event.code === KeyCodes.PageDown)  { execute(() => panel.stepDown(panel.getPageDistance())); }
+    if (event.code === KeyCodes.End)       { execute(() => panel.scrollToBottom()); }
+    if (event.code === KeyCodes.Home)      { execute(() => panel.scrollToTop()); }
+  }
+}
+
+function nextID() {
+  return `panel-${$$panelIndex++}`;
+}
+
+function resizeAll() {
+  Object.values($$scrollingPanels).forEach(scrollingPanel => scrollingPanel.resize());
+}
+
+ScrollingPanel.init = function() {
+  window.addEventListener('resize', resizeAll);
+  window.addEventListener('keydown', handleKeyPress);
+}

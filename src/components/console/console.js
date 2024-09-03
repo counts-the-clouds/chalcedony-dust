@@ -2,13 +2,16 @@ global.Console = (function() {
 
   const $entryLimit = 1000;
 
+  let $scrollingPanel;
+
+
   // TODO: We can still consider adding autocomplete for some commands at some
   //       point. If we know we're starting an addItem command it might be
   //       nice to autocomplete the item code as it's being typed. Depends on
   //       how often I use this console I suppose.
 
   function init() {
-    ScrollingPanel.build('#console .scrolling-panel');
+    $scrollingPanel = ScrollingPanel({ id:'#consoleLog' });
 
     window.addEventListener('keydown', event => {
       if (event.code === KeyCodes.Backquote) {
@@ -42,7 +45,7 @@ global.Console = (function() {
     X.removeClass('#console','hide');
     X.first('#commandInput').focus();
     setTimeout(() => {
-      ScrollingPanel.resize('#console .scrolling-panel');
+      $scrollingPanel.resize();
     },1);
   }
 
@@ -94,8 +97,9 @@ global.Console = (function() {
     addDataSegment(entryElement, logData.data);
 
     X.addClass(entryElement, `level-${logData.level || 2}`)
-    X.first('#console #log').appendChild(entryElement);
-    ScrollingPanel.resize('#console .scrolling-panel');
+    X.first('#consoleLog').appendChild(entryElement);
+
+    if ($scrollingPanel) { $scrollingPanel.resize(); }
 
     if (Environment.isDevelopment) {
       if (logData.type === LogType.error || logData.type === LogType.warning) {
@@ -105,8 +109,8 @@ global.Console = (function() {
   }
 
   function trimEntries() {
-    if (X.first('#log').querySelectorAll('.entry').length > $entryLimit) {
-      X.first('#log .entry').remove();
+    if (X.first('#consoleLog').querySelectorAll('.entry').length > $entryLimit) {
+      X.first('#consoleLog .entry').remove();
     }
   }
 

@@ -8,6 +8,8 @@ global.Tests = (function() {
   const $mochaLoadTime = 500;
   const $mochaTestTime = 100;
 
+  let $testScrollingPanel;
+  let $testLogScrollingPanel;
   let $running = false;
 
   function load() {
@@ -17,23 +19,24 @@ global.Tests = (function() {
       runTests();
 
       X.onClick('#mocha li.test', () => {
-        ScrollingPanel.resize('#testFrame');
+        $testScrollingPanel.resize();
+        $testLogScrollingPanel.resize();
       });
     }
   }
 
   function addTestFrame() {
     const testFrame = X.createElement(`
-      <div id='testFrame' class='scrolling-panel'>
+      <div id='testFrame'>
         <div class='header'></div>
-        <div class='scrolling-panel-content'>
+        <div class='scroll'>
           <div id="mocha"></div>
         </div>
       </div>`);
 
     const testLogFrame = X.createElement(`
-      <div id='testLogFrame' class='scrolling-panel'>
-        <div class='scrolling-panel-content'>
+      <div id='testLogFrame'>
+        <div class='scroll'>
           <div id='testLog'></div>
         </div>
       </div>`)
@@ -42,8 +45,8 @@ global.Tests = (function() {
     mainContent.appendChild(testFrame);
     mainContent.appendChild(testLogFrame);
 
-    ScrollingPanel.build('#testFrame');
-    ScrollingPanel.build('#testLogFrame');
+    $testScrollingPanel = ScrollingPanel({ selector:'#testFrame .scroll' });
+    $testLogScrollingPanel = ScrollingPanel({ selector:'#testLogFrame .scroll' });
   }
 
   function loadMocha() {
@@ -87,8 +90,8 @@ global.Tests = (function() {
       X.addClass('#mainMenu','hide');
     }
 
-    ScrollingPanel.resize('#testFrame');
-    ScrollingPanel.resize('#testLogFrame');
+    $testScrollingPanel.resize();
+    $testLogScrollingPanel.resize();
   }
 
   function running() { return $running; }

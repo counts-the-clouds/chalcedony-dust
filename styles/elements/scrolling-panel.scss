@@ -8,6 +8,7 @@
 .scrolling-panel {
   display: flex;
   overflow: hidden;
+  height: 100%;
   min-height: 100px;
 }
 .scrolling-panel-track {

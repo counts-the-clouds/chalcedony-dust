@@ -1,6 +1,6 @@
 global.Casement = (function() {
-  const _barHeight = 20;
-  const _borderWidth = 3;
+  const BAR_HEIGHT = 20;
+  const BORDER_WIDTH = 3;
 
   const $$currentCasements = {};
   let $$casementCounter = 100;
@@ -37,19 +37,21 @@ global.Casement = (function() {
     const enableScrollingPanel = options.scrollingPanel !== false;
     const enableResize = options.resizable !== false;
 
-    const casementContent = X.createElement(
-      `<div class='casement-content'>${html}</div>
-    `);
-
     const casementWindow = X.createElement(`
       <div id='${id}' class='casement-window' style='z-index:${4000+index}'>
         <div class='casement-bar'>
           <h1 class='title'>[TITLE]</h1>
           <a href='#' class='close-button'></a>
         </div>
-        <div class='casement-container'></div>
+        <div class='casement-container'>
+          <div class='casement-content'>${html}</div>
+        </div>
       </div>
     `);
+
+    const casementContent = casementWindow.querySelector('.casement-content');
+    const casementContainer = casementWindow.querySelector('.casement-container');
+    let scrollingPanel = null;
 
     casementWindow.querySelector('.close-button').style['background-image'] = X.assetURL('ui/x-icon.png');
 
@@ -58,24 +60,14 @@ global.Casement = (function() {
     }
 
     if (enableScrollingPanel) {
-      const scrollingPanel = X.createElement(`<div class='scrolling-panel'></div>`);
-      const scrollingPanelContent = X.createElement(`<div class='scrolling-panel-content'></div>`);
-
-      casementWindow.querySelector('.casement-container').appendChild(scrollingPanel);
-      scrollingPanel.appendChild(scrollingPanelContent);
-      scrollingPanelContent.appendChild(casementContent);
-
-      ScrollingPanel.build(scrollingPanel);
-    }
-    if (!enableScrollingPanel) {
-      const container = casementWindow.querySelector('.casement-container');
-      container.style.overflow = 'hidden';
-      container.appendChild(casementContent);
+      scrollingPanel = ScrollingPanel({ element:casementContent });
+    } else {
+      casementContainer.style.overflow = 'hidden';
     }
 
     X.first('#casementsArea').appendChild(casementWindow);
 
-    const casement = buildCasement({ id, casementContent, casementWindow });
+    const casement = buildCasement({ id, casementContent, casementWindow, scrollingPanel });
     $$currentCasements[id] = casement;
     WindowManager.push(casement);
 
@@ -86,7 +78,7 @@ global.Casement = (function() {
     const $id = options.id;
     const $casementContent = options.casementContent;
     const $casementWindow = options.casementWindow;
-    const $scrollingPanel = $casementWindow.querySelector('.scrolling-panel');
+    const $scrollingPanel = options.scrollingPanel;
 
     let $associatedWith;
     let $bounds = {};
@@ -162,10 +154,10 @@ global.Casement = (function() {
 
       if ($bounds.top < 0) { $bounds.top = 0; }
       if ($bounds.left < 0) { $bounds.left = 0; }
-      if ($bounds.left + $bounds.width + (_borderWidth*2) > window.innerWidth) {
-        $bounds.left = window.innerWidth - $bounds.width - (_borderWidth*2); }
-      if ($bounds.top + $bounds.height + (_borderWidth*2) > window.innerHeight) {
-        $bounds.top = window.innerHeight - $bounds.height - (_borderWidth*2);
+      if ($bounds.left + $bounds.width + (BORDER_WIDTH*2) > window.innerWidth) {
+        $bounds.left = window.innerWidth - $bounds.width - (BORDER_WIDTH*2); }
+      if ($bounds.top + $bounds.height + (BORDER_WIDTH*2) > window.innerHeight) {
+        $bounds.top = window.innerHeight - $bounds.height - (BORDER_WIDTH*2);
       }
 
       $casementWindow.style['top'] = `${$bounds.top}px`;
@@ -174,17 +166,15 @@ global.Casement = (function() {
       $casementWindow.style['width'] = `${$bounds.width}px`;
 
       if ($scrollingPanel) {
-        $scrollingPanel.style['height'] = `${$bounds.height - _barHeight}px`;
-        ScrollingPanel.resize($scrollingPanel);
+        $scrollingPanel.setHeight($bounds.height - BAR_HEIGHT);
+        $scrollingPanel.resize();
       }
     }
 
     // The scrolling panel needs to be resized if the size of the content
     // changes.
     function contentResized() {
-      if ($scrollingPanel) {
-        ScrollingPanel.resize($scrollingPanel);
-      }
+      if ($scrollingPanel) { $scrollingPanel.resize(); }
     }
 
     function close() {
@@ -265,7 +255,7 @@ global.Casement = (function() {
   }
 
   function resizeWindow(event) {
-    if (event.clientX + _borderWidth < window.innerWidth && event.clientY + _borderWidth < window.innerHeight) {
+    if (event.clientX + BORDER_WIDTH < window.innerWidth && event.clientY + BORDER_WIDTH < window.innerHeight) {
       const width = (event.clientX - $$dragContext.origin.x) + $$dragContext.size.width;
       const height = (event.clientY - $$dragContext.origin.y) + $$dragContext.size.height;
       $$dragContext.casement.setSize({ height,width });
