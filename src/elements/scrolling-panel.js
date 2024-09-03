@@ -239,17 +239,15 @@ function handleKeyPress(event) {
 
   if (panel && panel.isActive()) {
     const execute = callback => {
-      callback();
       event.preventDefault();
       event.stopPropagation();
+      callback();
     }
 
     if (event.code === KeyCodes.PageUp)    { execute(() => panel.stepUp(panel.getPageDistance())); }
     if (event.code === KeyCodes.PageDown)  { execute(() => panel.stepDown(panel.getPageDistance())); }
     if (event.code === KeyCodes.End)       { execute(() => panel.scrollToBottom()); }
     if (event.code === KeyCodes.Home)      { execute(() => panel.scrollToTop()); }
-    if (event.code === KeyCodes.ArrowUp)   { execute(() => panel.stepUp(STEP_DISTANCE * 0.25)); }
-    if (event.code === KeyCodes.ArrowDown) { execute(() => panel.stepDown(STEP_DISTANCE * 0.25)); }
   }
 }
 
