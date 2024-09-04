@@ -1,3 +1,3 @@
 HallRegistry.register('spike-trap',{
-  upgradeFrom: 'pit-trap',
+  displayName: 'Spike Trap',
 });
