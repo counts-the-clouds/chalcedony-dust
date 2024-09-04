@@ -1,34 +1,35 @@
 global.Room = function(data) {
-  const roomData = RoomRegistry.lookup(data.code);
+  RoomRegistry.lookup(data.code);
 
-  const $code = data.code;
   const $id = data.id || RoomDataStore.nextID();
   const $featureID = data.featureID;
-
-  const $displayName = roomData.displayName;
-  const $view = roomData.view;
-
-  Validate.exists('Feature ID',$featureID);
-  Validate.exists('Display Name',$displayName);
-  Validate.exists('View',$view);
+  let $code = data.code;
 
   function getID() { return $id; }
   function getCode() { return $code; }
   function getFeature() { return FeatureDataStore.get($featureID); }
 
-  function getDisplayName() { return $displayName; }
-  function getView() { return $view; }
-  function getViewType() { return $view.type; }
-  function getLayout() { return $view.layout; }
-  function getBackground() { return $view.background; }
+  function getRoomData() { return RoomRegistry.lookup($code); }
+  function getDisplayName() { return getRoomData().displayName; }
+  function getView() { return getRoomData().view; }
+  function getViewType() { return getView().type; }
+  function getLayout() { return getView().layout; }
+  function getBackground() { return getView().background; }
 
   function getDetails() {
     const feature = getFeature();
 
     return Weaver({
       size: feature.getSize()
-    }).weave($view.details);
+    }).weave(getView().details);
   }
+
+  // TODO: Surely other things may need to change when a room is upgraded from
+  //       one type to another. Rooms have minions assigned to them, they can
+  //       have items in their processing queues. I suppose we should always
+  //       'expand' what a room can have when upgrading. If we go from having
+  //       assigned minions to no assigned minions that could be a big problem.
+  function upgradeTo(code) { $code = code; }
 
   // ===========================================================================
 
@@ -52,11 +53,11 @@ global.Room = function(data) {
     getCode,
     getFeature,
     getDisplayName,
-    getView,
     getViewType,
     getLayout,
     getBackground,
     getDetails,
+    upgradeTo,
     toString,
     pack,
   };

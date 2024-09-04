@@ -9,8 +9,15 @@ global.UpgradeBaseWindow = (function() {
     casement.setBounds(getBounds());
     casement.setBackground('rgb(15,15,15)');
 
+    const content = casement.getCasementContent();
+    content.querySelectorAll('.upgrade-button').forEach(button => {
+      button.addEventListener('click', event => {
+        executeUpgrade(event, feature, casement)
+      });
+    });
+
     if (background) {
-      const backgroundElement = casement.getCasementContent().querySelector('.has-background');
+      const backgroundElement = content.querySelector('.has-background');
       backgroundElement.style['background-image'] = X.assetURL(room.getBackground());
     }
   }
@@ -42,10 +49,15 @@ global.UpgradeBaseWindow = (function() {
         <div class='bottom-row'>
           ${CostPanel.build(blueprint.getCost(feature))}
           <div class='actions'>
-            <a href='#' class='upgrade-button button button-primary button-big'>Upgrade</a>
+            <a href='#' class='upgrade-button button button-primary button-big' data-code='${code}'>Upgrade</a>
           </div>
         </div>
       </li>`;
+  }
+
+  function executeUpgrade(event, feature, casement) {
+    feature.startConstruction(event.target.getAttribute('data-code'));
+    casement.close();
   }
 
   function getBounds() {

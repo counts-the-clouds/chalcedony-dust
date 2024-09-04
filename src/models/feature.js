@@ -131,8 +131,13 @@ global.Feature = function(data) {
 
   // === Construction ==========================================================
 
+  // If the construction id is null, then this is a new construction on the
+  // empty room. If the construction ID has been set then this is an upgrade of
+  // an existing construction.
   function attachConstruction(code) {
-    if ($constructionID != null) { throw `This feature already has a construction.` }
+    if ($constructionID != null) {
+      return getConstruction().upgradeTo(code);
+    }
     if ($type === TileType.hall) {
       $constructionID = Hall({ code, featureID:getID() }).getID();
     }
@@ -154,13 +159,7 @@ global.Feature = function(data) {
     }
   }
 
-  // TODO: There will probably be differences when upgrading an existing
-  //       construction though both will need to start a clock in a similar
-  //       way.
-  //
   async function startConstruction(code) {
-    if ($constructionID != null) { throw `This feature already has a construction.` }
-
     log(`Construction started on ${toString()}`,{ system:'Feature', data:{ code }});
 
     Blueprint(code).startConstruction(getID());
