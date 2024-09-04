@@ -181,6 +181,21 @@ global.Feature = function(data) {
     await GameState.saveState();
   }
 
+  function getPossibleUpgrades() {
+    const construction = getConstruction();
+    const upgrades = [];
+
+    // TODO: We'll also need to see if this room has other requirements before
+    //       adding it to the list of possible upgrades.
+    BlueprintRegistry.forEach((code, blueprint) => {
+      if (blueprint.upgradeFrom === construction.getCode()) {
+        upgrades.push(code);
+      }
+    });
+
+    return upgrades;
+  }
+
   // ===========================================================================
 
   function getTileLayers() { return getSegments().map(seg => seg.getTileLayer()); }
@@ -284,6 +299,7 @@ global.Feature = function(data) {
     isNotIncomplete,
     startConstruction,
     completeConstruction,
+    getPossibleUpgrades,
     getTileLayers,
     applyTint,
     startPulse,

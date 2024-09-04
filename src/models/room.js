@@ -6,22 +6,28 @@ global.Room = function(data) {
   const $featureID = data.featureID;
 
   const $displayName = roomData.displayName;
-  const $casementInfo = roomData.casement;
+  const $view = roomData.view;
+
+  Validate.exists('Feature ID',$featureID);
+  Validate.exists('Display Name',$displayName);
+  Validate.exists('View',$view);
 
   function getID() { return $id; }
   function getCode() { return $code; }
   function getFeature() { return FeatureDataStore.get($featureID); }
 
   function getDisplayName() { return $displayName; }
-  function getLayout() { return $casementInfo.layout; }
-  function getBackground() { return $casementInfo.background; }
+  function getView() { return $view; }
+  function getViewType() { return $view.type; }
+  function getLayout() { return $view.layout; }
+  function getBackground() { return $view.background; }
 
   function getDetails() {
     const feature = getFeature();
 
     return Weaver({
-      size:feature.getSize()
-    }).weave($casementInfo.details);
+      size: feature.getSize()
+    }).weave($view.details);
   }
 
   // ===========================================================================
@@ -46,6 +52,8 @@ global.Room = function(data) {
     getCode,
     getFeature,
     getDisplayName,
+    getView,
+    getViewType,
     getLayout,
     getBackground,
     getDetails,

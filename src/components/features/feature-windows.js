@@ -17,9 +17,10 @@ global.FeatureWindows = (function() {
     if (feature.getType() === TileType.room) {
       if (feature.getState() === FeatureState.complete) { return await EmptyFeatureWindow.open(feature); }
       if (feature.getState() === FeatureState.constructed) {
-        switch(feature.getConstruction().getCode()) {
-          case 'storeroom': return SimpleWindow.open(feature);
-          default: throw `TODO: Open window for ${feature.getConstruction().getCode()}`;
+        switch(feature.getConstruction().getViewType()) {
+          case 'simple': return SimpleWindow.open(feature);
+          case 'upgrade-base': return UpgradeBaseWindow.open(feature);
+          default: throw `TODO: Open window for view type: ${feature.getConstruction().getViewType()}`;
         }
       }
     }

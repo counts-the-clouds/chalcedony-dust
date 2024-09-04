@@ -1,9 +1,10 @@
 RoomRegistry.register('storeroom',{
   displayName: 'Storeroom',
 
-  casement: {
+  view: {
+    type: 'simple',
     layout: 'card-layout',
-    background: 'backgrounds/storeroom.png',
+    background: 'ui/storeroom.png',
     details: `This storeroom is increasing the dungeon's storage capacity by {{@size}} units.`,
   },
 

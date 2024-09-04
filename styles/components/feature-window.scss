@@ -1,4 +1,22 @@
 
+.upgrade-base-window {
+  .banner {
+    //width: 100%;
+    aspect-ratio: 4/1;
+    background-size: cover;
+  }
+  .details {
+    padding: 5px 10px;
+    background-color: rgb(0,0,0);
+    border-bottom: $border-normal;
+  }
+  .note {
+    margin: 30px;
+    color: $fg-very-weak;
+    text-align: center;
+  }
+}
+
 .simple-window.card-layout {
   height: 400px;
   width: 300px;
@@ -26,30 +44,30 @@
     background-color: rgb(0,0,0);
     border-bottom: $border-normal;
   }
+}
 
-  .construction-list {
-    .construction-item {
-      margin: 10px;
-      padding-bottom: 10px;
+.construction-list {
+  .construction-item {
+    margin: 10px;
+    padding-bottom: 10px;
 
-      border-bottom: $border-light;
+    border-bottom: $border-light;
 
-      & > .name {
-        font-size: $fs-big;
-        color: $fg-strong;
-      }
-      .description {
-        font-size: $fs-small;
-        color: $fg-body;
-      }
-      .bottom-row {
-        display: flex;
-        align-items: flex-end;
-      }
-      .actions {
-        text-align: right;
-        flex-grow: 1;
-      }
+    & > .name {
+      font-size: $fs-big;
+      color: $fg-strong;
+    }
+    .description {
+      font-size: $fs-small;
+      color: $fg-body;
+    }
+    .bottom-row {
+      display: flex;
+      align-items: flex-end;
+    }
+    .actions {
+      text-align: right;
+      flex-grow: 1;
     }
   }
 }

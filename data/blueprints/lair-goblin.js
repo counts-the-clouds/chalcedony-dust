@@ -4,6 +4,8 @@ BlueprintRegistry.register('lair-goblin',{
   displayName: 'Goblin Lair',
   description: `(build a Goblin lair)`,
 
+  upgradeFrom: 'lair',
+
   constructionTime: 60,
   costPerTile:{ mana:4 },
 });
