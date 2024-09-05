@@ -1,4 +1,5 @@
 RoomRegistry.register('lair-skreevin',{
+  type: RoomType.lair,
   displayName: 'Skreevin Lair',
 
   view: {

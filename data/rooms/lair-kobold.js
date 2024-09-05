@@ -1,4 +1,5 @@
 RoomRegistry.register('lair-kobold',{
+  type: RoomType.lair,
   displayName: 'Kobold Lair',
 
   view: {

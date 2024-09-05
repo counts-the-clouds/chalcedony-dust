@@ -1,4 +1,5 @@
 RoomRegistry.register('storeroom',{
+  type: RoomType.plain,
   displayName: 'Storeroom',
 
   view: {

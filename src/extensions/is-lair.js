@@ -1,0 +1,32 @@
+global.IsLair = function(data = {}) {
+
+  let $room;
+  let $minions = data.minions || [];
+
+  function getLairData() { return $room.getRoomData().lair; }
+  function getDomiciledMinions() { return [...$minions]; }
+  function getDomiciledMinionCount() { return $minions.length; }
+  function getDomiciledMinionCapacity() { return Math.floor($room.getFeature().getSize() / getLairData().minionsPerTile); }
+
+  // ===========================================================================
+
+  function pack() {
+    return {
+      minions: $minions,
+    };
+  }
+
+  function attach(model) {
+    $room = model;
+    model.getLairData = getLairData;
+    model.getDomiciledMinions = getDomiciledMinions;
+    model.getDomiciledMinionCount = getDomiciledMinionCount;
+    model.getDomiciledMinionCapacity = getDomiciledMinionCapacity;
+  }
+
+  return Object.freeze({
+    pack,
+    attach,
+  });
+
+}
