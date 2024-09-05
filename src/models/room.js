@@ -1,9 +1,12 @@
 global.Room = function(data) {
-  RoomRegistry.lookup(data.code);
-
+  const roomData = RoomRegistry.lookup(data.code);
   const $id = data.id || RoomDataStore.nextID();
   const $featureID = data.featureID;
   let $code = data.code;
+
+  Validate.exists('View',roomData.view,`Room[${data.code}] has no view`);
+  Validate.exists('Display Name',roomData.displayName,`Room[${data.code}] has no display name`);
+  Validate.exists('Feature ID',$featureID);
 
   function getID() { return $id; }
   function getCode() { return $code; }
@@ -22,6 +25,12 @@ global.Room = function(data) {
     return Weaver({
       size: feature.getSize()
     }).weave(getView().details);
+  }
+
+  function getLairData() {
+    const data = getRoomData().lair;
+    if (data == null) { throw `This room has no lair data.` }
+    return data;
   }
 
   // TODO: Surely other things may need to change when a room is upgraded from
@@ -57,6 +66,7 @@ global.Room = function(data) {
     getLayout,
     getBackground,
     getDetails,
+    getLairData,
     upgradeTo,
     toString,
     pack,
