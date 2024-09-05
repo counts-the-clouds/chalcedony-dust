@@ -1,7 +1,6 @@
 
 .upgrade-base-window {
   .banner {
-    //width: 100%;
     aspect-ratio: 4/1;
     background-size: cover;
   }
@@ -34,7 +33,6 @@
 }
 
 .empty-feature-window {
-
   .banner {
     aspect-ratio: 45 / 12;
     background-size: cover;
@@ -69,5 +67,39 @@
       text-align: right;
       flex-grow: 1;
     }
+  }
+}
+
+.lair-window {
+
+  .header {
+    padding: 10px;
+    border-bottom: $border-light;
+    background-color: rgba(0,0,0,0.5);
+    box-shadow: $shadow-shallow;
+  }
+
+  .actions {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    padding: 0 10px 10px;
+    border-bottom: $border-light;
+  }
+
+  .minion-list {
+
+    li {
+      height: 60px;
+      padding-left: 10px;
+      background-color: rgb(0,0,0,0.2);
+      border-bottom: $border-light;
+    }
+
+    .empty {
+      color: $fg-very-weak;
+      line-height: 60px;
+    }
+
   }
 }

@@ -7,6 +7,11 @@ global.LairWindow = (function() {
     casement.setTitle(room.getDisplayName());
     casement.setBounds(getBounds());
     casement.setBackground('rgb(17,19,17)');
+
+    const content = casement.getCasementContent();
+    content.querySelector('.summon-button').addEventListener('click', () => {
+      console.log(`Summon ${room.getLairData().species}!`);
+    });
   }
 
   function build(feature, room) {
@@ -15,19 +20,25 @@ global.LairWindow = (function() {
     const minionIDs = room.getDomiciledMinions();
     const capacity = room.getDomiciledMinionCapacity();
 
-    let html = `<div>Capacity:${capacity}</div><ul class='minion-list'>`
+    let html = `<div class='lair-window'>`
+    html += `<div class='header'>${room.getDetails()}</div>`
 
+    if (capacity > room.getDomiciledMinionCount()) {
+      html += `<div class='actions'>
+        ${CostPanel.build(lairData.cost)}
+        <div class='buttons'>
+          <div class='summon-button button button-primary button-big'>Summon ${species.getName()}</div>
+        </div>
+      </div>`
+    }
+
+    html += `<ul class='minion-list'>`
     for (let i=0; i<capacity; i++) {
       html += (minionIDs[i] == null) ? `<li class='empty'>Empty</li>` : buildMinionItem(minionIDs[i]);
     }
-
     html += `</ul>`
 
-    if (capacity > room.getDomiciledMinionCount()) {
-      html += `<div><div class='button button-primary'>Summon ${species.getName()}</div></div>`
-    }
-
-    return html
+    return `${html}</div>`
   }
 
   function buildMinionItem(minionID) {
