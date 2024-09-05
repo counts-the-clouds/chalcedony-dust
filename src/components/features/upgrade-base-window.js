@@ -1,24 +1,26 @@
 global.UpgradeBaseWindow = (function() {
 
   function open(feature) {
-    const room = feature.getConstruction();
-    const background = room.getBackground();
+    if (FeatureWindows.windowNotOpen(feature)) {
+      const room = feature.getConstruction();
+      const background = room.getBackground();
 
-    const casement = FeatureWindows.openCasementWith(feature,build(feature,room));
-    casement.setTitle(room.getDisplayName());
-    casement.setBounds(getBounds());
-    casement.setBackground('rgb(15,15,15)');
+      const casement = FeatureWindows.openCasementWith(feature, build(feature, room));
+      casement.setTitle(room.getDisplayName());
+      casement.setBounds(getBounds());
+      casement.setBackground('rgb(15,15,15)');
 
-    const content = casement.getCasementContent();
-    content.querySelectorAll('.upgrade-button').forEach(button => {
-      button.addEventListener('click', event => {
-        executeUpgrade(event, feature, casement)
+      const content = casement.getCasementContent();
+      content.querySelectorAll('.upgrade-button').forEach(button => {
+        button.addEventListener('click', event => {
+          executeUpgrade(event, feature, casement)
+        });
       });
-    });
 
-    if (background) {
-      const backgroundElement = content.querySelector('.has-background');
-      backgroundElement.style['background-image'] = X.assetURL(room.getBackground());
+      if (background) {
+        const backgroundElement = content.querySelector('.has-background');
+        backgroundElement.style['background-image'] = X.assetURL(room.getBackground());
+      }
     }
   }
 

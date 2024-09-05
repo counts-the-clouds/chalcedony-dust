@@ -4,14 +4,8 @@ global.EmptyFeatureWindow = (function () {
   const hallNote = `This empty hall could be made into something more useful.`
 
   async function open(feature) {
-    const casement = FeatureWindows.openCasementWith(feature,`
-      <div class='empty-feature-window'>
-        <div class='banner'></div>
-        <div class='note'></div>
-        <ul class='construction-list'></ul>
-      </div>`);
-
-    if (casement) {
+    if (FeatureWindows.windowNotOpen(feature)) {
+      const casement = FeatureWindows.openCasementWith(feature,build());
       casement.setBounds({ top:20, left:20, height:600, width:450 });
       casement.setBackground('rgb(15,15,15)')
       casement.setMinimumWidth(450);
@@ -26,6 +20,15 @@ global.EmptyFeatureWindow = (function () {
 
       casement.contentResized();
     }
+  }
+
+  function build() {
+    return `
+      <div class='empty-feature-window'>
+        <div class='banner'></div>
+        <div class='note'></div>
+        <ul class='construction-list'></ul>
+      </div>`;
   }
 
   function setBannerImage(feature, content) {

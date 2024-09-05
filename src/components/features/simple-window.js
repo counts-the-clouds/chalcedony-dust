@@ -1,16 +1,18 @@
 global.SimpleWindow = (function() {
 
   function open(feature) {
-    const room = feature.getConstruction();
-    const background = room.getBackground();
+    if (FeatureWindows.windowNotOpen(feature)) {
+      const room = feature.getConstruction();
+      const background = room.getBackground();
 
-    const casement = FeatureWindows.openCasementWith(feature,getBase(room),{ scrollingPanel:false, resizable:false });
-    casement.setTitle(room.getDisplayName());
-    casement.setBounds(getBounds(room));
+      const casement = FeatureWindows.openCasementWith(feature, getBase(room), {scrollingPanel: false, resizable: false});
+      casement.setTitle(room.getDisplayName());
+      casement.setBounds(getBounds(room));
 
-    if (background) {
-      const backgroundElement = casement.getCasementContent().querySelector('.has-background');
-      backgroundElement.style['background-image'] = X.assetURL(room.getBackground());
+      if (background) {
+        const backgroundElement = casement.getCasementContent().querySelector('.has-background');
+        backgroundElement.style['background-image'] = X.assetURL(room.getBackground());
+      }
     }
   }
 

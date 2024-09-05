@@ -1,17 +1,19 @@
 global.LairWindow = (function() {
 
   function open(feature) {
-    const room = feature.getConstruction();
+    if (FeatureWindows.windowNotOpen(feature)) {
+      const room = feature.getConstruction();
 
-    const casement = FeatureWindows.openCasementWith(feature,build(feature,room));
-    casement.setTitle(room.getDisplayName());
-    casement.setBounds(getBounds());
-    casement.setBackground('rgb(17,19,17)');
+      const casement = FeatureWindows.openCasementWith(feature,build(feature,room));
+      casement.setTitle(room.getDisplayName());
+      casement.setBounds(getBounds());
+      casement.setBackground('rgb(17,19,17)');
 
-    const content = casement.getCasementContent();
-    content.querySelector('.summon-button').addEventListener('click', () => {
-      console.log(`Summon ${room.getLairData().species}!`);
-    });
+      const content = casement.getCasementContent();
+      content.querySelector('.summon-button').addEventListener('click', () => {
+        console.log(`Summon ${room.getLairData().species}!`);
+      });
+    }
   }
 
   function build(feature, room) {

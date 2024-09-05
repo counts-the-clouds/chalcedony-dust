@@ -34,8 +34,12 @@ global.FeatureWindows = (function() {
     throw `Unexpected state for feature ${feature} [${feature.getType()}/${feature.getState()}]`
   }
 
+  function windowNotOpen(feature) {
+    return Casement.getAssociatedCasements(feature.toString()).length === 0
+  }
+
   function openCasementWith(feature, content, options={}) {
-    if (Casement.getAssociatedCasements(feature.toString()).length === 0) {
+    if (windowNotOpen(feature)) {
       const casement = Casement.fromString(content, options);
       casement.setAssociatedWith(feature.toString());
       casement.setTitle(feature.getDisplayName());
@@ -47,6 +51,7 @@ global.FeatureWindows = (function() {
 
   return Object.freeze({
     open,
+    windowNotOpen,
     openCasementWith,
   });
 
