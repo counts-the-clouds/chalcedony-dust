@@ -1,4 +1,4 @@
-describe.only("Room", function() {
+describe("Room", function() {
 
   describe("Lair Rooms", function() {
     it('is a lair', function() {

@@ -1,0 +1,26 @@
+  .minion-list {
+
+    li {
+      height: 60px;
+      padding-left: 10px;
+      background-color: rgb(0,0,0,0.2);
+      border-bottom: $border-light;
+    }
+
+    .minion {
+      .top-row {
+        padding-top: 10px;
+        font-size: $fs-big;
+      }
+      .bottom-row {
+        opacity: 0.66;
+        font-size: $fs-small;
+      }
+    }
+
+    .empty {
+      color: $fg-very-weak;
+      line-height: 60px;
+    }
+
+  }

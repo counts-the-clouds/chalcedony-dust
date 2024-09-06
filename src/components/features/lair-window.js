@@ -13,13 +13,14 @@ global.LairWindow = (function() {
       content.querySelector('.summon-button').addEventListener('click', () => {
         summonMinion(feature, casement);
       });
+
+      content.querySelector('.list-container').appendChild(MinionElements.buildMinionListForLair(room));
     }
   }
 
   function build(feature, room) {
     const lairData = room.getLairData();
     const species = Species(lairData.species);
-    const minionIDs = room.getDomiciledMinions();
     const capacity = room.getDomiciledMinionCapacity();
 
     let html = `<div class='lair-window'>`
@@ -34,18 +35,9 @@ global.LairWindow = (function() {
       </div>`
     }
 
-    html += `<ul class='minion-list'>`
-    for (let i=0; i<capacity; i++) {
-      html += (minionIDs[i] == null) ? `<li class='empty'>Empty</li>` : buildMinionItem(minionIDs[i]);
-    }
-    html += `</ul>`
+    html += `<div class='list-container'></div>`
 
     return `${html}</div>`
-  }
-
-  function buildMinionItem(minionID) {
-    const minion = MinionDataStore.get(minionID);
-    return `<li>Minion: ${minion.getFullName()}</li>`
   }
 
   function getBounds() {
@@ -64,7 +56,7 @@ global.LairWindow = (function() {
 
     const root = casement.getCasementContent();
     const listItem = firstEmptyItem(root);
-    const minionItem = X.createElement(buildMinionItem(minion.getID()));
+    const minionItem = MinionElements.buildMinionItem(minion.getID());
 
     listItem.replaceWith(minionItem);
 

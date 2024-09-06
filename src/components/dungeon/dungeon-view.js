@@ -121,13 +121,8 @@ global.DungeonView = (function() {
       TileShelfView.handleResize();
 
       if (event && $isResizing === false) {
-        console.log(">>> Arm Hack")
         window.addEventListener('mousemove', resizeHack);
         $isResizing = true;
-      }
-
-      if (event == null) {
-        console.log("--- Resize Without Event")
       }
     }
   }
@@ -149,7 +144,6 @@ global.DungeonView = (function() {
   //       needed there.
   //
   function resizeHack() {
-    console.log("<<< Disarm Hack")
     window.setTimeout(resize,100);
     window.removeEventListener('mousemove', resizeHack);
     $isResizing = false;

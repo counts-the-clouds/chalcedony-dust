@@ -71,7 +71,6 @@
 }
 
 .lair-window {
-
   .header {
     padding: 10px;
     border-bottom: $border-light;
@@ -85,21 +84,5 @@
     justify-content: space-between;
     padding: 0 10px 10px;
     border-bottom: $border-light;
-  }
-
-  .minion-list {
-
-    li {
-      height: 60px;
-      padding-left: 10px;
-      background-color: rgb(0,0,0,0.2);
-      border-bottom: $border-light;
-    }
-
-    .empty {
-      color: $fg-very-weak;
-      line-height: 60px;
-    }
-
   }
 }
