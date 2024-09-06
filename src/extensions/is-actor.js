@@ -7,13 +7,13 @@ global.IsActor = function(data = {}) {
 
   function setGender(gender) { $gender = gender; }
   function getGender() { return $gender; }
-  function setSpecies(code) { return $species = code; }
-  function getSpecies() { return Species[$species]; }
+  function setSpecies(code) { $species = code; }
+  function getSpecies() { return Species($species); }
   function setFirstName(name) { $firstName = name; }
   function getFirstName() { return $firstName; }
   function setLastName(name) { $lastName = name; }
   function getLastName() { return $lastName; }
-  function getFullName() { return `${$firstName} ${$lastName}` }
+  function getFullName() { return `${$firstName||''} ${$lastName||''}`.trim() }
 
   // ===========================================================================
 

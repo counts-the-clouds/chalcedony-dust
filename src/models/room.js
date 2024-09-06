@@ -53,7 +53,7 @@ global.Room = function(data) {
       featureID: $featureID,
     }
 
-    if ($isLair) { packed.isLair = $isLair; }
+    if ($isLair) { packed.isLair = $isLair.pack(); }
 
     return packed;
   }

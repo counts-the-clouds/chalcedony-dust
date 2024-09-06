@@ -11,7 +11,7 @@ global.LairWindow = (function() {
 
       const content = casement.getCasementContent();
       content.querySelector('.summon-button').addEventListener('click', () => {
-        console.log(`Summon ${room.getLairData().species}!`);
+        summonMinion(feature, casement);
       });
     }
   }
@@ -54,6 +54,44 @@ global.LairWindow = (function() {
     const left = position.x - 200;
     return { top, left, height:600, width:400 }
   }
+
+  // === Summoning =============================================================
+
+  async function summonMinion(feature, casement) {
+    const room = feature.getConstruction();
+    const lairData = room.getLairData();
+    const minion = MinionBuilder.build({ species:lairData.species });
+
+    const root = casement.getCasementContent();
+    const listItem = firstEmptyItem(root);
+    const minionItem = X.createElement(buildMinionItem(minion.getID()));
+
+    listItem.replaceWith(minionItem);
+
+    room.addMinion(minion);
+
+    // TODO: Actually spend the resources needed to summon the minion.
+
+    // TODO: Also need to disable the summon button if we can't afford the
+    //       minion cost. This should be a common function that listens for
+    //       inventory changes as well.
+
+    if (emptyItemExists(root) === false) {
+      root.querySelector('.actions').remove();
+      casement.contentResized();
+    }
+
+    await GameState.saveState();
+  }
+
+  function emptyItemExists(root) {
+    return root.querySelector('.minion-list li.empty') != null;
+  }
+
+  function firstEmptyItem(root) {
+    return root.querySelectorAll('.minion-list li.empty')[0];
+  }
+
 
   return Object.freeze({
     open

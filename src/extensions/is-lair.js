@@ -8,6 +8,11 @@ global.IsLair = function(data = {}) {
   function getDomiciledMinionCount() { return $minions.length; }
   function getDomiciledMinionCapacity() { return Math.floor($room.getFeature().getSize() / getLairData().minionsPerTile); }
 
+  function addMinion(minion) {
+    if (getDomiciledMinionCount() >= getDomiciledMinionCapacity()) { throw `Cannot add minion, the lair is full.` }
+    $minions.push(minion.getID());
+  }
+
   // ===========================================================================
 
   function pack() {
@@ -22,6 +27,7 @@ global.IsLair = function(data = {}) {
     model.getDomiciledMinions = getDomiciledMinions;
     model.getDomiciledMinionCount = getDomiciledMinionCount;
     model.getDomiciledMinionCapacity = getDomiciledMinionCapacity;
+    model.addMinion =  addMinion;
   }
 
   return Object.freeze({
