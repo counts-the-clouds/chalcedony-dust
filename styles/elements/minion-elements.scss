@@ -2,23 +2,34 @@
 
     li {
       height: 60px;
-      padding-left: 10px;
       background-color: rgb(0,0,0,0.2);
       border-bottom: $border-light;
     }
 
     .minion {
+      .body {
+        position: absolute;
+      }
+      .flash {
+        position: absolute;
+        width: 2000px;
+        height: 60px;
+        background-color: rgb(255,255,255);
+      }
       .top-row {
+        padding-left: 10px;
         padding-top: 10px;
         font-size: $fs-big;
       }
       .bottom-row {
+        padding-left: 10px;
         opacity: 0.66;
         font-size: $fs-small;
       }
     }
 
     .empty {
+      padding-left: 10px;
       color: $fg-very-weak;
       line-height: 60px;
     }

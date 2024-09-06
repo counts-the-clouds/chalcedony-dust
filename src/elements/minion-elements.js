@@ -12,11 +12,15 @@ global.MinionElements = (function() {
     return list
   }
 
-  function buildMinionItem(id) {
+  function buildMinionItem(id, withFlash=false) {
     const minion = MinionDataStore.get(id);
+
     return X.createElement(`<li class='minion'>
-      <div class='top-row'><a href='#' class='open-minion-window' data-minion-id='${id}'>${minion.getFullName()}</a></div>
-      <div class='bottom-row'>${TextHelper.titlecase(minion.getGender())} ${minion.getSpecies().getName()}</div>
+      <div class='body'>
+        ${withFlash ? `<div class='flash'></div>` : ''}
+        <div class='top-row'><a href='#' class='open-minion-window' data-minion-id='${id}'>${minion.getFullName()}</a></div>
+        <div class='bottom-row'>${TextHelper.titlecase(minion.getGender())} ${minion.getSpecies().getName()}</div>
+      </div>
     </li>`);
   }
 

@@ -6,13 +6,17 @@ global.LairWindow = (function() {
 
       const casement = FeatureWindows.openCasementWith(feature,build(feature,room));
       casement.setTitle(room.getDisplayName());
-      casement.setBounds(getBounds());
+      casement.setBounds(getBounds(room.getDomiciledMinionCapacity()));
       casement.setBackground('rgb(17,19,17)');
 
       const content = casement.getCasementContent();
-      content.querySelector('.summon-button').addEventListener('click', () => {
-        summonMinion(feature, casement);
-      });
+      const summonButton = content.querySelector('.summon-button');
+
+      if (summonButton) {
+        summonButton.addEventListener('click', () => {
+          summonMinion(feature, casement);
+        });
+      }
 
       content.querySelector('.list-container').appendChild(MinionElements.buildMinionListForLair(room));
     }
@@ -40,11 +44,13 @@ global.LairWindow = (function() {
     return `${html}</div>`
   }
 
-  function getBounds() {
+  function getBounds(capacity) {
+    const height = Math.min(600,((capacity+2) * 60));
+
     const position = MouseMonitor.getPosition();
     const top = position.y - 100;
     const left = position.x - 200;
-    return { top, left, height:600, width:400 }
+    return { top, left, height:height, width:400 }
   }
 
   // === Summoning =============================================================
@@ -56,7 +62,7 @@ global.LairWindow = (function() {
 
     const root = casement.getCasementContent();
     const listItem = firstEmptyItem(root);
-    const minionItem = MinionElements.buildMinionItem(minion.getID());
+    const minionItem = MinionElements.buildMinionItem(minion.getID(), true);
 
     listItem.replaceWith(minionItem);
 
@@ -72,6 +78,11 @@ global.LairWindow = (function() {
       root.querySelector('.actions').remove();
       casement.contentResized();
     }
+
+    Effects.fadeOut({
+      element: minionItem.querySelector('.flash'),
+      id:`Minion-${minion.getID()}`
+    });
 
     await GameState.saveState();
   }

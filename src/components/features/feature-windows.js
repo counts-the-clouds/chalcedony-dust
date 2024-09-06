@@ -43,6 +43,11 @@ global.FeatureWindows = (function() {
       const casement = Casement.fromString(content, options);
       casement.setAssociatedWith(feature.toString());
       casement.setTitle(feature.getDisplayName());
+
+      setTimeout(() => {
+        casement.contentResized();
+      },1);
+
       return casement;
     }
   }

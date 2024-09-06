@@ -1,5 +1,14 @@
 global.Effects = (function() {
 
+  function fadeOut(options) {
+    if (options.id == null) { throw `A fade out animation should have an ID or two animations may interfere with each other.` }
+
+    AnimationController.addAnimation('dom-fade-out',`Fade[${options.id}]`,{
+      element: options.element,
+      onComplete: () => { options.element.remove(); },
+    });
+  }
+
   function flashSquare(selector, options={}) {
     const bounds = X.first(selector).getBoundingClientRect();
 
@@ -17,7 +26,9 @@ global.Effects = (function() {
     });
   }
 
+
   return Object.freeze({
+    fadeOut,
     flashSquare,
   });
 

@@ -84,5 +84,5 @@ global.Room = function(data) {
 
   RoomDataStore.store($self);
 
-  return Object.freeze($self);
+  return $self;
 }
