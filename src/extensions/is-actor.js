@@ -9,6 +9,7 @@ global.IsActor = function(data = {}) {
   function getGender() { return $gender; }
   function setSpecies(code) { $species = code; }
   function getSpecies() { return Species($species); }
+  function getSpeciesCode() { return $species; }
   function setFirstName(name) { $firstName = name; }
   function getFirstName() { return $firstName; }
   function setLastName(name) { $lastName = name; }
@@ -31,6 +32,7 @@ global.IsActor = function(data = {}) {
     model.getGender = getGender;
     model.setSpecies = setSpecies;
     model.getSpecies = getSpecies;
+    model.getSpeciesCode = getSpeciesCode;
     model.setFirstName = setFirstName;
     model.getFirstName = getFirstName;
     model.setLastName = setLastName;

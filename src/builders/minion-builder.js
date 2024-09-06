@@ -20,6 +20,8 @@ global.MinionBuilder = (function() {
     if (nameData.first) { minion.setFirstName(nameData.first.name); }
     if (nameData.last) { minion.setLastName(nameData.last.name); }
 
+    Panopticon.induce(EventType.minionSummoned, { minion });
+
     return minion;
   }
 

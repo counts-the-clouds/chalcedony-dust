@@ -118,4 +118,10 @@
   .minions-state {
     &.empty { opacity: 0.5; }
   }
+
+  .species-list {
+    display: grid;
+    grid-template-columns: 8em auto;
+    .species-name { color: $fg-very-strong; }
+  }
 }

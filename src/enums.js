@@ -117,14 +117,15 @@ global.FeatureState = Object.freeze({
 });
 
 global.EventType = Object.freeze({
-  tileDrawn: 'tile-drawn',
-  tilePlaced: 'tile-placed',
-  tileDiscarded: 'tile-discarded',
   featureCompleted: 'feature-completed',
-  resourceDiscovered: 'resource-discovered',
   itemAdded: 'item-added',
   itemRemoved: 'item-removed',
+  minionSummoned: 'minion-summoned',
+  resourceDiscovered: 'resource-discovered',
   storageExpanded: 'storage-expanded',
+  tileDiscarded: 'tile-discarded',
+  tileDrawn: 'tile-drawn',
+  tilePlaced: 'tile-placed',
 });
 
 global.DiscoveryType = Object.freeze({
