@@ -2,7 +2,7 @@ describe('DiscoveryAdjuster', function() {
 
   it('adds a resource node to a tile', function() {
     const tile = Tile({ code:'baseline-h2-0' });
-    const discovery = { code:'iron-mine', type:DiscoveryType.resource };
+    const discovery = { code:'amberian-mine', type:DiscoveryType.resource };
 
     DiscoveryAdjuster.addResourceNode(tile, discovery);
 

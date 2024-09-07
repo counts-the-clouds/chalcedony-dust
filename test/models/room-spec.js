@@ -27,4 +27,20 @@ describe("Room", function() {
     });
   });
 
+  describe("With Workers", function() {
+    it('has workers', function() {
+      const minion = MinionBuilder.build({ species:'skreevin' });
+
+      const feature = Feature({ type:TileType.room });
+      feature.attachConstruction('blacksmith');
+
+      const room = feature.getConstruction();
+      room.addWorker(minion);
+
+      expect(room.hasWorkers()).to.be.true;
+      expect(room.hasWorker(minion)).to.be.true;
+      expect(room.getWorkers()[0].getID()).to.equal(minion.getID());
+    });
+  })
+
 })

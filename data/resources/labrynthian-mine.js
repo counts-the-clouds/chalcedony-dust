@@ -1,3 +1,8 @@
 ResourceRegistry.register('labrynthian-mine',{
-  name: 'Labrynthian Mine'
+  name: 'Labrynthian Mine',
+
+  workerConfiguration: {
+    slots: 1,
+  },
+
 });

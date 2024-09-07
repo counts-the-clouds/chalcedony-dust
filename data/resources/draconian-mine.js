@@ -1,3 +1,8 @@
 ResourceRegistry.register('draconian-mine',{
-  name: 'Draconian Mine'
+  name: 'Draconian Mine',
+
+  workerConfiguration: {
+    slots: 1,
+  },
+
 });

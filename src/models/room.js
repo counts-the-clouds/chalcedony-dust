@@ -5,6 +5,7 @@ global.Room = function(data) {
 
   let $code = data.code;
   let $isLair;
+  let $hasWorkers;
 
   Validate.exists('Display Name',roomData.displayName,`Room[${data.code}] has no display name`);
   Validate.exists('View',roomData.view,`Room[${data.code}] has no view`);
@@ -16,6 +17,7 @@ global.Room = function(data) {
 
   function isLair() { return getRoomData().isLair === true; }
   function hasWorkers() { return getRoomData().hasWorkers === true; }
+  function getWorkerConfiguration() { return getRoomData().workerConfiguration; }
 
   function getRoomData() { return RoomRegistry.lookup($code); }
   function getDisplayName() { return getRoomData().displayName; }
@@ -39,6 +41,10 @@ global.Room = function(data) {
       $isLair = IsLair();
       $isLair.attach($self);
     }
+    if (hasWorkers()) {
+      $hasWorkers = HasWorkers();
+      $hasWorkers.attach($self);
+    }
   }
 
   // ===========================================================================
@@ -55,6 +61,7 @@ global.Room = function(data) {
     }
 
     if (isLair()) { packed.isLair = $isLair.pack(); }
+    if (hasWorkers()) { packed.hasWorkers = $hasWorkers.pack(); }
 
     return packed;
   }
@@ -68,6 +75,7 @@ global.Room = function(data) {
     getFeature,
     isLair,
     hasWorkers,
+    getWorkerConfiguration,
     getRoomData,
     getDisplayName,
     getViewType,
@@ -82,6 +90,10 @@ global.Room = function(data) {
   if (isLair()) {
     $isLair = IsLair(data.isLair);
     $isLair.attach($self);
+  }
+  if (hasWorkers()) {
+    $hasWorkers = HasWorkers(data.hasWorkers);
+    $hasWorkers.attach($self);
   }
 
   RoomDataStore.store($self);
