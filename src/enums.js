@@ -97,12 +97,6 @@ global.TileType = Object.freeze({
   resource: 'resource',
 });
 
-global.RoomType = Object.freeze({
-  plain: 'plain',
-  lair: 'lair',
-  crafting: 'crafting',
-});
-
 global.PlacementRules = Object.freeze({
   noRotate: 'no-rotate',
   noDiscard: 'no-discard',

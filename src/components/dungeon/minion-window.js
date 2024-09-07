@@ -14,9 +14,7 @@ global.MinionWindow = (function() {
   }
 
   function updateHeader() {
-    const lairs = RoomDataStore.all().filter(room => {
-      return room.getRoomType() === RoomType.lair
-    });
+    const lairs = RoomDataStore.all().filter(room => room.isLair());
 
     if (lairs.length === 0) {
       return $slideWindow.setHeader(X.createElement(`<span class='minions-state empty'>There are no active lairs.</span>`))

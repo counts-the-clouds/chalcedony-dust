@@ -1,5 +1,4 @@
 RoomRegistry.register('lair',{
-  type: RoomType.plain,
   displayName: 'An Empty Lair',
 
   view: {

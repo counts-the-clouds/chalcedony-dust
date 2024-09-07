@@ -1,4 +1,4 @@
 RoomRegistry.register('blacksmith',{
-  type: RoomType.crafting,
+  hasWorkers: true,
   displayName: 'Blacksmith',
 });

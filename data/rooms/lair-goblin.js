@@ -1,5 +1,5 @@
 RoomRegistry.register('lair-goblin',{
-  type: RoomType.lair,
+  isLair: true,
   displayName: 'Goblin Lair',
 
   view: {

@@ -1,4 +1,4 @@
 RoomRegistry.register('foundry',{
-  type: RoomType.crafting,
+  hasWorkers: true,
   displayName: 'Foundry',
 });

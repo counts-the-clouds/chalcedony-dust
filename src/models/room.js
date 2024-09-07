@@ -6,7 +6,6 @@ global.Room = function(data) {
   let $code = data.code;
   let $isLair;
 
-  Validate.exists('Type',roomData.type,`Room[${data.code}] has no type`);
   Validate.exists('Display Name',roomData.displayName,`Room[${data.code}] has no display name`);
   Validate.exists('View',roomData.view,`Room[${data.code}] has no view`);
   Validate.exists('Feature ID',$featureID);
@@ -15,8 +14,10 @@ global.Room = function(data) {
   function getCode() { return $code; }
   function getFeature() { return FeatureDataStore.get($featureID); }
 
+  function isLair() { return getRoomData().isLair === true; }
+  function hasWorkers() { return getRoomData().hasWorkers === true; }
+
   function getRoomData() { return RoomRegistry.lookup($code); }
-  function getRoomType() { return getRoomData().type; }
   function getDisplayName() { return getRoomData().displayName; }
   function getView() { return getRoomData().view; }
   function getViewType() { return getView().type; }
@@ -34,7 +35,7 @@ global.Room = function(data) {
   function upgradeTo(code) {
     $code = code;
 
-    if (getRoomType() === RoomType.lair) {
+    if (isLair()) {
       $isLair = IsLair();
       $isLair.attach($self);
     }
@@ -53,7 +54,7 @@ global.Room = function(data) {
       featureID: $featureID,
     }
 
-    if ($isLair) { packed.isLair = $isLair.pack(); }
+    if (isLair()) { packed.isLair = $isLair.pack(); }
 
     return packed;
   }
@@ -65,8 +66,9 @@ global.Room = function(data) {
     getID,
     getCode,
     getFeature,
+    isLair,
+    hasWorkers,
     getRoomData,
-    getRoomType,
     getDisplayName,
     getViewType,
     getLayout,
@@ -77,7 +79,7 @@ global.Room = function(data) {
     pack,
   };
 
-  if (getRoomType() === RoomType.lair) {
+  if (isLair()) {
     $isLair = IsLair(data.isLair);
     $isLair.attach($self);
   }

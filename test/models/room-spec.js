@@ -6,7 +6,7 @@ describe("Room", function() {
       feature.attachConstruction('lair-goblin');
 
       const room = feature.getConstruction();
-      expect(room.getRoomType()).to.equal(RoomType.lair);
+      expect(room.isLair()).to.be.true;
       expect(room.getDomiciledMinionCount()).to.equal(0);
       expect(room.getLairData().species).to.equal('goblin');
     });
