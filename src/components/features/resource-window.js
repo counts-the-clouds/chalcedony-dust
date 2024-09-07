@@ -11,6 +11,7 @@ global.ResourceWindow = (function() {
 
       const content = casement.getCasementContent();
       content.querySelector('.has-background').style['background-image'] = X.assetURL(resource.getView().background);
+      content.querySelector('.worker-area').appendChild(WorkerControl.build(feature));
     }
   }
 
@@ -20,6 +21,7 @@ global.ResourceWindow = (function() {
       <div class='banner has-background'></div>
       <div class='icon-container'><div class='icon icon-for-${view.resourceIcon}'></div></div>
       <div class='header'>${resource.getDetails()}</div>
+      <div class='worker-area'></div>
     </div>`
   }
 
