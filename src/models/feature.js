@@ -177,6 +177,8 @@ global.Feature = function(data) {
     attachConstruction(code);
     Blueprint(code).onConstructionComplete($self);
 
+    Panopticon.induce(EventType.constructionComplete,{ code });
+
     await GameState.saveState();
   }
 

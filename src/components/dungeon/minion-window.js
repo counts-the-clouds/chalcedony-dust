@@ -11,6 +11,12 @@ global.MinionWindow = (function() {
       updateHeader();
       updateMinions();
     }));
+
+    Panopticon.addObserver(Observer(EventType.constructionComplete, data => {
+      if (BlueprintRegistry.lookup(data.code).type === TileType.room) {
+        if (RoomRegistry.lookup(data.code).isLair) { updateHeader(); }
+      }
+    }));
   }
 
   function updateHeader() {

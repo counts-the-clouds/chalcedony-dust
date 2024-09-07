@@ -111,6 +111,7 @@ global.FeatureState = Object.freeze({
 });
 
 global.EventType = Object.freeze({
+  constructionComplete: 'construction-complete',
   featureCompleted: 'feature-completed',
   itemAdded: 'item-added',
   itemRemoved: 'item-removed',
