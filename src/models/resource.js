@@ -7,6 +7,9 @@ global.Resource = function(data) {
   function getID() { return $id; }
   function getCode() { return $code; }
   function getResourceData() { return ResourceRegistry.lookup($code); }
+  function getDisplayName() { return getResourceData().displayName; }
+  function getView() { return getResourceData().view; }
+  function getDetails() { return getView().details; }
   function getWorkerConfiguration() { return getResourceData().workerConfiguration }
   function getFeature() { return FeatureDataStore.get($featureID); }
 
@@ -27,6 +30,9 @@ global.Resource = function(data) {
     model: 'Resource',
     getID,
     getCode,
+    getDisplayName,
+    getView,
+    getDetails,
     getWorkerConfiguration,
     getFeature,
     toString,

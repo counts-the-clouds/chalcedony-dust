@@ -86,3 +86,31 @@
     border-bottom: $border-light;
   }
 }
+
+.resource-window {
+  .banner {
+    aspect-ratio: 3/1;
+    background-size: cover;
+  }
+  .header {
+    background-color: rgb(0,0,0);
+    padding: 10px 86px 10px 10px;
+    border-bottom: $border-light;
+    box-shadow: $shadow-frame;
+  }
+  .icon-container {
+    display: flex;
+    justify-content: right;
+    height: 0;
+
+    .icon {
+      position: relative;
+      top: -36px;
+      left: -10px;
+      height: 64px;
+      width: 64px;
+      border: $border-normal;
+      box-shadow: $shadow-shallow;
+    }
+  }
+}

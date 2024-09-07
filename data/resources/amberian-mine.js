@@ -1,5 +1,11 @@
 ResourceRegistry.register('amberian-mine',{
-  name: 'Amberian Mine',
+  displayName: 'Amberian Mine',
+
+  view: {
+    details: '(Amberian Mine Details)',
+    background: 'ui/mine.png',
+    resourceIcon: 'amberian-ore',
+  },
 
   workerConfiguration: {
     slots: 1,
