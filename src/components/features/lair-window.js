@@ -6,7 +6,7 @@ global.LairWindow = (function() {
 
       const casement = FeatureWindows.openCasementWith(feature,build(feature,room));
       casement.setTitle(room.getDisplayName());
-      casement.setBounds(getBounds(room.getDomiciledMinionCapacity()));
+      casement.setBounds(getBounds(room));
       casement.setBackground('rgb(17,19,17)');
 
       const content = casement.getCasementContent();
@@ -44,8 +44,11 @@ global.LairWindow = (function() {
     return `${html}</div>`
   }
 
-  function getBounds(capacity) {
-    const height = Math.min(600,((capacity+2) * 60));
+  function getBounds(room) {
+    const capacity = room.getDomiciledMinionCapacity();
+    const count = room.getDomiciledMinionCount();
+    const extra = (capacity < count) ? 2 : 1
+    const height = Math.min(600,((capacity+extra) * 60) + 5);
 
     const position = MouseMonitor.getPosition();
     const top = position.y - 100;

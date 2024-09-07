@@ -6,7 +6,7 @@ global.EmptyFeatureWindow = (function () {
   async function open(feature) {
     if (FeatureWindows.windowNotOpen(feature)) {
       const casement = FeatureWindows.openCasementWith(feature,build());
-      casement.setBounds({ top:20, left:20, height:600, width:450 });
+      casement.setBounds(getBounds());
       casement.setBackground('rgb(15,15,15)')
       casement.setMinimumWidth(450);
 
@@ -29,6 +29,13 @@ global.EmptyFeatureWindow = (function () {
         <div class='note'></div>
         <ul class='construction-list'></ul>
       </div>`;
+  }
+
+  function getBounds() {
+    const position = MouseMonitor.getPosition();
+    const top = position.y - 100;
+    const left = position.x - 225;
+    return { top:top, left:left, height:600, width:450 }
   }
 
   function setBannerImage(feature, content) {
