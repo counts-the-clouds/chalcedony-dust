@@ -30,6 +30,7 @@ global.DataStore = function(options) {
 
   function getName() { return $name; }
   function all() { return Object.values(activeStore()); }
+  function allIDs() { return Object.keys(activeStore()); }
   function size() { return Object.keys(activeStore()).length; }
   function exists(id) { return activeStore()[id] != null; }
   function get(id) { return activeStore()[id]; }
@@ -70,6 +71,7 @@ global.DataStore = function(options) {
     nextID,
     getName,
     all,
+    allIDs,
     size,
     exists,
     get,

@@ -11,6 +11,12 @@ global.WorkerControl = (function() {
     control.appendChild(list);
     control.appendChild(select);
 
+    list.querySelectorAll('li').forEach(item => {
+      item.addEventListener('click', event => {
+        openMinionList(feature, control);
+      });
+    });
+
     return control;
   }
 
@@ -34,6 +40,16 @@ global.WorkerControl = (function() {
 
       list.appendChild(slot);
     }
+  }
+
+  function openMinionList(feature, control) {
+    const select = control.querySelector('.worker-select');
+    select.innerHTML = '';
+
+    MinionHelper.allUnassignedMinions().forEach(id => {
+      const minion = MinionDataStore.get(id);
+      console.log(`Unassigned: ${minion}`);
+    });
   }
 
   return Object.freeze({ build })
