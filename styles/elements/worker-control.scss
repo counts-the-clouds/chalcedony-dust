@@ -1,0 +1,20 @@
+.worker-control {
+
+  .worker-list {
+    margin: 10px;
+    border: $border-normal;
+    box-shadow: $shadow-shallow;
+    background-color: rgba(0,0,0,0.33);
+
+    li.slot {
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    li.slot:hover {
+      background-color: rgba(150,150,200,0.1);
+    }
+
+    .display.empty { opacity:0.5; }
+  }
+
+}

@@ -29,9 +29,8 @@ global.ResourceWindow = (function() {
     const position = MouseMonitor.getPosition();
     const top = position.y - 50;
     const left = position.x - 150;
-    return { top, left, height:400, width:300 }
+    return { top, left, height:215, width:300 }
   }
-
 
   return Object.freeze({
     open
