@@ -13,6 +13,7 @@ global.ScrollingPanel = function(options) {
   let $scrollingPanelContent;
   let $scrollingPanelTrack;
   let $scrollingPanelThumb;
+  let $contentHeight;
 
   function getID() { return $id; }
   function getWrappedContent() { return $wrappedContent; }
@@ -52,10 +53,15 @@ global.ScrollingPanel = function(options) {
     $scrollingPanel.style['height'] = `${height}px`;
   }
 
+  // If the scrolling panel is within an element with a fixed position the
+  // height of the scrolling panel content will always be the height of the
+  // scrolling panel. In this situation the content height must be set manually.
+  function setContentHeight(height) { $contentHeight = height; }
+
   function resize() {
     if ($scrollingPanel.clientHeight === 0) { return; }
 
-    let contentHeight = $scrollingPanelContent.scrollHeight;
+    let contentHeight = $contentHeight || $scrollingPanelContent.scrollHeight;
     let visibleHeight = $scrollingPanel.clientHeight;
 
     if (visibleHeight >= contentHeight) {
@@ -149,7 +155,7 @@ global.ScrollingPanel = function(options) {
     $scrollingPanel.dataset.scrollPosition = scrollPosition;
 
     if (scrollPosition > 0) {
-      let contentHeight = $scrollingPanelContent.scrollHeight;
+      let contentHeight = $contentHeight || $scrollingPanelContent.scrollHeight;
       let visibleHeight = $scrollingPanel.clientHeight;
 
       contentOffset = (contentHeight - visibleHeight) * -scrollPosition
@@ -203,6 +209,7 @@ global.ScrollingPanel = function(options) {
     getID,
     getWrappedContent,
     setHeight,
+    setContentHeight,
     resize,
     isActive,
     getPageDistance,
