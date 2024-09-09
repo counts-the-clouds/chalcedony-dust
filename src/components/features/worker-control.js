@@ -36,8 +36,12 @@ global.WorkerControl = (function() {
     for (let i=0; i<configuration.slots; i++) {
       list.appendChild(workerMap[i] ?
         buildMinionItem(MinionDataStore.get(workerMap[i]), i, skill) :
-        X.createElement(`<li class='minion empty' data-slot='${i}'>Select Minion</li>`));
+        buildEmptySlot(i));
     }
+  }
+
+  function buildEmptySlot(slot) {
+    return X.createElement(`<li class='minion empty' data-slot='${slot}'>Select Minion</li>`);
   }
 
   // TODO: Get actual skill bonus from the minion.
@@ -46,7 +50,6 @@ global.WorkerControl = (function() {
     if (skill == null) { throw 'A skill is required'; }
 
     return X.createElement(`<li class='minion' data-slot='${slot}' data-id='${minion.getID()}'>
-      <div class='remove'></div>
       <div class='species'>${minion.getSpecies().getName()}</div>
       <div class='name'>${minion.getFullName()}</div>
       <div class='skill'>${skill} 0</div>
@@ -59,7 +62,7 @@ global.WorkerControl = (function() {
     const control = event.target.closest('.worker-control');
     const slot = event.target.closest('.minion').getAttribute('data-slot');
     const position = X.getPosition(control);
-    const workerList = X.createElement(`<ul class='select-list'></ul>`);
+    const workerList = X.createElement(`<ul class='select-list'><li class='minion empty' data-slot='${slot}'>(no one)</li></ul>`);
 
     const workerSelect = control.querySelector('.worker-select');
     workerSelect.innerHTML = '';
@@ -93,16 +96,27 @@ global.WorkerControl = (function() {
     const control = event.target.closest('.worker-control');
     const selectItem = event.target.closest('.minion');
     const slot = selectItem.getAttribute('data-slot');
-
-    const minion = MinionDataStore.get(parseInt(selectItem.getAttribute('data-id')));
+    const slotElement = getSlot(control, slot);
     const feature = FeatureDataStore.get(parseInt(control.getAttribute('data-feature-id')));
 
     closeMinionList(control);
 
-    const slotElement = getSlot(control, slot);
-    slotElement.replaceWith(buildMinionItem(minion, slot, 'skill'));
+    if (X.hasClass(selectItem,'empty')) {
+      slotElement.replaceWith(buildEmptySlot());
 
+      const construction = feature.getConstruction();
+      if (construction.getWorker(slot)) {
+        construction.removeWorker(slot);
+        // TODO: Need to remove clock.
+      }
+
+      return;
+    }
+
+    const minion = MinionDataStore.get(parseInt(selectItem.getAttribute('data-id')));
+    slotElement.replaceWith(buildMinionItem(minion, slot, 'skill'));
     feature.getConstruction().setWorker(parseInt(slot), minion);
+    // TODO: Need to start a clock now that a worker is assigned.
   }
 
   function getSlot(control, slot) {

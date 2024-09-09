@@ -13,6 +13,10 @@ global.HasWorkers = function(data = {}) {
     $workers[slot] = minion.getID();
   }
 
+  function getWorker(slot) {
+    return $workers[slot];
+  }
+
   function removeWorker(slot) {
     if ($workers[slot] == null) { throw `No worker at slot ${slot}` }
     delete $workers[slot];
@@ -39,6 +43,7 @@ global.HasWorkers = function(data = {}) {
     model.getSlotCount = getSlotCount;
     model.getWorkerMap = getWorkerMap;
     model.setWorker = setWorker;
+    model.getWorker = getWorker;
     model.removeWorker = removeWorker;
   }
 
