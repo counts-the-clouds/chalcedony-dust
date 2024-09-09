@@ -65,6 +65,7 @@ global.WorkerControl = (function() {
     workerSelect.appendChild(workerList);
     workerSelect.style.top = `${position.top}px`;
     workerSelect.style.left = `${position.left + 10}px`;
+    workerSelect.style.minWidth = `${position.width - 21}px`;
 
     X.removeClass(workerSelect,'hide');
 

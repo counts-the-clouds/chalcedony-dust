@@ -28,8 +28,8 @@ global.ResourceWindow = (function() {
   function getBounds() {
     const position = MouseMonitor.getPosition();
     const top = position.y - 50;
-    const left = position.x - 150;
-    return { top, left, height:215, width:300 }
+    const left = position.x - 200;
+    return { top, left, height:250, width:400 }
   }
 
   return Object.freeze({
