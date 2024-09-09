@@ -12,6 +12,10 @@ global.MinionWindow = (function() {
       updateMinions();
     }));
 
+    Panopticon.addObserver(Observer(EventType.workerAssignmentChanged, () => {
+      updateMinions();
+    }));
+
     Panopticon.addObserver(Observer(EventType.constructionComplete, data => {
       if (BlueprintRegistry.lookup(data.code).type === TileType.room) {
         if (RoomRegistry.lookup(data.code).isLair) { updateHeader(); }
@@ -40,16 +44,24 @@ global.MinionWindow = (function() {
     }
 
     const speciesList = X.createElement(`<div class='species-list'></div>`);
+    const assigned = MinionHelper.allAssignedMinions();
 
     SpeciesRegistry.forEach(code => {
-      const minions = MinionDataStore.all().filter(minion => { return minion.getSpeciesCode() === code })
+      const minions = MinionDataStore.all().filter(minion => { return minion.getSpeciesCode() === code });
+
       if (minions.length > 0) {
         speciesList.appendChild(X.createElement(`<div class='species-name'>${minions.length} ${Species(code).getPluralName()}</div>`));
-        speciesList.appendChild(X.createElement(`<div class='details'>0 have jobs</div>`));
+        speciesList.appendChild(X.createElement(`<div class='details'>${assignedCountFor(assigned, minions)} have jobs</div>`));
       }
     });
 
     $slideWindow.setContent(speciesList);
+  }
+
+  function assignedCountFor(assigned, minions) {
+    return minions.reduce((accumulator, minion) => {
+      return assigned.includes(minion.getID()) ? accumulator + 1 : accumulator;
+    }, 0);
   }
 
   function reposition() { $slideWindow.reposition(); }

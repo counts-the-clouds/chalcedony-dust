@@ -154,6 +154,6 @@ global.ClockManager = (function() {
     getClockSpeed,
     setClockSpeed,
     onTick,
-  })
+  });
 
 })();
