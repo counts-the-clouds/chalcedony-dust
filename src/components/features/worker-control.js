@@ -35,7 +35,7 @@ global.WorkerControl = (function() {
 
     for (let i=0; i<configuration.slots; i++) {
       list.appendChild(workerMap[i] ?
-        buildMinionItem(workerMap[i], i, skill) :
+        buildMinionItem(MinionDataStore.get(workerMap[i]), i, skill) :
         X.createElement(`<li class='minion empty' data-slot='${i}'>Select Minion</li>`));
     }
   }
@@ -102,7 +102,7 @@ global.WorkerControl = (function() {
     const slotElement = getSlot(control, slot);
     slotElement.replaceWith(buildMinionItem(minion, slot, 'skill'));
 
-    // feature.assignWorker(slot, minion)
+    feature.getConstruction().setWorker(parseInt(slot), minion);
   }
 
   function getSlot(control, slot) {
