@@ -1,25 +1,21 @@
 global.HasWorkers = function(data = {}) {
 
-  let $workers = data.workers || [];
+  let $workers = data.workers || {};
   let $slots;
 
-  function getWorkers() { return $workers.map(id => MinionDataStore.get(id)); }
-  function getWorkerIDs() { return [...$workers]; }
-  function hasWorker(minion) { return $workers.indexOf(minion.getID()) >= 0; }
   function getSlotCount() { return $slots; }
-  function getWorkerCount() { return $workers.length; }
 
-  function addWorker(minion) {
-    if ($workers.length < $slots) {
-      return $workers.push(minion.getID());
-    }
-    throw `Cannot add worker, there are no slots left.`
+  function getWorkerMap() { return {...$workers} }
+
+  function setWorker(slot, minion) {
+    if (typeof slot !== 'number') { throw `Slot should be a number` }
+    if (slot < 0 || slot > $slots) { throw `Slot should be between 0 and ${slots}` }
+    $workers[slot] = minion.getID();
   }
 
-  function removeWorker(minion) {
-    const index = $workers.indexOf(minion.getID());
-    if (index < 0) { throw `${minion} is not in assigned worker array.` }
-    $workers.splice(index, 1);
+  function removeWorker(slot) {
+    if ($workers[slot] == null) { throw `No worker at slot ${slot}` }
+    delete $workers[slot];
   }
 
   // ===========================================================================
@@ -40,12 +36,9 @@ global.HasWorkers = function(data = {}) {
     //       static data from the registry is fine for now.
     $slots = data.slots;
 
-    model.getWorkers = getWorkers;
-    model.getWorkerIDs = getWorkerIDs;
-    model.hasWorker = hasWorker;
     model.getSlotCount = getSlotCount;
-    model.getWorkerCount = getWorkerCount;
-    model.addWorker = addWorker;
+    model.getWorkerMap = getWorkerMap;
+    model.setWorker = setWorker;
     model.removeWorker = removeWorker;
   }
 

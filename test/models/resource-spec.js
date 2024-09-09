@@ -7,12 +7,10 @@ describe('Resource', function() {
     feature.attachConstruction('amberian-mine');
 
     const resource = feature.getConstruction();
-    resource.addWorker(minion);
+    resource.setWorker(0,minion);
 
     expect(resource.getSlotCount()).to.equal(1);
-    expect(resource.getWorkerCount()).to.equal(1);
-    expect(resource.hasWorker(minion)).to.be.true;
-    expect(resource.getWorkerIDs()[0]).to.equal(minion.getID());
+    expect(resource.getWorkerMap()[0]).to.equal(minion.getID());
   });
 
 })

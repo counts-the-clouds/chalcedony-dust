@@ -5,12 +5,12 @@ global.MinionHelper = {
 
     RoomDataStore.all().forEach(room => {
       if (room.hasWorkers()) {
-        assigned = assigned.concat(room.getWorkerIDs());
+        assigned = assigned.concat(Object.values(room.getWorkerMap()));
       }
     });
 
     ResourceDataStore.all().forEach(resource => {
-      assigned = assigned.concat(resource.getWorkerIDs());
+      assigned = assigned.concat(Object.values(resource.getWorkerMap()));
     });
 
     return assigned;

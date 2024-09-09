@@ -1,5 +1,10 @@
 global.WorkerControl = (function() {
 
+  function init() {
+    X.onClick('.worker-control .worker-list li.minion', openMinionSelect);
+    X.onClick('.worker-control .select-list li.minion', selectMinion);
+  }
+
   function build(feature) {
     const construction = feature.getConstruction();
 
@@ -7,24 +12,18 @@ global.WorkerControl = (function() {
     const workerSelect = X.createElement(`<div class='worker-select hide'></div>`);
     buildSlots(list, construction);
 
-    const control = X.createElement(`<div class='worker-control'></div>`);
+    const control = X.createElement(`<div class='worker-control' data-feature-id='${feature.getID()}'></div>`);
     control.appendChild(list);
     control.appendChild(workerSelect);
 
     workerSelect.addEventListener('mouseleave', () => { closeMinionList(control); })
-
-    list.querySelectorAll('li').forEach(item => {
-      item.addEventListener('click', event => {
-        openMinionList(feature, control, event.target.getAttribute('data-slot'));
-      });
-    });
 
     return control;
   }
 
   function buildSlots(list, construction) {
     const configuration = construction.getWorkerConfiguration();
-    const workers = construction.getWorkers();
+    const workerMap = construction.getWorkerMap();
 
     // TODO: When we build list list we should display the skill (or any other
     //       appropriate bonus that the minion has for this job. Currently we
@@ -35,31 +34,33 @@ global.WorkerControl = (function() {
     list.innerHTML = '';
 
     for (let i=0; i<configuration.slots; i++) {
-      list.appendChild(workers[i] ?
-        buildMinionItem(workers[i], skill, i) :
+      list.appendChild(workerMap[i] ?
+        buildMinionItem(workerMap[i], i, skill) :
         X.createElement(`<li class='minion empty' data-slot='${i}'>Select Minion</li>`));
     }
   }
 
-  // TODO: Get actual skill bonus from minion.
-  function buildMinionItem(minion, skill, i) {
-    const element = X.createElement(`<li class='minion'>
+  // TODO: Get actual skill bonus from the minion.
+  function buildMinionItem(minion, slot, skill) {
+    if (slot == null) { throw 'A slot is required'; }
+    if (skill == null) { throw 'A skill is required'; }
+
+    return X.createElement(`<li class='minion' data-slot='${slot}' data-id='${minion.getID()}'>
       <div class='remove'></div>
       <div class='species'>${minion.getSpecies().getName()}</div>
       <div class='name'>${minion.getFullName()}</div>
       <div class='skill'>${skill} 0</div>
     </li>`);
-
-    if (i != null) {
-      element.setAttribute(`data-slot`,`${i}`);
-    }
-
-    return element;
   }
 
-  function openMinionList(feature, control, slot) {
+  // === Open Minion Select =
+
+  function openMinionSelect(event) {
+    const control = event.target.closest('.worker-control');
+    const slot = event.target.closest('.minion').getAttribute('data-slot');
     const position = X.getPosition(control);
     const workerList = X.createElement(`<ul class='select-list'></ul>`);
+
     const workerSelect = control.querySelector('.worker-select');
     workerSelect.innerHTML = '';
     workerSelect.appendChild(workerList);
@@ -73,8 +74,7 @@ global.WorkerControl = (function() {
 
     MinionHelper.allUnassignedMinions().forEach(id => {
       const minion = MinionDataStore.get(id);
-      const item = buildMinionItem(minion,'mining');
-      item.addEventListener('click', () => { selectMinion(slot, control, minion, feature); });
+      const item = buildMinionItem(minion,slot,'mining');
       workerList.appendChild(item);
     });
 
@@ -89,11 +89,33 @@ global.WorkerControl = (function() {
     X.addClass(workerSelect,'hide');
   }
 
-  function selectMinion(slot, control, minion, feature) {
+  function selectMinion(event) {
+    const control = event.target.closest('.worker-control');
+    const selectItem = event.target.closest('.minion');
+    const slot = selectItem.getAttribute('data-slot');
+
+    const minion = MinionDataStore.get(parseInt(selectItem.getAttribute('data-id')));
+    const feature = FeatureDataStore.get(parseInt(control.getAttribute('data-feature-id')));
+
     closeMinionList(control);
-    console.log(`Selected - Slot:${slot} ${minion} ${feature}`);
+
+    const slotElement = getSlot(control, slot);
+    slotElement.replaceWith(buildMinionItem(minion, slot, 'skill'));
+
+    // feature.assignWorker(slot, minion)
   }
 
-  return Object.freeze({ build })
+  function getSlot(control, slot) {
+    for (let item of control.querySelectorAll('.worker-list li.minion')) {
+      if (item.getAttribute('data-slot') === `${slot}`) {
+        return item;
+      }
+    }
+  }
+
+  return Object.freeze({
+    init,
+    build
+  });
 
 })();

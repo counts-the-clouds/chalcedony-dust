@@ -35,11 +35,10 @@ describe("Room", function() {
       feature.attachConstruction('blacksmith');
 
       const room = feature.getConstruction();
-      room.addWorker(minion);
+      room.setWorker(0,minion);
 
       expect(room.hasWorkers()).to.be.true;
-      expect(room.hasWorker(minion)).to.be.true;
-      expect(room.getWorkers()[0].getID()).to.equal(minion.getID());
+      expect(room.getWorkerMap()[0]).to.equal(minion.getID());
     });
   })
 

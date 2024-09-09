@@ -10,6 +10,7 @@ global.Components = (function() {
     OptionsOverlay.init();
     SpeedControl.init();
     WindowManager.init();
+    WorkerControl.init();
   }
 
   return {
