@@ -6,15 +6,32 @@
     box-shadow: $shadow-shallow;
     background-color: rgba(0,0,0,0.33);
 
-    li.slot {
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    li.slot:hover {
-      background-color: rgba(150,150,200,0.1);
-    }
+    li.empty { opacity:0.5; }
+  }
 
-    .display.empty { opacity:0.5; }
+  .worker-select {
+    position: fixed;
+    background-color: rgb(10,10,10);
+    border: $border-normal;
+    box-shadow: $shadow-frame;
+    z-index: $z-select;
+  }
+
+  li.minion {
+    display: flex;
+    padding: 5px 10px;
+    cursor: pointer;
+
+    .species { width: 6em; }
+    .name { color: $fg-strong; }
+    .skill {
+      margin-left: 1em;
+      flex-grow: 1;
+      text-align: right;
+    }
+  }
+  li.minion:hover {
+    background-color: rgba(150,150,200,0.1);
   }
 
 }
