@@ -11,7 +11,7 @@ global.WorkerControl = (function() {
     control.appendChild(list);
     control.appendChild(workerSelect);
 
-    workerSelect.addEventListener('mouseleave', () => { closeMinionList(control); })
+    // workerSelect.addEventListener('mouseleave', () => { closeMinionList(control); })
 
     list.querySelectorAll('li').forEach(item => {
       item.addEventListener('click', event => {
@@ -61,11 +61,15 @@ global.WorkerControl = (function() {
     const position = X.getPosition(control);
     const workerList = X.createElement(`<ul class='select-list'></ul>`);
     const workerSelect = control.querySelector('.worker-select');
+    workerSelect.innerHTML = '';
     workerSelect.appendChild(workerList);
     workerSelect.style.top = `${position.top}px`;
     workerSelect.style.left = `${position.left + 10}px`;
 
     X.removeClass(workerSelect,'hide');
+
+    const scrollingPanel = ScrollingPanel({ element:workerList });
+    scrollingPanel.setHeight(300);
 
     MinionHelper.allUnassignedMinions().forEach(id => {
       const minion = MinionDataStore.get(id);

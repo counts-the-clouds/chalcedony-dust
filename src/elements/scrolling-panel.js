@@ -263,3 +263,18 @@ ScrollingPanel.init = function() {
   window.addEventListener('resize', resizeAll);
   window.addEventListener('keydown', handleKeyPress);
 }
+
+// Opening a casement window will usually create a scrolling panel, which adds
+// it to a list of scrolling panels. We need this list for reasons. I don't
+// have an easy way to go back and clean up orphaned scrolling panels when a
+// window is closed though. Rather than putting some kind of cleanup hook into
+// the casement.close() function, as well as every other place we might create
+// temporary scrolling panel, I'll just look for orphaned panels every 10
+// seconds or so and delete them.
+window.setInterval(() => {
+  Object.keys($$scrollingPanels).forEach(key => {
+    if ($$scrollingPanels[key].getWrappedContent().closest('body') == null) {
+      delete $$scrollingPanels[key];
+    }
+  });
+},10000);
