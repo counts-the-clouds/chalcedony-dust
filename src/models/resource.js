@@ -9,6 +9,7 @@ global.Resource = function(data) {
   function getID() { return $id; }
   function getCode() { return $code; }
   function getData() { return ResourceRegistry.lookup($code); }
+  function getResource() { return getData().resource; }
   function getDisplayName() { return getData().displayName; }
   function getView() { return getData().view; }
   function getDetails() { return getView().details; }
@@ -37,6 +38,7 @@ global.Resource = function(data) {
     getID,
     getCode,
     getData,
+    getResource,
     getDisplayName,
     getView,
     getDetails,

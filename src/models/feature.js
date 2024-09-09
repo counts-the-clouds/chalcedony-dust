@@ -229,6 +229,7 @@ global.Feature = function(data) {
     const construction = getConstruction()
     const code = construction.getData().clockCode;
     const clock = Clock({ code });
+    clock.setContext({ featureID:getID() });
 
     if (getType() === TileType.room) {
       clock.setParent({ type:'Feature', id:getID() });

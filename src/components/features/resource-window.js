@@ -19,7 +19,7 @@ global.ResourceWindow = (function() {
     const view = resource.getView();
     return `<div class='resource-window'>
       <div class='banner has-background'></div>
-      <div class='icon-container'><div class='icon icon-for-${view.resourceIcon}'></div></div>
+      <div class='icon-container'><div class='icon icon-for-${resource.getResource()}'></div></div>
       <div class='header'>${resource.getDetails()}</div>
       <div class='worker-area'></div>
     </div>`

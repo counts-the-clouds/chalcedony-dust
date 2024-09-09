@@ -33,14 +33,14 @@ global.MinionWindow = (function() {
     let totalCapacity = 0;
     lairs.forEach(lair => {
       totalCapacity += lair.getDomiciledMinionCapacity();
-    })
+    });
 
     $slideWindow.setHeader(X.createElement(`<span class='minions-state'>${MinionDataStore.size()} of ${totalCapacity} minions summoned from ${lairs.length} active lairs</span>`));
   }
 
   function updateMinions() {
     if (MinionDataStore.size() === 0) {
-      return $slideWindow.setContent(X.createElement(`<div class='empty'>&nbsp;</div>`))
+      return $slideWindow.setContent(X.createElement(`<div class='empty'>&nbsp;</div>`));
     }
 
     const speciesList = X.createElement(`<div class='species-list'></div>`);

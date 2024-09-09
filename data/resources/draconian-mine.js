@@ -1,10 +1,10 @@
 ResourceRegistry.register('draconian-mine',{
   displayName: 'Draconian Mine',
+  resource: 'draconian-ore',
 
   view: {
     details: '(Draconian Mine Details)',
     background: 'ui/mine.png',
-    resourceIcon: 'draconian-ore',
   },
 
   workerConfiguration: {
