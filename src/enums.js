@@ -121,6 +121,7 @@ global.EventType = Object.freeze({
   tileDiscarded: 'tile-discarded',
   tileDrawn: 'tile-drawn',
   tilePlaced: 'tile-placed',
+  workerAssignmentChanged: 'worker-assignment-changed',
 });
 
 global.DiscoveryType = Object.freeze({

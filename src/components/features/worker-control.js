@@ -103,20 +103,13 @@ global.WorkerControl = (function() {
 
     if (X.hasClass(selectItem,'empty')) {
       slotElement.replaceWith(buildEmptySlot());
-
-      const construction = feature.getConstruction();
-      if (construction.getWorker(slot)) {
-        construction.removeWorker(slot);
-        // TODO: Need to remove clock.
-      }
-
+      feature.removeWorker(slot);
       return;
     }
 
     const minion = MinionDataStore.get(parseInt(selectItem.getAttribute('data-id')));
     slotElement.replaceWith(buildMinionItem(minion, slot, 'skill'));
-    feature.getConstruction().setWorker(parseInt(slot), minion);
-    // TODO: Need to start a clock now that a worker is assigned.
+    feature.assignWorker(slot, minion);
   }
 
   function getSlot(control, slot) {

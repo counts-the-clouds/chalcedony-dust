@@ -197,6 +197,33 @@ global.Feature = function(data) {
     return upgrades;
   }
 
+  // === Feature Workers and Clocks ============================================
+
+  // TODO: Need to start a clock now that a worker is assigned.
+  async function assignWorker(slot, minion) {
+    const construction = getConstruction();
+    construction.setWorker(parseInt(slot), minion);
+
+    console.log("Add Clock..")
+
+    Panopticon.induce(EventType.workerAssignmentChanged,{ minion });
+  }
+
+  // TODO: Stop the clock if no workers are assigned now.
+  async function removeWorker(slot) {
+    const construction = getConstruction();
+    const minion = construction.getWorker(slot);
+
+    if (minion) {
+      construction.removeWorker(slot);
+      Panopticon.induce(EventType.workerAssignmentChanged,{ minion });
+    }
+
+    if (construction.getWorkerCount() === 0) {
+      console.log("Remove Clock")
+    }
+  }
+
   // ===========================================================================
 
   function getTileLayers() { return getSegments().map(seg => seg.getTileLayer()); }
@@ -301,6 +328,8 @@ global.Feature = function(data) {
     startConstruction,
     completeConstruction,
     getPossibleUpgrades,
+    assignWorker,
+    removeWorker,
     getTileLayers,
     applyTint,
     startPulse,

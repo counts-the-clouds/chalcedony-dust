@@ -6,6 +6,7 @@ global.HasWorkers = function(data = {}) {
   function getSlotCount() { return $slots; }
 
   function getWorkerMap() { return {...$workers} }
+  function getWorkerCount() { return Object.keys($workers).length; }
 
   function setWorker(slot, minion) {
     if (typeof slot !== 'number') { throw `Slot should be a number` }
@@ -42,6 +43,7 @@ global.HasWorkers = function(data = {}) {
 
     model.getSlotCount = getSlotCount;
     model.getWorkerMap = getWorkerMap;
+    model.getWorkerCount = getWorkerCount;
     model.setWorker = setWorker;
     model.getWorker = getWorker;
     model.removeWorker = removeWorker;
