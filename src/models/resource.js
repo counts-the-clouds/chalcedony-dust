@@ -4,14 +4,19 @@ global.Resource = function(data) {
   const $featureID = data.featureID;
   const $hasWorkers = HasWorkers(data.hasWorkers);
 
+  let $clockID = data.clockID;
+
   function getID() { return $id; }
   function getCode() { return $code; }
-  function getResourceData() { return ResourceRegistry.lookup($code); }
-  function getDisplayName() { return getResourceData().displayName; }
-  function getView() { return getResourceData().view; }
+  function getData() { return ResourceRegistry.lookup($code); }
+  function getDisplayName() { return getData().displayName; }
+  function getView() { return getData().view; }
   function getDetails() { return getView().details; }
-  function getWorkerConfiguration() { return getResourceData().workerConfiguration }
+  function getWorkerConfiguration() { return getData().workerConfiguration }
   function getFeature() { return FeatureDataStore.get($featureID); }
+  function setClock(clock) { $clockID = clock.getID(); }
+  function removeClock() { $clockID = null; }
+  function getClock() { return ClockDataStore.get($clockID); }
 
   function toString() {
     return `Resource:${$id}[${$code}]`
@@ -22,6 +27,7 @@ global.Resource = function(data) {
       id: $id,
       code: $code,
       featureID: $featureID,
+      clockID: $clockID,
       hasWorkers: $hasWorkers.pack(),
     }
   }
@@ -30,11 +36,15 @@ global.Resource = function(data) {
     model: 'Resource',
     getID,
     getCode,
+    getData,
     getDisplayName,
     getView,
     getDetails,
     getWorkerConfiguration,
     getFeature,
+    setClock,
+    removeClock,
+    getClock,
     toString,
     pack,
   };

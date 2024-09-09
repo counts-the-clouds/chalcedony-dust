@@ -3,7 +3,7 @@ global.IsLair = function(data = {}) {
   let $room;
   let $minions = data.minions || [];
 
-  function getLairData() { return $room.getRoomData().lair; }
+  function getLairData() { return $room.getData().lair; }
   function getDomiciledMinions() { return [...$minions]; }
   function getDomiciledMinionCount() { return $minions.length; }
   function getDomiciledMinionCapacity() { return Math.floor($room.getFeature().getSize() / getLairData().minionsPerTile); }

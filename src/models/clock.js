@@ -68,14 +68,16 @@ global.Clock = function(data) {
     await clockData.onComplete($self);
 
     if ($repeat === false) {
-      ClockManager.removeClock(getID());
-      ClockDataStore.remove(getID());
+      deleteSelf()
+    }
+  }
 
-      if ($tileContainer) {
-        $tileContainer.disableClock();
-      }
+  function deleteSelf() {
+    ClockManager.deleteClock(getID());
+    ClockDataStore.remove(getID());
 
-      log(`${toString()} completed and removed`,{ system:'Clock' });
+    if ($tileContainer) {
+      $tileContainer.disableClock();
     }
   }
 
@@ -117,6 +119,7 @@ global.Clock = function(data) {
     getTileLayers,
     onUpdate,
     onComplete,
+    deleteSelf,
     toString,
     pack,
   });

@@ -46,8 +46,8 @@ global.ClockManager = (function() {
     }
   }
 
+  function deleteClock(id) { delete $clocks[id]; }
   function getClock(id) { return $clocks[id]; }
-  function removeClock(id) { delete $clocks[id]; }
 
   function findByCode(code) {
     return Object.values($clocks).filter(clock => clock.getCode() === code);
@@ -145,7 +145,7 @@ global.ClockManager = (function() {
     addClock,
     getClock,
     findByCode,
-    removeClock,
+    deleteClock,
     pauseUntil,
     zeroClock,
     canChangeSpeed,

@@ -11,4 +11,6 @@ ResourceRegistry.register('amberian-mine',{
     slots: 1,
   },
 
+  clockCode: 'mine-resource',
+
 });

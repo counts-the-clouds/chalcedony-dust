@@ -11,4 +11,6 @@ ResourceRegistry.register('labrynthian-mine',{
     slots: 1,
   },
 
+  clockCode: 'mine-resource',
+
 });

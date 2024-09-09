@@ -102,7 +102,7 @@ global.WorkerControl = (function() {
     closeMinionList(control);
 
     if (X.hasClass(selectItem,'empty')) {
-      slotElement.replaceWith(buildEmptySlot());
+      slotElement.replaceWith(buildEmptySlot(slot));
       feature.removeWorker(slot);
       return;
     }

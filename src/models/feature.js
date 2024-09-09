@@ -199,17 +199,17 @@ global.Feature = function(data) {
 
   // === Feature Workers and Clocks ============================================
 
-  // TODO: Need to start a clock now that a worker is assigned.
   async function assignWorker(slot, minion) {
     const construction = getConstruction();
     construction.setWorker(parseInt(slot), minion);
 
-    console.log("Add Clock..")
+    if (construction.getClock() == null) {
+      startClock()
+    }
 
     Panopticon.induce(EventType.workerAssignmentChanged,{ minion });
   }
 
-  // TODO: Stop the clock if no workers are assigned now.
   async function removeWorker(slot) {
     const construction = getConstruction();
     const minion = construction.getWorker(slot);
@@ -219,9 +219,27 @@ global.Feature = function(data) {
       Panopticon.induce(EventType.workerAssignmentChanged,{ minion });
     }
 
-    if (construction.getWorkerCount() === 0) {
-      console.log("Remove Clock")
+    if (construction.getClock() && construction.getWorkerCount() === 0) {
+      construction.getClock().deleteSelf()
+      construction.removeClock();
     }
+  }
+
+  function startClock() {
+    const construction = getConstruction()
+    const code = construction.getData().clockCode;
+    const clock = Clock({ code });
+
+    if (getType() === TileType.room) {
+      clock.setParent({ type:'Feature', id:getID() });
+    }
+    if (getType() === TileType.resource) {
+      const tile = getTiles()[0];
+      clock.setParent({ type:'Tile', id:tile.getID() });
+    }
+
+    construction.setClock(clock);
+    ClockManager.addClock(clock);
   }
 
   // ===========================================================================

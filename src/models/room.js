@@ -4,6 +4,7 @@ global.Room = function(data) {
   const $featureID = data.featureID;
 
   let $code = data.code;
+  let $clockID = data.clockID;
   let $isLair;
   let $hasWorkers;
 
@@ -14,14 +15,17 @@ global.Room = function(data) {
   function getID() { return $id; }
   function getCode() { return $code; }
   function getFeature() { return FeatureDataStore.get($featureID); }
+  function setClock(clock) { $clockID = clock.getID(); }
+  function removeClock() { $clockID = null; }
+  function getClock() { return ClockDataStore.get($clockID); }
 
-  function isLair() { return getRoomData().isLair === true; }
-  function hasWorkers() { return getRoomData().hasWorkers === true; }
-  function getWorkerConfiguration() { return getRoomData().workerConfiguration; }
+  function isLair() { return getData().isLair === true; }
+  function hasWorkers() { return getData().hasWorkers === true; }
+  function getWorkerConfiguration() { return getData().workerConfiguration; }
 
-  function getRoomData() { return RoomRegistry.lookup($code); }
-  function getDisplayName() { return getRoomData().displayName; }
-  function getView() { return getRoomData().view; }
+  function getData() { return RoomRegistry.lookup($code); }
+  function getDisplayName() { return getData().displayName; }
+  function getView() { return getData().view; }
   function getViewType() { return getView().type; }
   function getLayout() { return getView().layout; }
   function getBackground() { return getView().background; }
@@ -58,6 +62,7 @@ global.Room = function(data) {
       id: $id,
       code: $code,
       featureID: $featureID,
+      clockID: $clockID,
     }
 
     if (isLair()) { packed.isLair = $isLair.pack(); }
@@ -73,10 +78,13 @@ global.Room = function(data) {
     getID,
     getCode,
     getFeature,
+    setClock,
+    removeClock,
+    getClock,
     isLair,
     hasWorkers,
     getWorkerConfiguration,
-    getRoomData,
+    getData,
     getDisplayName,
     getViewType,
     getLayout,
