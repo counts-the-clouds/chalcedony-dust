@@ -1,38 +1,19 @@
-global.Minion = function(data) {
+global.Minion = function(code) {
+  const data = MinionRegistry.lookup(code);
 
-  const $id = data.id || MinionDataStore.nextID();
-  const $isActor = IsActor(data.isActor);
-  const $hasAspects = HasAspects(data.hasAspects);
+  const $code = code;
+  const $name = data.name;
+  const $pluralName = data.pluralName || `${name}s`
 
-  function getID() { return $id; }
+  function getCode() { return $code; }
+  function getName() { return $name; }
+  function getPluralName() { return $pluralName; }
+  function toString() { return `Minion[${$code}]`; }
 
-  // ===========================================================================
-
-  function toString() {
-    return `Minion:${$id}[${$self.getSpecies().getName()}|${$self.getFullName()}]`;
-  }
-
-  function pack() {
-    return {
-      id: $id,
-      isActor: $isActor.pack(),
-      hasAspects: $hasAspects.pack(),
-    }
-  }
-
-  // ===========================================================================
-
-  const $self = {
-    model: 'Minion',
-    getID,
+  return Object.freeze({
+    getCode,
+    getName,
+    getPluralName,
     toString,
-    pack,
-  };
-
-  $isActor.attach($self);
-  $hasAspects.attach($self);
-
-  MinionDataStore.store($self);
-
-  return Object.freeze($self);
+  });
 }

@@ -58,36 +58,39 @@ global.LairWindow = (function() {
 
   // === Summoning =============================================================
 
+  // === WIP ===
   async function summonMinion(feature, casement) {
-    const room = feature.getConstruction();
-    const lairData = room.getLairData();
-    const minion = MinionBuilder.build({ species:lairData.species });
+    throw 'summonMinion() - WIP'
 
-    const root = casement.getCasementContent();
-    const listItem = firstEmptyItem(root);
-    const minionItem = MinionElements.buildMinionItem(minion.getID(), true);
-
-    listItem.replaceWith(minionItem);
-
-    room.addMinion(minion);
-
-    // TODO: Actually spend the resources needed to summon the minion.
-
-    // TODO: Also need to disable the summon button if we can't afford the
-    //       minion cost. This should be a common function that listens for
-    //       inventory changes as well.
-
-    if (emptyItemExists(root) === false) {
-      root.querySelector('.actions').remove();
-      casement.contentResized();
-    }
-
-    Effects.fadeOut({
-      element: minionItem.querySelector('.flash'),
-      id:`Minion-${minion.getID()}`
-    });
-
-    await GameState.saveState();
+    // const room = feature.getConstruction();
+    // const lairData = room.getLairData();
+    // const minion = MinionBuilder.build({ species:lairData.species });
+    //
+    // const root = casement.getCasementContent();
+    // const listItem = firstEmptyItem(root);
+    // const minionItem = MinionElements.buildMinionItem(minion.getID(), true);
+    //
+    // listItem.replaceWith(minionItem);
+    //
+    // room.addMinion(minion);
+    //
+    // // TODO: Actually spend the resources needed to summon the minion.
+    //
+    // // TODO: Also need to disable the summon button if we can't afford the
+    // //       minion cost. This should be a common function that listens for
+    // //       inventory changes as well.
+    //
+    // if (emptyItemExists(root) === false) {
+    //   root.querySelector('.actions').remove();
+    //   casement.contentResized();
+    // }
+    //
+    // Effects.fadeOut({
+    //   element: minionItem.querySelector('.flash'),
+    //   id:`Minion-${minion.getID()}`
+    // });
+    //
+    // await GameState.saveState();
   }
 
   function emptyItemExists(root) {
