@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('faun-totem',{
   species: 'faun',
   gender: 'female',
@@ -13,3 +14,4 @@ GuardianRegistry.register('faun-totem',{
   }
 
 });
+*/

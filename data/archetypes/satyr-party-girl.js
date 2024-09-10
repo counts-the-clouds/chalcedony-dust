@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('satyr-party-girl',{
   species: 'satyr',
   genders: ['female','futa'],
@@ -13,3 +14,4 @@ GuardianRegistry.register('satyr-party-girl',{
   }
 
 });
+*/

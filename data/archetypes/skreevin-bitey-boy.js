@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('skreevin-bitey-boy',{
   species: 'skreevin',
   gender: 'male',
@@ -9,3 +10,4 @@ GuardianRegistry.register('skreevin-bitey-boy',{
   }
 
 });
+*/

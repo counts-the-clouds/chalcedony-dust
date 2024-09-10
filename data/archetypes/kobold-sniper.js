@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('kobold-sniper',{
   species: 'kobold',
 
@@ -8,3 +9,4 @@ GuardianRegistry.register('kobold-sniper',{
   }
 
 });
+*/

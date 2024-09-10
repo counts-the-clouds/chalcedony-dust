@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('lupin-warrior',{
   species: 'lupin',
   genders: ['male','futa'],
@@ -14,3 +15,4 @@ GuardianRegistry.register('lupin-warrior',{
   }
 
 });
+*/

@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('goblin-rattosser',{
   species: 'goblin',
 
@@ -9,3 +10,4 @@ GuardianRegistry.register('goblin-rattosser',{
   }
 
 });
+*/

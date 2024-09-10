@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('goblin-boom-girl',{
   species: 'goblin',
   genders: ['female','futa'],
@@ -10,3 +11,4 @@ GuardianRegistry.register('goblin-boom-girl',{
   }
 
 });
+*/

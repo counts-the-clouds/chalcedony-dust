@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('sylph-illusionist',{
   species: 'sylph',
   gender: 'female',
@@ -14,3 +15,4 @@ GuardianRegistry.register('sylph-illusionist',{
   }
 
 });
+*/

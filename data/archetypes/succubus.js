@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('succubus',{
   species: 'succubus',
   genders: ['female','futa'],
@@ -13,3 +14,4 @@ GuardianRegistry.register('succubus',{
   }
 
 });
+*/

@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('synder',{
   species: 'dragon',
 
@@ -21,3 +22,4 @@ GuardianRegistry.register('synder',{
   }
 
 });
+*/

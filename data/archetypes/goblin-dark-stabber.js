@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('goblin-dark-stabber',{
   species: 'goblin',
 
@@ -8,3 +9,4 @@ GuardianRegistry.register('goblin-dark-stabber',{
   }
 
 });
+*/

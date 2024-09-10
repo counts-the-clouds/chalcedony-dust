@@ -1,3 +1,4 @@
+/*
 GuardianRegistry.register('minotaur-labyrinth-keeper',{
   species: 'minotaur',
   genders: ['male'],
@@ -12,3 +13,4 @@ GuardianRegistry.register('minotaur-labyrinth-keeper',{
   }
 
 });
+*/

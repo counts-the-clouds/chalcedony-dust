@@ -1,14 +1,17 @@
-GuardianRegistry.register('centaur-archer',{
+/*
+GuardianRegistry.register('centaur-trampler',{
   species: 'centaur',
+  gender: 'male',
 
   requirements:[
     { flagExists:'guardian.centaurs.unlocked' }
   ],
 
   battle: {
-    power: 4,
+    power: 6,
     toughness: 6,
-    aspects: { range:2, fast:1 }
+    aspects: { fast:1 }
   }
 
 });
+*/
