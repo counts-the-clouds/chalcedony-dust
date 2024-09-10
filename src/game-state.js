@@ -19,6 +19,7 @@ global.GameState = (function() {
     BuriedTreasure.reset();
     GameFlags.reset();
     GameInventory.reset();
+    MinionRoster.reset();
     TileBag.reset();
     TileShelf.reset();
   }
@@ -38,6 +39,7 @@ global.GameState = (function() {
         buriedTreasure: BuriedTreasure.pack(),
         gameFlags: GameFlags.pack(),
         gameInventory: GameInventory.pack(),
+        minionRoster: MinionRoster.pack(),
         tileBag: TileBag.pack(),
         tileShelf: TileShelf.pack(),
       });
@@ -57,6 +59,7 @@ global.GameState = (function() {
         BuriedTreasure.unpack(loadedState.buriedTreasure);
         GameFlags.unpack(loadedState.gameFlags);
         GameInventory.unpack(loadedState.gameInventory);
+        MinionRoster.unpack(loadedState.minionRoster);
         TileBag.unpack(loadedState.tileBag);
         TileShelf.unpack(loadedState.tileShelf);
         await Models.loadAll();

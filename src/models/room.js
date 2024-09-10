@@ -15,7 +15,6 @@ global.Room = function(data) {
   function getClock() { return ClockDataStore.get($clockID); }
 
   function getData() { return RoomRegistry.lookup($code); }
-  function getLair() { return getData().lair; }
   function getDisplayName() { return getData().displayName; }
   function getView() { return getData().view; }
   function getViewType() { return getView().type; }
@@ -33,7 +32,7 @@ global.Room = function(data) {
   function upgradeTo(code) {
     $code = code;
 
-    const minionCode = getLair();
+    const minionCode = getData().lair;
     if (minionCode) {
       MinionRoster.registerLair(getID(), minionCode, getFeature().getSize());
     }
@@ -65,7 +64,6 @@ global.Room = function(data) {
     removeClock,
     getClock,
     getData,
-    getLairData,
     getDisplayName,
     getViewType,
     getLayout,
