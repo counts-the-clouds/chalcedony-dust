@@ -1,19 +1,21 @@
 global.Minion = function(code) {
-  const data = MinionRegistry.lookup(code);
-
   const $code = code;
-  const $name = data.name;
-  const $pluralName = data.pluralName || `${name}s`
+  const $minionData = MinionRegistry.lookup($code);
+  const $pluralName = $minionData.pluralName || `${name}s`
 
   function getCode() { return $code; }
-  function getName() { return $name; }
+  function getName() { return $minionData.name; }
   function getPluralName() { return $pluralName; }
+  function getTilesPerMinion() { return $minionData.tilesPerMinion; }
+  function getCost() { return $minionData.cost; }
   function toString() { return `Minion[${$code}]`; }
 
   return Object.freeze({
     getCode,
     getName,
     getPluralName,
+    getTilesPerMinion,
+    getCost,
     toString,
   });
 }

@@ -1,15 +1,10 @@
 global.Room = function(data) {
-  const roomData = RoomRegistry.lookup(data.code);
   const $id = data.id || RoomDataStore.nextID();
   const $featureID = data.featureID;
 
   let $code = data.code;
   let $clockID = data.clockID;
-  let $isLair;
-  let $hasWorkers;
 
-  Validate.exists('Display Name',roomData.displayName,`Room[${data.code}] has no display name`);
-  Validate.exists('View',roomData.view,`Room[${data.code}] has no view`);
   Validate.exists('Feature ID',$featureID);
 
   function getID() { return $id; }
@@ -19,11 +14,8 @@ global.Room = function(data) {
   function removeClock() { $clockID = null; }
   function getClock() { return ClockDataStore.get($clockID); }
 
-  function isLair() { return getData().isLair === true; }
-  function hasWorkers() { return getData().hasWorkers === true; }
-  function getWorkerConfiguration() { return getData().workerConfiguration; }
-
   function getData() { return RoomRegistry.lookup($code); }
+  function getLair() { return getData().lair; }
   function getDisplayName() { return getData().displayName; }
   function getView() { return getData().view; }
   function getViewType() { return getView().type; }
@@ -41,13 +33,9 @@ global.Room = function(data) {
   function upgradeTo(code) {
     $code = code;
 
-    if (isLair()) {
-      $isLair = IsLair();
-      $isLair.attach($self);
-    }
-    if (hasWorkers()) {
-      $hasWorkers = HasWorkers();
-      $hasWorkers.attach($self);
+    const minionCode = getLair();
+    if (minionCode) {
+      MinionRoster.registerLair(getID(), minionCode, getFeature().getSize());
     }
   }
 
@@ -58,17 +46,12 @@ global.Room = function(data) {
   }
 
   function pack() {
-    const packed = {
+    return {
       id: $id,
       code: $code,
       featureID: $featureID,
       clockID: $clockID,
-    }
-
-    if (isLair()) { packed.isLair = $isLair.pack(); }
-    if (hasWorkers()) { packed.hasWorkers = $hasWorkers.pack(); }
-
-    return packed;
+    };
   }
 
   // ===========================================================================
@@ -81,10 +64,8 @@ global.Room = function(data) {
     setClock,
     removeClock,
     getClock,
-    isLair,
-    hasWorkers,
-    getWorkerConfiguration,
     getData,
+    getLairData,
     getDisplayName,
     getViewType,
     getLayout,
@@ -94,15 +75,6 @@ global.Room = function(data) {
     toString,
     pack,
   };
-
-  if (isLair()) {
-    $isLair = IsLair(data.isLair);
-    $isLair.attach($self);
-  }
-  if (hasWorkers()) {
-    $hasWorkers = HasWorkers(data.hasWorkers);
-    $hasWorkers.attach($self);
-  }
 
   RoomDataStore.store($self);
 
