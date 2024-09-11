@@ -86,8 +86,8 @@
   .status {
     margin-top: 10px;
     text-align: center;
-    .summoned { color: $fg-strong; }
-    .total { color: $fg-strong; }
+    .summoned { color: $fg-strong; font-family:'aleo-bold'; }
+    .total { color: $fg-strong; font-family:'aleo-bold'; }
   }
 
   .action {

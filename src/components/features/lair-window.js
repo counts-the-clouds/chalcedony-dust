@@ -9,16 +9,16 @@ global.LairWindow = (function() {
       casement.setBounds(getBounds());
       casement.setBackground('rgb(17,19,17)');
 
-      // const content = casement.getCasementContent();
-      // const summonButton = content.querySelector('.summon-button');
-      //
-      // if (summonButton) {
-      //   summonButton.addEventListener('click', () => {
-      //     summonMinion(feature, casement);
-      //   });
-      // }
+      const content = casement.getCasementContent();
+      const summonButton = content.querySelector('.summon-button');
 
-      // content.querySelector('.list-container').appendChild(MinionElements.buildMinionListForLair(room));
+      if (summonButton) {
+        summonButton.addEventListener('click', event => {
+          if (X.hasClass(event.target.closest('.button'),'disabled') === false) {
+            summonMinion(feature, casement);
+          }
+        });
+      }
     }
   }
 
@@ -26,19 +26,25 @@ global.LairWindow = (function() {
     const minionCode = room.getData().lair;
     const minion = Minion(minionCode);
     const status = MinionRoster.getLairStatus(room.getID());
+    const disabled = (status.minionCount >= status.minionMax) ? 'disabled' : '';
 
     return `<div class='lair-window'>
       <div class='header'></div>
       <div class='details'>${room.getDetails()}</div>
-      <div class='status'>
-        <span class='summoned'>${status.minionCount}</span> out of
-        <span class='total'>${status.minionMax}</span> summoned.
-      </div>
+      <div class='status'>${buildStatusText(status,minion)}</div>
       <div class='action'>
         ${CostPanel.build(minion.getCost())}
-        <div class='button button-primary summon-minion-button'>Summon ${minion.getName()}</div>
+        <div class='button button-big button-primary summon-button ${disabled}'>Summon ${minion.getName()}</div>
       </div>
     </div>`
+  }
+
+  function buildStatusText(status,minion) {
+    const name = (status.minionCount === 1) ? minion.getName() : minion.getPluralName();
+
+    return `<span class='summoned'>${status.minionCount}</span>
+            <span class='name'>${name}</span> out of
+            <span class='total'>${status.minionMax}</span> have been summoned.`;
   }
 
   function getBounds() {

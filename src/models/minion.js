@@ -1,7 +1,7 @@
 global.Minion = function(code) {
   const $code = code;
   const $minionData = MinionRegistry.lookup($code);
-  const $pluralName = $minionData.pluralName || `${name}s`
+  const $pluralName = $minionData.pluralName || `${$minionData.name}s`
 
   function getCode() { return $code; }
   function getName() { return $minionData.name; }
