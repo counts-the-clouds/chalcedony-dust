@@ -20,6 +20,10 @@ global.MinionRoster = (function() {
     $lairs[id] = { code, minionMax, minionCount:0 };
   }
 
+  function getLairs() {
+    return Object.keys($lairs).map(id => RoomDataStore.get(id));
+  }
+
   // Summon a single minion given the lair ID.
   function summonMinion(id) {
     const lair = $lairs[id];
@@ -55,6 +59,8 @@ global.MinionRoster = (function() {
     return { ...$assignments[id] };
   }
 
+
+
   // Returns a map of the overall minion roster status in the format:
   //    { goblin:{ max:4, summoned:2, assigned:0 }, kobold:... }
   function getMinionMap() {
@@ -76,6 +82,16 @@ global.MinionRoster = (function() {
     return minionMap;
   }
 
+  function getTotalCapacity() { return reduceMinionMap('max'); }
+  function getTotalAssigned() { return reduceMinionMap('assigned'); }
+
+  function reduceMinionMap(key) {
+    const map = getMinionMap();
+    return Object.keys(map).reduce((accumulator,code) => {
+      return accumulator + map[code][key];
+    },0);
+  }
+
   // === Serialization =========================================================
 
   function pack() {
@@ -91,11 +107,14 @@ global.MinionRoster = (function() {
   return Object.freeze({
     reset,
     registerLair,
+    getLairs,
     summonMinion,
     assignMinion,
     clearAssignment,
     getAssignments,
     getMinionMap,
+    getTotalCapacity,
+    getTotalAssigned,
     pack,
     unpack,
   });
