@@ -6,54 +6,46 @@ global.LairWindow = (function() {
 
       const casement = FeatureWindows.openCasementWith(feature,build(feature,room));
       casement.setTitle(room.getDisplayName());
-      casement.setBounds(getBounds(room));
+      casement.setBounds(getBounds());
       casement.setBackground('rgb(17,19,17)');
 
-      const content = casement.getCasementContent();
-      const summonButton = content.querySelector('.summon-button');
+      // const content = casement.getCasementContent();
+      // const summonButton = content.querySelector('.summon-button');
+      //
+      // if (summonButton) {
+      //   summonButton.addEventListener('click', () => {
+      //     summonMinion(feature, casement);
+      //   });
+      // }
 
-      if (summonButton) {
-        summonButton.addEventListener('click', () => {
-          summonMinion(feature, casement);
-        });
-      }
-
-      content.querySelector('.list-container').appendChild(MinionElements.buildMinionListForLair(room));
+      // content.querySelector('.list-container').appendChild(MinionElements.buildMinionListForLair(room));
     }
   }
 
   function build(feature, room) {
-    const lairData = room.getLairData();
-    const species = Species(lairData.species);
-    const capacity = room.getDomiciledMinionCapacity();
+    const minionCode = room.getData().lair;
+    const minion = Minion(minionCode);
+    const status = MinionRoster.getLairStatus(room.getID());
 
-    let html = `<div class='lair-window'>`
-    html += `<div class='header'>${room.getDetails()}</div>`
-
-    if (capacity > room.getDomiciledMinionCount()) {
-      html += `<div class='actions'>
-        ${CostPanel.build(lairData.cost)}
-        <div class='buttons'>
-          <div class='summon-button button button-primary button-big'>Summon ${species.getName()}</div>
-        </div>
-      </div>`
-    }
-
-    html += `<div class='list-container'></div>`
-
-    return `${html}</div>`
+    return `<div class='lair-window'>
+      <div class='header'></div>
+      <div class='details'>${room.getDetails()}</div>
+      <div class='status'>
+        <span class='summoned'>${status.minionCount}</span> out of
+        <span class='total'>${status.minionMax}</span> summoned.
+      </div>
+      <div class='action'>
+        ${CostPanel.build(minion.getCost())}
+        <div class='button button-primary summon-minion-button'>Summon ${minion.getName()}</div>
+      </div>
+    </div>`
   }
 
-  function getBounds(room) {
-    const capacity = room.getDomiciledMinionCapacity();
-    const count = room.getDomiciledMinionCount();
-    const extra = (capacity < count) ? 2 : 1
-    const height = Math.min(600,((capacity+extra) * 60) + 5);
-
+  function getBounds() {
     const position = MouseMonitor.getPosition();
     const top = position.y - 100;
     const left = position.x - 200;
-    return { top, left, height:height, width:400 }
+    return { top, left, height:260, width:400 }
   }
 
   // === Summoning =============================================================
