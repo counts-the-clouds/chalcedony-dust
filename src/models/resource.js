@@ -13,6 +13,7 @@ global.Resource = function(data) {
   function getView() { return getData().view; }
   function getDetails() { return getView().details; }
   function getFeature() { return FeatureDataStore.get($featureID); }
+  function getFeatureID() { return $featureID; }
   function setClock(clock) { $clockID = clock.getID(); }
   function removeClock() { $clockID = null; }
   function getClock() { return ClockDataStore.get($clockID); }
@@ -23,10 +24,15 @@ global.Resource = function(data) {
   //
   function getSlots() {
     const config = getData().workerConfiguration;
+    const assignments = MinionRoster.getAssignments($featureID);
     const slots = {};
 
     for (let i=0; i<config.slotCount; i++) {
-      slots[`slot-${i}`] = { requiredSkill: config.requiredSkill }
+      const key = `slot-${i}`;
+      slots[key] = {
+        requiredSkill: config.requiredSkill,
+        assignedMinion: assignments[key],
+      };
     }
 
     return slots;
@@ -55,6 +61,7 @@ global.Resource = function(data) {
     getView,
     getDetails,
     getFeature,
+    getFeatureID,
     setClock,
     removeClock,
     getClock,

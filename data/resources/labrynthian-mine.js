@@ -8,7 +8,7 @@ ResourceRegistry.register('labrynthian-mine',{
   },
 
   workerConfiguration: {
-    slots: 1,
+    slotCount: 1,
     requiredSkill: 'mining',
   },
 
