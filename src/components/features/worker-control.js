@@ -6,6 +6,8 @@ global.WorkerControl = (function() {
   }
 
   function build(feature) {
+    throw `WIP: Redo this entirely`
+
     const construction = feature.getConstruction();
 
     const list = X.createElement(`<ul class='worker-list'></ul>`);

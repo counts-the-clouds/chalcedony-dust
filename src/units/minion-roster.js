@@ -20,7 +20,7 @@ global.MinionRoster = (function() {
     $lairs[id] = { code, minionMax, minionCount:0 };
   }
 
-  function getLairs() { return Object.keys($lairs).map(id => RoomDataStore.get(id)); }
+  function getLairCount() { return Object.keys($lairs).length; }
   function getLairStatus(id) { return { ...$lairs[id] }; }
 
   // Summon a single minion given the lair ID.
@@ -32,7 +32,9 @@ global.MinionRoster = (function() {
 
     lair.minionCount += 1;
 
-    // TODO: Spend resources as well
+        // TODO: Spend resources as well
+
+    Panopticon.induce(EventType.minionSummoned,{ room:id });
   }
 
   // Assign A minion to work at a given feature.
@@ -80,6 +82,7 @@ global.MinionRoster = (function() {
   }
 
   function getTotalCapacity() { return reduceMinionMap('max'); }
+  function getTotalSummoned() { return reduceMinionMap('summoned'); }
   function getTotalAssigned() { return reduceMinionMap('assigned'); }
 
   function reduceMinionMap(key) {
@@ -104,7 +107,7 @@ global.MinionRoster = (function() {
   return Object.freeze({
     reset,
     registerLair,
-    getLairs,
+    getLairCount,
     getLairStatus,
     summonMinion,
     assignMinion,
@@ -112,6 +115,7 @@ global.MinionRoster = (function() {
     getAssignments,
     getMinionMap,
     getTotalCapacity,
+    getTotalSummoned,
     getTotalAssigned,
     pack,
     unpack,

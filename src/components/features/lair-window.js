@@ -15,7 +15,7 @@ global.LairWindow = (function() {
       if (summonButton) {
         summonButton.addEventListener('click', event => {
           if (X.hasClass(event.target.closest('.button'),'disabled') === false) {
-            summonMinion(feature, casement);
+            summonMinion(room, casement);
           }
         });
       }
@@ -23,8 +23,7 @@ global.LairWindow = (function() {
   }
 
   function build(feature, room) {
-    const minionCode = room.getData().lair;
-    const minion = Minion(minionCode);
+    const minion = Minion(room.getData().lair);
     const status = MinionRoster.getLairStatus(room.getID());
     const disabled = (status.minionCount >= status.minionMax) ? 'disabled' : '';
 
@@ -54,51 +53,28 @@ global.LairWindow = (function() {
     return { top, left, height:260, width:400 }
   }
 
-  // === Summoning =============================================================
+  // TODO: We need to disable the summon button if we can't afford the minion
+  //       cost. This should be a common function that listens for inventory
+  //       and mana changes. This shouldn't be too taxing, we shouldn't have
+  //       that many lair windows open at once.
+  //
+  async function summonMinion(room, casement) {
+    MinionRoster.summonMinion(room.getID());
 
-  // === WIP ===
-  async function summonMinion(feature, casement) {
-    throw 'summonMinion() - WIP'
+    const minion = Minion(room.getData().lair);
+    const status = MinionRoster.getLairStatus(room.getID());
+    const full = status.minionCount >= status.minionMax;
 
-    // const room = feature.getConstruction();
-    // const lairData = room.getLairData();
-    // const minion = MinionBuilder.build({ species:lairData.species });
-    //
-    // const root = casement.getCasementContent();
-    // const listItem = firstEmptyItem(root);
-    // const minionItem = MinionElements.buildMinionItem(minion.getID(), true);
-    //
-    // listItem.replaceWith(minionItem);
-    //
-    // room.addMinion(minion);
-    //
-    // // TODO: Actually spend the resources needed to summon the minion.
-    //
-    // // TODO: Also need to disable the summon button if we can't afford the
-    // //       minion cost. This should be a common function that listens for
-    // //       inventory changes as well.
-    //
-    // if (emptyItemExists(root) === false) {
-    //   root.querySelector('.actions').remove();
-    //   casement.contentResized();
-    // }
-    //
-    // Effects.fadeOut({
-    //   element: minionItem.querySelector('.flash'),
-    //   id:`Minion-${minion.getID()}`
-    // });
-    //
-    // await GameState.saveState();
+    const content = casement.getCasementContent();
+    const statusPanel = content.querySelector('.status');
+    statusPanel.innerHTML = buildStatusText(status, minion);
+
+    if (full) {
+      X.addClass(content.querySelector('.summon-button'),'disabled');
+    }
+
+    await GameState.saveState();
   }
-
-  function emptyItemExists(root) {
-    return root.querySelector('.minion-list li.empty') != null;
-  }
-
-  function firstEmptyItem(root) {
-    return root.querySelectorAll('.minion-list li.empty')[0];
-  }
-
 
   return Object.freeze({
     open
