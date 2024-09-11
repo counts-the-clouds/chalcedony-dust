@@ -10,6 +10,7 @@ global.Room = function(data) {
   function getID() { return $id; }
   function getCode() { return $code; }
   function getFeature() { return FeatureDataStore.get($featureID); }
+  function getFeatureID() { return $featureID; }
   function setClock(clock) { $clockID = clock.getID(); }
   function removeClock() { $clockID = null; }
   function getClock() { return ClockDataStore.get($clockID); }
@@ -34,7 +35,7 @@ global.Room = function(data) {
 
     const minionCode = getData().lair;
     if (minionCode) {
-      MinionRoster.registerLair(getID(), minionCode, getFeature().getSize());
+      MinionRoster.registerLair($featureID, minionCode, getFeature().getSize());
     }
   }
 
@@ -60,6 +61,7 @@ global.Room = function(data) {
     getID,
     getCode,
     getFeature,
+    getFeatureID,
     setClock,
     removeClock,
     getClock,

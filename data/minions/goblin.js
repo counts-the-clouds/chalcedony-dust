@@ -4,4 +4,8 @@ MinionRegistry.register('goblin', {
 
   cost: { mana:5 },
 
+  skills: {
+    mining: 1,
+  }
+
 });

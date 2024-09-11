@@ -9,6 +9,7 @@ ResourceRegistry.register('draconian-mine',{
 
   workerConfiguration: {
     slots: 1,
+    requiredSkill: 'mining',
   },
 
   clockCode: 'mine-resource',

@@ -9,6 +9,7 @@ ResourceRegistry.register('amberian-mine',{
 
   workerConfiguration: {
     slots: 1,
+    requiredSkill: 'mining',
   },
 
   clockCode: 'mine-resource',

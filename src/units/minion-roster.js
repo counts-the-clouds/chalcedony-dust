@@ -10,7 +10,7 @@ global.MinionRoster = (function() {
 
   // Register a new lair. This will be called when an empty lair is upgraded to
   // a basic lair.
-  //   id: The room id of the lair
+  //   id: The feature id of the lair
   //   code: The minion code
   //   size: The size of the room's feature.
   function registerLair(id, code, size) {
@@ -23,7 +23,7 @@ global.MinionRoster = (function() {
   function getLairCount() { return Object.keys($lairs).length; }
   function getLairStatus(id) { return { ...$lairs[id] }; }
 
-  // Summon a single minion given the lair ID.
+  // Summon a single minion given the lair's feature ID.
   function summonMinion(id) {
     const lair = $lairs[id];
 
@@ -32,7 +32,7 @@ global.MinionRoster = (function() {
 
     lair.minionCount += 1;
 
-        // TODO: Spend resources as well
+    // TODO: Spend resources as well
 
     Panopticon.induce(EventType.minionSummoned,{ room:id });
   }

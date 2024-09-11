@@ -5,4 +5,6 @@ MinionRegistry.register('skreevin',{
 
   cost: { mana:3 },
 
+  skills: {},
+
 });

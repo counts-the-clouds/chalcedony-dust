@@ -4,4 +4,8 @@ MinionRegistry.register('kobold',{
 
   cost: { mana:4 },
 
+  skills: {
+    mining: 1,
+  }
+
 });

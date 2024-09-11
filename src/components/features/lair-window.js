@@ -24,7 +24,7 @@ global.LairWindow = (function() {
 
   function build(feature, room) {
     const minion = Minion(room.getData().lair);
-    const status = MinionRoster.getLairStatus(room.getID());
+    const status = MinionRoster.getLairStatus(feature.getID());
     const disabled = (status.minionCount >= status.minionMax) ? 'disabled' : '';
 
     return `<div class='lair-window'>
@@ -59,10 +59,10 @@ global.LairWindow = (function() {
   //       that many lair windows open at once.
   //
   async function summonMinion(room, casement) {
-    MinionRoster.summonMinion(room.getID());
+    MinionRoster.summonMinion(room.getFeatureID());
 
     const minion = Minion(room.getData().lair);
-    const status = MinionRoster.getLairStatus(room.getID());
+    const status = MinionRoster.getLairStatus(room.getFeatureID());
     const full = status.minionCount >= status.minionMax;
 
     const content = casement.getCasementContent();
@@ -78,6 +78,6 @@ global.LairWindow = (function() {
 
   return Object.freeze({
     open
-  })
+  });
 
 })();
