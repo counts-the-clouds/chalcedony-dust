@@ -199,29 +199,31 @@ global.Feature = function(data) {
 
   // === Feature Workers and Clocks ============================================
 
-  async function assignWorker(slot, minion) {
-    const construction = getConstruction();
-    construction.setWorker(parseInt(slot), minion);
+  async function assignWorker(slot, minionCode) {
+    if (MinionRoster.getAssignments($id)[slot] !== minionCode) {
+      MinionRoster.assignMinion($id, slot, minionCode);
 
-    if (construction.getClock() == null) {
-      startClock()
+      if (getConstruction().getClock() == null) {
+        startClock()
+      }
+
+      Panopticon.induce(EventType.workerAssignmentChanged,{ featureID:$id, slot:slot, code:minionCode });
     }
-
-    Panopticon.induce(EventType.workerAssignmentChanged,{ minion });
   }
 
   async function removeWorker(slot) {
-    const construction = getConstruction();
-    const minion = construction.getWorker(slot);
+    if (MinionRoster.getAssignments($id)[slot]) {
+      MinionRoster.clearAssignment($id, slot);
 
-    if (minion) {
-      construction.removeWorker(slot);
-      Panopticon.induce(EventType.workerAssignmentChanged,{ minion });
-    }
+      const assignmentCount = Object.keys(MinionRoster.getAssignments($id)).length;
+      const construction = getConstruction();
 
-    if (construction.getClock() && construction.getWorkerCount() === 0) {
-      construction.getClock().deleteSelf()
-      construction.removeClock();
+      if (construction.getClock() && assignmentCount === 0) {
+        construction.getClock().deleteSelf();
+        construction.removeClock();
+      }
+
+      Panopticon.induce(EventType.workerAssignmentChanged,{ featureID:$id, slot:slot });
     }
   }
 

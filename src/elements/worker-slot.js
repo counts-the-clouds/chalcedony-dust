@@ -92,8 +92,8 @@ global.WorkerSlot = (function() {
     const slot = minionSelect.getAttribute('data-slot');
 
     (minionCode == null) ?
-        MinionRoster.clearAssignment(featureID, slot) :
-        MinionRoster.assignMinion(featureID, slot, minionCode);
+        feature.removeWorker(slot) :
+        feature.assignWorker(slot, minionCode);
 
     const slotData = feature.getConstruction().getSlots()[slot];
     const slotElement = findWorkerSlot(featureID, slot);
