@@ -1,0 +1,12 @@
+#selectArea {
+  position: absolute;
+  inset:0;
+  z-index: $z-select;
+
+  .select {
+    position: fixed;
+    background-color: rgb(10,10,10);
+    border: $border-normal;
+    box-shadow: $shadow-frame;
+  }
+}

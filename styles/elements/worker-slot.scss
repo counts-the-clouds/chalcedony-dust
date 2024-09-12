@@ -21,10 +21,44 @@ li.worker-slot {
     box-shadow: $shadow-shallow;
     background-color: rgba(0,0,0,0.33);
 
-    .empty { opacity: 0.5; }
+    .empty {
+      opacity: 0.5;
+    }
+    .minion-name {
+      color: $fg-strong;
+    }
+    .minion-skill {
+      margin-left: 1em;
+      flex-grow: 1;
+      text-align: right;
+    }
   }
   .slot-select:hover {
     background-color: rgba(150,150,200,0.1);
   }
+}
 
+#selectArea .minion-list {
+  .empty {
+    opacity: 0.5;
+  }
+  .minion-item {
+    display: flex;
+    height: 30px;
+    padding: 0 10px;
+    line-height: 30px;
+    cursor: pointer;
+
+    .minion-name {
+      color: $fg-strong;
+    }
+    .minion-skill {
+      margin-left: 1em;
+      flex-grow: 1;
+      text-align: right;
+    }
+  }
+  .minion-item:hover {
+    background-color: rgba(150,150,200,0.1);
+  }
 }
