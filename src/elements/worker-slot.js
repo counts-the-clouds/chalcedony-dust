@@ -14,7 +14,9 @@ global.WorkerSlot = (function() {
       minionName = `<div class='minion-name'>${minion.getName()}</div>`;
 
       if (slotData.requiredSkill) {
-        minionSkill = `<div class='minion-skill positive'>+${minion.getSkill(slotData.requiredSkill)}</div>`;
+        const skillName = Skills[slotData.requiredSkill].name;
+        const skillValue = minion.getSkill(slotData.requiredSkill);
+        minionSkill = `<div class='minion-skill positive'>${skillName} +${skillValue}</div>`;
       }
     }
 
@@ -89,9 +91,24 @@ global.WorkerSlot = (function() {
     const feature = FeatureDataStore.get(featureID);
     const slot = minionSelect.getAttribute('data-slot');
 
-    console.log(`Set: ${feature}/${slot} = ${minionCode}`);
+    (minionCode == null) ?
+        MinionRoster.clearAssignment(featureID, slot) :
+        MinionRoster.assignMinion(featureID, slot, minionCode);
+
+    const slotData = feature.getConstruction().getSlots()[slot];
+    const slotElement = findWorkerSlot(featureID, slot);
+
+    slotElement.replaceWith(X.createElement(build(featureID, slot, slotData)));
 
     closeSelect();
+  }
+
+  function findWorkerSlot(featureID, slot) {
+    for (let element of X('li.worker-slot')) {
+      if (parseInt(element.getAttribute('data-feature-id')) === featureID && element.getAttribute('data-slot') === slot) {
+        return element;
+      }
+    }
   }
 
   function closeSelect() {
