@@ -23,17 +23,16 @@ global.Resource = function(data) {
   //       depending on the feature size and various game flags and such.
   //
   function getSlots() {
-    const config = getData().workerConfiguration;
     const assignments = MinionRoster.getAssignments($featureID);
     const slots = {};
 
-    for (let i=0; i<config.slotCount; i++) {
-      const key = `slot-${i}`;
-      slots[key] = {
-        requiredSkill: config.requiredSkill,
-        assignedMinion: assignments[key],
+    getData().slots.forEach(slot => {
+      slots[slot.code] = {
+        name: slot.name,
+        requiredSkill: slot.requiredSkill,
+        assignedMinion: assignments[slot.code],
       };
-    }
+    });
 
     return slots;
   }

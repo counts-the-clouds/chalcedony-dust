@@ -8,7 +8,10 @@ global.Minion = function(code) {
   function getPluralName() { return $pluralName; }
   function getTilesPerMinion() { return $minionData.tilesPerMinion; }
   function getCost() { return $minionData.cost; }
+  function hasSkill(code) { return $minionData.skills[code] != null }
+  function getSkill(code) { return $minionData.skills[code] || 0 }
   function toString() { return `Minion[${$code}]`; }
+
 
   return Object.freeze({
     getCode,
@@ -16,6 +19,8 @@ global.Minion = function(code) {
     getPluralName,
     getTilesPerMinion,
     getCost,
+    hasSkill,
+    getSkill,
     toString,
   });
 }
