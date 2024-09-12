@@ -1,14 +1,14 @@
-global.MinionBuilder = (function() {
+global.GuardianBuilder = (function() {
 
   function build(options) {
     Validate.exists('Species',options.species);
 
-    const minion = Minion({});
+    const guardian = Guardian({});
     const species = Species(options.species);
     const gender = selectGender(options, species);
 
-    minion.setSpecies(options.species);
-    minion.setGender(gender);
+    guardian.setSpecies(options.species);
+    guardian.setGender(gender);
 
     const nameData = NameBuilder.getRandom({ category:species.getNameCategory(), gender:gender });
 
@@ -17,12 +17,12 @@ global.MinionBuilder = (function() {
     //       ready to start implementing that. Not actually sure though if that
     //       applies to minions or only guardians.
     //
-    if (nameData.first) { minion.setFirstName(nameData.first.name); }
-    if (nameData.last) { minion.setLastName(nameData.last.name); }
+    if (nameData.first) { guardian.setFirstName(nameData.first.name); }
+    if (nameData.last) { guardian.setLastName(nameData.last.name); }
 
-    Panopticon.induce(EventType.minionSummoned, { minion });
+    Panopticon.induce(EventType.guardianSummoned, { guardian });
 
-    return minion;
+    return guardian;
   }
 
   function selectGender(options, species) {
@@ -33,4 +33,4 @@ global.MinionBuilder = (function() {
     build
   });
 
-})()
+})();

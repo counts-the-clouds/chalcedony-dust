@@ -7,5 +7,5 @@ BlueprintRegistry.register('lair-skreevin',{
   upgradeFrom: 'lair',
 
   constructionTime: 60,
-  costPerTile:{ mana:2 },
+  costPerTile:{ mana:4 },
 });

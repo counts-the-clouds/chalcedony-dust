@@ -113,6 +113,7 @@ global.FeatureState = Object.freeze({
 global.EventType = Object.freeze({
   constructionComplete: 'construction-complete',
   featureCompleted: 'feature-completed',
+  guardianSummoned: 'guardian-summoned',
   itemAdded: 'item-added',
   itemRemoved: 'item-removed',
   minionSummoned: 'minion-summoned',

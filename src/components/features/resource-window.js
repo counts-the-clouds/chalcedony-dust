@@ -11,18 +11,22 @@ global.ResourceWindow = (function() {
 
       const content = casement.getCasementContent();
       content.querySelector('.has-background').style['background-image'] = X.assetURL(resource.getView().background);
-      content.querySelector('.worker-area').appendChild(WorkerControl.build(feature));
     }
   }
 
   function build(resource) {
-    const view = resource.getView();
-    return `<div class='resource-window'>
+    let html = `<div class='resource-window'>
       <div class='banner has-background'></div>
       <div class='icon-container'><div class='icon icon-for-${resource.getResource()}'></div></div>
       <div class='header'>${resource.getDetails()}</div>
-      <div class='worker-area'></div>
-    </div>`
+      <ul class='slots'>`;
+
+    const slots = resource.getSlots();
+    Object.keys(slots).forEach(slot => {
+      html += WorkerSlot.build(resource.getFeatureID(), slot, slots[slot]);
+    });
+
+    return `${html}</ul></div>`;
   }
 
   function getBounds() {

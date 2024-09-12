@@ -7,5 +7,5 @@ BlueprintRegistry.register('lair-kobold',{
   upgradeFrom: 'lair',
 
   constructionTime: 60,
-  costPerTile:{ mana:3 },
+  costPerTile:{ mana:5 },
 });

@@ -1,16 +1,10 @@
 RoomRegistry.register('lair-goblin',{
-  isLair: true,
   displayName: 'Goblin Lair',
+  lair: 'goblin',
 
   view: {
     type: 'lair',
     details: `(Goblin Lair Details)`,
-  },
-
-  lair: {
-    species: 'goblin',
-    cost: { mana:5 },
-    minionsPerTile: 1,
   },
 
 });

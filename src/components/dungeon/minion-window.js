@@ -24,44 +24,36 @@ global.MinionWindow = (function() {
   }
 
   function updateHeader() {
-    const lairs = RoomDataStore.all().filter(room => room.isLair());
+    const lairCount = MinionRoster.getLairCount();
 
-    if (lairs.length === 0) {
+    if (lairCount === 0) {
       return $slideWindow.setHeader(X.createElement(`<span class='minions-state empty'>There are no active lairs.</span>`))
     }
 
-    let totalCapacity = 0;
-    lairs.forEach(lair => {
-      totalCapacity += lair.getDomiciledMinionCapacity();
-    });
-
-    $slideWindow.setHeader(X.createElement(`<span class='minions-state'>${MinionDataStore.size()} of ${totalCapacity} minions summoned from ${lairs.length} active lairs</span>`));
+    $slideWindow.setHeader(X.createElement(`<span class='minions-state'>${MinionRoster.getTotalSummoned()} of
+        ${MinionRoster.getTotalCapacity()} minions summoned from ${lairCount} active lairs</span>`));
   }
 
   function updateMinions() {
-    if (MinionDataStore.size() === 0) {
+    if (MinionRoster.getTotalSummoned() === 0) {
       return $slideWindow.setContent(X.createElement(`<div class='empty'>&nbsp;</div>`));
     }
 
+    const minionMap = MinionRoster.getMinionMap();
     const speciesList = X.createElement(`<div class='species-list'></div>`);
-    const assigned = MinionHelper.allAssignedMinions();
 
-    SpeciesRegistry.forEach(code => {
-      const minions = MinionDataStore.all().filter(minion => { return minion.getSpeciesCode() === code });
+    Object.keys(minionMap).forEach(code => {
+      const minion = Minion(code);
+      const count = minionMap[code].summoned;
 
-      if (minions.length > 0) {
-        speciesList.appendChild(X.createElement(`<div class='species-name'>${minions.length} ${Species(code).getPluralName()}</div>`));
-        speciesList.appendChild(X.createElement(`<div class='details'>${assignedCountFor(assigned, minions)} have jobs</div>`));
+      if (count > 0) {
+        const name = (count === 1) ? minion.getName() : minion.getPluralName();
+        speciesList.appendChild(X.createElement(`<div class='species-name'>${minionMap[code].summoned} ${name}</div>`));
+        speciesList.appendChild(X.createElement(`<div class='details'>${minionMap[code].assigned} have jobs</div>`));
       }
     });
 
     $slideWindow.setContent(speciesList);
-  }
-
-  function assignedCountFor(assigned, minions) {
-    return minions.reduce((accumulator, minion) => {
-      return assigned.includes(minion.getID()) ? accumulator + 1 : accumulator;
-    }, 0);
   }
 
   function reposition() { $slideWindow.reposition(); }

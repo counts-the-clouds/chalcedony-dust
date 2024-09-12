@@ -1,38 +1,26 @@
-global.Minion = function(data) {
+global.Minion = function(code) {
+  const $code = code;
+  const $minionData = MinionRegistry.lookup($code);
+  const $pluralName = $minionData.pluralName || `${$minionData.name}s`
 
-  const $id = data.id || MinionDataStore.nextID();
-  const $isActor = IsActor(data.isActor);
-  const $hasAspects = HasAspects(data.hasAspects);
+  function getCode() { return $code; }
+  function getName() { return $minionData.name; }
+  function getPluralName() { return $pluralName; }
+  function getTilesPerMinion() { return $minionData.tilesPerMinion; }
+  function getCost() { return $minionData.cost; }
+  function hasSkill(code) { return $minionData.skills[code] != null }
+  function getSkill(code) { return $minionData.skills[code] || 0 }
+  function toString() { return `Minion[${$code}]`; }
 
-  function getID() { return $id; }
 
-  // ===========================================================================
-
-  function toString() {
-    return `Minion:${$id}[${$self.getSpecies().getName()}|${$self.getFullName()}]`;
-  }
-
-  function pack() {
-    return {
-      id: $id,
-      isActor: $isActor.pack(),
-      hasAspects: $hasAspects.pack(),
-    }
-  }
-
-  // ===========================================================================
-
-  const $self = {
-    model: 'Minion',
-    getID,
+  return Object.freeze({
+    getCode,
+    getName,
+    getPluralName,
+    getTilesPerMinion,
+    getCost,
+    hasSkill,
+    getSkill,
     toString,
-    pack,
-  };
-
-  $isActor.attach($self);
-  $hasAspects.attach($self);
-
-  MinionDataStore.store($self);
-
-  return Object.freeze($self);
+  });
 }

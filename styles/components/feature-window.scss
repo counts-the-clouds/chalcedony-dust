@@ -72,18 +72,29 @@
 
 .lair-window {
   .header {
+    aspect-ratio: 4/1;
+    background-color: rgb(0,0,0);
+  }
+
+  .details {
     padding: 10px;
     border-bottom: $border-light;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgb(0,0,0);
     box-shadow: $shadow-shallow;
   }
 
-  .actions {
+  .status {
+    margin-top: 10px;
+    text-align: center;
+    .summoned { color: $fg-strong; font-family:'aleo-bold'; }
+    .total { color: $fg-strong; font-family:'aleo-bold'; }
+  }
+
+  .action {
     display: flex;
     align-items: flex-end;
     justify-content: space-between;
     padding: 0 10px 10px;
-    border-bottom: $border-light;
   }
 }
 
