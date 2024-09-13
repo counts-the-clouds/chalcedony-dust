@@ -61,18 +61,28 @@ global.Feature = function(data) {
   }
 
   // After this feature has been completed, and after a short delay, we check
-  // to see if any node features connected to this one should be completed.
+  // to see if any node features connected to this one should be completed. If
+  // so we create a guardian node.
   function checkNodeStatus() {
     getTiles().forEach(tile => {
-      tile.getFeatures().forEach(feature => {
+      tile.getFeatures().forEach(async feature => {
         if (feature.getType() === TileType.node) {
           const segment = feature.getSegments()[0];
           if (feature.isNotIncomplete() === false && segment.shouldBeComplete()) {
-            feature.complete();
+            await feature.createGuardianNode();
           }
         }
       })
     });
+  }
+
+  async function createGuardianNode() {
+    if (getType() !== TileType.node) { throw `A guardian node must be of type node.` }
+    if ($constructionID != null) { throw `A guardian node has already been built for this feature.`}
+
+    complete();
+    $constructionID = GuardianNode({ featureID:getID() }).getID();
+    await GameState.saveState();
   }
 
   // Because this function depends on the cell and tile containers it does
@@ -155,6 +165,8 @@ global.Feature = function(data) {
         case TileType.hall: return HallDataStore.get($constructionID);
         case TileType.resource: return ResourceDataStore.get($constructionID);
         case TileType.room: return RoomDataStore.get($constructionID);
+        case TileType.node: return GuardianNodeDataStore.get($constructionID);
+        default: `No construction for type ${type}`;
       }
     }
   }
@@ -344,6 +356,7 @@ global.Feature = function(data) {
     distanceToOrigin,
     addSegment,
     checkStatus,
+    createGuardianNode,
     complete,
     isNotIncomplete,
     startConstruction,

@@ -14,6 +14,7 @@ global.Models = (function() {
     global.ChunkDataStore = DataStore({ name:'Chunk', model:Chunk });
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
     global.GuardianDataStore = DataStore({ name:'Guardian', model:Guardian });
+    global.GuardianNodeDataStore = DataStore({ name:'GuardianNode', model:GuardianNode });
     global.HallDataStore = DataStore({ name:'Hall', model:Hall });
     global.ReactionDataStore = DataStore({ name:'Reaction', model:Reaction });
     global.ResourceDataStore = DataStore({ name:'Resource', model:Resource });
@@ -29,6 +30,7 @@ global.Models = (function() {
       ChunkDataStore,
       FeatureDataStore,
       GuardianDataStore,
+      GuardianNodeDataStore,
       HallDataStore,
       ReactionDataStore,
       ResourceDataStore,

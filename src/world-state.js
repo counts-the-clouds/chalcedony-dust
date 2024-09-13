@@ -84,6 +84,20 @@ global.WorldState = (function() {
   async function setChapter(chapter) { await setValue('chapter', chapter); }
   function getChapter() { return getValue('chapter'); }
 
+  // === Guardians =============================================================
+
+  function getAvailableGuardians() {
+    let summoned = [];
+
+    GuardianNodeDataStore.all().forEach(node => {
+      summoned = summoned.concat(node.getGuardianChoices());
+    });
+
+    return Object.keys(activeState().guardians).filter(code => {
+      return summoned.includes(code) === false;
+    });
+  }
+
   async function setGuardianSummonLimit(limit) { await setValue('guardianSummonLimit', limit); }
   function getGuardianSummonLimit() { return getValue('guardianSummonLimit'); }
 
@@ -150,6 +164,7 @@ global.WorldState = (function() {
     getKeyBindings,
     setChapter,
     getChapter,
+    getAvailableGuardians,
     setGuardianSummonLimit,
     getGuardianSummonLimit,
     initializeGuardian,
