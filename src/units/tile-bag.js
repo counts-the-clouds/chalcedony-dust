@@ -1,156 +1,169 @@
 global.TileBag = (function() {
 
-  let $baggedTiles;
-  let $sequentialTiles;
-  let $weightedTiles;
+  const BASE_TILES = {
+    // Halls
+    'baseline-h1-0': 6,
+    'baseline-h2-0': 12,
+    'baseline-h2-1': 6,
+    'baseline-h2-2': 6,
+    'baseline-h3-0': 4,
+    'baseline-h3-1': 4,
+    'baseline-h3-2': 4,
+    'baseline-h4-0': 2,
+    'baseline-h4-1': 2,
+    'baseline-h4-2': 2,
+
+    // Rooms
+    'baseline-r1-0': 2,
+    'baseline-r1-1': 2,
+    'baseline-r1-2': 2,
+    'baseline-r2-0': 6,
+    'baseline-r2-1': 6,
+    'baseline-r2-2': 6,
+    'baseline-r2-3': 6,
+    'baseline-r3-0': 4,
+    'baseline-r3-1': 4,
+    'baseline-r4-0': 2,
+    'baseline-r4-1': 2,
+
+    // 1 Hall + Rooms
+    'baseline-h1-r1-0': 8,
+    'baseline-h1-r1-1': 8,
+    'baseline-h1-r1-2': 8,
+    'baseline-h1-r2-0': 6,
+    'baseline-h1-r2-1': 6,
+    'baseline-h1-r2-2': 6,
+    'baseline-h1-r3-0': 4,
+
+    // Halls + 1 Room
+    'baseline-h2-r1-0': 6,
+    'baseline-h2-r1-1': 6,
+    'baseline-h2-r1-2': 6,
+    'baseline-h2-r2-0': 4,
+    'baseline-h2-r2-1': 4,
+    'baseline-h3-r1-0': 4,
+  };
+
+  const GUARDIAN_TILES = {
+    // Halls + Node
+    'baseline-h1-n1-0': 1,
+    'baseline-h2-n1-0': 1,
+    'baseline-h2-n1-1': 1,
+    'baseline-h3-n1-0': 1,
+    'baseline-h3-n1-1': 1,
+    'baseline-h4-n1-0': 1,
+    'baseline-h4-n1-1': 1,
+
+    // Rooms + Node
+    'baseline-r1-n1-0': 1,
+    'baseline-r2-n1-0': 1,
+    'baseline-r3-n1-0': 1,
+    'baseline-r4-n1-0': 1,
+
+    // Hall + Room + Node
+    'baseline-h1-r1-n1-0': 1,
+    'baseline-h1-r3-n1-0': 1,
+  }
+
+  // Probably going to tweak this map over time. I'm thinking now that a
+  // minimum number of tiles need to be placed before a guardian tile can be
+  // drawn. Because you can have multiple guardians in a game, each time a
+  // guardian tile is drawn the number of tiles needed to draw another guardian
+  // increases dramatically. This is in addition to the GuardianSummonLimit set
+  // on the world state which further limits the guardians count to 2, 4, or 6
+  const THE_MINIMUM_NUMBER_OF_TILES_THAT_MUST_BE_PLACED_BEFORE_THE_NEXT_GUARDIAN_CAN_BE_DRAWN = {
+    0: 20,
+    1: 80,
+    2: 200,
+    3: 400,
+    4: 700,
+    5: 1000,
+  };
+
+  let $sequenceCode;
+  let $sequenceIndex;
+  let $guardianHeat;
+  let $guardiansDrawn;
 
   function reset() {
-    $baggedTiles = {};
-    $sequentialTiles = [];
-    $weightedTiles = {};
+    $sequenceCode = null;
+    $sequenceIndex = null;
+    $guardianHeat = 0;
+    $guardiansDrawn = 0;
   }
 
-  function isEmpty() { return size() === 0; }
-  function isSequence() { return $sequentialTiles.length > 0; }
-
-  function size() {
-    return ($sequentialTiles.length +
-           Object.keys($baggedTiles).length +
-           Object.keys($weightedTiles).length);
-  }
-
-  function getSequentialTileCount() { return $sequentialTiles.length; }
-
-  // The sequentialTiles array should be an array of actual tiles.
-  function addSequentialTiles(tiles) {
-    $sequentialTiles = $sequentialTiles.concat(tiles.map(tile => tile.getID()));
-  }
-
-  // The shift() function modifies the sequentialTiles array, removing the
-  // first element. Not very functional of you javascript.
-  function nextSequentialTile() {
-    return TileDataStore.get($sequentialTiles.shift());
-  }
-
-  // Add the given frequency map of tile codes to the tile bag. We fetch the
-  // tile from the registry here just to make sure it's an actual tile.
-  function addBaggedTiles(tileMap) {
-    Object.keys(tileMap).forEach(code => {
-      TileRegistry.lookup(code);
-      $baggedTiles[code] = ($baggedTiles[code]||0) + tileMap[code];
-    });
-  }
-
-  // Remove a single tile from the bag. This will decrease the tile's entry in
-  // the baggedTiles frequency map by 1.
-  function removeBaggedTile(code) {
-    if ($baggedTiles[code] < 1) {
-      throw `Trying to remove Tile:${code}, but there are none in the bag.`
-    }
-
-    $baggedTiles[code] -= 1;
-
-    if ($baggedTiles[code] === 0) {
-      deleteBaggedTile(code);
-    }
-  }
-
-  // Remove all tiles with the given code from the bag.
-  function deleteBaggedTile(code) {
-    delete $baggedTiles[code];
-  }
-
-  // Add a weighted tile to the tile bag.
-  //   tile:    The tile object
-  //   chance:  The chance that this tile will be drawn next draw.
-  //   heat:    How much more likely is it that this tile will be drawn next
-  //            time. The heat value can be 0 or even negative if drawing a
-  //            tile should become less likely. This could be used to simulate
-  //            a temp 'luck' or 'curse' effect.
-  function addWeightedTile(tile, chance, heat) {
-    Validate.between('chance', chance, 0, 100);
-
-    if ($weightedTiles[tile.getCode()] != null) {
-      throw `This weighted tile is already present. They should be unique in bag.`
-    }
-
-    $weightedTiles[tile.getCode()] = { tileID:tile.getID(), chance, heat };
-  }
-
-  function deleteWeightedTile(code) {
-    delete $weightedTiles[code];
-  }
-
-  // When drawing a tile we first see if there's a sequential tile that should
-  // be chosen next, and return it if there is. We then loop through the
-  // weighted tiles, rolling  against each of their chance value to see if it's
-  // drawn. If not we draw a tile at random from the bagged tiles. Every time a
-  // tile is drawn we remove that tile from the bag.
-  //
-  // After calling drawTile() it's important to remember to also call
-  // raiseHeat()
   function drawTile() {
-    const weightedCodes = Object.keys($weightedTiles);
-
-    if (getSequentialTileCount() > 0) {
-      return nextSequentialTile();
-    }
-
-    if (weightedCodes.length > 0) {
-      for (const code of weightedCodes) {
-        if (Random.upTo(100) < $weightedTiles[code].chance) {
-          let tile = TileDataStore.get($weightedTiles[code].tileID);
-          deleteWeightedTile(code);
-          return tile;
-        }
-      }
-    }
-
-    const code = Random.fromFrequencyMap($baggedTiles);
-    removeBaggedTile(code);
-
-    return Tile({ code });
+    if (isSequence()) { return nextSequentialTile(); }
+    if (shouldDrawGuardian()) { return drawGuardianTile(); }
+    return Tile({ code:Random.fromFrequencyMap(BASE_TILES) });
   }
 
-  // Each time we draw a tile without drawing a weighted tile we make it more
-  // likely (or less likely in some cases) that the weighted tile will be drawn.
-  function raiseHeat() {
-    Object.keys($weightedTiles).forEach(code => {
-      $weightedTiles[code].chance += $weightedTiles[code].heat;
-      if ($weightedTiles[code].chance > 100) { $weightedTiles[code].chance = 100 }
-      if ($weightedTiles[code].chance <= 0) { deleteWeightedTile(code); }
-    });
+  // === Tile Sequences ========================================================
+
+  function isSequence() { return $sequenceCode != null }
+
+  function startTileSequence(sequenceCode) {
+    $sequenceCode = sequenceCode;
+    $sequenceIndex = 0;
+  }
+
+  function nextSequentialTile() {
+    const tiles = ExtraRegistry.lookup($sequenceCode).sequence;
+    const tile = Tile(tiles[$sequenceIndex]);
+
+    if (++$sequenceIndex >= tiles.length) {
+      $sequenceCode = null;
+      $sequenceIndex = null;
+    }
+
+    return tile
+  }
+
+  // === Guardian Tiles ========================================================
+
+  function shouldDrawGuardian() {
+    if ($guardiansDrawn >= WorldState.getGuardianSummonLimit()) { return false; }
+    if (TileDataStore.size() < THE_MINIMUM_NUMBER_OF_TILES_THAT_MUST_BE_PLACED_BEFORE_THE_NEXT_GUARDIAN_CAN_BE_DRAWN[$guardiansDrawn]) { return false; }
+
+    $guardianHeat += Random.upTo(5);
+
+    console.log(`He comes... ${$guardianHeat}`);
+
+    return $guardianHeat >= Random.upTo(100);
+  }
+
+  function drawGuardianTile() {
+    $guardiansDrawn += 1;
+    $guardianHeat = 0;
+    return Tile({ code:Random.fromFrequencyMap(GUARDIAN_TILES) });
+  }
+
+  function guardianTileDiscarded() {
+    $guardiansDrawn -= 1;
   }
 
   // === Serialization =========================================================
 
   function pack() {
     return {
-      baggedTiles: $baggedTiles,
-      sequentialTiles: $sequentialTiles,
-      weightedTiles: $weightedTiles,
+      sequenceCode: $sequenceCode,
+      sequenceIndex: $sequenceIndex,
+      guardianHeat: $guardianHeat,
     }
   }
 
   function unpack(data) {
-    $baggedTiles = data.baggedTiles;
-    $sequentialTiles = data.sequentialTiles;
-    $weightedTiles = data.weightedTiles;
+    $sequenceCode = data.sequenceCode;
+    $sequenceIndex = data.sequenceIndex;
+    $guardianHeat = data.guardianHeat;
   }
 
   return Object.freeze({
     reset,
-    isEmpty,
-    isSequence,
-    size,
-    addSequentialTiles,
-    addBaggedTiles,
-    removeBaggedTile,
-    deleteBaggedTile,
-    addWeightedTile,
-    deleteWeightedTile,
     drawTile,
-    raiseHeat,
+    isSequence,
+    startTileSequence,
+    guardianTileDiscarded,
     pack,
     unpack,
   });

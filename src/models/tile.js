@@ -124,6 +124,17 @@ global.Tile = function(data) {
     }))
   }
 
+  function hasNode() {
+    return hasSegmentOfType(TileType.node);
+  }
+
+  function hasSegmentOfType(type) {
+    for (const id of $segments) {
+      if (SegmentDataStore.get(id).getType() === type) { return true }
+    }
+    return false;
+  }
+
   // === Serialization ===
 
   function toString() {
@@ -172,6 +183,8 @@ global.Tile = function(data) {
     getSegmentWithExit,
     resetSegments,
     getFeatures,
+    hasNode,
+    hasSegmentOfType,
 
     toString,
     pack,

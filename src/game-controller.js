@@ -21,18 +21,8 @@ global.GameController = (function() {
       GameFlags.set(flag,stageData.flags[flag]);
     });
 
-    // TODO: The baseline bagged tiles is a code for a frequency map of bagged
-    //       tiles. We might want to make this accept an array of codes as well
-    //       to handle more complex games. We might also want to loop through
-    //       the game flags to see what tiles have been enabled.
-    if (stageData.baggedTiles) {
-      TileBag.addBaggedTiles(structuredClone(ExtraRegistry.lookup(stageData.baggedTiles)));
-    }
-
-    if (stageData.sequentialTiles) {
-      TileBag.addSequentialTiles(stageData.sequentialTiles.map(tileData => {
-        return Tile(tileData);
-      }));
+    if (stageData.tileSequence) {
+      TileBag.startTileSequence(stageData.tileSequence)
     }
 
     // Shelved tiles just need the code and optional options for the normal
@@ -87,18 +77,6 @@ global.GameController = (function() {
       throw `No more mana. Game over.`
     }
 
-    // TODO: If we run out of tile we can just add the baseline-tiles for now.
-    //       This will need to change once we have different families of tiles.
-    //       Given that I'm now going with a mana based game limit rather than
-    //       a tile count based limit I may rework how the tile bags work.
-    //       Rather than removing tiles I could just make the tile bag a static
-    //       frequency map. As it is now I have a guaranteed tile distribution,
-    //       but would it be better to have the distribution be more random?
-    //
-    if (TileBag.size() === 0) {
-      TileBag.addBaggedTiles(structuredClone(ExtraRegistry.lookup('baseline-tiles')));
-    }
-
     if (TileShelf.isFull()) {
       forceDiscard();
     }
@@ -113,7 +91,6 @@ global.GameController = (function() {
       TriggerRegistry.lookup(tile.getDrawTrigger()).triggerFunction();
     }
 
-    TileBag.raiseHeat();
     TileShelf.addTile(tile);
     await TileShelfView.addTile(tile);
     TileShelfView.positionTiles();
@@ -131,11 +108,20 @@ global.GameController = (function() {
   //
   // TODO: We also need to handle tiles that the player are forbidden from
   //       discarding, once we have something like that.
+  //
   function forceDiscard() {
     if (DragonDrop.isDragging()) { DragonDrop.stopDrag('cancel'); }
     if (TileBag.isSequence()) { throw `We cannot force discard when the tile bag has a tile sequence to play.` }
 
-    TileShelfView.removeTile(TileShelf.discardLastTile());
+    const tileID = TileShelf.discardLastTile();
+    const tile = TileDataStore.get(tileID);
+
+    if (tile.hasNode()) {
+      TileBag.guardianTileDiscarded();
+    }
+
+    TileShelfView.removeTile(tileID);
+    TileDataStore.remove(tileID);
     Panopticon.induce(EventType.tileDiscarded);
   }
 
