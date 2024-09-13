@@ -1,19 +1,18 @@
 describe("Guardian", function() {
 
   describe("IsActor", function() {
-    it('sets name and gender', function() {
-      const guardian = Guardian({});
-      guardian.setGender(Gender.futa);
-      guardian.setFirstName('Humungous');
-      guardian.setLastName('Girlcock');
+    it('sets actor properties from guardian data', function() {
+      const guardian = Guardian({ code:'renna' });
 
-      expect(guardian.getFullName()).to.equal('Humungous Girlcock');
+      expect(guardian.getFullName()).to.equal('Renna Howlthrust');
+      expect(guardian.getGender()).to.equal(Gender.futa);
+      expect(guardian.getSpecies().getName()).to.equal('Satyr');
     });
   });
 
   describe('HasAspects', function() {
     it('adds aspects', function() {
-      const guardian = Guardian({});
+      const guardian = Guardian({ code:'azalon' });
       guardian.addAspect(Aspect({ code:'mining', level:2 }));
 
       expect(guardian.getAspectMap().mining).to.equal(2);

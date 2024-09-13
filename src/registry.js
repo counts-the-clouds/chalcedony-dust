@@ -67,6 +67,7 @@ global.ClockRegistry = Registry('Clock');
 global.ConditionRegistry = Registry('Condition');
 global.EventRegistry = Registry('PagedEvent');
 global.ExtraRegistry = Registry('Extra');
+global.GuardianRegistry = Registry('Guardian');
 global.HallRegistry = Registry('Hall');
 global.ItemRegistry = Registry('Item');
 global.MinionRegistry = Registry('Minion');

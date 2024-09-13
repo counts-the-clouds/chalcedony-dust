@@ -16,9 +16,20 @@ global.WorldState = (function() {
   const DefaultState = {
     gameCount: 0,
     chapter: GameStages.tutorial,
+
     options: {
       keyBindings: DefaultBindings,
     },
+
+    guardianSummonLimit: 2,
+    guardians: {
+      'azalon': {},
+      'boss': {},
+      'chalcedony': {},
+      'fresh-baked-bread': {},
+      'gerva': {},
+      'renna': {},
+    }
   }
 
   const $stateRecorder = new StateRecorder(`${DATA}/World.json`);
@@ -73,6 +84,29 @@ global.WorldState = (function() {
   async function setChapter(chapter) { await setValue('chapter', chapter); }
   function getChapter() { return getValue('chapter'); }
 
+  async function setGuardianSummonLimit(limit) { await setValue('guardianSummonLimit', limit); }
+  function getGuardianSummonLimit() { return getValue('guardianSummonLimit'); }
+
+  // Initializing a guardian will allow them to be randomly selected when
+  // a guardian node has been built.
+  async function initializeGuardian(code) {
+    activeState().guardians[code] = {};
+    await saveState();
+  }
+
+  async function setGuardianStateValue(code,key,value) {
+    activeState().guardians[code][key] = value;
+    await saveState();
+  }
+
+  function getGuardianStateValue(code,key) {
+    const data = activeState().guardians[code];
+    if (data == null) { throw `Guardian State for (${code}) has not been initialized.` }
+    return data[key];
+  }
+
+  // === Save and Load =========================================================
+
   async function saveState() {
     if (Tests.running() === false) {
       localLog("Saving World State",$realState);
@@ -116,6 +150,11 @@ global.WorldState = (function() {
     getKeyBindings,
     setChapter,
     getChapter,
+    setGuardianSummonLimit,
+    getGuardianSummonLimit,
+    initializeGuardian,
+    setGuardianStateValue,
+    getGuardianStateValue,
     saveState,
     loadState,
   });
