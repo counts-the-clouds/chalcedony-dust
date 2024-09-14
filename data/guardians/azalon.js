@@ -4,6 +4,10 @@ GuardianRegistry.register('azalon',{
   firstName: 'Azalon',
   lastName: 'Rushwater',
 
+  images: {
+    default:'characters/azalon.png',
+  },
+
   summonDetails: {
     default: `There are some who might consider Azalon an odd choice for a guardian. The fox is only 5'2 with a lithe build and a soft and friendly face. He
       has no combat skills to speak of and would probably lose in a fight against any of your dungeon minions. He is however an accomplished scholar, and has
