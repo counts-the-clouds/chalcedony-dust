@@ -40,7 +40,7 @@ global.EmptyFeatureWindow = (function () {
 
   function setBannerImage(feature, content) {
     content.querySelector('.banner').style['background-image'] = X.assetURL(
-      (feature.getType() === TileType.room) ? 'ui/empty-room-banner.png' : 'ui/empty-hall-banner.png');
+      (feature.getType() === TileType.room) ? 'features/empty-room-banner.png' : 'features/empty-hall-banner.png');
   }
 
   function setNote(feature, content) {

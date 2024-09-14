@@ -4,7 +4,7 @@ ResourceRegistry.register('draconian-mine',{
 
   view: {
     details: '(Draconian Mine Details)',
-    background: 'ui/mine.png',
+    background: 'features/mine.png',
   },
 
   slots:[

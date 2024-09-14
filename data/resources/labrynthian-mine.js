@@ -4,7 +4,7 @@ ResourceRegistry.register('labrynthian-mine',{
 
   view: {
     details: '(Labrynthian Mine Details)',
-    background: 'ui/mine.png',
+    background: 'features/mine.png',
   },
 
   slots:[

@@ -5,7 +5,7 @@ RoomRegistry.register('lair-kobold',{
   view: {
     type: 'simple',
     layout: 'card-layout',
-    background: 'ui/lair-empty.png',
+    background: 'features/lair-kobold.png',
     details: `(Kobold Lair Details)`,
   },
 

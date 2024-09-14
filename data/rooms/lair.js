@@ -3,7 +3,7 @@ RoomRegistry.register('lair',{
 
   view: {
     type: 'upgrade-base',
-    background: 'ui/lair-empty.png',
+    background: 'features/empty-lair-banner.png',
     details: `The room has been cleared in preparation, though it remains empty for now. What manner of creature shall 
       make this place their home?`,
   }

@@ -4,7 +4,7 @@ ResourceRegistry.register('amberian-mine',{
 
   view: {
     details: '(Amberian Mine Details)',
-    background: 'ui/mine.png',
+    background: 'features/mine.png',
   },
 
   slots:[
