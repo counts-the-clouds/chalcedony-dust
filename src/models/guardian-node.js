@@ -2,7 +2,7 @@ global.GuardianNode = function(data) {
 
   const $id = data.id || GuardianNodeDataStore.nextID();
   const $featureID = data.featureID;
-  const $guardianChoices = randomlyPickGuardians();
+  const $guardianChoices = data.guardianChoices || randomlyPickGuardians();
 
   let $guardianID = data.guardianID;
 

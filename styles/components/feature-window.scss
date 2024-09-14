@@ -111,3 +111,42 @@
     }
   }
 }
+
+.guardian-select-window {
+
+  .choices {
+    display: flex;
+    padding: 10px;
+  }
+
+  .choice {
+    display: flex;
+    align-items: flex-end;
+    margin-right: 10px;
+    width: 400px;
+    height: 600px;
+    cursor: pointer;
+
+    background-size: cover;
+    border: 1px solid rgb(30,30,30);
+    box-shadow: $shadow-portrait;
+
+    .frame {
+      flex-grow: 1;
+      padding: 10px;
+      margin: 10px;
+      background-color: rgba(0,0,0,0.8);
+
+      .name {
+        margin-bottom: 5px;
+        font-size: $fs-big;
+        border-bottom: $border-normal;
+      }
+    }
+  }
+  .choice:last-child { margin-right:0; }
+  .choice:hover {
+    box-shadow: 2px 4px 5px rgba(0,0,0,0.8), 0px 0px 15px rgba(200,200,250,0.75) inset;
+  }
+
+}

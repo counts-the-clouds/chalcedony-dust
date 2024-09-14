@@ -10,6 +10,15 @@ global.Guardian = function(data) {
   function getCode() { return $code; }
   function getID() { return $id; }
 
+  // TODO: I think the images and summon details can change over time. We'll
+  //       need to have a way for the guardians to know what state they're in
+  //       and summon details appropriate for that state. Images are similar in
+  //       that they might change on the guardian state, but might also be
+  //       needed to show different activities or emotions.
+  //
+  function getSummonImage() { return $guardianData.images.default; }
+  function getSummonDetails() { return $guardianData.summonDetails.default; }
+
   // ===========================================================================
 
   function toString() {
@@ -30,6 +39,8 @@ global.Guardian = function(data) {
     model: 'Guardian',
     getCode,
     getID,
+    getSummonImage,
+    getSummonDetails,
     toString,
     pack,
   };

@@ -13,12 +13,12 @@ $fs-h5: 10pt;
 
 $shadow-button:        1px 2px 3px rgba(0,0,0,0.5);
 $shadow-frame:         2px 5px 10px rgba(0,0,0,0.5);
-// $shadow-deep:          2px 5px 10px rgba(0,0,0,0.8);
+$shadow-deep:          2px 5px 10px rgba(0,0,0,0.8);
 $shadow-inset:         1px 3px 6px rgba(0,0,0,0.4) inset;
 $shadow-inset-button:  1px 3px 5px rgba(0,0,0,0.8) inset;
 $shadow-shallow:       1px 2px 3px rgba(0,0,0,0.9);
 $shadow-glow-frame:    0 0 20px rgba(250,50,10,0.5), 0 0 5px rgba(250,50,10,0.7), 0 0 2px rgb(250,50,10);
-// $shadow-portrait:      2px 4px 5px rgba(0,0,0,0.8);
+$shadow-portrait:      2px 4px 5px rgba(0,0,0,0.8);
 $shadow-overlay:       5px 10px 20px rgba(0,0,0,0.8);
 $shadow-dark:          2px 5px 10px rgba(0,0,0,0.8), 5px 10px 20px rgba(0,0,0,0.8);
 
@@ -47,6 +47,8 @@ $fg-link-hover:      rgb(250,100,60);
 $fg-link-active:     rgb(255,110,70);
 
 $fg-mana:            rgb(168,247,255);
+
+$select-shade:       rgba(150,150,200,0.1);
 
 // === Logs and Alerts ===
 $fg-info: rgb(180,200,220);

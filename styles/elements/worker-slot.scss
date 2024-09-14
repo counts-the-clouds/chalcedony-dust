@@ -34,7 +34,7 @@ li.worker-slot {
     }
   }
   .slot-select:hover {
-    background-color: rgba(150,150,200,0.1);
+    background-color: $select-shade;
   }
 }
 
@@ -59,6 +59,6 @@ li.worker-slot {
     }
   }
   .minion-item:hover {
-    background-color: rgba(150,150,200,0.1);
+    background-color: $select-shade;
   }
 }

@@ -6,8 +6,9 @@ global.FeatureWindows = (function() {
     }
 
     if (feature.getType() === TileType.node) {
-      // If a guardian hasn't been selected.
-      return GuardianSelectWindow.open(feature);
+      return (feature.getConstruction().getGuardian() == null) ?
+          GuardianSelectWindow.open(feature) :
+          GuardianWindow.open(feature);
     }
 
     if (feature.getType() === TileType.resource) {
