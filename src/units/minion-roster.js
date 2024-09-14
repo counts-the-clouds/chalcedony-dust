@@ -28,7 +28,7 @@ global.MinionRoster = (function() {
   function assignMinion(id, slot, code) {
     const minionStatus = getMinionMap()[code];
 
-    if (minionStatus.assigned >= minionStatus.summoned) { throw `Cannot assign more ${code} minions`; }
+    if (minionStatus.assigned >= minionStatus.count) { throw `Cannot assign more ${code} minions`; }
 
     if ($assignments[id] == null) { $assignments[id] = {}; }
     $assignments[id][slot] = code;

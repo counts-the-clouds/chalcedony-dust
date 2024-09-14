@@ -50,7 +50,7 @@ global.WorkerSlot = (function() {
       const minion = Minion(code);
       const minionData = minionMap[code];
 
-      if (minionData.assigned < minionData.summoned) {
+      if (minionData.assigned < minionData.count) {
         if (slotData.requiredSkill == null || minion.hasSkill(slotData.requiredSkill)) {
           listElement.appendChild(buildMinionItem(minion, slotData.requiredSkill));
         }
