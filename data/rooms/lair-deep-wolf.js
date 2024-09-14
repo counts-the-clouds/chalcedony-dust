@@ -3,7 +3,9 @@ RoomRegistry.register('lair-deep-wolf',{
   lair: 'deep-wolf',
 
   view: {
-    type: 'lair',
+    type: 'simple',
+    layout: 'card-layout',
+    background: 'ui/lair-empty.png',
     details: `(Deep Wolf Lair Details)`,
   },
 

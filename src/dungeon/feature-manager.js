@@ -13,10 +13,6 @@ global.FeatureManager = (function() {
   function processSegment(segment, neighbors, tile) {
     const exits = segment.getExits(tile.getRotation());
 
-    // console.log(`Process Segment ${segment}`)
-    // console.log('   Exits',exits);
-    // console.log(`   Neighbors`,neighbors);
-
     // If a feature has already been created for this segment (as with the
     // resource nodes) we don't need to do anything.
     if (segment.getFeatureID() != null) { return; }

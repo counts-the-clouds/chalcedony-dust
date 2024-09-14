@@ -14,28 +14,12 @@ global.MinionRoster = (function() {
   //   code: The minion code
   //   size: The size of the room's feature.
   function registerLair(id, code, size) {
-    const minion = Minion(code);
-    const minionMax = Math.floor(size / minion.getTilesPerMinion());
-
-    $lairs[id] = { code, minionMax, minionCount:0 };
+    const minionCount = Math.floor(size / Minion(code).getTilesPerMinion());
+    $lairs[id] = { code, minionCount };
   }
 
   function getLairCount() { return Object.keys($lairs).length; }
   function getLairStatus(id) { return { ...$lairs[id] }; }
-
-  // Summon a single minion given the lair's feature ID.
-  function summonMinion(id) {
-    const lair = $lairs[id];
-
-    if (lair == null) { throw `No lair with id ${id}`; }
-    if (lair.minionMax === lair.minionCount) { throw `No room in lair to summon another minion`; }
-
-    lair.minionCount += 1;
-
-    // TODO: Spend resources as well
-
-    Panopticon.induce(EventType.minionSummoned,{ room:id });
-  }
 
   // Assign A minion to work at a given feature.
   //   id: The feature ID
@@ -61,15 +45,14 @@ global.MinionRoster = (function() {
   }
 
   // Returns a map of the overall minion roster status in the format:
-  //    { goblin:{ max:4, summoned:2, assigned:0 }, kobold:... }
+  //    { goblin:{ count:4, assigned:0 }, kobold:... }
   function getMinionMap() {
     const minionMap = {};
 
     Object.keys($lairs).forEach(id => {
       const lair = $lairs[id];
-      if (minionMap[lair.code] == null) { minionMap[lair.code] = { max:0, summoned:0, assigned:0 }; }
-      minionMap[lair.code].max += lair.minionMax;
-      minionMap[lair.code].summoned += lair.minionCount;
+      if (minionMap[lair.code] == null) { minionMap[lair.code] = { count:0, assigned:0 }; }
+      minionMap[lair.code].count += lair.minionCount;
     });
 
     Object.keys($assignments).forEach(id => {
@@ -81,8 +64,7 @@ global.MinionRoster = (function() {
     return minionMap;
   }
 
-  function getTotalCapacity() { return reduceMinionMap('max'); }
-  function getTotalSummoned() { return reduceMinionMap('summoned'); }
+  function getTotalCount() { return reduceMinionMap('count'); }
   function getTotalAssigned() { return reduceMinionMap('assigned'); }
 
   function reduceMinionMap(key) {
@@ -109,13 +91,11 @@ global.MinionRoster = (function() {
     registerLair,
     getLairCount,
     getLairStatus,
-    summonMinion,
     assignMinion,
     clearAssignment,
     getAssignments,
     getMinionMap,
-    getTotalCapacity,
-    getTotalSummoned,
+    getTotalCount,
     getTotalAssigned,
     pack,
     unpack,

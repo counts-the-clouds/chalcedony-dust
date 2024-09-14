@@ -1,8 +1,5 @@
 global.Tile = function(data) {
 
-  // console.log("=== Building Tile ===")
-  // console.log(data);
-
   const $code = data.code;
   const $id = data.id || TileDataStore.nextID();
 

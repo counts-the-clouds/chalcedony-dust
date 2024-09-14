@@ -117,7 +117,6 @@ global.EventType = Object.freeze({
   guardianSummoned: 'guardian-summoned',
   itemAdded: 'item-added',
   itemRemoved: 'item-removed',
-  minionSummoned: 'minion-summoned',
   resourceDiscovered: 'resource-discovered',
   storageExpanded: 'storage-expanded',
   tileDiscarded: 'tile-discarded',

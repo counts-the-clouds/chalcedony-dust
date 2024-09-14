@@ -127,8 +127,6 @@ global.TileBag = (function() {
 
     $guardianHeat += Random.upTo(5);
 
-    console.log(`He comes... ${$guardianHeat}`);
-
     return $guardianHeat >= Random.upTo(100);
   }
 

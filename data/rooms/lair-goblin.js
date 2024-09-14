@@ -3,7 +3,9 @@ RoomRegistry.register('lair-goblin',{
   lair: 'goblin',
 
   view: {
-    type: 'lair',
+    type: 'simple',
+    layout: 'card-layout',
+    background: 'ui/lair-empty.png',
     details: `(Goblin Lair Details)`,
   },
 

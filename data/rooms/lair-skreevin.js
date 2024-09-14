@@ -3,7 +3,9 @@ RoomRegistry.register('lair-skreevin',{
   lair: 'skreevin',
 
   view: {
-    type: 'lair',
+    type: 'simple',
+    layout: 'card-layout',
+    background: 'ui/lair-empty.png',
     details: `(Skreevin Lair Details)`,
   },
 
