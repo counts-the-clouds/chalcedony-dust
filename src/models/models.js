@@ -9,7 +9,6 @@ global.Models = (function() {
     global.SegmentDataStore = DataStore({ name:'Segment', model:Segment });
 
     global.AdventurerDataStore = DataStore({ name:'Adventurer', model:Adventurer });
-    global.AspectDataStore = DataStore({ name:'Aspect', model:Aspect });
     global.ClockDataStore = DataStore({ name:'Clock', model:Clock });
     global.ChunkDataStore = DataStore({ name:'Chunk', model:Chunk });
     global.FeatureDataStore = DataStore({ name:'Feature', model:Feature });
@@ -25,7 +24,6 @@ global.Models = (function() {
       SegmentDataStore,
 
       AdventurerDataStore,
-      AspectDataStore,
       ClockDataStore,
       ChunkDataStore,
       FeatureDataStore,

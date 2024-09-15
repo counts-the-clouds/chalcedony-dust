@@ -13,9 +13,8 @@ describe("Guardian", function() {
   describe('HasAspects', function() {
     it('adds aspects', function() {
       const guardian = Guardian({ code:'azalon' });
-      guardian.addAspect(Aspect({ code:'mining', level:2 }));
-
-      expect(guardian.getAspectMap().mining).to.equal(2);
+      guardian.setAspect('mining',2);
+      expect(guardian.getAspect('mining').getLevel()).to.equal(2);
     });
   });
 

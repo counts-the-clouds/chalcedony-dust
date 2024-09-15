@@ -79,8 +79,8 @@ global.NameRestriction = Object.freeze({
   hasSkin: 'has-skin',
 });
 
-global.AspectType = Object.freeze({
-  personality: 'personality',
+global.AspectCategory = Object.freeze({
+  arcane: 'arcane',
   skill: 'skill',
 });
 

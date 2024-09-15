@@ -3,11 +3,12 @@ RoomRegistry.register('foundry',{
   displayName: 'Foundry',
 
   view: {
-    type: 'crafting',
+    type: 'workstation',
   },
 
-  workerConfiguration: {
-    slots: 1,
-  }
+  slots:[
+    { code:'worker-1', name:'Foundryman', requiredSkill:'crafting' },
+    { code:'worker-2', name:'Foundryman', requiredSkill:'crafting' },
+  ],
 
 });

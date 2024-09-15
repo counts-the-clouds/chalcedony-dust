@@ -4,8 +4,12 @@ MinionRegistry.register('kobold',{
 
   cost: { mana:4 },
 
-  skills: {
+  aspects: {
     mining: 1,
+    artistry: 1,
+
+    edge: 2,
+    dragon: 1,
   }
 
 });

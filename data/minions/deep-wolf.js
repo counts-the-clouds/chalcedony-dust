@@ -5,6 +5,9 @@ MinionRegistry.register('deep-wolf', {
 
   cost: { mana:2 },
 
-  skills: {},
+  aspects: {
+    fang: 2,
+    moon: 1,
+  },
 
 });

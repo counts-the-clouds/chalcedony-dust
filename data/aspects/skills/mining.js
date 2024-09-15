@@ -1,4 +1,4 @@
 AspectRegistry.register('mining',{
   name: 'Mining',
-  type: AspectType.skill,
+  category: AspectCategory.skill,
 });
