@@ -22,6 +22,24 @@ global.GuardianSelectWindow = (function() {
       const content = casement.getCasementContent();
       content.querySelector('.choice-1').style['background-image'] = X.assetURL(choice_1.getSummonImage());
       content.querySelector('.choice-2').style['background-image'] = X.assetURL(choice_2.getSummonImage());
+      content.addEventListener('click', event => handleClick(event, guardianNode, casement));
+    }
+  }
+
+  function handleClick(event, guardianNode, casement) {
+    const choice = event.target.closest('.choice');
+    if (choice) {
+      const guardian = Guardian({ code:choice.getAttribute('data-code') });
+
+      Confirmation.show({
+        text: `Choose ${guardian.getFirstName()} as your guardian?`,
+        onConfirm: () => {
+          guardianNode.setGuardian(guardian);
+          casement.close();
+          Panopticon.induce(EventType.guardianSummoned, { guardian });
+          GameState.saveState();
+        }
+      });
     }
   }
 

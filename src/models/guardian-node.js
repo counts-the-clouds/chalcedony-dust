@@ -8,6 +8,7 @@ global.GuardianNode = function(data) {
 
   function getID() { return $id; }
   function getFeature() { return FeatureDataStore.get($featureID); }
+  function setGuardian(guardian) { $guardianID = guardian.getID(); }
   function getGuardian() { return ($guardianID == null) ? null : GuardianDataStore.get($guardianID); }
   function getGuardianChoices() { return $guardianChoices; }
 
@@ -28,6 +29,7 @@ global.GuardianNode = function(data) {
     model: 'Hall',
     getID,
     getFeature,
+    setGuardian,
     getGuardian,
     getGuardianChoices,
     toString,

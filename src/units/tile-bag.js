@@ -146,6 +146,7 @@ global.TileBag = (function() {
     return {
       sequenceCode: $sequenceCode,
       sequenceIndex: $sequenceIndex,
+      guardiansDrawn: $guardiansDrawn,
       guardianHeat: $guardianHeat,
     }
   }
@@ -153,6 +154,7 @@ global.TileBag = (function() {
   function unpack(data) {
     $sequenceCode = data.sequenceCode;
     $sequenceIndex = data.sequenceIndex;
+    $guardiansDrawn = data.guardiansDrawn;
     $guardianHeat = data.guardianHeat;
   }
 

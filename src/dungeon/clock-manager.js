@@ -62,7 +62,7 @@ global.ClockManager = (function() {
   // Pausing like this should be done sparingly. The only reason I'm including
   // this is for the situation where we're in a tile sequence, and we can't
   // force discard a tile. This will stop the clock (and all other clocks)
-  // from generating new tiles until the shelf has room.
+  // until the shelf has room.
   function pauseUntil(condition) {
     $forcePaused = true;
     setClockSpeed(0);
@@ -75,6 +75,28 @@ global.ClockManager = (function() {
       }
     },100);
   }
+
+  function forcePause() {
+    $forcePaused = true;
+
+    $previousSpeed = $clockSpeed;
+    $clockSpeed = 0;
+    SpeedControl.activate(0);
+  }
+
+  function unforcePause() {
+    $forcePaused = false;
+
+    $clockSpeed = $previousSpeed;
+    $previousSpeed = 0;
+    SpeedControl.activate($clockSpeed);
+  }
+
+  // We can also set the force pause by hand. Whatever calls this should
+  // remember the previous speed, set the speed to 0 before locking and
+  // restoring the previous speed after.
+  function lock() { $forcePaused = true; }
+  function unlock() { $forcePaused = false; }
 
   function onTick(time) {
     const ms = time.elapsedMS * SPEED_FACTORS[$clockSpeed];
@@ -138,6 +160,7 @@ global.ClockManager = (function() {
     }
   }
 
+
   return Object.freeze({
     init,
     reset,
@@ -147,6 +170,8 @@ global.ClockManager = (function() {
     findByCode,
     deleteClock,
     pauseUntil,
+    forcePause,
+    unforcePause,
     zeroClock,
     canChangeSpeed,
     togglePause,

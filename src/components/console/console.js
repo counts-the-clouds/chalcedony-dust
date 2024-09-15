@@ -3,7 +3,7 @@ global.Console = (function() {
   const $entryLimit = 1000;
 
   let $scrollingPanel;
-
+  let $previousSpeed;
 
   // TODO: We can still consider adding autocomplete for some commands at some
   //       point. If we know we're starting an addItem command it might be
@@ -42,6 +42,8 @@ global.Console = (function() {
   function toggleConsole() {
     if (isVisible()) { return hide(); }
 
+    ClockManager.forcePause();
+
     X.removeClass('#console','hide');
     X.first('#commandInput').focus();
     setTimeout(() => {
@@ -49,7 +51,11 @@ global.Console = (function() {
     },1);
   }
 
-  function hide() { X.addClass('#console','hide'); }
+  function hide() {
+    ClockManager.unforcePause();
+    X.addClass('#console','hide');
+  }
+
   function isVisible() { return !X.hasClass('#console','hide'); }
 
   // === Entry Elements ========================================================

@@ -2,6 +2,7 @@ global.Confirmation = (function() {
 
   let $yesFunction;
   let $noFunction;
+  let $previousSpeed;
 
   function init() {
     X.onClick('#confirmationDialog .no-button', noClicked);
@@ -14,6 +15,7 @@ global.Confirmation = (function() {
   //   onConfirm: function
   //   onCancel: function
   function show(options) {
+    ClockManager.forcePause();
     $yesFunction = options.onConfirm;
     $noFunction = options.onCancel;
 
@@ -28,6 +30,7 @@ global.Confirmation = (function() {
   }
 
   function hide() {
+    ClockManager.unforcePause();
     X.addClass('#confirmationDialog','hide');
   }
 

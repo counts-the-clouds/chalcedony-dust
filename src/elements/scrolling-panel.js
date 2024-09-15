@@ -236,9 +236,11 @@ function determineWrappedContent(options) {
 
 function activeScrollingPanel() {
   const position = MouseMonitor.getPosition()
-  const root = document.elementFromPoint(position.x, position.y)
-  const element = root.closest('.scrolling-panel');
-  return element ? $$scrollingPanels[element.dataset.id] : null;
+  const root = document.elementFromPoint(position.x, position.y);
+  if (root) {
+    const element = root.closest('.scrolling-panel');
+    return element ? $$scrollingPanels[element.dataset.id] : null;
+  }
 }
 
 function handleKeyPress(event) {
