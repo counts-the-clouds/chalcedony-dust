@@ -13,6 +13,10 @@ GuardianRegistry.register('azalon',{
       has no combat skills to speak of and would probably lose in a fight against any of your dungeon minions. He is however an accomplished scholar, and has
       spent years studying the history of the world's dungeons. Though he lacks strength, his knowledge could be invaluable in discovering new ways to improve
       the dungeon.`,
-  }
+  },
+
+  windowTextOptions: [
+    { conditions:[Condition.avatarNone()], text:`TODO: Azalon's window text.` }
+  ],
 
 });

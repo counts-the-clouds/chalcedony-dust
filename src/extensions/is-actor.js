@@ -4,6 +4,8 @@ global.IsActor = function(data = {}) {
   let $species = data.species;
   let $firstName = data.firstName;
   let $lastName = data.lastName;
+  let $possessiveFirst = data.possessiveFirst;
+  let $possessiveLast = data.possessiveLast;
 
   function setGender(gender) { $gender = gender; }
   function getGender() { return $gender; }
@@ -14,6 +16,10 @@ global.IsActor = function(data = {}) {
   function getFirstName() { return $firstName; }
   function setLastName(name) { $lastName = name; }
   function getLastName() { return $lastName; }
+  function setPossessiveFirstName(name) { $possessiveFirst = name; }
+  function setPossessiveLastName(name) { $possessiveLast = name; }
+  function getPossessiveFirstName() { return $possessiveFirst || TextHelper.buildPossessive($firstName); }
+  function getPossessiveLastName() { return $possessiveLast || TextHelper.buildPossessive($lastName); }
   function getFullName() { return `${$firstName||''} ${$lastName||''}`.trim() }
 
   // ===========================================================================
@@ -37,6 +43,10 @@ global.IsActor = function(data = {}) {
     model.getFirstName = getFirstName;
     model.setLastName = setLastName;
     model.getLastName = getLastName;
+    model.setPossessiveFirstName = setPossessiveFirstName;
+    model.setPossessiveLastName = setPossessiveLastName;
+    model.getPossessiveFirstName = getPossessiveFirstName;
+    model.getPossessiveLastName = getPossessiveLastName;
     model.getFullName = getFullName;
   }
 

@@ -128,7 +128,7 @@
     cursor: pointer;
 
     background-size: cover;
-    border: 1px solid rgb(30,30,30);
+    border: $border-portrait;
     box-shadow: $shadow-portrait;
 
     .frame {
@@ -139,6 +139,7 @@
 
       .name {
         margin-bottom: 5px;
+        color: $fg-strong;
         font-size: $fs-big;
         border-bottom: $border-normal;
       }
@@ -148,5 +149,26 @@
   .choice:hover {
     box-shadow: 2px 4px 5px rgba(0,0,0,0.8), 0px 0px 15px rgba(200,200,250,0.75) inset;
   }
+}
 
+.guardian-window {
+  .portrait {
+    float: left;
+    width: 200px;
+    height: 300px;
+    margin: 0 10px 10px;
+
+    background-size: cover;
+    border: $border-portrait;
+    box-shadow: $shadow-portrait;
+  }
+  .header {
+    margin: 10px 10px 5px;
+    color: $fg-strong;
+    font-size: $fs-big;
+    border-bottom: $border-normal;
+  }
+  .text {
+    margin: 0 10px;
+  }
 }

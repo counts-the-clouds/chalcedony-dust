@@ -9,8 +9,9 @@ global.Condition = (function() {
   }
 
   return Object.freeze({
-    featureTypeIs: function(type) { return buildCondition('feature-type-is',{ type }) },
-    itemInInventory: function(code) { return buildCondition('item-in-inventory',{ code }) },
+    avatarNone: function() { return buildCondition('avatar-none'); },
+    featureTypeIs: function(type) { return buildCondition('feature-type-is',{ type }); },
+    itemInInventory: function(code) { return buildCondition('item-in-inventory',{ code }); },
   });
 
 })();

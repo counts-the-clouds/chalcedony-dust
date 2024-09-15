@@ -19,6 +19,21 @@ global.Guardian = function(data) {
   function getSummonImage() { return $guardianData.images.default; }
   function getSummonDetails() { return $guardianData.summonDetails.default; }
 
+  // TODO: Window image is the same as the summon image for now.
+  function getWindowImage() { return $guardianData.images.default; }
+
+  function getWindowText() {
+    const textOptions = $guardianData.windowTextOptions.filter(textOption => {
+      return CentralScrutinizer.allConditionsPass(textOption.conditions,{ guardian:$self });
+    });
+
+    if (textOptions.length === 0) {
+      return `<div class='weaver-error'>There are valid window text options</div>`
+    }
+
+    return Random.from(textOptions).text;
+  }
+
   // ===========================================================================
 
   function toString() {
@@ -41,6 +56,8 @@ global.Guardian = function(data) {
     getID,
     getSummonImage,
     getSummonDetails,
+    getWindowImage,
+    getWindowText,
     toString,
     pack,
   };

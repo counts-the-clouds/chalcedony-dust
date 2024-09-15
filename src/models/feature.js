@@ -305,10 +305,10 @@ global.Feature = function(data) {
     }
 
     if (getType() === TileType.node) {
-      switch (getState()) {
-        case FeatureState.incomplete: return `An Incomplete Boss Room`;
-        case FeatureState.complete: return `An Empty Boss Room`;
-      }
+      const guardianNode = getConstruction();
+      const guardian = guardianNode.getGuardian();
+
+      return guardian == null ? `An Empty Guardian's Chamber` : `${guardian.getPossessiveFirstName()} Guardian Chamber`;
     }
 
     if (getType() === TileType.room) {
