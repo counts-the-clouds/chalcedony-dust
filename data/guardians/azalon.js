@@ -4,6 +4,11 @@ GuardianRegistry.register('azalon',{
   firstName: 'Azalon',
   lastName: 'Rushwater',
 
+  aspects: {
+    candle: 4,
+    heart: 2,
+  },
+
   images: {
     default:'characters/azalon.png',
   },

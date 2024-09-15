@@ -143,6 +143,14 @@
         font-size: $fs-big;
         border-bottom: $border-normal;
       }
+
+      .info { display: flex; }
+
+      .aspects {
+        flex-grow: 1;
+        text-align: right;
+      }
+
     }
   }
   .choice:last-child { margin-right:0; }

@@ -4,6 +4,11 @@ GuardianRegistry.register('boss',{
   firstName: 'Boss',
   lastName: 'Dangles',
 
+  aspects: {
+    fist: 4,
+    grail: 2,
+  },
+
   images: {
     default:'characters/boss.png',
   },

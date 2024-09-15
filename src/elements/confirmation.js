@@ -2,11 +2,10 @@ global.Confirmation = (function() {
 
   let $yesFunction;
   let $noFunction;
-  let $previousSpeed;
 
   function init() {
-    X.onClick('#confirmationDialog .no-button', noClicked);
-    X.onClick('#confirmationDialog .yes-button', yesClicked);
+    X.onClick('#confirmationDialog .no-button', cancel);
+    X.onClick('#confirmationDialog .yes-button', confirm);
   }
 
   // Options:
@@ -34,19 +33,25 @@ global.Confirmation = (function() {
     X.addClass('#confirmationDialog','hide');
   }
 
-  function noClicked() {
+  function cancel() {
     if (typeof $noFunction === 'function') { $noFunction(); }
     hide()
   }
 
-  function yesClicked() {
+  function confirm() {
     if (typeof $yesFunction === 'function') { $yesFunction(); }
     hide()
+  }
+
+  function isVisible() {
+    return X.hasClass('#confirmationDialog','hide') === false;
   }
 
   return Object.freeze({
     init,
     show,
+    cancel,
+    isVisible,
   });
 
 })();

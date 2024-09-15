@@ -6,6 +6,7 @@ global.WindowManager = (function() {
     X.onCodeDown(KeyCodes.Escape,true,() => {
       if (Console.isVisible()) { return Console.hide(); }
       if (selectVisible()) { return removeSelect(); }
+      if (Confirmation.isVisible()) { return Confirmation.cancel(); }
       if ($windowStack.length > 0) { return pop() }
 
       if (!MainMenu.isVisible()) {

@@ -5,7 +5,7 @@ global.Guardian = function(data) {
 
   const $guardianData = GuardianRegistry.lookup($code);
   const $isActor = IsActor($guardianData);
-  const $hasAspects = HasAspects(data.hasAspects);
+  const $hasAspects = HasAspects($guardianData);
 
   function getCode() { return $code; }
   function getID() { return $id; }

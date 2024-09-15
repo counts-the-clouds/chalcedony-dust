@@ -4,6 +4,12 @@ GuardianRegistry.register('renna',{
   firstName: 'Renna',
   lastName: 'Howlthrust',
 
+  aspects: {
+    grail: 5,
+    heart: 3,
+    chain: 2,
+  },
+
   images: {
     default:'characters/renna.png',
   },

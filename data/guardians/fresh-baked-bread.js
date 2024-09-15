@@ -3,6 +3,11 @@ GuardianRegistry.register('fresh-baked-bread',{
   species: 'kobold',
   firstName: 'Fresh-Baked-Bread',
 
+  aspects: {
+    heart: 4,
+    grail: 2,
+  },
+
   images: {
     default:'characters/fresh-baked-bread.png',
   },

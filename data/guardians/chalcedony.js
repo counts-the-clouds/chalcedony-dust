@@ -4,6 +4,11 @@ GuardianRegistry.register('chalcedony',{
   firstName: 'Chalcedony',
   lastName: 'Dust',
 
+  aspects: {
+    edge: 4,
+    heart: 2,
+  },
+
   images: {
     default:'characters/chalcedony.png',
   },

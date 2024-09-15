@@ -48,6 +48,11 @@ global.GuardianSelectWindow = (function() {
       <div class='choice choice-${index}' data-code='${guardian.getCode()}'>
         <div class='frame'>
           <div class='name'>${guardian.getFullName()}</div>
+          <div class='info'>
+            <div class='gender'>${GenderHelper.Male(guardian.getGender())}</div>&nbsp;
+            <div class='species'>${guardian.getSpecies().getName()}</div>
+            <div class='aspects'>${AspectPanel.build(guardian.getAspects())}</div>
+          </div>
           <div class='details'>${guardian.getSummonDetails()}</div>
         </div>
       </div>`

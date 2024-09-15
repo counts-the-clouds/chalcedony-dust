@@ -1,4 +1,7 @@
 #optionsOverlay {
+  position: absolute;
+  inset: 0;
+  z-index: $z-options-overlay;
 
   #keyBindingList {
     width: 430px;

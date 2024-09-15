@@ -1,6 +1,6 @@
 global.HasAspects = function(data = {}) {
 
-  const $aspects = data.aspectIDs || {};
+  const $aspects = data.aspects || {};
 
   function getAspects() {
     return Object.keys($aspects).map(code => {
@@ -17,7 +17,7 @@ global.HasAspects = function(data = {}) {
 
   function pack() {
     return {
-      aspectIDs: $aspectIDs,
+      aspects: $aspects,
     };
   }
 

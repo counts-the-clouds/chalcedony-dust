@@ -12,7 +12,6 @@ global.Minion = function(code) {
   function getSkill(code) { return $minionData.skills[code] || 0 }
   function toString() { return `Minion[${$code}]`; }
 
-
   return Object.freeze({
     getCode,
     getName,

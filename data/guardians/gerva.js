@@ -3,6 +3,11 @@ GuardianRegistry.register('gerva',{
   species: 'hell-hound',
   firstName: 'Gerva',
 
+  aspects: {
+    fang: 4,
+    fist: 2,
+  },
+
   images: {
     default:'characters/gerva.png',
   },
