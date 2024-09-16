@@ -6,20 +6,18 @@ global.Blueprint = function(code) {
   function getDisplayName() { return $data.displayName; }
 
   function getDetails(options = {}) {
-    const context = {};
     const extra = $data.extra || {}
-
     let text = $data.details;
 
     if (extra.lair) {
       const minion = Minion(extra.lair);
-      context.size = options.feature.getSize();
-      context.minionCount = minion.getMinionCountForSize(context.size);
-      context.minionPluralName = minion.getPluralName();
-      text += ` With {{@size}} tiles, this lair would hold {{@minionCount}} {{@minionPluralName}}.`
+      const size = options.feature.getSize();
+      const count = minion.getMinionCountForSize(size);
+      const name = minion.getPluralName();
+      text += ` With ${size} tiles, this lair would hold ${count} ${name}.`
     }
 
-    return Weaver(context).weave(text);
+    return text;
   }
 
   // TODO: Some features may have additional costs, something like a single

@@ -22,17 +22,17 @@ global.Room = function(data) {
   function getLayout() { return getView().layout; }
   function getBackground() { return getView().background; }
 
-  function getDetails(options = {}) {
-    const feature = getFeature();
-    const context = { size: feature.getSize() }
+  function getDetails() {
+    let text = getView().details;
 
-    if (options.minionCode || getData().lair) {
-      const minion = Minion(options.minionCode || getData().lair);
-      context.minionCount = minion.getMinionCountForSize(context.size);
-      context.minionPluralName = minion.getPluralName();
+    if (getData().lair) {
+      const minion = Minion(getData().lair);
+      const count = minion.getMinionCountForSize(getFeature().getSize());
+      const name = minion.getPluralName();
+      text += ` ${count} ${name} have made their home here.`;
     }
 
-    return Weaver(context).weave(getView().details);
+    return text;
   }
 
   function upgradeTo(code) {
@@ -72,6 +72,7 @@ global.Room = function(data) {
     getClock,
     getData,
     getDisplayName,
+    getView,
     getViewType,
     getLayout,
     getBackground,

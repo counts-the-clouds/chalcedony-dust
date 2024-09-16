@@ -30,6 +30,18 @@
     border: $border-light;
     box-shadow: $shadow-frame;
   }
+
+  .header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+
+    .title {
+      font-size: $fs-big;
+      color: $fg-strong;
+    }
+    .aspects { flex-grow: 1; }
+  }
 }
 
 .empty-feature-window {

@@ -8,9 +8,17 @@ global.HasAspects = function(data = {}) {
     });
   }
 
+  function getArcaneAspects() { return getAspectsByCategory(AspectCategory.arcane); }
+  function getSkillAspects() { return getAspectsByCategory(AspectCategory.skill); }
+
+  function getAspectsByCategory(category) {
+    return getAspects().filter(aspect => { return aspect.getCategory() === category; });
+  }
+
   function setAspect(code, value) { $aspects[code] = value;  }
   function hasAspect(code) { return $aspects[code] != null; }
   function getAspect(code) { return hasAspect(code) ? Aspect(code,$aspects[code]) : null; }
+
   function removeAspect(code) { if (hasAspect(code)) { delete $aspects[code]; } }
 
   // ===========================================================================
@@ -23,6 +31,8 @@ global.HasAspects = function(data = {}) {
 
   function attach(model) {
     model.getAspects = getAspects;
+    model.getArcaneAspects = getArcaneAspects;
+    model.getSkillAspects = getSkillAspects;
     model.setAspect = setAspect;
     model.hasAspect = hasAspect;
     model.getAspect = getAspect;

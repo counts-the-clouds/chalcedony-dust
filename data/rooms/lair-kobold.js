@@ -4,9 +4,10 @@ RoomRegistry.register('lair-kobold',{
 
   view: {
     type: 'simple',
-    layout: 'card-layout',
+    layout: 'lair-layout',
+    minionCode: 'kobold',
     background: 'features/lair-kobold.png',
-    details: `(Kobold Lair Details)`,
+    details: `(TODO: Kobold Lair Details)`,
   },
 
 });

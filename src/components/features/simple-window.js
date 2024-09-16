@@ -24,6 +24,11 @@ global.SimpleWindow = (function() {
     if (room.getLayout() === 'card-layout') {
       return { top, left, height:420, width:300 }
     }
+
+    if (room.getLayout() === 'lair-layout') {
+      return { top, left, height:420, width:300 }
+    }
+
   }
 
   function getBase(room) {
@@ -31,6 +36,20 @@ global.SimpleWindow = (function() {
       return `<div class='simple-window card-layout has-background'>
         <div class='details'>${room.getDetails()}</div></div>`
     }
+
+    if (room.getLayout() === 'lair-layout') {
+      const minion = Minion(room.getView().minionCode);
+      return `<div class='simple-window card-layout has-background'>
+        <div class='details'>
+          <div class='header'>
+            <div class='title'>${minion.getPluralName()}</div>
+            <div class='aspects'>${AspectPanel.build(minion.getArcaneAspects())}</div>
+          </div>
+          <div class='text'>${room.getDetails()}</div>
+        </div>
+      </div>`
+    }
+
     throw `Unrecognized SimpleWindow layout: ${room.getLayout()}`;
   }
 

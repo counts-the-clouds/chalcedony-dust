@@ -4,9 +4,10 @@ RoomRegistry.register('lair-goblin',{
 
   view: {
     type: 'simple',
-    layout: 'card-layout',
+    layout: 'lair-layout',
+    minionCode: 'goblin',
     background: 'features/lair-goblin.png',
-    details: `(Goblin Lair Details) {{@minionCount}} {{@minionPluralName}}`,
+    details: `(TODO: Goblin Lair Details)`,
   },
 
 });

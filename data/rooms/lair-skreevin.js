@@ -4,9 +4,10 @@ RoomRegistry.register('lair-skreevin',{
 
   view: {
     type: 'simple',
-    layout: 'card-layout',
+    layout: 'lair-layout',
+    minionCode: 'skreevin',
     background: 'features/lair-skreevin.png',
-    details: `(Skreevin Lair Details)`,
+    details: `(TODO: Skreevin Lair Details)`,
   },
 
 });
