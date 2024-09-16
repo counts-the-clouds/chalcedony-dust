@@ -14,9 +14,8 @@ global.WorkerSlot = (function() {
       minionName = `<div class='minion-name'>${minion.getName()}</div>`;
 
       if (slotData.requiredSkill) {
-        const skillName = Skills[slotData.requiredSkill].name;
-        const skillValue = minion.getSkill(slotData.requiredSkill);
-        minionSkill = `<div class='minion-skill positive'>${skillName} +${skillValue}</div>`;
+        const skill = minion.getAspect(slotData.requiredSkill);
+        minionSkill = `<div class='minion-skill positive'>${skill.getName()} +${skill.getLevel()}</div>`;
       }
     }
 
@@ -51,7 +50,7 @@ global.WorkerSlot = (function() {
       const minionData = minionMap[code];
 
       if (minionData.assigned < minionData.count) {
-        if (slotData.requiredSkill == null || minion.hasSkill(slotData.requiredSkill)) {
+        if (slotData.requiredSkill == null || minion.hasAspect(slotData.requiredSkill)) {
           listElement.appendChild(buildMinionItem(minion, slotData.requiredSkill));
         }
       }
@@ -72,9 +71,11 @@ global.WorkerSlot = (function() {
   }
 
   function buildMinionItem(minion, requiredSkill) {
+    const skill = minion.getAspect(requiredSkill);
+
     let skillElement = (requiredSkill == null) ? '' : `<div class='minion-skill'>
-      <span class='skill-name'>${Skills[requiredSkill].name}</span>
-      <span class='skill-value'>+${minion.getSkill(requiredSkill)}</span>
+      <span class='skill-name'>${skill.getName()}</span>
+      <span class='skill-value'>+${skill.getLevel()}</span>
     </div>`;
 
     return X.createElement(`<li class='minion-item' data-minion-code='${minion.getCode()}'>
