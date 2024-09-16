@@ -1,0 +1,22 @@
+.aspect-panel {
+  display: flex;
+  justify-content: flex-end;
+
+  .aspect-icon {
+    display: flex;
+    align-items: flex-end;
+    margin-left: 5px;
+    border: 1px solid rgb(0,0,0);
+    box-shadow: $shadow-button;
+  }
+
+  .aspect-level {
+    height: 12px;
+    width: 12px;
+    font-size: 10px;
+    font-family: 'roboto-bold';
+    text-align: center;
+    background-color: rgba(0,0,0,0.8);
+  }
+}
+

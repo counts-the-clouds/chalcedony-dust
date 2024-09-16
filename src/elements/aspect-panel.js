@@ -4,8 +4,7 @@ global.AspectPanel = (function() {
     let html = `<div class='aspect-panel'>`;
 
     aspects.forEach(aspect => {
-      html += `<div class='aspect-icon icon-for-${aspect.getCode()}'>`
-      html += `<div class='aspect-tooltip'>${aspect.getName()}</div>`
+      html += `<div class='icon icon-small aspect-icon icon-for-${aspect.getCode()}' data-aspect-tooltip='${aspect.getCode()}'>`
       if (aspect.getLevel() > 1) { html += `<div class='aspect-level'>${aspect.getLevel()}</div>`; }
       html += `</div>`
     });

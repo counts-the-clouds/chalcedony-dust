@@ -79,6 +79,12 @@ global.MainContent = (function() {
         iconStyles += `.icon-for-${code} { background-image:${X.assetURL(`icons/${item.icon}`)} }\n`
       });
 
+      AspectRegistry.forEach((code,aspect) => {
+        if (aspect.icon) {
+          iconStyles += `.icon-for-${code} { background-image:${X.assetURL(`icons/${aspect.icon}`)} }\n`
+        }
+      });
+
       buildStyleSheet(iconStyles);
       resolve();
     });
