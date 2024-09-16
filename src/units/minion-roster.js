@@ -14,8 +14,7 @@ global.MinionRoster = (function() {
   //   code: The minion code
   //   size: The size of the room's feature.
   function registerLair(id, code, size) {
-    const minionCount = Math.floor(size / Minion(code).getTilesPerMinion());
-    $lairs[id] = { code, minionCount };
+    $lairs[id] = { code, minionCount:Minion(code).getMinionCountForSize(size) };
   }
 
   function getLairCount() { return Object.keys($lairs).length; }

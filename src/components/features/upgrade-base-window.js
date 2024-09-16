@@ -47,7 +47,7 @@ global.UpgradeBaseWindow = (function() {
     return `
       <li class='construction-item'>
         <div class='name'>${blueprint.getDisplayName()}</div>
-        <div class='description'>${blueprint.getDescription()}</div>
+        <div class='item-details'>${blueprint.getDetails({ feature })}</div>
         <div class='bottom-row'>
           ${CostPanel.build(blueprint.getCost(feature))}
           <div class='actions'>

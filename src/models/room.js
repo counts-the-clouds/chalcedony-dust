@@ -22,12 +22,17 @@ global.Room = function(data) {
   function getLayout() { return getView().layout; }
   function getBackground() { return getView().background; }
 
-  function getDetails() {
+  function getDetails(options = {}) {
     const feature = getFeature();
+    const context = { size: feature.getSize() }
 
-    return Weaver({
-      size: feature.getSize()
-    }).weave(getView().details);
+    if (options.minionCode || getData().lair) {
+      const minion = Minion(options.minionCode || getData().lair);
+      context.minionCount = minion.getMinionCountForSize(context.size);
+      context.minionPluralName = minion.getPluralName();
+    }
+
+    return Weaver(context).weave(getView().details);
   }
 
   function upgradeTo(code) {

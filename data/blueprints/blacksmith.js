@@ -2,7 +2,7 @@ BlueprintRegistry.register('blacksmith',{
   type: TileType.room,
 
   displayName: 'Blacksmith',
-  description: `One of your minions can be assigned here to craft weapons and armor from whatever materials are made
+  details: `One of your minions can be assigned here to craft weapons and armor from whatever materials are made
     available.`,
 
   requirements:[

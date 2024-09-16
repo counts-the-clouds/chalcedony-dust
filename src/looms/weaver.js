@@ -45,7 +45,7 @@ global.Weaver = function(context) {
         weaving = false;
       }
 
-      return text.replace(/\s+/g,' ');
+      text.replace(/\s+/g,' ');
     }
 
     return text;

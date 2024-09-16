@@ -6,7 +6,7 @@ RoomRegistry.register('lair-goblin',{
     type: 'simple',
     layout: 'card-layout',
     background: 'features/lair-goblin.png',
-    details: `(Goblin Lair Details)`,
+    details: `(Goblin Lair Details) {{@minionCount}} {{@minionPluralName}}`,
   },
 
 });

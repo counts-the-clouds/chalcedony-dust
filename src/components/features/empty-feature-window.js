@@ -56,7 +56,7 @@ global.EmptyFeatureWindow = (function () {
     const blueprintItem = X.createElement(`
       <li class='construction-item'>
         <div class='name'>${blueprint.getDisplayName()}</div>
-        <div class='description'>${blueprint.getDescription()}</div>
+        <div class='details'>${blueprint.getDetails({ feature })}</div>
         <div class='bottom-row'>
           ${CostPanel.build(blueprint.getCost(feature))}
           <div class='actions'>

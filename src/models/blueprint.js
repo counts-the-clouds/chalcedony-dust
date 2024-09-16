@@ -1,16 +1,26 @@
 global.Blueprint = function(code) {
-  const data = BlueprintRegistry.lookup(code);
-
   const $code = code;
-  const $displayName = data.displayName;
-  const $description = data.description;
-  const $costPerTile = data.costPerTile;
-  const $constructionTime = data.constructionTime;
-  const $onConstructionComplete = data.onConstructionComplete;
+  const $data = BlueprintRegistry.lookup(code);
 
   function getCode() { return $code; }
-  function getDisplayName() { return $displayName; }
-  function getDescription() { return $description; }
+  function getDisplayName() { return $data.displayName; }
+
+  function getDetails(options = {}) {
+    const context = {};
+    const extra = $data.extra || {}
+
+    let text = $data.details;
+
+    if (extra.lair) {
+      const minion = Minion(extra.lair);
+      context.size = options.feature.getSize();
+      context.minionCount = minion.getMinionCountForSize(context.size);
+      context.minionPluralName = minion.getPluralName();
+      text += ` With {{@size}} tiles, this lair would hold {{@minionCount}} {{@minionPluralName}}.`
+    }
+
+    return Weaver(context).weave(text);
+  }
 
   // TODO: Some features may have additional costs, something like a single
   //       item needed to unlock and create the room, or something like that.
@@ -18,8 +28,8 @@ global.Blueprint = function(code) {
     const size = feature.getSize();
     const compiledCost = {};
 
-    Object.keys($costPerTile || {}).forEach(code => {
-      compiledCost[code] = $costPerTile[code] * size;
+    Object.keys($data.costPerTile || {}).forEach(code => {
+      compiledCost[code] = $data.costPerTile[code] * size;
     });
 
     return compiledCost;
@@ -37,22 +47,22 @@ global.Blueprint = function(code) {
   function startConstruction(featureID) {
     ClockManager.addClock(Clock({
       code:'build-feature',
-      duration:($constructionTime * 1000),
+      duration:($data.constructionTime * 1000),
       context: { code:$code },
       parent:{ type:'Feature', id:featureID },
     }));
   }
 
   function onConstructionComplete(feature) {
-    if (typeof $onConstructionComplete === 'function') {
-      $onConstructionComplete(feature);
+    if (typeof $data.onConstructionComplete === 'function') {
+      $data.onConstructionComplete(feature);
     }
   }
 
   return Object.freeze({
     getCode,
     getDisplayName,
-    getDescription,
+    getDetails,
     getCost,
     canAfford,
     startConstruction,

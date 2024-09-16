@@ -7,9 +7,12 @@ global.Minion = function(code) {
   function getCode() { return $code; }
   function getName() { return $minionData.name; }
   function getPluralName() { return $pluralName; }
-  function getTilesPerMinion() { return $minionData.tilesPerMinion; }
   function getCost() { return $minionData.cost; }
   function toString() { return `Minion[${$code}]`; }
+
+  function getMinionCountForSize(size) {
+    return Math.floor(size / $minionData.tilesPerMinion)
+  }
 
   // ===========================================================================
 
@@ -17,9 +20,9 @@ global.Minion = function(code) {
     getCode,
     getName,
     getPluralName,
-    getTilesPerMinion,
     getCost,
     toString,
+    getMinionCountForSize,
   };
 
   $hasAspects.attach($self)
