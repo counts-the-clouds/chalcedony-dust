@@ -46,17 +46,17 @@ describe('BuriedTreasure', function() {
 
       expect(BuriedTreasure.getHeat()).to.equal(0);
       expect(BuriedTreasure.lookForTreasure(tile, 100)).to.be.undefined;
-      expect(BuriedTreasure.getHeat()).to.equal(3);
+      expect(BuriedTreasure.getHeat()).to.be.above(0);
     });
 
     it('returns a discovery and resets heat when a treasure is found', function() {
       const tile = Tile({ code:'baseline-r2-0' });
             tile.setCoordinates(Coordinates.fromGlobal(10,10));
 
-      const discovery = BuriedTreasure.lookForTreasure(tile,1).code;
+      const discovery = BuriedTreasure.lookForTreasure(tile,0).code;
 
       expect(BuriedTreasure.getHeat()).to.equal(0);
-      expect(discovery).to.be.oneOf(['labrynthian-mine','amberian-mine'])
+      expect(discovery).to.be.oneOf(['coal-mine','labrynthian-mine','amberian-mine'])
     });
   });
 
@@ -147,7 +147,7 @@ describe('BuriedTreasure', function() {
 
       const packed = BuriedTreasure.pack();
       expect(packed.heat).to.equal(69);
-      expect(packed.treasures[0].code).to.equal('labrynthian-mine');
+      expect(packed.treasures[0].code).to.equal('coal-mine');
     });
   });
 

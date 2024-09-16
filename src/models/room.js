@@ -24,15 +24,16 @@ global.Room = function(data) {
 
   function getDetails() {
     let text = getView().details;
+    const size = getFeature().getSize();
 
     if (getData().lair) {
       const minion = Minion(getData().lair);
-      const count = minion.getMinionCountForSize(getFeature().getSize());
+      const count = minion.getMinionCountForSize(size);
       const name = minion.getPluralName();
       text += ` ${count} ${name} have made their home here.`;
     }
 
-    return text;
+    return Weaver({ size }).weave(text);
   }
 
   function upgradeTo(code) {

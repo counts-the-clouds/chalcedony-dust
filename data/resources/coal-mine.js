@@ -1,9 +1,9 @@
-ResourceRegistry.register('labrynthian-mine',{
-  displayName: 'Labrynthian Mine',
-  resource: 'labrynthian-ore',
+ResourceRegistry.register('coal-mine',{
+  displayName: 'Coal Mine',
+  resource: 'coal',
 
   view: {
-    details: '(TODO: Labrynthian Mine Details)',
+    details: '(TODO: Coal Mine Details)',
     background: 'features/mine.png',
   },
 

@@ -156,7 +156,7 @@ global.BuriedTreasure = (function() {
     const distance = tile.distanceToOrigin();
     const discoverable = getDiscoverableTreasures(tile);
 
-    if (distance >= 5 && discoverable.length > 0) { $heat += 3; }
+    if (distance >= 5 && discoverable.length > 0) { $heat += Random.roll(2,1); }
   }
 
   function setHeat(heat) { $heat = heat; }

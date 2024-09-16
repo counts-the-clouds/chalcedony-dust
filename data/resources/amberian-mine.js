@@ -3,7 +3,7 @@ ResourceRegistry.register('amberian-mine',{
   resource: 'amberian-ore',
 
   view: {
-    details: '(Amberian Mine Details)',
+    details: '(TODO: Amberian Mine Details)',
     background: 'features/mine.png',
   },
 

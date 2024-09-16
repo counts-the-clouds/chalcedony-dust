@@ -3,7 +3,7 @@ ResourceRegistry.register('draconian-mine',{
   resource: 'draconian-ore',
 
   view: {
-    details: '(Draconian Mine Details)',
+    details: '(TODO: Draconian Mine Details)',
     background: 'features/mine.png',
   },
 
