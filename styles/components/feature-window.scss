@@ -168,7 +168,7 @@
   }
   .choice:last-child { margin-right:0; }
   .choice:hover {
-    box-shadow: 2px 4px 5px rgba(0,0,0,0.8), 0px 0px 15px rgba(200,200,250,0.75) inset;
+    box-shadow: $shadow-portrait, $shadow-portrait-highlight;
   }
 }
 
@@ -191,5 +191,36 @@
   }
   .text {
     margin: 0 10px;
+  }
+}
+
+.workstation-window {
+  height: 560px;
+
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-color: #000;
+
+  .result-area {
+    display: flex;
+    justify-content: center;
+    padding-top: 260px;
+    padding-bottom: 10px;
+    text-align: center;
+
+    .icon {
+      border: $border-normal;
+      box-shadow: $shadow-portrait;
+    }
+
+    border-bottom: $border-light;
+    box-shadow: $shadow-frame;
+  }
+  .item-select-area {
+    background-color: rgb(0,0,0,0.66);
+  }
+  .worker-slots {
+    padding-top: 10px;
+    background-color: rgb(0,0,0,0.80);
   }
 }

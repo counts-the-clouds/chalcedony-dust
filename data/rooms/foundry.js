@@ -4,6 +4,7 @@ RoomRegistry.register('foundry',{
 
   view: {
     type: 'workstation',
+    background: 'features/foundry.png',
   },
 
   workerSlots:[
