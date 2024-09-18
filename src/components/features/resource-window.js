@@ -21,7 +21,7 @@ global.ResourceWindow = (function() {
       <div class='header'>${resource.getDetails()}</div>
       <ul class='slots'>`;
 
-    const slots = resource.getSlots();
+    const slots = resource.getWorkerSlots();
     Object.keys(slots).forEach(slot => {
       html += WorkerSlot.build(resource.getFeatureID(), slot, slots[slot]);
     });

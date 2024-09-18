@@ -72,6 +72,7 @@ global.HallRegistry = Registry('Hall');
 global.ItemRegistry = Registry('Item');
 global.MinionRegistry = Registry('Minion');
 global.NoteRegistry = Registry('Note');
+global.RecipeRegistry = Registry('Recipe');
 global.ResourceRegistry = Registry('Resource');
 global.RoomRegistry = Registry('Room');
 global.ShapeRegistry = Registry('Shape');

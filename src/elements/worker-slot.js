@@ -31,7 +31,7 @@ global.WorkerSlot = (function() {
     const slot = slotItem.getAttribute('data-slot');
     const featureID = parseInt(slotItem.getAttribute('data-feature-id'));
     const feature = FeatureDataStore.get(featureID);
-    const slotData = feature.getConstruction().getSlots()[slot];
+    const slotData = feature.getConstruction().getWorkerSlots()[slot];
     const minionMap = MinionRoster.getMinionMap();
 
     const listElement = X.createElement(`<ul class='minion-list'>
@@ -96,7 +96,7 @@ global.WorkerSlot = (function() {
         feature.removeWorker(slot) :
         feature.assignWorker(slot, minionCode);
 
-    const slotData = feature.getConstruction().getSlots()[slot];
+    const slotData = feature.getConstruction().getWorkerSlots()[slot];
     const slotElement = findWorkerSlot(featureID, slot);
 
     slotElement.replaceWith(X.createElement(build(featureID, slot, slotData)));
