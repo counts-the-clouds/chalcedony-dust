@@ -1,8 +1,8 @@
 global.IsWorkstation = function(data = {}) {
   let $model;
 
-  function getIngredientSlots() { $model.getData().ingredientSlots; }
-  function getRecipeList() { $model.getData().recipeList; }
+  function getIngredientSlots() { return $model.getData().ingredientSlots; }
+  function getRecipeList() { return $model.getData().recipeList; }
   function isWorkstation() { return getIngredientSlots() != null; }
 
   // ===========================================================================

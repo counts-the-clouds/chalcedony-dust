@@ -22,6 +22,7 @@ global.FeatureWindows = (function() {
           case 'simple': return SimpleWindow.open(feature);
           case 'upgrade-base': return UpgradeBaseWindow.open(feature);
           case 'lair': return LairWindow.open(feature);
+          case 'workstation': return WorkstationWindow.open(feature);
           default: throw `TODO: Open window for view type: ${feature.getConstruction().getViewType()}`;
         }
       }

@@ -37,6 +37,27 @@ global.Room = function(data) {
     return Weaver({ size }).weave(text);
   }
 
+  // TODO: This has been copied from the resource model. Eventually the way
+  //       that worker slots for rooms and resources may diverge so I'm not
+  //       sure this should be made into a more general function somewhere.
+  //       Doesn't seem worth it for a whole separate extension.
+  //
+  function getWorkerSlots() {
+    const assignments = MinionRoster.getAssignments($featureID);
+    const workerSlots = {};
+
+    getData().workerSlots.forEach(slot => {
+      workerSlots[slot.code] = {
+        name: slot.name,
+        requiredSkill: slot.requiredSkill,
+        assignedMinion: assignments[slot.code],
+      };
+    });
+
+    return workerSlots;
+  }
+
+
   function upgradeTo(code) {
     $code = code;
 
@@ -80,6 +101,7 @@ global.Room = function(data) {
     getLayout,
     getBackground,
     getDetails,
+    getWorkerSlots,
     upgradeTo,
     toString,
     pack,
