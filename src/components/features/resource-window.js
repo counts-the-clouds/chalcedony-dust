@@ -4,9 +4,9 @@ global.ResourceWindow = (function() {
     if (FeatureWindows.windowNotOpen(feature)) {
       const resource = feature.getConstruction();
 
-      const casement = FeatureWindows.openCasementWith(feature,build(resource));
+      const casement = FeatureWindows.openCasementWith(feature,build(resource),{ resizable:false });
       casement.setTitle(resource.getDisplayName());
-      casement.setBounds(getBounds());
+      casement.setBounds(getBounds(resource));
       casement.setBackground('rgb(17,17,19)');
 
       const content = casement.getCasementContent();
@@ -29,11 +29,13 @@ global.ResourceWindow = (function() {
     return `${html}</ul></div>`;
   }
 
-  function getBounds() {
+  function getBounds(resource) {
     const position = MouseMonitor.getPosition();
+    const slotHeight = Object.keys(resource.getWorkerSlots()).length * 40;
+
     const top = position.y - 50;
     const left = position.x - 200;
-    return { top, left, height:250, width:400 }
+    return { top, left, height:(220+slotHeight), width:400 }
   }
 
   return Object.freeze({
