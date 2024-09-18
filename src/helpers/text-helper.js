@@ -1,9 +1,5 @@
 global.TextHelper = {
 
-  buildPossessive(word) {
-    return word.endsWith('s') ? `${word}'` : `${word}'s`;
-  },
-
   titlecase(word) {
     return `${word.charAt(0).toUpperCase()}${word.substring(1)}`;
   },

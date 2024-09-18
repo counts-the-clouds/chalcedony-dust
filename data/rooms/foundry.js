@@ -12,10 +12,10 @@ RoomRegistry.register('foundry',{
   ],
 
   ingredientSlots:[
-    { displayName:'Ore',      code:'ore',      type:'ore',     required:true },
-    { displayName:'Fuel',     code:'fuel',     type:'fuel',    required:true },
-    { displayName:'Catalyst', code:'catalyst', type:'catalyst' },
-    { displayName:'Reagent',  code:'reagent',  type:'reagent'  },
+    { displayName:'Ore',      code:'ore',      requireAspect:'ore',     required:true },
+    { displayName:'Fuel',     code:'fuel',     requireAspect:'fuel',    required:true },
+    { displayName:'Catalyst', code:'catalyst', requireAspect:'catalyst' },
+    { displayName:'Reagent',  code:'reagent',  requireAspect:'reagent'  },
   ],
 
   recipeList:[

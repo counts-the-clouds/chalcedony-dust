@@ -18,8 +18,8 @@ global.IsActor = function(data = {}) {
   function getLastName() { return $lastName; }
   function setPossessiveFirstName(name) { $possessiveFirst = name; }
   function setPossessiveLastName(name) { $possessiveLast = name; }
-  function getPossessiveFirstName() { return $possessiveFirst || TextHelper.buildPossessive($firstName); }
-  function getPossessiveLastName() { return $possessiveLast || TextHelper.buildPossessive($lastName); }
+  function getPossessiveFirstName() { return $possessiveFirst || EnglishHelper.possessive($firstName); }
+  function getPossessiveLastName() { return $possessiveLast || EnglishHelper.possessive($lastName); }
   function getFullName() { return `${$firstName||''} ${$lastName||''}`.trim() }
 
   // ===========================================================================

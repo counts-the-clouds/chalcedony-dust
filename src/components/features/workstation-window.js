@@ -21,23 +21,21 @@ global.WorkstationWindow = (function() {
     const ingredientSlots = room.getIngredientSlots();
     const workerSlots = room.getWorkerSlots();
 
-    let html = `<div class='workstation-window'><div class='ingredient-slots'>`
+    let html = `<div class='workstation-window'>`;
 
+    html += `<div class='item-select-area'>`;
     ingredientSlots.forEach(slot => {
-      html += `<div class='ingredient-slot' data-code='${slot.code}'>
-        <div class='icon'>XXX</div>
-        <div class='name'>${slot.displayName}</div>
-      </div>`
+      html += ItemSelect.build({ ingredientSlot:slot });
     });
+    html += `</div>`;
 
-    html += `</div>`
     html += `<ul class='worker-slots'>`
-
     Object.keys(workerSlots).forEach(slot => {
       html += WorkerSlot.build(room.getFeatureID(), slot, workerSlots[slot]);
     });
+    html += `</ul>`;
 
-    return html + `</ul></div>`;
+    return html + `</div>`;
   }
 
   return Object.freeze({

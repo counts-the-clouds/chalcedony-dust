@@ -81,6 +81,7 @@ global.NameRestriction = Object.freeze({
 
 global.AspectCategory = Object.freeze({
   arcane: 'arcane',
+  form: 'form',
   skill: 'skill',
 });
 
