@@ -1,12 +1,12 @@
-global.Recipe = function(code) {
-  const $data = RecipeRegistry.lookup(code);
-  const $code = code;
+global.Recipe = function(data) {
+  const $data = data;
 
-  function getCode() { return $code; }
+  function getResult() { return $data.result }
+  function getIngredients() { return $data.ingredients; }
+
   function getData() { return $data; }
 
   return Object.freeze({
-    getCode,
     getData,
   });
 

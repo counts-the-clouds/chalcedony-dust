@@ -21,6 +21,7 @@ global.Room = function(data) {
   function getViewType() { return getView().type; }
   function getLayout() { return getView().layout; }
   function getBackground() { return getView().background; }
+  function getRecipeList() { getData().recipeList; }
 
   function getDetails() {
     let text = getView().details;
@@ -77,6 +78,7 @@ global.Room = function(data) {
     getViewType,
     getLayout,
     getBackground,
+    getRecipeList,
     getDetails,
     upgradeTo,
     toString,
