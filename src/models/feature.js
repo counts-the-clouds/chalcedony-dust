@@ -298,10 +298,8 @@ global.Feature = function(data) {
   function getDisplayName() {
     if (getType() === TileType.core) { return 'The Dungeon Core'; }
 
-    // TODO: The resource node should actually pull the name from the type of
-    //       resource it is. Iron Mine, Ley Line, etc.
     if (getType() === TileType.resource) {
-      return `(A Resource Node)`
+      return getConstruction().getDisplayName();
     }
 
     if (getType() === TileType.node) {

@@ -42,4 +42,4 @@ global.ResourceWindow = (function() {
     open
   });
 
-})()
+})();

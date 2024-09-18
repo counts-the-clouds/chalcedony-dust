@@ -78,11 +78,13 @@ global.MinionRoster = (function() {
   function pack() {
     return {
       lairs: $lairs,
+      assignments: $assignments,
     }
   }
 
   function unpack(data) {
     $lairs = data.lairs;
+    $assignments = data.assignments;
   }
 
   return Object.freeze({

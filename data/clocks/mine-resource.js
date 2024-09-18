@@ -1,6 +1,6 @@
 ClockRegistry.register('mine-resource', {
 
-  duration: 90000,
+  duration: 120000,
   repeat: true,
 
   // TODO: Right now we're just adding one resource per cycle. Potentially,
@@ -13,9 +13,14 @@ ClockRegistry.register('mine-resource', {
   onComplete: clock => {
     const feature = FeatureDataStore.get(clock.getContext().featureID);
     const resource = feature.getConstruction().getResource();
+    const assignments = MinionRoster.getAssignments(feature.getID());
+
+    const total = Object.values(assignments).reduce((accumulator,code) => {
+      return accumulator + Minion(code).getAspect('mining').getLevel();
+    },0);
 
     if (GameInventory.canAddItem(resource)) {
-      return GameInventory.addItem(resource, 1);
+      return GameInventory.addItem(resource, total);
     }
   }
 
