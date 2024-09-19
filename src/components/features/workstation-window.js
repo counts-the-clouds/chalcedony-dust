@@ -7,12 +7,9 @@ global.WorkstationWindow = (function() {
       const casement = FeatureWindows.openCasementWith(feature, build(room), { resizable:false, scrollingPanel:false });
       casement.setTitle(room.getDisplayName());
       casement.setBounds(getBounds());
-      // casement.setBackground('rgb(20,20,20)');
 
       const workstationElement = casement.getCasementContent().querySelector('.workstation-window');
       workstationElement.style['background-image'] = X.assetURL(room.getBackground());
-
-
     }
   }
 
@@ -32,8 +29,8 @@ global.WorkstationWindow = (function() {
     html += `<div class='result-area'><div class='result-icon icon icon-large icon-for-unknown'></div></div>`
 
     html += `<div class='item-select-area'>`;
-    ingredientSlots.forEach(slot => {
-      html += ItemSelect.build({ ingredientSlot:slot });
+    Object.keys(ingredientSlots).forEach(slot => {
+      html += ItemSelect.build({ featureID:room.getFeatureID(), slotCode:slot });
     });
     html += `</div>`;
 

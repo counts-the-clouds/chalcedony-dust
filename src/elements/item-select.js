@@ -5,11 +5,12 @@ global.ItemSelect = (function() {
   }
 
   function build(options) {
-    const ingredientSlot = options.ingredientSlot;
+    const feature = FeatureDataStore.get(options.featureID);
+    const ingredient = feature.getConstruction().getIngredientSlot(options.slotCode);
 
-    const element = `<div class='item-select empty' data-code='${ingredientSlot.code}'>
+    const element = `<div class='item-select empty' data-feature-id='${options.featureID}' data-slot='${options.slotCode}'>
       <div class='icon empty'></div>
-      <div class='name'>${ingredientSlot.displayName}</div>
+      <div class='name'>${ingredient.displayName}</div>
     </div>`
 
     return element;
@@ -18,6 +19,11 @@ global.ItemSelect = (function() {
   function openSelect(event) {
     const selectElement = event.target.closest('.item-select');
     const position = X.getPosition(selectElement);
+    const feature = FeatureDataStore.get(parseInt(selectElement.getAttribute('data-feature-id')));
+    const room = feature.getConstruction();
+    const slot = selectElement.getAttribute('data-slot');
+
+    console.log("Feature:",feature,slot,room.getIngredientSlot(slot));
 
     const listElement = X.createElement(`<ul class='item-list'></ul>`);
 

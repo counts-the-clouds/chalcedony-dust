@@ -12,12 +12,12 @@ RoomRegistry.register('foundry',{
     { code:'worker-2', name:'Foundryman', requiredSkill:'artistry' },
   ],
 
-  ingredientSlots:[
-    { displayName:'Ore',      code:'ore',      requireAspect:'ore',     required:true },
-    { displayName:'Fuel',     code:'fuel',     requireAspect:'fuel',    required:true },
-    { displayName:'Catalyst', code:'catalyst', requireAspect:'catalyst' },
-    { displayName:'Reagent',  code:'reagent',  requireAspect:'reagent'  },
-  ],
+  ingredientSlots: {
+    ore:{      displayName:'Ore',      requireAspect:'ore',     required:true },
+    fuel:{     displayName:'Fuel',     requireAspect:'fuel',    required:true },
+    catalyst:{ displayName:'Catalyst', requireAspect:'catalyst' },
+    reagent:{  displayName:'Reagent',  requireAspect:'reagent'  },
+  },
 
   recipeList:[
     Recipe({ result:'iron-ingot', ingredients:[
