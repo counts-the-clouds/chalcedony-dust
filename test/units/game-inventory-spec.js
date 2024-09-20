@@ -54,4 +54,17 @@ describe("GameInventory",function() {
     });
   });
 
+  it('filters by aspect', function() {
+    GameInventory.addStorage(3);
+    GameInventory.addItem('labrynthian-ore',10);
+    GameInventory.addItem('amberian-ore',20);
+    GameInventory.addItem('coal',30);
+
+    let candle = GameInventory.withAspect('candle');
+    let ore = GameInventory.withAspect('ore');
+
+    expect(Object.keys(candle)).to.have.members(['amberian-ore','coal']);
+    expect(Object.keys(ore)).to.have.members(['amberian-ore','labrynthian-ore']);
+  });
+
 });

@@ -48,6 +48,18 @@ global.GameInventory = (function() {
     Panopticon.induce(EventType.itemRemoved,{ code, count });
   }
 
+  function withAspect(aspectCode) {
+    let filtered = {};
+
+    Object.keys($inventory).forEach(code => {
+      if (Item(code).hasAspect(aspectCode)) {
+        filtered[code] = $inventory[code];
+      }
+    });
+
+    return filtered;
+  }
+
   function getItemCount(code) { return $inventory[code] ? $inventory[code] : 0; }
   function getAll() { return {...$inventory}; }
 
@@ -75,6 +87,7 @@ global.GameInventory = (function() {
     canAddItem,
     addItem,
     removeItem,
+    withAspect,
     getItemCount,
     getAll,
     pack,

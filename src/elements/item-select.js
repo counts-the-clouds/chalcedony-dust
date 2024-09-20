@@ -22,10 +22,16 @@ global.ItemSelect = (function() {
     const feature = FeatureDataStore.get(parseInt(selectElement.getAttribute('data-feature-id')));
     const room = feature.getConstruction();
     const slot = selectElement.getAttribute('data-slot');
+    const slotData = room.getIngredientSlot(slot)
+    const itemList = getItemList(slotData);
 
-    console.log("Feature:",feature,slot,room.getIngredientSlot(slot));
+    console.log(`Open Select ${slot}:`,slotData);
+    console.log(`  - `,itemList);
 
     const listElement = X.createElement(`<ul class='item-list'></ul>`);
+    Object.keys(itemList).forEach(code => {
+      listElement.appendChild(buildItemElement(code, itemList[code]));
+    });
 
     const itemSelectWindow = X.createElement(`<div class='item-select-window'></div>`);
     itemSelectWindow.addEventListener('mouseleave', closeSelect);
@@ -47,6 +53,20 @@ global.ItemSelect = (function() {
       scrollingPanel.setContentHeight(listElement.scrollHeight);
       scrollingPanel.resize();
     }
+  }
+
+  function buildItemElement(itemCode) {
+    const item = Item(itemCode);
+    return X.createElement(`<li class='itemElement'>
+      <div class='icon icon-for-${itemCode}'></div>
+      <div class='name'>${item.getName()}</div> 
+      ${AspectPanel.build(item.getArcaneAspects())}
+    </li>`);
+  }
+
+  function getItemList(slotData) {
+    if (slotData.requireAspect) { return GameInventory.withAspect(slotData.requireAspect); }
+    throw `No item qualifier in slot data, should this include all items or what?`
   }
 
   function closeSelect() {
