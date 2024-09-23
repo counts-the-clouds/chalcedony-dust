@@ -40,4 +40,30 @@
   border: $border-normal;
   box-shadow: $shadow-frame;
   z-index: $z-select;
+
+  .item-element {
+    display: flex;
+    align-items: center;
+    height: 40px;
+    padding: 5px;
+    cursor: pointer;
+
+    .name {
+      font-family: 'aleo-bold';
+      color: $fg-strong;
+      margin: 0 10px;
+    }
+
+    .empty {
+      margin: 0 50px;
+      opacity: 0.5;
+    }
+
+    .aspect-panel { flex-grow:1; }
+  }
+
+  .item-element:hover {
+    background-color: $select-shade;
+  }
+
 }

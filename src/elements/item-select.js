@@ -28,7 +28,10 @@ global.ItemSelect = (function() {
     console.log(`Open Select ${slot}:`,slotData);
     console.log(`  - `,itemList);
 
-    const listElement = X.createElement(`<ul class='item-list'></ul>`);
+    const listElement = X.createElement(`<ul class='item-list'>
+      <li class='item-element'><div class='empty'>(Nothing)</div></li>
+    </ul>`);
+
     Object.keys(itemList).forEach(code => {
       listElement.appendChild(buildItemElement(code, itemList[code]));
     });
@@ -57,7 +60,7 @@ global.ItemSelect = (function() {
 
   function buildItemElement(itemCode) {
     const item = Item(itemCode);
-    return X.createElement(`<li class='itemElement'>
+    return X.createElement(`<li class='item-element'>
       <div class='icon icon-for-${itemCode}'></div>
       <div class='name'>${item.getName()}</div> 
       ${AspectPanel.build(item.getArcaneAspects())}
