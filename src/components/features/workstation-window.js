@@ -30,7 +30,7 @@ global.WorkstationWindow = (function() {
 
     html += `<div class='item-select-area'>`;
     Object.keys(ingredientSlots).forEach(slot => {
-      html += ItemSelect.build({ featureID:room.getFeatureID(), slotCode:slot });
+      html += ItemSelect.build({ featureID:room.getFeatureID(), slotCode:slot, onSelect:onItemSelect });
     });
     html += `</div>`;
 
@@ -41,6 +41,12 @@ global.WorkstationWindow = (function() {
     html += `</ul>`;
 
     return html + `</div>`;
+  }
+
+  function onItemSelect(selectOptions) {
+    console.log(`ON SELECT:`,selectOptions);
+    // const casement = Casement.getAssociatedCasements(feature.toString())[0];
+    // const content = casement.getCasementContent();
   }
 
   return Object.freeze({

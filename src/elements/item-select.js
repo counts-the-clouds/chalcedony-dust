@@ -1,19 +1,43 @@
 global.ItemSelect = (function() {
 
+  const $itemSelects = {};
+
   function init() {
     X.onClick('.item-select', openSelect);
+    X.onClick('.item-select-window .item-element', onSelect);
   }
 
-  function build(options) {
-    const feature = FeatureDataStore.get(options.featureID);
-    const ingredient = feature.getConstruction().getIngredientSlot(options.slotCode);
+  function storeSelect(options) { $itemSelects[`${options.featureID}:${options.slotCode}`] = options; }
+  function getSelect(id,slot) { return $itemSelects[`${id}:${slot}`]; }
+  function deleteSelect(id,slot) { delete $itemSelects[`${id}:${slot}`]; }
 
-    const element = `<div class='item-select empty' data-feature-id='${options.featureID}' data-slot='${options.slotCode}'>
+  function build(options) {
+    Validate.exists('featureID', options.featureID);
+    Validate.exists('slotCode', options.slotCode);
+    Validate.exists('onSelect', options.onSelect);
+
+    const featureID = options.featureID;
+    const slotCode = options.slotCode;
+    const onSelect = options.onSelect
+    const feature = FeatureDataStore.get(featureID);
+    const ingredient = feature.getConstruction().getIngredientSlot(slotCode);
+
+    let classname = 'item-select';
+    /* TODO: If empty */       classname += ` empty`;
+    if (ingredient.required) { classname += ` required`; }
+
+    const itemSelectElement = `<div id='itemSelect(${featureID}:${slotCode})' class='${classname}' data-feature-id='${featureID}' data-slot='${slotCode}'>
       <div class='icon empty'></div>
       <div class='name'>${ingredient.displayName}</div>
     </div>`
 
-    return element;
+    storeSelect({
+      featureID,
+      slotCode,
+      onSelect,
+    })
+
+    return itemSelectElement;
   }
 
   function openSelect(event) {
@@ -25,9 +49,6 @@ global.ItemSelect = (function() {
     const slotData = room.getIngredientSlot(slot)
     const itemList = getItemList(slotData);
 
-    console.log(`Open Select ${slot}:`,slotData);
-    console.log(`  - `,itemList);
-
     const listElement = X.createElement(`<ul class='item-list'>
       <li class='item-element'><div class='empty'>(Nothing)</div></li>
     </ul>`);
@@ -36,7 +57,7 @@ global.ItemSelect = (function() {
       listElement.appendChild(buildItemElement(code, itemList[code]));
     });
 
-    const itemSelectWindow = X.createElement(`<div class='item-select-window'></div>`);
+    const itemSelectWindow = X.createElement(`<div class='item-select-window' data-feature-id='${feature.getID()}' data-slot='${slot}'></div>`);
     itemSelectWindow.addEventListener('mouseleave', closeSelect);
     itemSelectWindow.appendChild(listElement);
 
@@ -60,7 +81,7 @@ global.ItemSelect = (function() {
 
   function buildItemElement(itemCode) {
     const item = Item(itemCode);
-    return X.createElement(`<li class='item-element'>
+    return X.createElement(`<li class='item-element' data-code='${itemCode}'>
       <div class='icon icon-for-${itemCode}'></div>
       <div class='name'>${item.getName()}</div> 
       ${AspectPanel.build(item.getArcaneAspects())}
@@ -77,9 +98,25 @@ global.ItemSelect = (function() {
     X.first('#selectArea').innerHTML = '';
   }
 
+  function onSelect(event) {
+    const itemElement = event.target.closest('.item-element');
+    const itemSelectWindow = event.target.closest('.item-select-window');
+
+    const code = itemElement.getAttribute('data-code');
+    const slot = itemSelectWindow.getAttribute('data-slot');
+    const featureID = itemSelectWindow.getAttribute('data-feature-id');
+
+    const selectOptions = getSelect(featureID,slot);
+    selectOptions.onSelect({ code, ...selectOptions });
+
+    closeSelect();
+  }
+
   return Object.freeze({
     init,
-    build
+    build,
+    getSelect,
+    deleteSelect,
   });
 
 })();
