@@ -1,8 +1,15 @@
 global.WorkstationWindow = (function() {
 
+  const $workstationWindows = {};
+
   function open(feature) {
     if (FeatureWindows.windowNotOpen(feature)) {
       const room = feature.getConstruction();
+      const ingredientSlots = room.getIngredientSlots();
+
+      const itemSelects = Object.keys(ingredientSlots).map(slot => {
+        return ItemSelect({ feature:feature, slot:slot, onSelect:onItemSelect });
+      });
 
       const casement = FeatureWindows.openCasementWith(feature, build(room), { resizable:false, scrollingPanel:false });
       casement.setTitle(room.getDisplayName());
@@ -10,6 +17,18 @@ global.WorkstationWindow = (function() {
 
       const workstationElement = casement.getCasementContent().querySelector('.workstation-window');
       workstationElement.style['background-image'] = X.assetURL(room.getBackground());
+
+      const itemSelectArea = workstationElement.querySelector('.item-select-area');
+      itemSelects.forEach(itemSelect => { itemSelectArea.appendChild(itemSelect.build()); })
+
+      // TODO: We need to clean this up somehow when the window is closed.
+      //       May be safe to poll for the associated casement window being
+      //       open.
+      $workstationWindows[feature.getID()] = {
+        feature,
+        casement,
+        itemSelects,
+      }
     }
   }
 
@@ -21,26 +40,19 @@ global.WorkstationWindow = (function() {
   }
 
   function build(room) {
-    const ingredientSlots = room.getIngredientSlots();
     const workerSlots = room.getWorkerSlots();
 
-    let html = `<div class='workstation-window'>`;
+    const workerSlotList = Object.keys(workerSlots).map(slot => {
+      return WorkerSlot.build(room.getFeatureID(), slot, workerSlots[slot]);
+    }).join('');
 
-    html += `<div class='result-area'><div class='result-icon icon icon-large icon-for-unknown'></div></div>`
-
-    html += `<div class='item-select-area'>`;
-    Object.keys(ingredientSlots).forEach(slot => {
-      html += ItemSelect.build({ featureID:room.getFeatureID(), slotCode:slot, onSelect:onItemSelect });
-    });
-    html += `</div>`;
-
-    html += `<ul class='worker-slots'>`
-    Object.keys(workerSlots).forEach(slot => {
-      html += WorkerSlot.build(room.getFeatureID(), slot, workerSlots[slot]);
-    });
-    html += `</ul>`;
-
-    return html + `</div>`;
+    return `<div class='workstation-window'>
+      <div class='result-area'>
+        <div class='result-icon icon icon-large icon-for-unknown'></div>
+      </div>
+      <div class='item-select-area'></div>
+      <ul class='worker-slots'>${workerSlotList}</ul>
+    </div>`;
   }
 
   function onItemSelect(selectOptions) {
