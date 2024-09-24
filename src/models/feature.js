@@ -212,11 +212,14 @@ global.Feature = function(data) {
   // === Feature Workers and Clocks ============================================
 
   async function assignWorker(slot, minionCode) {
+    const construction = getConstruction();
+    const clockCode = construction.getData().clockCode;
+
     if (MinionRoster.getAssignments($id)[slot] !== minionCode) {
       MinionRoster.assignMinion($id, slot, minionCode);
 
-      if (getConstruction().getClock() == null) {
-        startClock()
+      if (clockCode != null && construction.getClock() == null) {
+        startClock();
       }
 
       Panopticon.induce(EventType.workerAssignmentChanged,{ featureID:$id, slot:slot, code:minionCode });
