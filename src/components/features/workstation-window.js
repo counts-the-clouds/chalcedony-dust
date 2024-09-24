@@ -27,7 +27,7 @@ global.WorkstationWindow = (function() {
     const position = MouseMonitor.getPosition();
     const top = position.y - 300;
     const left = position.x - 300;
-    return { top, left, height:580, width:400 }
+    return { top, left, height:625, width:400 }
   }
 
   function build(room) {
@@ -38,31 +38,39 @@ global.WorkstationWindow = (function() {
     }).join('');
 
     return `<div class='workstation-window'>
-      <div class='result-area'></div>
+      <div class='arcane-icons'></div>
+      <div class='result-area'><div class='result-icon'></div></div>
       <div class='item-select-area'></div>
       <ul class='worker-slots'>${workerSlotList}</ul>
+      <div class='commands'>
+        <a href='#' class='build-once-button button button-primary disabled'>Build Once</a>
+        <a href='#' class='build-repeat-button button button-primary disabled'>Build on Repeat</a>
+        <a href='#' class='stop-build-button button button-danger hide'>Stop</a>
+      </div>
     </div>`;
   }
 
+  // TODO: We update this area when the ingredients are changed, but we also
+  //       need to update when a worker is changed.
   function updateResultArea(feature) {
     const workstation = feature.getConstruction()
     const casement = Casement.getAssociatedCasements(feature.toString())[0];
-    const resultArea = casement.getCasementContent().querySelector('.result-area');
+    const content = casement.getCasementContent();
+    const resultIcon = content.querySelector('.result-icon');
+    const arcaneIcons = content.querySelector('.arcane-icons');
     const recipe = workstation.determineCurrentRecipe();
 
-    let resultIcon;
+    arcaneIcons.innerHTML = '';
+    arcaneIcons.appendChild(X.createElement(AspectPanel.build(workstation.getArcaneTotals())));
 
     if (recipe == null) {
-      resultIcon = X.createElement(`<div class='result-icon icon icon-large icon-for-unknown'></div>`)
+      resultIcon.setAttribute('class','result-icon icon icon-large icon-for-unknown');
     }
-
-    resultArea.innerHTML = '';
-    resultArea.appendChild(resultIcon);
   }
 
   function onItemSelect(selectOptions) {
     const feature = selectOptions.feature;
-    const workstation = feature.getConstruction()
+    const workstation = feature.getConstruction();
     workstation.setIngredient(selectOptions.slot, selectOptions.code);
     updateResultArea(feature);
   }
