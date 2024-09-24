@@ -1,7 +1,5 @@
 global.WorkstationWindow = (function() {
 
-  const $workstationWindows = {};
-
   function open(feature) {
     if (FeatureWindows.windowNotOpen(feature)) {
       const room = feature.getConstruction();
@@ -21,14 +19,7 @@ global.WorkstationWindow = (function() {
       const itemSelectArea = workstationElement.querySelector('.item-select-area');
       itemSelects.forEach(itemSelect => { itemSelectArea.appendChild(itemSelect.build()); })
 
-      // TODO: We need to clean this up somehow when the window is closed.
-      //       May be safe to poll for the associated casement window being
-      //       open.
-      $workstationWindows[feature.getID()] = {
-        feature,
-        casement,
-        itemSelects,
-      }
+      updateResultArea(feature);
     }
   }
 
@@ -47,18 +38,33 @@ global.WorkstationWindow = (function() {
     }).join('');
 
     return `<div class='workstation-window'>
-      <div class='result-area'>
-        <div class='result-icon icon icon-large icon-for-unknown'></div>
-      </div>
+      <div class='result-area'></div>
       <div class='item-select-area'></div>
       <ul class='worker-slots'>${workerSlotList}</ul>
     </div>`;
   }
 
+  function updateResultArea(feature) {
+    const workstation = feature.getConstruction()
+    const casement = Casement.getAssociatedCasements(feature.toString())[0];
+    const resultArea = casement.getCasementContent().querySelector('.result-area');
+    const recipe = workstation.determineCurrentRecipe();
+
+    let resultIcon;
+
+    if (recipe == null) {
+      resultIcon = X.createElement(`<div class='result-icon icon icon-large icon-for-unknown'></div>`)
+    }
+
+    resultArea.innerHTML = '';
+    resultArea.appendChild(resultIcon);
+  }
+
   function onItemSelect(selectOptions) {
-    console.log(`ON SELECT:`,selectOptions);
-    // const casement = Casement.getAssociatedCasements(feature.toString())[0];
-    // const content = casement.getCasementContent();
+    const feature = selectOptions.feature;
+    const workstation = feature.getConstruction()
+    workstation.setIngredient(selectOptions.slot, selectOptions.code);
+    updateResultArea(feature);
   }
 
   return Object.freeze({
